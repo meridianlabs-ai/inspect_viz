@@ -1,0 +1,28 @@
+---
+jupyter: python3
+embed-resources: true
+---
+
+```{python}
+%load_ext autoreload
+%autoreload 2
+%env ANYWIDGET_HMR=1
+```
+
+```{python}
+import pandas as pd
+import plotly.express as px
+from inspect_analysis.dashboard import shared_df
+
+df = shared_df(px.data.iris())
+fig = px.scatter(df, x="sepal_width", y="sepal_length")
+fig
+```
+
+
+
+```{python}
+from inspect_analysis.dashboard._figure_view import FigureView
+
+FigureView()
+```

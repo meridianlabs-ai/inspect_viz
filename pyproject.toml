@@ -4,21 +4,22 @@ build-backend = "hatchling.build"
 
 [project]
 name = "inspect_analysis"
-version = "0.0.0"
-dependencies = ["anywidget"]
+version = "0.0.1"
+dependencies = [
+    "ipython",
+    "shortuuid",
+    "anywidget>=0.9",
+    "traitlets",
+    "narwhals>=1.15.1",
+    "pyarrow>=15.0.0",
+    "plotly[express]>=6.0.0",
+]
 readme = "README.md"
-
-# For projects not using `uv`, you can install these development dependencies with:
-# `pip install -e ".[dev]"`
-# If you're using `uv` for development, feel free to remove this section.
-[project.optional-dependencies]
-dev = ["watchfiles", "jupyterlab"]
 
 # Dependency groups (recognized by `uv`). For more details, visit:
 # https://peps.python.org/pep-0735/
 [dependency-groups]
-dev = ["watchfiles", "jupyterlab"]
-
+dev = ["watchfiles", "jupyterlab", "quarto-cli", "pandas"]
 
 [tool.hatch.build]
 only-packages = true
@@ -26,7 +27,10 @@ artifacts = ["src/inspect_analysis/static/*"]
 
 [tool.hatch.build.hooks.jupyter-builder]
 build-function = "hatch_jupyter_builder.npm_builder"
-ensured-targets = ["src/inspect_analysis/static/widget.js"]
+ensured-targets = [
+    "src/inspect_analysis/static/shared_df.js", 
+    "src/inspect_analysis/static/figure_view.js"
+]
 skip-if-exists = ["src/inspect_analysis/static/widget.js"]
 dependencies = ["hatch-jupyter-builder>=0.5.0"]
 
