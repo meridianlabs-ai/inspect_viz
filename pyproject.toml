@@ -23,17 +23,4 @@ dev = ["watchfiles", "jupyterlab", "quarto-cli", "pandas"]
 
 [tool.hatch.build]
 only-packages = true
-artifacts = ["src/inspect_analysis/static/*"]
 
-[tool.hatch.build.hooks.jupyter-builder]
-build-function = "hatch_jupyter_builder.npm_builder"
-ensured-targets = [
-    "src/inspect_analysis/static/shared_df.js", 
-    "src/inspect_analysis/static/figure_view.js"
-]
-skip-if-exists = ["src/inspect_analysis/static/widget.js"]
-dependencies = ["hatch-jupyter-builder>=0.5.0"]
-
-[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
-npm = "npm"
-build_cmd = "build"
