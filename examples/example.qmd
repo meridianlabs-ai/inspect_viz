@@ -12,17 +12,11 @@ embed-resources: true
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_analysis.dashboard import shared_df
+from inspect_analysis.dashboard import shared_df, figure_view
 
 df = shared_df(px.data.iris())
 fig = px.scatter(df, x="sepal_width", y="sepal_length")
-fig
+figure_view(df, fig)
 ```
 
 
-
-```{python}
-from inspect_analysis.dashboard._figure_view import FigureView
-
-FigureView()
-```

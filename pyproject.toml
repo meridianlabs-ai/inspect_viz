@@ -29,6 +29,7 @@ dev = [
     "pandas",
     "ruff",
     "mypy",
+    "plotly-stubs"
 ]
 
 [tool.hatch.build]

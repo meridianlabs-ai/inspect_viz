@@ -8,10 +8,12 @@
 	"dependencies": {
 		"@anywidget/react": "^0.2.0",
 		"arquero": "^8.0.1",
+		"plotly.js-dist-min": "^3.0.1",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
+		"@types/plotly.js-dist-min": "^2.3.4",
 		"@types/react": "^19.0.10",
 		"@types/react-dom": "^19.0.4",
 		"esbuild": "^0.25.1",
