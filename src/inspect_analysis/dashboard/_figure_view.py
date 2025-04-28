@@ -1,4 +1,3 @@
-import sys
 import anywidget
 import plotly.graph_objects as go
 import plotly.io as pio
