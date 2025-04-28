@@ -6,7 +6,7 @@ import pyarrow as pa  # type: ignore
 import traitlets
 from IPython.display import display
 from narwhals import DataFrame
-from narwhals.typing import IntoDataFrameT
+from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
 from inspect_analysis._util.constants import STATIC_DIR
@@ -23,7 +23,7 @@ class SharedDF(Protocol):
     def __narwhals_dataframe__(self) -> object: ...
 
 
-def shared_df(df: IntoDataFrameT) -> SharedDF:
+def shared_df(df: IntoDataFrame) -> SharedDF:
     """Create a shared data frame for use with linked views and inputs.
 
     The data frame is synced to the client and mapped to the
