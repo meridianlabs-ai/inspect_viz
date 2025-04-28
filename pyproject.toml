@@ -5,6 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "inspect_analysis"
 version = "0.0.1"
+authors = [{ name = "Meridian Labs" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT License" }
 dependencies = [
     "ipython",
     "shortuuid",
@@ -14,13 +18,44 @@ dependencies = [
     "pyarrow>=15.0.0",
     "plotly[express]>=6.0.0",
 ]
-readme = "README.md"
 
 # Dependency groups (recognized by `uv`). For more details, visit:
 # https://peps.python.org/pep-0735/
 [dependency-groups]
-dev = ["watchfiles", "jupyterlab", "quarto-cli", "pandas"]
+dev = [
+    "watchfiles", 
+    "jupyterlab", 
+    "quarto-cli", 
+    "pandas",
+    "ruff",
+    "mypy"
+]
 
 [tool.hatch.build]
 only-packages = true
 
+
+[tool.ruff]
+extend-exclude = ["docs"]
+src = ["."]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # flake8
+    "D",      # pydocstyle
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "SIM101", # duplicate isinstance
+    "UP038",  # non-pep604-isinstance
+    # "RET", # flake8-return
+    # "RUF", # ruff rules
+]
+ignore = ["E203", "E501", "D10", "D212", "D415"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+strict = true
