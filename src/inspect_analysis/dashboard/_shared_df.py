@@ -54,12 +54,12 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
     # create and render SharedDFWidget on the client
     class SharedDFWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "shared_df.js"
-        _df_bytes = traitlets.Bytes(b"").tag(sync=True)
-        _id = traitlets.CUnicode("").tag(sync=True)
+        id = traitlets.CUnicode("").tag(sync=True)
+        buffer = traitlets.Bytes(b"").tag(sync=True)
 
     sdf = SharedDFWidget()
-    sdf._id = uuid()
-    sdf._df_bytes = table_buffer.getvalue().to_pybytes()
+    sdf.id = uuid()
+    sdf.buffer = table_buffer.getvalue().to_pybytes()
     display(sdf)  # type: ignore
 
     # return handle fo SharedDF
@@ -75,4 +75,4 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-    return SharedDFImpl(id=sdf._id, ndf=ndf)
+    return SharedDFImpl(id=sdf.id, ndf=ndf)

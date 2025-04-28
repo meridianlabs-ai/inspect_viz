@@ -6,15 +6,17 @@ import * as aq from 'arquero';
 const render = createRender(() => {
 
 
-	const [id] = useModelState<string>("_id");
+	const [id] = useModelState<string>("id");
 	console.log(id)
 
-	const [df_bytes] = useModelState<DataView>("_df_bytes");
+	const [buffer] = useModelState<DataView>("buffer");
 
-	const dt = aq.fromArrow(new Uint8Array(df_bytes.buffer, df_bytes.byteOffset, df_bytes.byteLength));
+	const df = aq.fromArrow(
+		new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength)
+	);
 
 
-	console.log(dt)
+	console.log(df)
 
 	return (
 		<div className="shared_df">
