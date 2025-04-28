@@ -1,0 +1,18 @@
+{
+	"scripts": {
+		"dev": "npm run build -- --sourcemap=inline --watch",
+		"build": "esbuild js/widget.tsx --minify --format=esm --bundle --outdir=src/inspect_analysis/static",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@anywidget/react": "^0.2.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"typescript": "^5.8.2",
+		"esbuild": "^0.25.1"
+	}
+}
