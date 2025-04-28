@@ -20,8 +20,7 @@ class SharedDF(Protocol):
         """Unique client side id for shared data frame."""
         ...
 
-    def __narwhals_dataframe__(self) -> object:
-        ...
+    def __narwhals_dataframe__(self) -> object: ...
 
 
 def shared_df(df: IntoDataFrameT) -> SharedDF:

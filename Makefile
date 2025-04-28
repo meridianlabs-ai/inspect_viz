@@ -1,10 +1,10 @@
 
 .PHONY: check
 check:
-	ruff check --fix
-	ruff format
-	mypy src
+	uv run ruff check --fix
+	uv run ruff format
+	uv run mypy src
 
 .PHONY: test
 test:
-	pytest
+	uv run pytest
