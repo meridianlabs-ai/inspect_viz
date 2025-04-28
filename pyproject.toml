@@ -59,3 +59,4 @@ convention = "google"
 
 [tool.mypy]
 strict = true
+python_executable = ".venv/bin/python3"
