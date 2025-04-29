@@ -10,7 +10,7 @@ pip install git+https://github.com/meridianlabs-ai/inspect_analysis
 
 ## Development
 
-Install for Python development as follows:
+For Python development:
 
 ```sh
 pip install -e ".[dev]"
