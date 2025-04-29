@@ -10,13 +10,10 @@ pip install git+https://github.com/meridianlabs-ai/inspect_analysis
 
 ## Development
 
-We recommend using [uv](https://github.com/astral-sh/uv) for development.
-It will automatically manage virtual environments and dependencies for you.
-
-Once you have created an environmen with uv, install for Python development as follows:
+Install for Python development as follows:
 
 ```sh
-uv pip install -e ".[dev]"
+pip install -e ".[dev]"
 ```
 
 For JS / front-end development:
