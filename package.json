@@ -2,12 +2,12 @@
 	"scripts": {
 		"dev": "npm run build -- --watch",
 		"dev-sourcemap": "npm run dev -- --sourcemap=inline",
-		"build": "esbuild js/*.ts --format=esm --bundle --outdir=src/inspect_analysis/static --external:arquero",
+		"build": "esbuild js/*.ts --format=esm --bundle --outdir=src/inspect_analysis/static --external:arquero --external:plotly.js-dist-min",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@anywidget/types": "^0.2.0",
-		"@types/plotly.js": "^2.35.5",
+		"@types/plotly.js-dist-min": "^2.3.4",
 		"arquero": "^8.0.1",
 		"esbuild": "^0.25.1",
 		"typescript": "^5.8.2"

@@ -4,6 +4,10 @@ import type { RenderProps } from "@anywidget/types";
 import { getSharedDF } from "./store";
 import { bindTable } from "./util/binding";
 
+const Plotly = (await import(
+	"https://esm.sh/plotly.js-dist-min@3.0.1"
+)).default;
+
 import "./figure_view.css";
 
 interface FigureRecord {
@@ -21,7 +25,7 @@ function render({ model, el }: RenderProps<FigureRecord>) {
 		const df  = getSharedDF(df_id)
 		if (df) {
 			const data = bindTable(figure.data, df.computed);
-			window.Plotly.react(el, data, figure.layout, figure.config || {});
+			Plotly.react(el, data, figure.layout, figure.config || {});
 		}
 	}, 1000)
 	
