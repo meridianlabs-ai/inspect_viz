@@ -17,11 +17,14 @@ function render({ model, el }: RenderProps<FigureRecord>) {
 	const figure_json: string = model.get("figure_json");
 	const figure = JSON.parse(figure_json)
 
-	const df  = getSharedDF(df_id)
-	if (df) {
-		const data = bindTable(figure.data, df.computed);
-		window.Plotly.react(el, data, figure.layout, figure.config || {});
-	}
+	setTimeout(() => {
+		const df  = getSharedDF(df_id)
+		if (df) {
+			const data = bindTable(figure.data, df.computed);
+			window.Plotly.react(el, data, figure.layout, figure.config || {});
+		}
+	}, 1000)
+	
 
 }
 

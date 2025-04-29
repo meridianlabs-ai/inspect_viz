@@ -15,5 +15,6 @@
     "search.exclude": {
       "logs/**": true
     },
-    "quarto.render.renderOnSave": true
+    "quarto.render.renderOnSave": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
   }

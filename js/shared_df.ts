@@ -3,6 +3,9 @@ import { RenderProps } from "@anywidget/types";
 
 import { addSharedDF } from "./store";
 
+const aq = await import("https://cdn.jsdelivr.net/npm/arquero@8.0.1/+esm");
+
+
 interface SharedDFREcord {
 	id: string
 	buffer: DataView
@@ -10,9 +13,11 @@ interface SharedDFREcord {
 
 function render({ model }: RenderProps<SharedDFREcord>) {
 
+	
+
 	const id = model.get("id");
 	const buffer = model.get("buffer");
-	const df = window.aq.fromArrow(
+	const df = aq.fromArrow(
 		new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength)
 	);
 	addSharedDF(id, df)

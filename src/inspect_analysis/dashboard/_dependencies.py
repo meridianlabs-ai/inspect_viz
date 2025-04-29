@@ -9,7 +9,6 @@ def ensure_dependencies() -> None:
         html = dedent("""
         <script>window.backupDefine = window.define; window.define = undefined;</script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/3.0.1/plotly.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/arquero@8.0.1"></script>
         <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
         """)
 
