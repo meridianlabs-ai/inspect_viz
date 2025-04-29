@@ -8,7 +8,7 @@ interface SharedDFREcord {
 	buffer: DataView
 }
 
-function render({ model, el }: RenderProps<SharedDFREcord>) {
+function render({ model }: RenderProps<SharedDFREcord>) {
 
 	const id = model.get("id");
 	const buffer = model.get("buffer");
