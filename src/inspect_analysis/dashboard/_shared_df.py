@@ -11,8 +11,6 @@ from shortuuid import uuid
 
 from inspect_analysis._util.constants import STATIC_DIR
 
-from ._dependencies import ensure_dependencies
-
 
 class SharedDF(Protocol):
     """Shared data frame for use with client side views and inputs."""
@@ -43,8 +41,6 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
     Returns:
         Shared data frame.
     """
-    ensure_dependencies()
-
     # convert to narwhals
     ndf = nw.from_native(df)
 
