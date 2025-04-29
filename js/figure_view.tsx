@@ -1,29 +1,33 @@
 import * as React from "react";
 import { createRender, useModelState } from "@anywidget/react";
-import { useState } from "react";
-
 
 import Plotly from 'plotly.js-dist-min'
+
+
+import { useSharedDF } from "./store";
+import { bindTable } from "./util/binding";
 
 import "./figure_view.css";
 
 const render = createRender(() => {
 
-	const [value, setValue] = useState<number>(20)
 
-	// const [df_id] = useModelState<number>("df_id");
-
+	const [df_id] = useModelState<string>("df_id");
 	const [figure_json] = useModelState<string>("figure_json");
 	const figure = React.useMemo(() => JSON.parse(figure_json), [figure_json]);
 
-	const plotRef = React.useRef(null)
+	const plotRef = React.useRef<HTMLDivElement>(null)
+
+	const { df } = useSharedDF(df_id)
+
 
 	React.useEffect(() => {
+		if (df !== undefined) {
+			const data = bindTable(figure.data, df)
+			Plotly.react(plotRef.current!, data, figure.layout, figure.config || {});
+		}
 
-		Plotly.react(plotRef.current!, figure.data, figure.layout, figure.config || {});
-
-
-	}, [figure])
+	}, [figure, df])
 
 
 

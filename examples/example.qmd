@@ -1,6 +1,5 @@
 ---
 jupyter: python3
-embed-resources: true
 ---
 
 ```{python}

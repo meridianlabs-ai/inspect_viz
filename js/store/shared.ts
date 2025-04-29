@@ -1,11 +1,11 @@
 import { createStore } from 'zustand/vanilla'     
 import type { StoreApi } from 'zustand/vanilla'
 
-import type { Table } from 'arquero'
+import type { ColumnTable } from 'arquero'
 
 export interface FrameRecord {
-  base:      Table
-  computed:  Table
+  base:      ColumnTable
+  computed:  ColumnTable
 }
 
 export interface FrameState {
@@ -13,7 +13,7 @@ export interface FrameState {
 
   addDF: (
     id: string,
-    base: Table,
+    base: ColumnTable,
   ) => void
   /* all the mutators you defined earlier … */
 }
@@ -41,7 +41,7 @@ function initStore(): StoreApi<FrameState> {
 
 export function addSharedDF(
     id: string,
-    table: Table,
+    table: ColumnTable,
   ) {
     getSharedDFStore().getState().addDF(id, table)
   }
