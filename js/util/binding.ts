@@ -55,11 +55,29 @@ export function bindTable(traces: Data[], table: Table): Data[] {
       if (exists) map[p] = cols[i];
     }
   
-    if (!map.x && !map.y && cols.length >= 2) {
-      map.x = cols[0]; map.y = cols[1];
-      if (['scatter3d','surface','mesh3d'].includes(trace.type ?? '')
-          && cols.length >= 3) map.z = cols[2];
+    // discover required bindings
+    const used   = new Set(Object.values(map));
+    const unused = cols.filter(c => !used.has(c));
+    let i = 0;
+    const needsX = !map.x && (!isOrientable(trace) || trace.orientation !== 'h');
+    const needsY = !map.y && (isOrientable(trace) && trace.orientation === 'h' ? false : true);
+
+    // fill x
+    if (needsX && unused[i]) {
+      map.x = unused[i++];
     }
+
+    // fill y
+    if (needsY && unused[i]) {
+      map.y = unused[i++];
+    }
+
+    // optional z for 3-D traces
+    const is3d = ['scatter3d', 'surface', 'mesh3d'].includes(trace.type ?? '');
+    if (is3d && !map.z && unused[i]) {
+      map.z = unused[i++];
+    }
+
     return map;
   }
 
@@ -75,10 +93,18 @@ export function bindTable(traces: Data[], table: Table): Data[] {
 
   function arrayProps(obj: any, prefix = ''): string[] {
     return Object.entries(obj).flatMap(([k, v]) =>
-      Array.isArray(v)
+      Array.isArray(v) || ArrayBuffer.isView(v)
         ? [`${prefix}${k}`]
         : typeof v === 'object' && v !== null
           ? arrayProps(v, `${prefix}${k}.`)
           : []
     );
+  }
+
+  interface OrientableTrace {
+    orientation?: 'h' | 'v';
+  }
+  
+  function isOrientable(t: Data): t is Data & OrientableTrace {
+    return 'orientation' in t;
   }
