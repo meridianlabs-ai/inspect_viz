@@ -18,4 +18,4 @@ const render = createRender(() => {
 	);
 });
 
-export default { render };
+export default render;

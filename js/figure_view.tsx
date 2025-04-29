@@ -7,7 +7,7 @@ import Plotly from 'plotly.js-dist-min'
 import { useSharedDF } from "./store";
 import { bindTable } from "./util/binding";
 
-import "./figure_view.css";
+import "./styles.css";
 
 const render = createRender(() => {
 
@@ -38,4 +38,4 @@ const render = createRender(() => {
 	);
 });
 
-export default { render };
+export default render;

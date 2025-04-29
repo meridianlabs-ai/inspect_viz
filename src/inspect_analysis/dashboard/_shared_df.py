@@ -53,7 +53,8 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
 
     # create and render SharedDFWidget on the client
     class SharedDFWidget(anywidget.AnyWidget):
-        _esm = STATIC_DIR / "shared_df.js"
+        _esm = STATIC_DIR / "index.js"
+        component = traitlets.CUnicode("SharedDF").tag(sync=True)
         id = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
 
