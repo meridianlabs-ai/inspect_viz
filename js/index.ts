@@ -4,14 +4,9 @@
 import renderSharedDF from './shared_df'
 import renderFigureView from './figure_view'
 
-import type { AnyModel, Experimental } from "@anywidget/types";
-type RenderArgs = {
-    model: AnyModel;
-    el: HTMLElement;
-    experimental: Experimental
-}
+import type { RenderProps } from "@anywidget/types";
 
-function render({ model, el, experimental }: RenderArgs) {
+function render({ model, el, experimental }: RenderProps) {
     const componentType = model.get("component");
 
     switch (componentType) {
