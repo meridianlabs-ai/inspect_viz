@@ -4,10 +4,14 @@ import type { RenderProps } from "@anywidget/types";
 import { getSharedDF } from "./store";
 import { bindTable } from "./util/binding";
 
-import "./styles.css";
+import "./figure_view.css";
 
+interface FigureRecord {
+	df_id: string
+	figure_json: string
+}
 
-function render({ model, el }: RenderProps) {
+function render({ model, el }: RenderProps<FigureRecord>) {
 
 	const df_id: string = model.get("df_id");
 	const figure_json: string = model.get("figure_json");
@@ -21,5 +25,5 @@ function render({ model, el }: RenderProps) {
 
 }
 
-export default render;
+export default { render } ;
 

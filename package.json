@@ -2,7 +2,7 @@
 	"scripts": {
 		"dev": "npm run build -- --watch",
 		"dev-sourcemap": "npm run dev -- --sourcemap=inline",
-		"build": "esbuild js/index.ts --format=esm --bundle --outdir=src/inspect_analysis/static",
+		"build": "esbuild js/*.ts --format=esm --bundle --outdir=src/inspect_analysis/static",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {

@@ -11,6 +11,8 @@ from shortuuid import uuid
 
 from inspect_analysis._util.constants import STATIC_DIR
 
+from ._dependencies import ensure_dependencies
+
 
 class SharedDF(Protocol):
     """Shared data frame for use with client side views and inputs."""
@@ -41,6 +43,8 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
     Returns:
         Shared data frame.
     """
+    ensure_dependencies()
+
     # convert to narwhals
     ndf = nw.from_native(df)
 
@@ -53,8 +57,7 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
 
     # create and render SharedDFWidget on the client
     class SharedDFWidget(anywidget.AnyWidget):
-        _esm = STATIC_DIR / "index.js"
-        component = traitlets.CUnicode("SharedDF").tag(sync=True)
+        _esm = STATIC_DIR / "shared_df.js"
         id = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
 

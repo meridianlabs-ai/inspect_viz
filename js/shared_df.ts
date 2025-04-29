@@ -3,10 +3,15 @@ import { RenderProps } from "@anywidget/types";
 
 import { addSharedDF } from "./store";
 
-function render({ model, el }: RenderProps) {
+interface SharedDFREcord {
+	id: string
+	buffer: DataView
+}
 
-	const id: string = model.get("id");
-	const buffer: DataView = model.get("buffer");
+function render({ model, el }: RenderProps<SharedDFREcord>) {
+
+	const id = model.get("id");
+	const buffer = model.get("buffer");
 	const df = window.aq.fromArrow(
 		new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength)
 	);
@@ -14,4 +19,4 @@ function render({ model, el }: RenderProps) {
 
 }
 
-export default render;
+export default { render } ;

@@ -10,9 +10,8 @@ from ._shared_df import SharedDF
 
 
 class FigureView(anywidget.AnyWidget):
-    _esm = STATIC_DIR / "index.js"
-    _css = STATIC_DIR / "index.css"
-    component = traitlets.CUnicode("FigureView").tag(sync=True)
+    _esm = STATIC_DIR / "figure_view.js"
+    _css = STATIC_DIR / "figure_view.css"
     df_id = traitlets.CUnicode("").tag(sync=True)
     figure_json = traitlets.CUnicode("").tag(sync=True)
 
