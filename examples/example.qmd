@@ -2,11 +2,14 @@
 jupyter: python3
 ---
 
+
+
 ```{python}
 %load_ext autoreload
 %autoreload 2
 %env ANYWIDGET_HMR=1
 ```
+
 
 ```{python}
 import pandas as pd

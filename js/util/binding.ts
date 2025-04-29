@@ -1,8 +1,11 @@
 
-import { Table } from 'arquero';
-import { Data } from 'plotly.js-dist-min';
+import * as Plotly from 'plotly.js';
 
-export function bindTable(traces: Data[], table: Table): Data[] {
+import { Table } from 'arquero';
+
+
+
+export function bindTable(traces: Plotly.Data[], table: Table): Plotly.Data[] {
 
     // don't mutate the passed traces
     traces = structuredClone(traces);
@@ -11,7 +14,7 @@ export function bindTable(traces: Data[], table: Table): Data[] {
     const columns = columnData(table)
 
     // handle each trace
-    traces.forEach((trace: Data) => {
+    traces.forEach((trace: Plotly.Data) => {
       // map the columns
       const mapping = columnMapping(trace, Object.keys(columns))
 
@@ -41,7 +44,7 @@ export function bindTable(traces: Data[], table: Table): Data[] {
     return data;
   }
 
-  function columnMapping(trace: Data, cols: string[]): Record<string,string>  {
+  function columnMapping(trace: Plotly.Data, cols: string[]): Record<string,string>  {
     const map:  Record<string,string> = {};
     const lc = cols.map(c => c.toLowerCase());
   
@@ -81,7 +84,7 @@ export function bindTable(traces: Data[], table: Table): Data[] {
     return map;
   }
 
-  function setData(trace: Data, path: string[], val: unknown) {
+  function setData(trace: Plotly.Data, path: string[], val: unknown) {
     const last = path.pop()!;
     let cur = trace as Record<string,unknown>;
     for (const k of path) {
@@ -105,6 +108,6 @@ export function bindTable(traces: Data[], table: Table): Data[] {
     orientation?: 'h' | 'v';
   }
   
-  function isOrientable(t: Data): t is Data & OrientableTrace {
+  function isOrientable(t: Plotly.Data): t is Plotly.Data & OrientableTrace {
     return 'orientation' in t;
   }

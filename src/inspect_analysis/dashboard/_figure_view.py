@@ -5,6 +5,7 @@ import traitlets
 
 from inspect_analysis._util.constants import STATIC_DIR
 
+from ._dependencies import ensure_dependencies
 from ._shared_df import SharedDF
 
 
@@ -17,6 +18,8 @@ class FigureView(anywidget.AnyWidget):
 
 
 def figure_view(df: SharedDF, fig: go.Figure) -> FigureView:
+    ensure_dependencies()
+
     # TODO: validate fig._data against df.columns to confirm they match
 
     # fig_dict = fig.to_dict()

@@ -1,8 +1,6 @@
 import * as React from "react";
 import { createRender, useModelState } from "@anywidget/react";
 
-import Plotly from 'plotly.js-dist-min'
-
 
 import { useSharedDF } from "./store";
 import { bindTable } from "./util/binding";
@@ -24,7 +22,7 @@ const render = createRender(() => {
 	React.useEffect(() => {
 		if (df !== undefined) {
 			const data = bindTable(figure.data, df)
-			Plotly.react(plotRef.current!, data, figure.layout, figure.config || {});
+			window.Plotly.react(plotRef.current!, data, figure.layout, figure.config || {});
 		}
 
 	}, [figure, df])
