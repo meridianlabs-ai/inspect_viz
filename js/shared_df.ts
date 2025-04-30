@@ -13,8 +13,6 @@ interface SharedDFREcord {
 
 function render({ model }: RenderProps<SharedDFREcord>) {
 
-	
-
 	const id = model.get("id");
 	const buffer = model.get("buffer");
 	const df = aq.fromArrow(
