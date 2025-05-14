@@ -2,7 +2,7 @@
 	"scripts": {
 		"dev": "npm run build -- --watch",
 		"dev-sourcemap": "npm run dev -- --sourcemap=inline",
-		"build": "esbuild js/*.ts --format=esm --bundle --outdir=src/inspect_analysis/static --external:arquero --external:plotly.js-dist-min",
+		"build": "esbuild js/*.ts --format=esm --bundle --outdir=src/inspect_viz/static --external:arquero --external:plotly.js-dist-min",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {

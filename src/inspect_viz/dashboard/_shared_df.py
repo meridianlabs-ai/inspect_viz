@@ -2,14 +2,14 @@ from typing import Any, Protocol
 
 import anywidget
 import narwhals as nw
-import pyarrow as pa  # type: ignore
+import pyarrow as pa
 import traitlets
 from IPython.display import display
 from narwhals import DataFrame
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
-from inspect_analysis._util.constants import STATIC_DIR
+from .._util.constants import STATIC_DIR
 
 
 class SharedDF(Protocol):

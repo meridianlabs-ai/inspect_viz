@@ -3,8 +3,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 import traitlets
 
-from inspect_analysis._util.constants import STATIC_DIR
-
+from .._util.constants import STATIC_DIR
 from ._shared_df import SharedDF
 
 

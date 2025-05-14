@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "inspect_analysis"
+name = "inspect_viz"
 version = "0.0.1"
 authors = [{ name = "Meridian Labs" }]
 readme = "README.md"
@@ -29,6 +29,7 @@ dev = [
     "pandas",
     "ruff",
     "mypy",
+    "pandas-stubs",
     "plotly-stubs"
 ]
 
@@ -60,3 +61,6 @@ convention = "google"
 [tool.mypy]
 strict = true
 python_executable = ".venv/bin/python3"
+mypy_path = "src"
+namespace_packages = true
+explicit_package_bases = true

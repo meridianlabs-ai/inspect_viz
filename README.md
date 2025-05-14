@@ -1,10 +1,10 @@
-# inspect_analysis
+# inspect_viz
 
 ## Installation
 
 
 ```bash
-pip install git+https://github.com/meridianlabs-ai/inspect_analysis
+pip install git+https://github.com/meridianlabs-ai/inspect_viz
 ```
 
 
