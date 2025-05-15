@@ -1,26 +1,26 @@
-import { AsyncDuckDBConnection } from '@duckdb/duckdb-wasm';
+import { AsyncDuckDB, AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm';
 
 import { MosaicClient, Coordinator } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm'
+import { initDuckdb } from './duckdb';
 
 
 
 class TableCoordinator {
 
+    private duckdb_?: AsyncDuckDB;
     private conn_?: AsyncDuckDBConnection;
     private coordinator_?: Coordinator;
 
     async initialize() {
         const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm");
+        this.duckdb_ = await initDuckdb();
+        this.conn_ = await this.duckdb_?.connect();
         this.coordinator_ = new mosaic.Coordinator();
-        this.coordinator_.databaseConnector(mosaic.wasmConnector());
+        this.coordinator_.databaseConnector(mosaic.wasmConnector({ connection: this.conn_ }));
     }
 
     async addTable(name: string, buffer: Uint8Array) {
-        const inserts: Array<Promise<void> | undefined> = []
-        inserts.push(this.conn_?.insertArrowFromIPCStream(buffer, { name , create: true }));
-        const EOS = new Uint8Array([255,255,255,255,0,0,0,0]);
-        inserts.push(this.conn_?.insertArrowFromIPCStream(EOS, { name, create: false }));
-        await Promise.all(inserts)
+        await this.conn_?.insertArrowFromIPCStream(buffer, { name , create: true });
     }
 
     connectClient(client: MosaicClient) {
