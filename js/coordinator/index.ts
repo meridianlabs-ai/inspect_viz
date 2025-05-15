@@ -1,26 +1,26 @@
-import { AsyncDuckDB, AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1-dev132.0/+esm';
+import { AsyncDuckDBConnection } from '@duckdb/duckdb-wasm';
 
-import { MosaicClient, Coordinator } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.15.0/+esm'
+import { MosaicClient, Coordinator } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm'
 
-import { initDuckdb } from './duckdb';
 
-class SharedDFCoordinator {
 
-    private duckdb_?: AsyncDuckDB;
+class TableCoordinator {
+
     private conn_?: AsyncDuckDBConnection;
     private coordinator_?: Coordinator;
 
     async initialize() {
-        const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.15.0/+esm");
-        this.duckdb_ = await initDuckdb();
-        this.conn_ = await this.duckdb_.connect();
+        const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm");
         this.coordinator_ = new mosaic.Coordinator();
-        const connector = mosaic.wasmConnector( { connection: this.conn_ });
-        this.coordinator_.databaseConnector(connector);
+        this.coordinator_.databaseConnector(mosaic.wasmConnector());
     }
 
-    async addSharedDF(name: string, buffer: Uint8Array) {
-        await this.conn_?.insertArrowFromIPCStream(buffer, { name: name });
+    async addTable(name: string, buffer: Uint8Array) {
+        const inserts: Array<Promise<void> | undefined> = []
+        inserts.push(this.conn_?.insertArrowFromIPCStream(buffer, { name , create: true }));
+        const EOS = new Uint8Array([255,255,255,255,0,0,0,0]);
+        inserts.push(this.conn_?.insertArrowFromIPCStream(EOS, { name, create: false }));
+        await Promise.all(inserts)
     }
 
     connectClient(client: MosaicClient) {
@@ -31,21 +31,27 @@ class SharedDFCoordinator {
 
 // get the global coordinators instance, ensuring we get the same 
 // instance eval across different js bundles loaded into the page
-const SHARED_DF_COORDINATOR_KEY = Symbol.for('@@shared-df-store')
-async function sharedDFCoordinator(): Promise<SharedDFCoordinator> {
+const TABLE_COORDINATOR_KEY = Symbol.for('@@table-coordinator')
+async function tableCoordinator(): Promise<TableCoordinator> {
     const globalScope: any = typeof window !== 'undefined' ? window : globalThis
-    if (!globalScope[SHARED_DF_COORDINATOR_KEY]) {
-        const coordinator = new SharedDFCoordinator()
+    if (!globalScope[TABLE_COORDINATOR_KEY]) {
+        console.log("creating coordinator")
+        const coordinator = new TableCoordinator()
         await coordinator.initialize()
-        globalScope[SHARED_DF_COORDINATOR_KEY] = coordinator;
+        globalScope[TABLE_COORDINATOR_KEY] = coordinator;
     }
-    return globalScope[SHARED_DF_COORDINATOR_KEY] as SharedDFCoordinator;
+    return globalScope[TABLE_COORDINATOR_KEY] as TableCoordinator;
 }
 
-export async function addSharedDF(name: string, buffer: Uint8Array) {
-    await (await sharedDFCoordinator()).addSharedDF(name, buffer);
+export async function addTable(name: string, buffer: Uint8Array) {
+    console.log("adding table")
+    const coordinator = await tableCoordinator();
+    await coordinator.addTable(name, buffer);
+    console.log("table added")
 }
+
 
 export async function connectClient(client: MosaicClient) {
-    (await sharedDFCoordinator()).connectClient(client);
+    const coordinator = await tableCoordinator();
+    coordinator.connectClient(client)
 }

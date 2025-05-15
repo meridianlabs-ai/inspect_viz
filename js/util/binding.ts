@@ -1,17 +1,13 @@
 
 import * as Plotly from 'plotly.js';
 
-import { Table } from 'arquero';
 
 
-
-export function bindTable(traces: Plotly.Data[], table: Table): Plotly.Data[] {
+export function bindTable(traces: Plotly.Data[], columns: Record<string,ArrayLike<unknown>>): Plotly.Data[] {
 
     // don't mutate the passed traces
     traces = structuredClone(traces);
 
-    // table columns as arrays
-    const columns = columnData(table)
 
     // handle each trace
     traces.forEach((trace: Plotly.Data) => {
@@ -34,16 +30,7 @@ export function bindTable(traces: Plotly.Data[], table: Table): Plotly.Data[] {
 
   }
 
-  type ColArray = ArrayLike<unknown>; 
-
-  function columnData(table: Table): Record<string, ColArray> {
-    const data: Record<string, ColArray> = {};
-    for (const name of table.columnNames()) { 
-      data[name] = table.array(name) 
-    }
-    return data;
-  }
-
+ 
   function columnMapping(trace: Plotly.Data, cols: string[]): Record<string,string>  {
     const map:  Record<string,string> = {};
     const lc = cols.map(c => c.toLowerCase());

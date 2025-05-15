@@ -1,36 +1,45 @@
-// js/store/shared.ts
-function addSharedDF(id, table) {
-  getSharedDFStore().addDF(id, table);
-}
-function getSharedDFStore() {
-  const globalScope = typeof window !== "undefined" ? window : globalThis;
-  if (!globalScope[STORE_KEY]) {
-    globalScope[STORE_KEY] = initStore();
+// js/coordinator/index.ts
+var TableCoordinator = class {
+  async initialize() {
+    const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm");
+    this.coordinator_ = new mosaic.Coordinator();
+    this.coordinator_.databaseConnector(mosaic.wasmConnector());
   }
-  return globalScope[STORE_KEY];
+  async addTable(name, buffer) {
+    const inserts = [];
+    inserts.push(this.conn_?.insertArrowFromIPCStream(buffer, { name, create: true }));
+    const EOS = new Uint8Array([255, 255, 255, 255, 0, 0, 0, 0]);
+    inserts.push(this.conn_?.insertArrowFromIPCStream(EOS, { name, create: false }));
+    await Promise.all(inserts);
+  }
+  connectClient(client) {
+    this.coordinator_?.connect(client);
+  }
+};
+var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
+async function tableCoordinator() {
+  const globalScope = typeof window !== "undefined" ? window : globalThis;
+  if (!globalScope[TABLE_COORDINATOR_KEY]) {
+    console.log("creating coordinator");
+    const coordinator = new TableCoordinator();
+    await coordinator.initialize();
+    globalScope[TABLE_COORDINATOR_KEY] = coordinator;
+  }
+  return globalScope[TABLE_COORDINATOR_KEY];
 }
-var STORE_KEY = Symbol.for("@@shared-df-zustand-store");
-function initStore() {
-  const frames = /* @__PURE__ */ new Map();
-  return {
-    addDF: (id, base) => {
-      frames.set(id, { base, computed: base });
-    },
-    getDF: (id) => {
-      return frames.get(id);
-    }
-  };
+async function addTable(name, buffer) {
+  console.log("adding table");
+  const coordinator = await tableCoordinator();
+  await coordinator.addTable(name, buffer);
+  console.log("table added");
 }
 
 // js/shared_df.ts
-var aq = await import("https://cdn.jsdelivr.net/npm/arquero@8.0.1/+esm");
-function render({ model }) {
+async function render({ model }) {
   const id = model.get("id");
   const buffer = model.get("buffer");
-  const df = aq.fromArrow(
-    new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength)
-  );
-  addSharedDF(id, df);
+  const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  await addTable(id, arrowBuffer);
 }
 var shared_df_default = { render };
 export {

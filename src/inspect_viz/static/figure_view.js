@@ -1,31 +1,44 @@
-// js/store/shared.ts
-function getSharedDF(id) {
-  return getSharedDFStore().getDF(id);
-}
-function getSharedDFStore() {
-  const globalScope = typeof window !== "undefined" ? window : globalThis;
-  if (!globalScope[STORE_KEY]) {
-    globalScope[STORE_KEY] = initStore();
+// js/figure_view.ts
+import { MosaicClient, toDataColumns } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
+
+// js/coordinator/index.ts
+var TableCoordinator = class {
+  async initialize() {
+    const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm");
+    this.coordinator_ = new mosaic.Coordinator();
+    this.coordinator_.databaseConnector(mosaic.wasmConnector());
   }
-  return globalScope[STORE_KEY];
+  async addTable(name, buffer) {
+    const inserts = [];
+    inserts.push(this.conn_?.insertArrowFromIPCStream(buffer, { name, create: true }));
+    const EOS = new Uint8Array([255, 255, 255, 255, 0, 0, 0, 0]);
+    inserts.push(this.conn_?.insertArrowFromIPCStream(EOS, { name, create: false }));
+    await Promise.all(inserts);
+  }
+  connectClient(client) {
+    this.coordinator_?.connect(client);
+  }
+};
+var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
+async function tableCoordinator() {
+  const globalScope = typeof window !== "undefined" ? window : globalThis;
+  if (!globalScope[TABLE_COORDINATOR_KEY]) {
+    console.log("creating coordinator");
+    const coordinator = new TableCoordinator();
+    await coordinator.initialize();
+    globalScope[TABLE_COORDINATOR_KEY] = coordinator;
+  }
+  return globalScope[TABLE_COORDINATOR_KEY];
 }
-var STORE_KEY = Symbol.for("@@shared-df-zustand-store");
-function initStore() {
-  const frames = /* @__PURE__ */ new Map();
-  return {
-    addDF: (id, base) => {
-      frames.set(id, { base, computed: base });
-    },
-    getDF: (id) => {
-      return frames.get(id);
-    }
-  };
+async function connectClient(client) {
+  const coordinator = await tableCoordinator();
+  coordinator.connectClient(client);
 }
 
 // js/util/binding.ts
-function bindTable(traces, table) {
+function bindTable(traces, columns) {
   traces = structuredClone(traces);
-  const columns = columnData(table);
   traces.forEach((trace) => {
     const mapping = columnMapping(trace, Object.keys(columns));
     for (const [attr, col] of Object.entries(mapping)) {
@@ -38,13 +51,6 @@ function bindTable(traces, table) {
     }
   });
   return traces;
-}
-function columnData(table) {
-  const data = {};
-  for (const name of table.columnNames()) {
-    data[name] = table.array(name);
-  }
-  return data;
 }
 function columnMapping(trace, cols) {
   const map = {};
@@ -93,19 +99,35 @@ function isOrientable(t) {
 
 // js/figure_view.ts
 var Plotly = (await import("https://esm.sh/plotly.js-dist-min@3.0.1")).default;
-function render({ model, el }) {
+var FigureView = class extends MosaicClient {
+  constructor(df_id_, figure_, el_) {
+    super();
+    this.df_id_ = df_id_;
+    this.figure_ = figure_;
+    this.el_ = el_;
+  }
+  query(_filter) {
+    return Query.select("*").from(this.df_id_);
+  }
+  queryResult(data) {
+    const columns = toDataColumns(data).columns;
+    const table = bindTable(this.figure_.data, columns);
+    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config || {});
+    return this;
+  }
+};
+async function render({ model, el }) {
   const df_id = model.get("df_id");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
-  setTimeout(() => {
-    const df = getSharedDF(df_id);
-    if (df) {
-      const data = bindTable(figure.data, df.computed);
-      Plotly.react(el, data, figure.layout, figure.config || {});
-    }
+  const fv = new FigureView(df_id, figure, el);
+  setTimeout(async () => {
+    console.log("connecting client");
+    await connectClient(fv);
   }, 1e3);
 }
 var figure_view_default = { render };
 export {
+  FigureView,
   figure_view_default as default
 };

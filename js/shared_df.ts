@@ -1,11 +1,7 @@
 
 import { RenderProps } from "@anywidget/types";
 
-import { addSharedDF } from "./store";
-
-const aq = await import("https://cdn.jsdelivr.net/npm/arquero@8.0.1/+esm");
-
-import { addSharedDF as addShared } from "./coordinator";
+import { addTable } from "./coordinator";
 
 
 interface SharedDFREcord {
@@ -13,18 +9,13 @@ interface SharedDFREcord {
 	buffer: DataView
 }
 
-function render({ model }: RenderProps<SharedDFREcord>) {
+async function render({ model }: RenderProps<SharedDFREcord>) {
 
 	const id = model.get("id");
 	const buffer = model.get("buffer");
 	const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength)
-	const df = aq.fromArrow(arrowBuffer);
-	addSharedDF(id, df)
 
-	setTimeout(async () => {
-		await addShared(id, arrowBuffer)
-	}, 100)
-
+	await addTable(id, arrowBuffer)
 }
 
 export default { render } ;
