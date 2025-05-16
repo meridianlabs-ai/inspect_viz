@@ -1,6 +1,39 @@
-import * as Plotly from 'plotly.js';
+import {
+    MosaicClient,
+    toDataColumns,
+} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+import { Query } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
-export function bindTable(
+import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
+
+export interface PlotlyFigure {
+    data: Plotly.Data[];
+    layout?: Partial<Plotly.Layout>;
+    config?: Partial<Plotly.Config>;
+}
+
+export class FigureView extends MosaicClient {
+    constructor(
+        private readonly table_: string,
+        private readonly figure_: PlotlyFigure,
+        private readonly el_: HTMLElement
+    ) {
+        super();
+    }
+
+    query(_filter?: any): any {
+        return Query.select('*').from(this.table_);
+    }
+
+    queryResult(data: any) {
+        const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
+        const table = bindTable(this.figure_.data, columns);
+        Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+        return this;
+    }
+}
+
+function bindTable(
     traces: Plotly.Data[],
     columns: Record<string, ArrayLike<unknown>>
 ): Plotly.Data[] {

@@ -1,10 +1,3 @@
-// js/figure_view.ts
-import {
-  MosaicClient as MosaicClient2,
-  toDataColumns
-} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
-
 // js/coordinator/index.ts
 import {
   Coordinator,
@@ -93,10 +86,30 @@ async function connectClient(table, client) {
   coordinator.connectClient(client);
 }
 
-// js/figure_view.ts
+// js/clients/figure_view.ts
+import {
+  MosaicClient as MosaicClient2,
+  toDataColumns
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
-
-// js/util/binding.ts
+var FigureView = class extends MosaicClient2 {
+  constructor(table_, figure_, el_) {
+    super();
+    this.table_ = table_;
+    this.figure_ = figure_;
+    this.el_ = el_;
+  }
+  query(_filter) {
+    return Query.select("*").from(this.table_);
+  }
+  queryResult(data) {
+    const columns = toDataColumns(data).columns;
+    const table = bindTable(this.figure_.data, columns);
+    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+    return this;
+  }
+};
 function bindTable(traces, columns) {
   traces = structuredClone(traces);
   traces.forEach((trace) => {
@@ -158,23 +171,6 @@ function isOrientable(t) {
 }
 
 // js/figure_view.ts
-var FigureView = class extends MosaicClient2 {
-  constructor(table_, figure_, el_) {
-    super();
-    this.table_ = table_;
-    this.figure_ = figure_;
-    this.el_ = el_;
-  }
-  query(_filter) {
-    return Query.select("*").from(this.table_);
-  }
-  queryResult(data) {
-    const columns = toDataColumns(data).columns;
-    const table = bindTable(this.figure_.data, columns);
-    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
-    return this;
-  }
-};
 async function render({ model, el }) {
   const table = model.get("table");
   const figure_json = model.get("figure_json");
