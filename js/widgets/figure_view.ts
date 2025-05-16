@@ -2,7 +2,6 @@ import type { RenderProps } from '@anywidget/types';
 
 import { connectClient } from '../coordinator';
 
-import './figure_view.css';
 import { FigureView } from '../clients/figure_view';
 
 interface FigureRecord {

@@ -9,7 +9,6 @@ from ._shared_df import SharedDF
 
 class FigureView(anywidget.AnyWidget):
     _esm = STATIC_DIR / "figure_view.js"
-    _css = STATIC_DIR / "figure_view.css"
     table = traitlets.CUnicode("").tag(sync=True)
     figure_json = traitlets.CUnicode("").tag(sync=True)
 
