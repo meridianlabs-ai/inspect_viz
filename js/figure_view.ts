@@ -18,10 +18,16 @@ interface FigureRecord {
     figure_json: string;
 }
 
+interface PlotlyFigure {
+    data: Plotly.Data[];
+    layout?: Partial<Plotly.Layout>;
+    config?: Partial<Plotly.Config>;
+}
+
 class FigureView extends MosaicClient {
     constructor(
         private readonly table_: string,
-        private readonly figure_: any,
+        private readonly figure_: PlotlyFigure,
         private readonly el_: HTMLElement
     ) {
         super();
@@ -34,7 +40,7 @@ class FigureView extends MosaicClient {
     queryResult(data: any) {
         const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
         const table = bindTable(this.figure_.data, columns);
-        Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config || {});
+        Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
         return this;
     }
 }
