@@ -12,5 +12,5 @@ class MenuInput(anywidget.AnyWidget):
 
 
 def menu_input(df: SharedDF, column: str) -> MenuInput:
-    input = MenuInput(table=df.table, column=column)
+    input = MenuInput(table=df._table, column=column)
     return input

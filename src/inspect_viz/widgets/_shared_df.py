@@ -16,9 +16,7 @@ class SharedDF(Protocol):
     """Shared data frame for use with client side views and inputs."""
 
     @property
-    def table(self) -> str:
-        """Client side table name (automatically created via uuid())."""
-        ...
+    def _table(self) -> str: ...
 
     def __narwhals_dataframe__(self) -> object: ...
 

@@ -16,5 +16,5 @@ class FigureView(anywidget.AnyWidget):
 def figure_view(df: SharedDF, fig: go.Figure) -> FigureView:
     # TODO: validate fig._data against df.columns to confirm they match
 
-    view = FigureView(table=df.table, figure_json=pio.to_json(fig))
+    view = FigureView(table=df._table, figure_json=pio.to_json(fig))
     return view

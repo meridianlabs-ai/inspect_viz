@@ -11,5 +11,5 @@ class TableView(anywidget.AnyWidget):
 
 
 def table_view(df: SharedDF) -> TableView:
-    view = TableView(table=df.table)
+    view = TableView(table=df._table)
     return view
