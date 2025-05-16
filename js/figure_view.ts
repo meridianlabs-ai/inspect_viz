@@ -18,7 +18,7 @@ interface FigureRecord {
     figure_json: string;
 }
 
-export class FigureView extends MosaicClient {
+class FigureView extends MosaicClient {
     constructor(
         private readonly table_: string,
         private readonly figure_: any,
@@ -39,7 +39,7 @@ export class FigureView extends MosaicClient {
     }
 }
 
-async function render({ model, el }: RenderProps<FigureRecord>) {
+export async function render({ model, el }: RenderProps<FigureRecord>) {
     const table: string = model.get('table');
     const figure_json: string = model.get('figure_json');
     const figure = JSON.parse(figure_json);
@@ -48,5 +48,3 @@ async function render({ model, el }: RenderProps<FigureRecord>) {
 
     await connectClient(table, view);
 }
-
-export default { render };

@@ -92,7 +92,6 @@ async function render({ model }) {
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   await addTable(table, arrowBuffer);
 }
-var shared_df_default = { render };
 export {
-  shared_df_default as default
+  render
 };

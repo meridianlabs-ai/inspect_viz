@@ -182,8 +182,6 @@ async function render({ model, el }) {
   const view = new FigureView(table, figure, el);
   await connectClient(table, view);
 }
-var figure_view_default = { render };
 export {
-  FigureView,
-  figure_view_default as default
+  render
 };
