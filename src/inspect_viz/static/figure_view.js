@@ -158,14 +158,14 @@ function isOrientable(t) {
 
 // js/figure_view.ts
 var FigureView = class extends MosaicClient2 {
-  constructor(df_id_, figure_, el_) {
+  constructor(table_, figure_, el_) {
     super();
-    this.df_id_ = df_id_;
+    this.table_ = table_;
     this.figure_ = figure_;
     this.el_ = el_;
   }
   query(_filter) {
-    return Query.select("*").from(this.df_id_);
+    return Query.select("*").from(this.table_);
   }
   queryResult(data) {
     const columns = toDataColumns(data).columns;
@@ -175,11 +175,11 @@ var FigureView = class extends MosaicClient2 {
   }
 };
 async function render({ model, el }) {
-  const df_id = model.get("df_id");
+  const table = model.get("table");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
-  const view = new FigureView(df_id, figure, el);
-  await connectClient(df_id, view);
+  const view = new FigureView(table, figure, el);
+  await connectClient(table, view);
 }
 var figure_view_default = { render };
 export {

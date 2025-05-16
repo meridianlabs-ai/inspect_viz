@@ -16,8 +16,8 @@ class SharedDF(Protocol):
     """Shared data frame for use with client side views and inputs."""
 
     @property
-    def id(self) -> str:
-        """Unique client side id for shared data frame."""
+    def table(self) -> str:
+        """Client side table name (automatically created via uuid())."""
         ...
 
     def __narwhals_dataframe__(self) -> object: ...
@@ -54,25 +54,25 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
     # create and render SharedDFWidget on the client
     class SharedDFWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "shared_df.js"
-        id = traitlets.CUnicode("").tag(sync=True)
+        table = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
 
     sdf = SharedDFWidget()
-    sdf.id = uuid()
+    sdf.table = uuid()
     sdf.buffer = table_buffer.getvalue().to_pybytes()
     display(sdf)  # type: ignore
 
     # return handle fo SharedDF
     class SharedDFImpl:
-        def __init__(self, id: str, ndf: DataFrame[Any]) -> None:
-            self._id = id
+        def __init__(self, table: str, ndf: DataFrame[Any]) -> None:
+            self._table = table
             self._ndf = ndf
 
         @property
-        def id(self) -> str:
-            return self._id
+        def table(self) -> str:
+            return self._table
 
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-    return SharedDFImpl(id=sdf.id, ndf=ndf)
+    return SharedDFImpl(table=sdf.table, ndf=ndf)

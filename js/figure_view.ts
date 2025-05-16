@@ -14,13 +14,13 @@ import './figure_view.css';
 import { bindTable } from './util/binding';
 
 interface FigureRecord {
-    df_id: string;
+    table: string;
     figure_json: string;
 }
 
 export class FigureView extends MosaicClient {
     constructor(
-        private readonly df_id_: string,
+        private readonly table_: string,
         private readonly figure_: any,
         private readonly el_: HTMLElement
     ) {
@@ -28,7 +28,7 @@ export class FigureView extends MosaicClient {
     }
 
     query(_filter?: any): any {
-        return Query.select('*').from(this.df_id_);
+        return Query.select('*').from(this.table_);
     }
 
     queryResult(data: any) {
@@ -40,13 +40,13 @@ export class FigureView extends MosaicClient {
 }
 
 async function render({ model, el }: RenderProps<FigureRecord>) {
-    const df_id: string = model.get('df_id');
+    const table: string = model.get('table');
     const figure_json: string = model.get('figure_json');
     const figure = JSON.parse(figure_json);
 
-    const view = new FigureView(df_id, figure, el);
+    const view = new FigureView(table, figure, el);
 
-    await connectClient(df_id, view);
+    await connectClient(table, view);
 }
 
 export default { render };

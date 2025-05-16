@@ -50,9 +50,9 @@ async function tableCoordinator(): Promise<TableCoordinator> {
     return globalScope[TABLE_COORDINATOR_KEY] as Promise<TableCoordinator>;
 }
 
-export async function addTable(name: string, buffer: Uint8Array) {
+export async function addTable(table: string, buffer: Uint8Array) {
     const coordinator = await tableCoordinator();
-    await coordinator.addTable(name, buffer);
+    await coordinator.addTable(table, buffer);
 }
 
 export async function connectClient(table: string, client: MosaicClient) {

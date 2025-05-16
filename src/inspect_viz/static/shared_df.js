@@ -79,17 +79,17 @@ async function tableCoordinator() {
   }
   return globalScope[TABLE_COORDINATOR_KEY];
 }
-async function addTable(name, buffer) {
+async function addTable(table, buffer) {
   const coordinator = await tableCoordinator();
-  await coordinator.addTable(name, buffer);
+  await coordinator.addTable(table, buffer);
 }
 
 // js/shared_df.ts
 async function render({ model }) {
-  const id = model.get("id");
+  const table = model.get("table");
   const buffer = model.get("buffer");
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-  await addTable(id, arrowBuffer);
+  await addTable(table, arrowBuffer);
 }
 var shared_df_default = { render };
 export {
