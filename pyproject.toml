@@ -17,6 +17,7 @@ dependencies = [
     "narwhals>=1.15.1",
     "pyarrow>=15.0.0",
     "plotly[express]>=6.0.0",
+    "sqlglot>=26.0.0"
 ]
 
 # Dependency groups (recognized by `uv`). For more details, visit:
