@@ -6,9 +6,8 @@ import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+e
 
 import { connectClient } from "./coordinator";
 
-const Plotly = (await import(
-	"https://esm.sh/plotly.js-dist-min@3.0.1"
-)).default;
+import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1"
+
 
 
 import "./figure_view.css";

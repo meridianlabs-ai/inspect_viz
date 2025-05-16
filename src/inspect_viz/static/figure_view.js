@@ -1,18 +1,21 @@
 // js/figure_view.ts
-import { MosaicClient, toDataColumns } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { MosaicClient as MosaicClient2, toDataColumns } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 
+// js/coordinator/index.ts
+import { Coordinator, wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+
 // js/coordinator/duckdb.ts
+import { getJsDelivrBundles, selectBundle, AsyncDuckDB, ConsoleLogger } from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm";
 async function initDuckdb() {
-  const duckdb = await import("https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm");
-  const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
-  const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+  const JSDELIVR_BUNDLES = getJsDelivrBundles();
+  const bundle = await selectBundle(JSDELIVR_BUNDLES);
   const worker_url = URL.createObjectURL(
     new Blob([`importScripts("${bundle.mainWorker}");`], { type: "text/javascript" })
   );
   const worker = new Worker(worker_url);
-  const logger = new duckdb.ConsoleLogger();
-  const db = new duckdb.AsyncDuckDB(logger, worker);
+  const logger = new ConsoleLogger();
+  const db = new AsyncDuckDB(logger, worker);
   await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
   URL.revokeObjectURL(worker_url);
   return db;
@@ -21,11 +24,10 @@ async function initDuckdb() {
 // js/coordinator/index.ts
 var TableCoordinator = class {
   async initialize() {
-    const mosaic = await import("https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm");
     this.duckdb_ = await initDuckdb();
     this.conn_ = await this.duckdb_?.connect();
-    this.coordinator_ = new mosaic.Coordinator();
-    this.coordinator_.databaseConnector(mosaic.wasmConnector({ connection: this.conn_ }));
+    this.coordinator_ = new Coordinator();
+    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
   async addTable(name, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, { name, create: true });
@@ -49,6 +51,9 @@ async function connectClient(client) {
   const coordinator = await tableCoordinator();
   coordinator.connectClient(client);
 }
+
+// js/figure_view.ts
+import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 
 // js/util/binding.ts
 function bindTable(traces, columns) {
@@ -112,8 +117,7 @@ function isOrientable(t) {
 }
 
 // js/figure_view.ts
-var Plotly = (await import("https://esm.sh/plotly.js-dist-min@3.0.1")).default;
-var FigureView = class extends MosaicClient {
+var FigureView = class extends MosaicClient2 {
   constructor(df_id_, figure_, el_) {
     super();
     this.df_id_ = df_id_;

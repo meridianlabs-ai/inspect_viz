@@ -1,11 +1,12 @@
 
-export async function initDuckdb() {
-    const duckdb = await import('https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm')
+import { getJsDelivrBundles, selectBundle, AsyncDuckDB, ConsoleLogger } from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm'
 
-    const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+export async function initDuckdb() {
+
+    const JSDELIVR_BUNDLES = getJsDelivrBundles();
 
     // Select a bundle based on browser checks
-    const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+    const bundle = await selectBundle(JSDELIVR_BUNDLES);
 
     const worker_url = URL.createObjectURL(
     new Blob([`importScripts("${bundle.mainWorker!}");`], {type: 'text/javascript'})
@@ -13,8 +14,8 @@ export async function initDuckdb() {
 
     // Instantiate the asynchronous version of DuckDB-wasm
     const worker = new Worker(worker_url);
-    const logger = new duckdb.ConsoleLogger();
-    const db = new duckdb.AsyncDuckDB(logger, worker);
+    const logger = new ConsoleLogger();
+    const db = new AsyncDuckDB(logger, worker);
     await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
     URL.revokeObjectURL(worker_url);
     
