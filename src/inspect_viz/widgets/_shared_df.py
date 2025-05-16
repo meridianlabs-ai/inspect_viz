@@ -15,9 +15,7 @@ from .._util.constants import STATIC_DIR
 class SharedDF(Protocol):
     """Shared data frame for use with client side views and inputs."""
 
-    @property
     def _table(self) -> str: ...
-
     def __narwhals_dataframe__(self) -> object: ...
 
 
@@ -63,12 +61,11 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
     # return handle fo SharedDF
     class SharedDFImpl:
         def __init__(self, table: str, ndf: DataFrame[Any]) -> None:
-            self._table = table
+            self._tbl = table
             self._ndf = ndf
 
-        @property
-        def table(self) -> str:
-            return self._table
+        def _table(self) -> str:
+            return self._tbl
 
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
