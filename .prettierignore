@@ -1,0 +1,4 @@
+node_modules
+dist
+src/inspect_viz/static
+examples/example_files

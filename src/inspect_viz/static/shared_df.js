@@ -52,9 +52,7 @@ var TableCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(
-      wasmConnector({ connection: this.conn_ })
-    );
+    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
   async addTable(table, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {

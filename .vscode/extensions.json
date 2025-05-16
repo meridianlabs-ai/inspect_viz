@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "esbenp.prettier-vscode",
+        "ms-python.mypy-type-checker",
+        "quarto.quarto",
+        "ukaisi.inspect-ai",
+        "charliermarsh.ruff"
+    ]
+}

@@ -59,9 +59,7 @@ var TableCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(
-      wasmConnector({ connection: this.conn_ })
-    );
+    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
   async addTable(table, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
@@ -172,12 +170,7 @@ var FigureView = class extends MosaicClient2 {
   queryResult(data) {
     const columns = toDataColumns(data).columns;
     const table = bindTable(this.figure_.data, columns);
-    Plotly.react(
-      this.el_,
-      table,
-      this.figure_.layout,
-      this.figure_.config || {}
-    );
+    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config || {});
     return this;
   }
 };

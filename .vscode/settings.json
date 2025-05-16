@@ -12,6 +12,12 @@
     "[python]": {
       "editor.defaultFormatter": "charliermarsh.ruff"
     },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "search.exclude": {
       "logs/**": true
     },
