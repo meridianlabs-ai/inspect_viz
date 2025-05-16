@@ -1,7 +1,8 @@
 // js/coordinator/index.ts
 import {
   Coordinator,
-  wasmConnector
+  wasmConnector,
+  Selection
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -54,15 +55,20 @@ var TableCoordinator = class {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    this.selections_ = /* @__PURE__ */ new Map();
   }
   async addTable(table, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
       name: table,
       create: true
     });
+    this.selections_.set(table, Selection.intersect());
   }
   async waitForTable(table) {
     await waitForTable(this.conn_, table);
+  }
+  tableSelection(table) {
+    return this.selections_.get(table);
   }
   connectClient(client) {
     this.coordinator_?.connect(client);

@@ -1,6 +1,6 @@
 import type { RenderProps } from '@anywidget/types';
 
-import { connectClient } from '../coordinator';
+import { connectClient, tableSelection } from '../coordinator';
 
 import { FigureView } from '../clients/figure_view';
 
@@ -13,7 +13,10 @@ async function render({ model, el }: RenderProps<FigureRecord>) {
     const table: string = model.get('table');
     const figure_json: string = model.get('figure_json');
     const figure = JSON.parse(figure_json);
-    const view = new FigureView(table, figure, el);
+
+    const selection = await tableSelection(table);
+    const view = new FigureView(el, table, figure, selection);
+
     await connectClient(table, view);
 }
 

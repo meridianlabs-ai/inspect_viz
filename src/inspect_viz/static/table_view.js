@@ -1,7 +1,8 @@
 // js/coordinator/index.ts
 import {
   Coordinator,
-  wasmConnector
+  wasmConnector,
+  Selection
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -54,15 +55,20 @@ var TableCoordinator = class {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    this.selections_ = /* @__PURE__ */ new Map();
   }
   async addTable(table, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
       name: table,
       create: true
     });
+    this.selections_.set(table, Selection.intersect());
   }
   async waitForTable(table) {
     await waitForTable(this.conn_, table);
+  }
+  tableSelection(table) {
+    return this.selections_.get(table);
   }
   connectClient(client) {
     this.coordinator_?.connect(client);
@@ -80,10 +86,24 @@ async function tableCoordinator() {
   }
   return globalScope[TABLE_COORDINATOR_KEY];
 }
+async function tableSelection(table) {
+  return withTableCoordinator(table, async (coordinator) => {
+    const selection = coordinator.tableSelection(table);
+    if (selection === void 0) {
+      throw new Error(`No table named ${table} found.`);
+    }
+    return selection;
+  });
+}
 async function connectClient(table, client) {
+  return withTableCoordinator(table, async (coordinator) => {
+    coordinator.connectClient(client);
+  });
+}
+async function withTableCoordinator(table, fn) {
   const coordinator = await tableCoordinator();
   await coordinator.waitForTable(table);
-  coordinator.connectClient(client);
+  return await fn(coordinator);
 }
 
 // js/clients/table_view.ts
@@ -97,7 +117,8 @@ var TableView = class extends Table {
 // js/widgets/table_view.ts
 async function render({ model, el }) {
   const table = model.get("table");
-  const view = new TableView(el, table);
+  const selection = await tableSelection(table);
+  const view = new TableView(el, table, selection);
   await connectClient(table, view);
 }
 var table_view_default = { render };

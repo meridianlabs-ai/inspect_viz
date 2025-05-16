@@ -1,5 +1,6 @@
 import {
     MosaicClient,
+    Selection,
     toDataColumns,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
@@ -14,11 +15,12 @@ export interface PlotlyFigure {
 
 export class FigureView extends MosaicClient {
     constructor(
+        private readonly el_: HTMLElement,
         private readonly table_: string,
         private readonly figure_: PlotlyFigure,
-        private readonly el_: HTMLElement
+        filterBy?: Selection
     ) {
-        super();
+        super(filterBy);
     }
 
     query(filter: any[] = []): SelectQuery {

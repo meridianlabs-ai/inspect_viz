@@ -1,7 +1,8 @@
 // js/coordinator/index.ts
 import {
   Coordinator,
-  wasmConnector
+  wasmConnector,
+  Selection
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -54,15 +55,20 @@ var TableCoordinator = class {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    this.selections_ = /* @__PURE__ */ new Map();
   }
   async addTable(table, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
       name: table,
       create: true
     });
+    this.selections_.set(table, Selection.intersect());
   }
   async waitForTable(table) {
     await waitForTable(this.conn_, table);
+  }
+  tableSelection(table) {
+    return this.selections_.get(table);
   }
   connectClient(client) {
     this.coordinator_?.connect(client);
@@ -80,10 +86,24 @@ async function tableCoordinator() {
   }
   return globalScope[TABLE_COORDINATOR_KEY];
 }
+async function tableSelection(table) {
+  return withTableCoordinator(table, async (coordinator) => {
+    const selection = coordinator.tableSelection(table);
+    if (selection === void 0) {
+      throw new Error(`No table named ${table} found.`);
+    }
+    return selection;
+  });
+}
 async function connectClient(table, client) {
+  return withTableCoordinator(table, async (coordinator) => {
+    coordinator.connectClient(client);
+  });
+}
+async function withTableCoordinator(table, fn) {
   const coordinator = await tableCoordinator();
   await coordinator.waitForTable(table);
-  coordinator.connectClient(client);
+  return await fn(coordinator);
 }
 
 // js/clients/figure_view.ts
@@ -94,11 +114,11 @@ import {
 import { SelectQuery } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 var FigureView = class extends MosaicClient2 {
-  constructor(table_, figure_, el_) {
-    super();
+  constructor(el_, table_, figure_, filterBy) {
+    super(filterBy);
+    this.el_ = el_;
     this.table_ = table_;
     this.figure_ = figure_;
-    this.el_ = el_;
   }
   query(filter = []) {
     return SelectQuery.select("*").from(this.table_).where(filter);
@@ -175,7 +195,8 @@ async function render({ model, el }) {
   const table = model.get("table");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
-  const view = new FigureView(table, figure, el);
+  const selection = await tableSelection(table);
+  const view = new FigureView(el, table, figure, selection);
   await connectClient(table, view);
 }
 var figure_view_default = { render };
