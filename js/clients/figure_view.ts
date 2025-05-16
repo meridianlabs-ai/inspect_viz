@@ -2,7 +2,7 @@ import {
     MosaicClient,
     toDataColumns,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
-import { Query } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
+import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
 
@@ -21,8 +21,8 @@ export class FigureView extends MosaicClient {
         super();
     }
 
-    query(_filter?: any): any {
-        return Query.select('*').from(this.table_);
+    query(filter: any[] = []): SelectQuery {
+        return SelectQuery.select('*').from(this.table_).where(filter);
     }
 
     queryResult(data: any) {

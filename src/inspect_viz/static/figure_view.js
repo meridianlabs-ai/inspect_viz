@@ -91,7 +91,7 @@ import {
   MosaicClient as MosaicClient2,
   toDataColumns
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
+import { SelectQuery } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 var FigureView = class extends MosaicClient2 {
   constructor(table_, figure_, el_) {
@@ -100,8 +100,8 @@ var FigureView = class extends MosaicClient2 {
     this.figure_ = figure_;
     this.el_ = el_;
   }
-  query(_filter) {
-    return Query.select("*").from(this.table_);
+  query(filter = []) {
+    return SelectQuery.select("*").from(this.table_).where(filter);
   }
   queryResult(data) {
     const columns = toDataColumns(data).columns;
