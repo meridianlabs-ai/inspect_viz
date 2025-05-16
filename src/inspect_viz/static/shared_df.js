@@ -2,12 +2,19 @@
 import { Coordinator, wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
-import { getJsDelivrBundles, selectBundle, AsyncDuckDB, ConsoleLogger } from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm";
+import {
+  getJsDelivrBundles,
+  selectBundle,
+  AsyncDuckDB,
+  ConsoleLogger
+} from "https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm";
 async function initDuckdb() {
   const JSDELIVR_BUNDLES = getJsDelivrBundles();
   const bundle = await selectBundle(JSDELIVR_BUNDLES);
   const worker_url = URL.createObjectURL(
-    new Blob([`importScripts("${bundle.mainWorker}");`], { type: "text/javascript" })
+    new Blob([`importScripts("${bundle.mainWorker}");`], {
+      type: "text/javascript"
+    })
   );
   const worker = new Worker(worker_url);
   const logger = new ConsoleLogger();
@@ -19,14 +26,13 @@ async function initDuckdb() {
 
 // js/coordinator/index.ts
 var TableCoordinator = class {
-  async initialize() {
-    this.duckdb_ = await initDuckdb();
-    this.conn_ = await this.duckdb_?.connect();
+  constructor(conn_) {
+    this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addTable(name, buffer) {
-    await this.conn_?.insertArrowFromIPCStream(buffer, { name, create: true });
+  async addTable(table, buffer) {
+    await this.conn_?.insertArrowFromIPCStream(buffer, { name: table, create: true });
   }
   connectClient(client) {
     this.coordinator_?.connect(client);
@@ -36,8 +42,9 @@ var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
 async function tableCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[TABLE_COORDINATOR_KEY]) {
-    const coordinator = new TableCoordinator();
-    await coordinator.initialize();
+    const duckdb = await initDuckdb();
+    const conn = await duckdb.connect();
+    const coordinator = new TableCoordinator(conn);
     globalScope[TABLE_COORDINATOR_KEY] = coordinator;
   }
   return globalScope[TABLE_COORDINATOR_KEY];
