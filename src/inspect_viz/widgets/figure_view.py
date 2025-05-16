@@ -4,7 +4,7 @@ import plotly.io as pio
 import traitlets
 
 from .._util.constants import STATIC_DIR
-from ._shared_df import SharedDF
+from .shared_df import SharedDF
 
 
 class FigureView(anywidget.AnyWidget):
