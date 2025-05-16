@@ -89,15 +89,15 @@ async function connectClient(table, client) {
 // js/clients/table_view.ts
 import { Table } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm";
 var TableView = class extends Table {
-  constructor(table, el) {
-    super({ element: el, from: table });
+  constructor(el, table, filterBy) {
+    super({ element: el, filterBy, from: table });
   }
 };
 
 // js/widgets/table_view.ts
 async function render({ model, el }) {
   const table = model.get("table");
-  const view = new TableView(table, el);
+  const view = new TableView(el, table);
   await connectClient(table, view);
 }
 var table_view_default = { render };

@@ -10,7 +10,7 @@ interface TableRecord {
 
 async function render({ model, el }: RenderProps<TableRecord>) {
     const table: string = model.get('table');
-    const view = new TableView(table, el);
+    const view = new TableView(el, table);
     await connectClient(table, view);
 }
 
