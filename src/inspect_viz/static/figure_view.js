@@ -170,7 +170,7 @@ function isOrientable(t) {
   return "orientation" in t;
 }
 
-// js/figure_view.ts
+// js/widgets/figure_view.ts
 async function render({ model, el }) {
   const table = model.get("table");
   const figure_json = model.get("figure_json");
@@ -178,6 +178,7 @@ async function render({ model, el }) {
   const view = new FigureView(table, figure, el);
   await connectClient(table, view);
 }
+var figure_view_default = { render };
 export {
-  render
+  figure_view_default as default
 };
