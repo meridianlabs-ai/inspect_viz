@@ -4,6 +4,7 @@ import {
     AsyncDuckDB,
     ConsoleLogger,
     AsyncDuckDBConnection,
+    LogLevel,
 } from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm';
 
 export async function initDuckdb() {
@@ -20,7 +21,7 @@ export async function initDuckdb() {
 
     // Instantiate the asynchronous version of DuckDB-wasm
     const worker = new Worker(worker_url);
-    const logger = new ConsoleLogger();
+    const logger = new ConsoleLogger(LogLevel.WARNING);
     const db = new AsyncDuckDB(logger, worker);
     await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
     URL.revokeObjectURL(worker_url);
