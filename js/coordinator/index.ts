@@ -1,7 +1,4 @@
-import {
-    AsyncDuckDB,
-    AsyncDuckDBConnection,
-} from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm';
+import { AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm';
 
 import {
     MosaicClient,
