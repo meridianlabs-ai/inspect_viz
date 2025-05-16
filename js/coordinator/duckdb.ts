@@ -39,9 +39,10 @@ export async function waitForTable(
     try {
       const res = await conn.query(
         `SELECT 1
-           FROM duckdb_tables()
-          WHERE table_schema = 'main' AND table_name = '${table}'
-          LIMIT 1`
+           FROM information_schema.tables
+         WHERE table_schema = 'main'
+           AND table_name   = '${table}'
+         LIMIT 1`
       );
 
       if (res.numRows) return; // success ✨

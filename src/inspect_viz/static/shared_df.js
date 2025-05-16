@@ -1,5 +1,8 @@
 // js/coordinator/index.ts
-import { Coordinator, wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import {
+  Coordinator,
+  wasmConnector
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
 import {
@@ -23,16 +26,44 @@ async function initDuckdb() {
   URL.revokeObjectURL(worker_url);
   return db;
 }
+async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {}) {
+  const t0 = performance.now();
+  while (true) {
+    try {
+      const res = await conn.query(
+        `SELECT 1
+           FROM information_schema.tables
+         WHERE table_schema = 'main'
+           AND table_name   = '${table}'
+         LIMIT 1`
+      );
+      if (res.numRows) return;
+    } catch (err) {
+    }
+    if (performance.now() - t0 > timeout) {
+      throw new Error(`Timed out waiting for table "${table}"`);
+    }
+    await new Promise((r) => setTimeout(r, interval));
+  }
+}
 
 // js/coordinator/index.ts
 var TableCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    this.coordinator_.databaseConnector(
+      wasmConnector({ connection: this.conn_ })
+    );
   }
   async addTable(table, buffer) {
-    await this.conn_?.insertArrowFromIPCStream(buffer, { name: table, create: true });
+    await this.conn_?.insertArrowFromIPCStream(buffer, {
+      name: table,
+      create: true
+    });
+  }
+  async waitForTable(table) {
+    await waitForTable(this.conn_, table);
   }
   connectClient(client) {
     this.coordinator_?.connect(client);
@@ -42,10 +73,11 @@ var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
 async function tableCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[TABLE_COORDINATOR_KEY]) {
-    const duckdb = await initDuckdb();
-    const conn = await duckdb.connect();
-    const coordinator = new TableCoordinator(conn);
-    globalScope[TABLE_COORDINATOR_KEY] = coordinator;
+    globalScope[TABLE_COORDINATOR_KEY] = (async () => {
+      const duckdb = await initDuckdb();
+      const conn = await duckdb.connect();
+      return new TableCoordinator(conn);
+    })();
   }
   return globalScope[TABLE_COORDINATOR_KEY];
 }

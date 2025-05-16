@@ -1,9 +1,15 @@
 // js/figure_view.ts
-import { MosaicClient as MosaicClient2, toDataColumns } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import {
+  MosaicClient as MosaicClient2,
+  toDataColumns
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { Query } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 
 // js/coordinator/index.ts
-import { Coordinator, wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import {
+  Coordinator,
+  wasmConnector
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
 import {
@@ -27,16 +33,44 @@ async function initDuckdb() {
   URL.revokeObjectURL(worker_url);
   return db;
 }
+async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {}) {
+  const t0 = performance.now();
+  while (true) {
+    try {
+      const res = await conn.query(
+        `SELECT 1
+           FROM information_schema.tables
+         WHERE table_schema = 'main'
+           AND table_name   = '${table}'
+         LIMIT 1`
+      );
+      if (res.numRows) return;
+    } catch (err) {
+    }
+    if (performance.now() - t0 > timeout) {
+      throw new Error(`Timed out waiting for table "${table}"`);
+    }
+    await new Promise((r) => setTimeout(r, interval));
+  }
+}
 
 // js/coordinator/index.ts
 var TableCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    this.coordinator_.databaseConnector(
+      wasmConnector({ connection: this.conn_ })
+    );
   }
   async addTable(table, buffer) {
-    await this.conn_?.insertArrowFromIPCStream(buffer, { name: table, create: true });
+    await this.conn_?.insertArrowFromIPCStream(buffer, {
+      name: table,
+      create: true
+    });
+  }
+  async waitForTable(table) {
+    await waitForTable(this.conn_, table);
   }
   connectClient(client) {
     this.coordinator_?.connect(client);
@@ -46,15 +80,17 @@ var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
 async function tableCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[TABLE_COORDINATOR_KEY]) {
-    const duckdb = await initDuckdb();
-    const conn = await duckdb.connect();
-    const coordinator = new TableCoordinator(conn);
-    globalScope[TABLE_COORDINATOR_KEY] = coordinator;
+    globalScope[TABLE_COORDINATOR_KEY] = (async () => {
+      const duckdb = await initDuckdb();
+      const conn = await duckdb.connect();
+      return new TableCoordinator(conn);
+    })();
   }
   return globalScope[TABLE_COORDINATOR_KEY];
 }
-async function connectClient(client) {
+async function connectClient(table, client) {
   const coordinator = await tableCoordinator();
+  await coordinator.waitForTable(table);
   coordinator.connectClient(client);
 }
 
@@ -136,7 +172,12 @@ var FigureView = class extends MosaicClient2 {
   queryResult(data) {
     const columns = toDataColumns(data).columns;
     const table = bindTable(this.figure_.data, columns);
-    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config || {});
+    Plotly.react(
+      this.el_,
+      table,
+      this.figure_.layout,
+      this.figure_.config || {}
+    );
     return this;
   }
 };
@@ -144,10 +185,8 @@ async function render({ model, el }) {
   const df_id = model.get("df_id");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
-  const fv = new FigureView(df_id, figure, el);
-  setTimeout(async () => {
-    await connectClient(fv);
-  }, 1e3);
+  const view = new FigureView(df_id, figure, el);
+  await connectClient(df_id, view);
 }
 var figure_view_default = { render };
 export {
