@@ -40,7 +40,6 @@ var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
 async function tableCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[TABLE_COORDINATOR_KEY]) {
-    console.log("creating coordinator");
     const coordinator = new TableCoordinator();
     await coordinator.initialize();
     globalScope[TABLE_COORDINATOR_KEY] = coordinator;
@@ -140,7 +139,6 @@ async function render({ model, el }) {
   const figure = JSON.parse(figure_json);
   const fv = new FigureView(df_id, figure, el);
   setTimeout(async () => {
-    console.log("connecting client");
     await connectClient(fv);
   }, 1e3);
 }

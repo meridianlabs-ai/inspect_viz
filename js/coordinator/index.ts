@@ -34,7 +34,6 @@ const TABLE_COORDINATOR_KEY = Symbol.for('@@table-coordinator')
 async function tableCoordinator(): Promise<TableCoordinator> {
     const globalScope: any = typeof window !== 'undefined' ? window : globalThis
     if (!globalScope[TABLE_COORDINATOR_KEY]) {
-        console.log("creating coordinator")
         const coordinator = new TableCoordinator()
         await coordinator.initialize()
         globalScope[TABLE_COORDINATOR_KEY] = coordinator;
@@ -43,10 +42,8 @@ async function tableCoordinator(): Promise<TableCoordinator> {
 }
 
 export async function addTable(name: string, buffer: Uint8Array) {
-    console.log("adding table")
     const coordinator = await tableCoordinator();
     await coordinator.addTable(name, buffer);
-    console.log("table added")
 }
 
 

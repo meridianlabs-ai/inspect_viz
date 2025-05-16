@@ -51,7 +51,6 @@ async function render({ model, el }: RenderProps<FigureRecord>) {
 	const fv = new FigureView(df_id, figure, el)
 
 	setTimeout(async () => {
-		console.log("connecting client")
 		await connectClient(fv)
 	}, 1000)
 	
