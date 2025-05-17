@@ -7,18 +7,39 @@ import narwhals as nw
 import pandas as pd
 import pyarrow as pa
 import traitlets
+from inspect_viz.data._query.mosaic import MosaicQuery
+from inspect_viz.data._query.parser import parse_sql
 from IPython.display import display
 from narwhals import DataFrame
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
 from .._util.constants import STATIC_DIR
+from ..data import Select
 
 
 class Datatable(Protocol):
     """Datatable for use with views and inputs."""
 
+    def query(self, sql: str | Select) -> "Datatable":
+        """Apply a query to this datatable to yield another datatable.
+
+        Args:
+            sql: SQL string or `Select` statement created via `select()`.
+
+        Returns:
+            Datatable resulting from running the specified query.
+        """
+        ...
+
+    def to_pandas(self) -> pd.DataFrame:
+        """Provide a pandas representation of the datatable."""
+        ...
+
+    # internal: name of table on the client
     def _table(self) -> str: ...
+
+    # interoperate with libraries that take narwhals (e.g. plotly)
     def __narwhals_dataframe__(self) -> object: ...
 
 
@@ -64,10 +85,19 @@ def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
     display(sdf)  # type: ignore
 
     # return handle fo SharedDF
-    class SharedDFImpl:
-        def __init__(self, table: str, ndf: DataFrame[Any]) -> None:
+    class DatatableImpl:
+        def __init__(
+            self, table: str, ndf: DataFrame[Any], query: MosaicQuery | None
+        ) -> None:
             self._tbl = table
             self._ndf = ndf
+
+        def query(self, sql: str | Select) -> "Datatable":
+            query = parse_sql(sql)
+            return self
+
+        def to_pandas(self) -> pd.DataFrame:
+            return self._ndf._compliant_frame.to_pandas()
 
         def _table(self) -> str:
             return self._tbl
@@ -75,7 +105,7 @@ def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-    return SharedDFImpl(table=sdf.table, ndf=ndf)
+    return DatatableImpl(table=sdf.table, ndf=ndf, query=None)
 
 
 def _read_datatable_from_file(path: str | PathLike[str]) -> pd.DataFrame:
