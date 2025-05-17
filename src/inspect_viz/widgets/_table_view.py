@@ -2,7 +2,7 @@ import anywidget
 import traitlets
 
 from .._util.constants import STATIC_DIR
-from ._shared_df import SharedDF
+from ..data._datatable import Datatable
 
 
 class TableView(anywidget.AnyWidget):
@@ -10,6 +10,6 @@ class TableView(anywidget.AnyWidget):
     table = traitlets.CUnicode("").tag(sync=True)
 
 
-def table_view(df: SharedDF) -> TableView:
+def table_view(df: Datatable) -> TableView:
     view = TableView(table=df._table())
     return view

@@ -91,14 +91,14 @@ async function addTable(table, buffer) {
   await coordinator.addTable(table, buffer);
 }
 
-// js/widgets/shared_df.ts
+// js/widgets/datatable.ts
 async function render({ model }) {
   const table = model.get("table");
   const buffer = model.get("buffer");
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   await addTable(table, arrowBuffer);
 }
-var shared_df_default = { render };
+var datatable_default = { render };
 export {
-  shared_df_default as default
+  datatable_default as default
 };

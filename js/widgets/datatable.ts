@@ -2,12 +2,12 @@ import { RenderProps } from '@anywidget/types';
 
 import { addTable } from '../coordinator';
 
-interface SharedDFREcord {
+interface DatatableRecord {
     table: string;
     buffer: DataView;
 }
 
-async function render({ model }: RenderProps<SharedDFREcord>) {
+async function render({ model }: RenderProps<DatatableRecord>) {
     const table = model.get('table');
     const buffer = model.get('buffer');
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);

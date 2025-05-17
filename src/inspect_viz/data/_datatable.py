@@ -1,7 +1,10 @@
+import os
+from os import PathLike
 from typing import Any, Protocol
 
 import anywidget
 import narwhals as nw
+import pandas as pd
 import pyarrow as pa
 import traitlets
 from IPython.display import display
@@ -12,33 +15,35 @@ from shortuuid import uuid
 from .._util.constants import STATIC_DIR
 
 
-class SharedDF(Protocol):
-    """Shared data frame for use with client side views and inputs."""
+class Datatable(Protocol):
+    """Datatable for use with views and inputs."""
 
     def _table(self) -> str: ...
     def __narwhals_dataframe__(self) -> object: ...
 
 
-def shared_df(df: IntoDataFrame) -> SharedDF:
-    """Create a shared data frame for use with linked views and inputs.
+def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
+    """Create a datatable for use with linked views and inputs.
 
-    The data frame is synced to the client and mapped to the
-    automatically genreated `id`. Pass this object to views and inputs
-    that want to share access to it on the client.
+    Pass this object to views and inputs that want to share access to it.
 
     The [narwhals](https://narwhals-dev.github.io/narwhals/) library is
     used to support a variety of data frame types, so any data frame
-    supported by narwhals is compatible with `shared_df()`. This includes
+    supported by narwhals is compatible with `datatable()`. This includes
     Pandas, Polars, PyArrow, Dask, DuckDB, Ibis, etc.
 
     Args:
-        df: Data frame object.
+        data: Dataframe object or path to file to read data from.
 
     Returns:
-        Shared data frame.
+        Datatable for use in linked views and inputs.
     """
+    # convert to pandas if its a path
+    if isinstance(data, (str, PathLike)):
+        data = _read_datatable_from_file(data)
+
     # convert to narwhals
-    ndf = nw.from_native(df)
+    ndf = nw.from_native(data)
 
     # convert to arrow bytes to send to client/arquero
     reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
@@ -49,7 +54,7 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
 
     # create and render SharedDFWidget on the client
     class SharedDFWidget(anywidget.AnyWidget):
-        _esm = STATIC_DIR / "shared_df.js"
+        _esm = STATIC_DIR / "datatable.js"
         table = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
 
@@ -71,3 +76,30 @@ def shared_df(df: IntoDataFrame) -> SharedDF:
             return self._ndf._compliant_frame
 
     return SharedDFImpl(table=sdf.table, ndf=ndf)
+
+
+def _read_datatable_from_file(path: str | PathLike[str]) -> pd.DataFrame:
+    _, ext = os.path.splitext(path)
+    ext = ext.lower()
+
+    if ext == ".csv":
+        return pd.read_csv(path)
+    elif ext == ".xlsx" or ext == ".xls":
+        return pd.read_excel(path)
+    elif ext == ".json":
+        return pd.read_json(path)
+    elif ext == ".parquet":
+        return pd.read_parquet(path)
+    elif ext == ".feather":
+        return pd.read_feather(path)
+    elif ext == ".sas7bdat":
+        return pd.read_sas(path)
+    elif ext == ".dta":
+        return pd.read_stata(path)
+    elif ext == ".txt" or ext == ".dat":
+        # Try to guess the delimiter
+        return pd.read_csv(path, sep=None, engine="python")
+    elif ext == ".fwf":
+        return pd.read_fwf(path)
+    else:
+        raise ValueError(f"Unsupported file extension: {ext}")

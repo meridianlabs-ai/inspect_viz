@@ -7,20 +7,21 @@ execute:
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_viz.widgets import shared_df, figure_view, table_view, menu_input
-df = shared_df(px.data.iris())
+from inspect_viz.data import datatable
+from inspect_viz.widgets import figure_view, table_view, menu_input
+iris = datatable(px.data.iris())
 ```
 
 ```{python}
-menu_input(df, column="species")
+menu_input(iris, column="species")
 ```
 
 ```{python}
-fig = px.scatter(df, x="sepal_width", y="sepal_length")
-figure_view(df, fig)
+fig = px.scatter(iris, x="sepal_width", y="sepal_length")
+figure_view(iris, fig)
 ```
 
 ```{python}
-table_view(df)
+table_view(iris)
 ```
 
