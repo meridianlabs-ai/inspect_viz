@@ -3,6 +3,7 @@ from typing import Any, Sequence, cast
 import sqlglot
 import sqlglot.expressions as exp
 
+from .constants import DEFAULT_TABLE
 from .mosaic import (
     BinaryExpression,
     Expression,
@@ -14,21 +15,33 @@ from .mosaic import (
     ParameterExpression,
     UnknownExpression,
 )
+from .params import extract_parameters_with_types
 
 
-def parse_sql(sql: str | exp.Select) -> MosaicQuery:
+def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
+    # resolve to exp.Select
     if isinstance(sql, str):
         expr = sqlglot.parse_one(sql, dialect="duckdb")
         if not isinstance(expr, exp.Select):
             raise ValueError(f"Unsupported SQL expression type: {type(sql)}")
         sql = expr
 
-    return MosaicQuery.model_validate(_convert_select(sql))
+    # ensure we have a from clause
+    sql = sql.from_(DEFAULT_TABLE)
+
+    # create query
+    query = MosaicQuery.model_validate(_convert_select(sql))
+
+    # extract parameters
+    query.parameters = extract_parameters_with_types(query, parameters)
+
+    # return
+    return query
 
 
 def _convert_select(select: exp.Select) -> dict[str, Any]:
     """Convert a SELECT statement to mosaic-sql structure."""
-    result: dict[str, object] = {}
+    result: dict[str, object] = {"sql": select.sql(dialect="duckdb"), "parameters": {}}
 
     # Handle SELECT expressions
     if select.args.get("expressions"):
@@ -498,9 +511,6 @@ def _convert_expression(expr: exp.Expression) -> Any:
             args = [_convert_expression(expr.args["this"])]
 
         return FunctionExpression(name=func_name, args=args)
-
-    # For other expression types, we would need to implement specific conversions
-    # based on the mosaic-sql capabilities
 
     # Return a generic representation for unsupported expressions
     return UnknownExpression(expression=str(expr.sql(dialect="duckdb")))

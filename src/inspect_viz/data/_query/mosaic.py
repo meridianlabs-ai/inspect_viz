@@ -43,7 +43,15 @@ class SelectField(BaseModel):
     expression: str | FunctionExpression | BinaryExpression | UnknownExpression
 
 
+class Parameter(BaseModel):
+    name: str
+    value: int | float | bool | str
+    type: str
+
+
 class MosaicQuery(BaseModel):
+    sql: str
+    parameters: dict[str, Parameter]
     select: (
         dict[str, Union[str, FunctionExpression, BinaryExpression, UnknownExpression]]
         | None

@@ -7,40 +7,42 @@ import narwhals as nw
 import pandas as pd
 import pyarrow as pa
 import traitlets
-from inspect_viz.data._query.mosaic import MosaicQuery
-from inspect_viz.data._query.parser import parse_sql
 from IPython.display import display
 from narwhals import DataFrame
 from narwhals.typing import IntoDataFrame
+from pydantic_core import to_json
 from shortuuid import uuid
+from sqlglot.expressions import Select
 
 from .._util.constants import STATIC_DIR
-from ..data import Select
+from ._query.execute import execute_query
+from ._query.mosaic import MosaicQuery
+from ._query.parser import parse_sql
 
 
 class Datatable(Protocol):
     """Datatable for use with views and inputs."""
 
-    def query(self, sql: str | Select) -> "Datatable":
+    def query(self, sql: str | Select, **parameters: Any) -> "Datatable":
         """Apply a query to this datatable to yield another datatable.
 
         Args:
             sql: SQL string or `Select` statement created via `select()`.
+            **parameters: Default values for query parameters.
 
         Returns:
             Datatable resulting from running the specified query.
         """
         ...
 
-    def to_pandas(self) -> pd.DataFrame:
-        """Provide a pandas representation of the datatable."""
-        ...
-
-    # internal: name of table on the client
-    def _table(self) -> str: ...
+    # interoperate with libraries that take the dataframe protocol
+    def __dataframe__(self) -> object: ...
 
     # interoperate with libraries that take narwhals (e.g. plotly)
     def __narwhals_dataframe__(self) -> object: ...
+
+    # internal: name of table on the client
+    def _table(self) -> str: ...
 
 
 def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
@@ -74,38 +76,82 @@ def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
         writer.write_table(table)
 
     # create and render SharedDFWidget on the client
-    class SharedDFWidget(anywidget.AnyWidget):
+    class DatatableWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "datatable.js"
         table = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
+        queries = traitlets.CUnicode("").tag(sync=True)
 
-    sdf = SharedDFWidget()
-    sdf.table = uuid()
-    sdf.buffer = table_buffer.getvalue().to_pybytes()
-    display(sdf)  # type: ignore
+    # function so we can do it again in response to .query()
+    def create_shared_df(*, table: str, queries: str = "") -> DatatableWidget:
+        sdf = DatatableWidget()
+        sdf.table = table
+        sdf.buffer = table_buffer.getvalue().to_pybytes()
+        sdf.queries = queries
+        display(sdf)  # type: ignore
+        return sdf
 
-    # return handle fo SharedDF
+    sdf = create_shared_df(table=uuid())
+
+    # return handle fo Datatable
     class DatatableImpl:
         def __init__(
-            self, table: str, ndf: DataFrame[Any], query: MosaicQuery | None
+            self, *, table: str, queries: list[MosaicQuery], ndf: DataFrame[Any]
         ) -> None:
             self._tbl = table
             self._ndf = ndf
+            self._queries = queries
 
-        def query(self, sql: str | Select) -> "Datatable":
-            query = parse_sql(sql)
-            return self
+        def query(self, sql: str | Select, **parameters: Any) -> "Datatable":
+            # parse query and add it to the stack of queries
+            query = parse_sql(sql, **parameters)
+            queries = self._queries + [query]
 
-        def to_pandas(self) -> pd.DataFrame:
-            return self._ndf._compliant_frame.to_pandas()
+            # push to client (note that underlying ndf is the same, queries change)
+            create_shared_df(table=self._tbl, queries=to_json(queries).decode())
 
-        def _table(self) -> str:
-            return self._tbl
+            # execute the query and yield a new ndf
+            ndf = execute_query(self._ndf, query)
+
+            # return handle with updated ndf and queries
+            return DatatableImpl(table=self._tbl, queries=queries, ndf=ndf)
+
+        def __dataframe__(
+            self,
+            *,
+            nan_as_null: bool = False,
+            allow_copy: bool = True,
+        ) -> object:
+            ndf = self._ndf
+
+            # fast-path: narwhals frame already supports the protocol
+            if hasattr(ndf, "__dataframe__"):
+                return ndf.__dataframe__(nan_as_null=nan_as_null, allow_copy=allow_copy)
+
+            # try the native backend
+            native = ndf.to_native()
+            if hasattr(native, "__dataframe__"):
+                return native.__dataframe__(
+                    nan_as_null=nan_as_null, allow_copy=allow_copy
+                )
+
+            # final fallback: arrow (may involve a copy)
+            if allow_copy:
+                arrow_tbl = ndf.to_arrow()
+                return arrow_tbl.__dataframe__(nan_as_null=nan_as_null, allow_copy=True)
+            else:
+                raise RuntimeError(
+                    "Zero-copy __dataframe__ export is not available for this backend "
+                    "and allow_copy=False was requested."
+                )
 
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-    return DatatableImpl(table=sdf.table, ndf=ndf, query=None)
+        def _table(self) -> str:
+            return self._tbl
+
+    return DatatableImpl(table=sdf.table, queries=[], ndf=ndf)
 
 
 def _read_datatable_from_file(path: str | PathLike[str]) -> pd.DataFrame:
