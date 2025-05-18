@@ -1,6 +1,6 @@
 import os
 from os import PathLike
-from typing import Any, Protocol
+from typing import Any, Protocol, runtime_checkable
 
 import anywidget
 import narwhals as nw
@@ -20,6 +20,7 @@ from ._query.mosaic import MosaicQuery
 from ._query.parser import parse_sql
 
 
+@runtime_checkable
 class ReactiveDF(Protocol):
     """Reactive dataframe for use with views and inputs."""
 

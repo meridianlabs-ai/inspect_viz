@@ -183,6 +183,8 @@ def test_model_validation() -> None:
     """Test that models correctly validate and handle complex nested structures."""
     # Create a complex query structure with nested expressions
     query: MosaicQuery = MosaicQuery(
+        sql="",
+        parameters={},
         select={
             "name": "name",
             "price": "price",
@@ -251,7 +253,7 @@ def test_parameterized_query() -> None:
     sql: str = styles[0]
 
     # Convert without parameter values
-    result: MosaicQuery = parse_sql(sql)
+    result: MosaicQuery = parse_sql(sql, category="color", max_price=10)
 
     # Check the parameter references were captured in the WHERE clause
     assert result.where is not None
