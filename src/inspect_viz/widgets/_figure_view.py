@@ -16,5 +16,5 @@ class FigureView(anywidget.AnyWidget):
 def figure_view(df: ReactiveDF, fig: go.Figure) -> FigureView:
     # TODO: validate fig._data against df.columns to confirm they match
 
-    view = FigureView(df_id=df.id(), figure_json=pio.to_json(fig))
+    view = FigureView(df_id=df.id, figure_json=pio.to_json(fig))
     return view

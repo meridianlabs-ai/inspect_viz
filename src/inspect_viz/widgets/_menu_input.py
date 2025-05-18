@@ -12,5 +12,5 @@ class MenuInput(anywidget.AnyWidget):
 
 
 def menu_input(df: ReactiveDF, column: str) -> MenuInput:
-    input = MenuInput(df_id=df.id(), column=column)
+    input = MenuInput(df_id=df.id, column=column)
     return input

@@ -24,8 +24,14 @@ from ._query.parser import parse_sql
 class ReactiveDF(Protocol):
     """Reactive dataframe for use with views and inputs."""
 
+    @property
     def id(self) -> str:
         """Unique identifier for dataframe."""
+        ...
+
+    @property
+    def columns(self) -> list[str]:
+        """Column names for dataframe."""
         ...
 
     def query(self, sql: str | Select, **parameters: Any) -> "ReactiveDF":
@@ -109,6 +115,14 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
             self._queries = queries
             self._ndf = ndf
 
+        @property
+        def id(self) -> str:
+            return self._id
+
+        @property
+        def columns(self) -> list[str]:
+            return self._ndf.columns
+
         def query(self, sql: str | Select, **parameters: Any) -> ReactiveDF:
             # parse query and add it to the stack of queries
             query = parse_sql(sql, **parameters)
@@ -126,6 +140,15 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
 
             # return handle with updated ndf and queries
             return ReactiveDFImpl(id=id, queries=queries, ndf=ndf)
+
+        def __str__(self) -> str:
+            return self._replace_caption(self._ndf.__str__())
+
+        def __repr__(self) -> str:
+            return self._replace_caption(self._ndf.__repr__())
+
+        def __len__(self) -> int:
+            return self._ndf.__len__()
 
         def __dataframe__(
             self,
@@ -159,8 +182,8 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-        def id(self) -> str:
-            return self._id
+        def _replace_caption(self, text: str) -> str:
+            return text.replace("Narwhals DataFrame", "Reactive Dataframe")
 
     return ReactiveDFImpl(id=source_id, queries=[], ndf=ndf)
 
