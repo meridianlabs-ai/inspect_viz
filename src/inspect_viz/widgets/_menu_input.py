@@ -2,7 +2,7 @@ import anywidget
 import traitlets
 
 from .._util.constants import STATIC_DIR
-from ..data._datatable import Datatable
+from ..data.reactive_df import ReactiveDF
 
 
 class MenuInput(anywidget.AnyWidget):
@@ -11,6 +11,6 @@ class MenuInput(anywidget.AnyWidget):
     column = traitlets.CUnicode("").tag(sync=True)
 
 
-def menu_input(df: Datatable, column: str) -> MenuInput:
+def menu_input(df: ReactiveDF, column: str) -> MenuInput:
     input = MenuInput(table=df._table(), column=column)
     return input

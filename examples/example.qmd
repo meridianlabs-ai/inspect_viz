@@ -7,21 +7,22 @@ execute:
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_viz.data import datatable
+from inspect_viz.data import reactive_df
 from inspect_viz.widgets import figure_view, table_view, menu_input
-iris = datatable(px.data.iris())
+
+df = reactive_df(px.data.iris())
 ```
 
 ```{python}
-menu_input(iris, column="species")
+menu_input(df, column="species")
 ```
 
 ```{python}
-fig = px.scatter(iris, x="sepal_width", y="sepal_length")
-figure_view(iris, fig)
+fig = px.scatter(df, x="sepal_width", y="sepal_length")
+figure_view(df, fig)
 ```
 
 ```{python}
-table_view(iris)
+table_view(df)
 ```
 

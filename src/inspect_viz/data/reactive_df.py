@@ -20,18 +20,18 @@ from ._query.mosaic import MosaicQuery
 from ._query.parser import parse_sql
 
 
-class Datatable(Protocol):
-    """Datatable for use with views and inputs."""
+class ReactiveDF(Protocol):
+    """Reactive dataframe for use with views and inputs."""
 
-    def query(self, sql: str | Select, **parameters: Any) -> "Datatable":
-        """Apply a query to this datatable to yield another datatable.
+    def query(self, sql: str | Select, **parameters: Any) -> "ReactiveDF":
+        """Apply a query to this dataframe to yield another dataframe.
 
         Args:
             sql: SQL string or `Select` statement created via `select()`.
             **parameters: Default values for query parameters.
 
         Returns:
-            Datatable resulting from running the specified query.
+            Reactive dataframe resulting from running the specified query.
         """
         ...
 
@@ -45,28 +45,32 @@ class Datatable(Protocol):
     def _table(self) -> str: ...
 
 
-def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
-    """Create a datatable for use with linked views and inputs.
+def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
+    """Create a reactive dataframe for use with linked views and inputs.
 
     Pass this object to views and inputs that want to share access to it.
+    Changes in inputs will flow to the dataframe causing view updates.
 
-    The [narwhals](https://narwhals-dev.github.io/narwhals/) library is
-    used to support a variety of data frame types, so any data frame
-    supported by narwhals is compatible with `datatable()`. This includes
+    Input is the path to a data file (csv, parquet, etc.) or any Python
+    dataframe (the [narwhals](https://narwhals-dev.github.io/narwhals/)
+    library is used to support a variety of data frame types including
     Pandas, Polars, PyArrow, Dask, DuckDB, Ibis, etc.
 
     Args:
-        data: Dataframe object or path to file to read data from.
+        data: Path to a data file or Python dataframe object.
 
     Returns:
-        Datatable for use in linked views and inputs.
+        Reactive dataframe for use in linked views and inputs.
     """
     # convert to pandas if its a path
     if isinstance(data, (str, PathLike)):
-        data = _read_datatable_from_file(data)
+        data = _read_df_from_file(data)
 
     # convert to narwhals
     ndf = nw.from_native(data)
+
+    # establish unique table name (for client)
+    table_name = uuid()
 
     # convert to arrow bytes to send to client/arquero
     reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
@@ -75,46 +79,42 @@ def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
     with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
         writer.write_table(table)
 
-    # create and render SharedDFWidget on the client
-    class DatatableWidget(anywidget.AnyWidget):
-        _esm = STATIC_DIR / "datatable.js"
+    # create and render ReactiveDFWidget on the client
+    class ReactiveDFWidget(anywidget.AnyWidget):
+        _esm = STATIC_DIR / "reactive_df.js"
         table = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
         queries = traitlets.CUnicode("").tag(sync=True)
 
-    # function so we can do it again in response to .query()
-    def create_shared_df(*, table: str, queries: str = "") -> DatatableWidget:
-        sdf = DatatableWidget()
-        sdf.table = table
-        sdf.buffer = table_buffer.getvalue().to_pybytes()
-        sdf.queries = queries
-        display(sdf)  # type: ignore
-        return sdf
+    # publish reactive_df to client
+    def publish_reactive_df(*, queries: str = "") -> None:
+        widget = ReactiveDFWidget()
+        widget.table = table_name
+        widget.buffer = table_buffer.getvalue().to_pybytes()
+        widget.queries = queries
+        display(widget)  # type: ignore
 
-    sdf = create_shared_df(table=uuid())
+    publish_reactive_df()
 
-    # return handle fo Datatable
-    class DatatableImpl:
-        def __init__(
-            self, *, table: str, queries: list[MosaicQuery], ndf: DataFrame[Any]
-        ) -> None:
-            self._tbl = table
+    # return handle fo ReactiveDF
+    class ReactiveDFImpl:
+        def __init__(self, *, queries: list[MosaicQuery], ndf: DataFrame[Any]) -> None:
             self._ndf = ndf
             self._queries = queries
 
-        def query(self, sql: str | Select, **parameters: Any) -> "Datatable":
+        def query(self, sql: str | Select, **parameters: Any) -> ReactiveDF:
             # parse query and add it to the stack of queries
             query = parse_sql(sql, **parameters)
             queries = self._queries + [query]
 
             # push to client (note that underlying ndf is the same, queries change)
-            create_shared_df(table=self._tbl, queries=to_json(queries).decode())
+            publish_reactive_df(queries=to_json(queries).decode())
 
             # execute the query and yield a new ndf
             ndf = execute_query(self._ndf, query)
 
             # return handle with updated ndf and queries
-            return DatatableImpl(table=self._tbl, queries=queries, ndf=ndf)
+            return ReactiveDFImpl(queries=queries, ndf=ndf)
 
         def __dataframe__(
             self,
@@ -149,12 +149,12 @@ def datatable(data: IntoDataFrame | str | PathLike[str]) -> Datatable:
             return self._ndf._compliant_frame
 
         def _table(self) -> str:
-            return self._tbl
+            return table_name
 
-    return DatatableImpl(table=sdf.table, queries=[], ndf=ndf)
+    return ReactiveDFImpl(queries=[], ndf=ndf)
 
 
-def _read_datatable_from_file(path: str | PathLike[str]) -> pd.DataFrame:
+def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
     _, ext = os.path.splitext(path)
     ext = ext.lower()
 

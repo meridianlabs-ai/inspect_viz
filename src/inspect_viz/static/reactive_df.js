@@ -91,14 +91,14 @@ async function addTable(table, buffer) {
   await coordinator.addTable(table, buffer);
 }
 
-// js/widgets/datatable.ts
+// js/widgets/reactive_df.ts
 async function render({ model }) {
   const table = model.get("table");
   const buffer = model.get("buffer");
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   await addTable(table, arrowBuffer);
 }
-var datatable_default = { render };
+var reactive_df_default = { render };
 export {
-  datatable_default as default
+  reactive_df_default as default
 };
