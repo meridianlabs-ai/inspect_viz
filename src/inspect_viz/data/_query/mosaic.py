@@ -52,10 +52,9 @@ class Parameter(BaseModel):
 class MosaicQuery(BaseModel):
     sql: str
     parameters: dict[str, Parameter]
-    select: (
-        dict[str, Union[str, FunctionExpression, BinaryExpression, UnknownExpression]]
-        | None
-    ) = None
+    select: dict[
+        str, Union[str, FunctionExpression, BinaryExpression, UnknownExpression]
+    ]
     distinct: bool | None = None
     sample: float | int | None = None
     where: BinaryExpression | LogicalExpression | UnknownExpression | None = None

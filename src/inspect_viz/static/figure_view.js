@@ -110,14 +110,19 @@ import {
 import { SelectQuery } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 var FigureView = class extends MosaicClient2 {
-  constructor(el_, table_, figure_, filterBy) {
+  constructor(el_, figure_, table_, filterBy, queries_) {
     super(filterBy);
     this.el_ = el_;
-    this.table_ = table_;
     this.figure_ = figure_;
+    this.table_ = table_;
+    this.queries_ = queries_;
   }
   query(filter = []) {
-    return SelectQuery.select("*").from(this.table_).where(filter);
+    let query = SelectQuery.select("*").from(this.table_).where(filter);
+    for (const q of this.queries_) {
+      query = q.from(query);
+    }
+    return query;
   }
   queryResult(data) {
     const columns = toDataColumns(data).columns;
@@ -193,7 +198,8 @@ async function render({ model, el }) {
   const figure = JSON.parse(figure_json);
   const coordinator = await dataFrameCoordinator();
   const df = await coordinator.getDataFrame(df_id);
-  const view = new FigureView(el, df.table, figure, df.selection);
+  const queries = [];
+  const view = new FigureView(el, figure, df.table, df.selection, queries);
   await coordinator.connectClient(view);
 }
 var figure_view_default = { render };

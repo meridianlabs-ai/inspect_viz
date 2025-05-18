@@ -3,6 +3,7 @@ import type { RenderProps } from '@anywidget/types';
 import { dataFrameCoordinator } from '../coordinator';
 
 import { FigureView } from '../clients/figure_view';
+import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 interface FigureProps {
     df_id: string;
@@ -19,8 +20,11 @@ async function render({ model, el }: RenderProps<FigureProps>) {
     const coordinator = await dataFrameCoordinator();
     const df = await coordinator.getDataFrame(df_id);
 
+    // build sub-queries
+    const queries: SelectQuery[] = [];
+
     // create the view and connect it
-    const view = new FigureView(el, df.table, figure, df.selection);
+    const view = new FigureView(el, figure, df.table, df.selection, queries);
     await coordinator.connectClient(view);
 }
 

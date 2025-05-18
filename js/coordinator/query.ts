@@ -53,10 +53,7 @@ export interface Parameter {
 export interface MosaicQuery {
     sql: string;
     parameters: Record<string, Parameter>;
-    select?: Record<
-        string,
-        string | FunctionExpression | BinaryExpression | UnknownExpression
-    > | null;
+    select: Record<string, string | FunctionExpression | BinaryExpression | UnknownExpression>;
     distinct?: boolean | null;
     sample?: number | null;
     where?: BinaryExpression | LogicalExpression | UnknownExpression | null;

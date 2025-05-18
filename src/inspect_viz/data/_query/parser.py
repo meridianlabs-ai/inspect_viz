@@ -26,6 +26,10 @@ def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
             raise ValueError(f"Unsupported SQL expression type: {type(sql)}")
         sql = expr
 
+    # ensure we have a select clause
+    if len(sql.selects) == 0:
+        sql = sql.select("*")
+
     # ensure we have a from clause
     sql = sql.from_(DEFAULT_TABLE)
 

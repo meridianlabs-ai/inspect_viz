@@ -16,15 +16,25 @@ export interface PlotlyFigure {
 export class FigureView extends MosaicClient {
     constructor(
         private readonly el_: HTMLElement,
-        private readonly table_: string,
         private readonly figure_: PlotlyFigure,
-        filterBy?: Selection
+        private readonly table_: string,
+        filterBy: Selection,
+        private readonly queries_: SelectQuery[]
     ) {
         super(filterBy);
     }
 
     query(filter: any[] = []): SelectQuery {
-        return SelectQuery.select('*').from(this.table_).where(filter);
+        // run the main query
+        let query = SelectQuery.select('*').from(this.table_).where(filter);
+
+        // run any subqueries
+        for (const q of this.queries_) {
+            query = q.from(query);
+        }
+
+        // return
+        return query;
     }
 
     queryResult(data: any) {
