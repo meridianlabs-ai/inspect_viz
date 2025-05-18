@@ -1,4 +1,4 @@
-// js/coordinator/index.ts
+// js/coordinator/coodinator.ts
 import {
   Coordinator,
   wasmConnector,
@@ -49,61 +49,49 @@ async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {})
   }
 }
 
-// js/coordinator/index.ts
-var TableCoordinator = class {
-  constructor(conn_) {
-    this.conn_ = conn_;
-    this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
-    this.selections_ = /* @__PURE__ */ new Map();
-  }
-  async addTable(table, buffer) {
-    await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name: table,
-      create: true
-    });
-    this.selections_.set(table, Selection.intersect());
-  }
-  async waitForTable(table) {
-    await waitForTable(this.conn_, table);
-  }
-  tableSelection(table) {
-    return this.selections_.get(table);
-  }
-  connectClient(client) {
-    this.coordinator_?.connect(client);
+// js/coordinator/coodinator.ts
+var DataFrame = class {
+  constructor(table, queries, params, selection) {
+    this.table = table;
+    this.queries = queries;
+    this.params = params;
+    this.selection = selection;
   }
 };
-var TABLE_COORDINATOR_KEY = Symbol.for("@@table-coordinator");
-async function tableCoordinator() {
+var DataFrameCoordinator = class {
+  constructor(conn_) {
+    this.conn_ = conn_;
+    this.dfs_ = /* @__PURE__ */ new Map();
+    this.coordinator_ = new Coordinator();
+    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+  }
+  async addDataFrame(name, queries, buffer) {
+    await this.conn_?.insertArrowFromIPCStream(buffer, {
+      name,
+      create: true
+    });
+    this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+  }
+  async getDataFrame(name) {
+    await waitForTable(this.conn_, name);
+    return this.dfs_.get(name);
+  }
+  async connectClient(dataframe, client) {
+    await waitForTable(this.conn_, dataframe);
+    this.coordinator_.connect(client);
+  }
+};
+var REACTIVE_DF_COORDINATOR_KEY = Symbol.for("@@reactive-df-coordinator");
+async function dataFrameCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
-  if (!globalScope[TABLE_COORDINATOR_KEY]) {
-    globalScope[TABLE_COORDINATOR_KEY] = (async () => {
+  if (!globalScope[REACTIVE_DF_COORDINATOR_KEY]) {
+    globalScope[REACTIVE_DF_COORDINATOR_KEY] = (async () => {
       const duckdb = await initDuckdb();
       const conn = await duckdb.connect();
-      return new TableCoordinator(conn);
+      return new DataFrameCoordinator(conn);
     })();
   }
-  return globalScope[TABLE_COORDINATOR_KEY];
-}
-async function tableSelection(table) {
-  return withTableCoordinator(table, async (coordinator) => {
-    const selection = coordinator.tableSelection(table);
-    if (selection === void 0) {
-      throw new Error(`No table named ${table} found.`);
-    }
-    return selection;
-  });
-}
-async function connectClient(table, client) {
-  return withTableCoordinator(table, async (coordinator) => {
-    coordinator.connectClient(client);
-  });
-}
-async function withTableCoordinator(table, fn) {
-  const coordinator = await tableCoordinator();
-  await coordinator.waitForTable(table);
-  return await fn(coordinator);
+  return globalScope[REACTIVE_DF_COORDINATOR_KEY];
 }
 
 // js/clients/figure_view.ts
@@ -195,9 +183,10 @@ async function render({ model, el }) {
   const table = model.get("table");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
-  const selection = await tableSelection(table);
-  const view = new FigureView(el, table, figure, selection);
-  await connectClient(table, view);
+  const coordinator = await dataFrameCoordinator();
+  const df = await coordinator.getDataFrame(table);
+  const view = new FigureView(el, table, figure, df.selection);
+  await coordinator.connectClient(table, view);
 }
 var figure_view_default = { render };
 export {

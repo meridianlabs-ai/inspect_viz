@@ -1,6 +1,6 @@
 import type { RenderProps } from '@anywidget/types';
 
-import { connectClient, tableSelection } from '../coordinator';
+import { dataFrameCoordinator } from '../coordinator';
 
 import { TableView } from '../clients/table_view';
 
@@ -9,11 +9,16 @@ interface TableRecord {
 }
 
 async function render({ model, el }: RenderProps<TableRecord>) {
+    // unwrap widget parameters
     const table: string = model.get('table');
 
-    const selection = await tableSelection(table);
-    const view = new TableView(el, table, selection);
-    await connectClient(table, view);
+    // get the data frame
+    const coordinator = await dataFrameCoordinator();
+    const df = await coordinator.getDataFrame(table);
+
+    // create and connect the table view
+    const view = new TableView(el, table, df.selection);
+    await coordinator.connectClient(table, view);
 }
 
 export default { render };

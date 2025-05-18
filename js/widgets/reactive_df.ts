@@ -1,6 +1,6 @@
 import { RenderProps } from '@anywidget/types';
 
-import { addTable } from '../coordinator';
+import { dataFrameCoordinator } from '../coordinator';
 
 interface ReactiveDFRecord {
     table: string;
@@ -13,7 +13,8 @@ async function render({ model }: RenderProps<ReactiveDFRecord>) {
     const buffer = model.get('buffer');
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
 
-    await addTable(table, arrowBuffer);
+    const coordinator = await dataFrameCoordinator();
+    await coordinator.addDataFrame(table, [], arrowBuffer);
 }
 
 export default { render };
