@@ -29,24 +29,23 @@ class DataFrameCoordinator {
         this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
-    async addDataFrame(name: string, queries: MosaicQuery[], buffer: Uint8Array) {
+    async addDataFrame(id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
         // insert table into database
         await this.conn_?.insertArrowFromIPCStream(buffer, {
-            name,
+            name: id,
             create: true,
         });
 
         // create df
-        this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+        this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
     }
 
-    async getDataFrame(name: string) {
-        await waitForTable(this.conn_, name);
-        return this.dfs_.get(name)!;
+    async getDataFrame(id: string) {
+        await waitForTable(this.conn_, id);
+        return this.dfs_.get(id)!;
     }
 
-    async connectClient(dataframe: string, client: MosaicClient) {
-        await waitForTable(this.conn_, dataframe);
+    async connectClient(client: MosaicClient) {
         this.coordinator_.connect(client);
     }
 }

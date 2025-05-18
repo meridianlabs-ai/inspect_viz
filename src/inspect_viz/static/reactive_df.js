@@ -65,19 +65,18 @@ var DataFrameCoordinator = class {
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addDataFrame(name, queries, buffer) {
+  async addDataFrame(id, buffer, queries) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name,
+      name: id,
       create: true
     });
-    this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+    this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
   }
-  async getDataFrame(name) {
-    await waitForTable(this.conn_, name);
-    return this.dfs_.get(name);
+  async getDataFrame(id) {
+    await waitForTable(this.conn_, id);
+    return this.dfs_.get(id);
   }
-  async connectClient(dataframe, client) {
-    await waitForTable(this.conn_, dataframe);
+  async connectClient(client) {
     this.coordinator_.connect(client);
   }
 };
@@ -96,11 +95,11 @@ async function dataFrameCoordinator() {
 
 // js/widgets/reactive_df.ts
 async function render({ model }) {
-  const table = model.get("table");
+  const id = model.get("id");
   const buffer = model.get("buffer");
-  const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   const coordinator = await dataFrameCoordinator();
-  await coordinator.addDataFrame(table, [], arrowBuffer);
+  const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  await coordinator.addDataFrame(id, arrowBuffer, []);
 }
 var reactive_df_default = { render };
 export {

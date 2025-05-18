@@ -7,10 +7,10 @@ from ..data.reactive_df import ReactiveDF
 
 class MenuInput(anywidget.AnyWidget):
     _esm = STATIC_DIR / "menu_input.js"
-    table = traitlets.CUnicode("").tag(sync=True)
+    df_id = traitlets.CUnicode("").tag(sync=True)
     column = traitlets.CUnicode("").tag(sync=True)
 
 
 def menu_input(df: ReactiveDF, column: str) -> MenuInput:
-    input = MenuInput(table=df._table(), column=column)
+    input = MenuInput(df_id=df._id(), column=column)
     return input

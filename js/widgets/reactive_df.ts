@@ -2,19 +2,21 @@ import { RenderProps } from '@anywidget/types';
 
 import { dataFrameCoordinator } from '../coordinator';
 
-interface ReactiveDFRecord {
-    table: string;
+interface ReactiveDFProps {
+    id: string;
     buffer: DataView;
     queries: string;
 }
 
-async function render({ model }: RenderProps<ReactiveDFRecord>) {
-    const table = model.get('table');
+async function render({ model }: RenderProps<ReactiveDFProps>) {
+    // unwrap widget parameters
+    const id = model.get('id');
     const buffer = model.get('buffer');
-    const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
 
+    // register data frame
     const coordinator = await dataFrameCoordinator();
-    await coordinator.addDataFrame(table, [], arrowBuffer);
+    const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    await coordinator.addDataFrame(id, arrowBuffer, []);
 }
 
 export default { render };

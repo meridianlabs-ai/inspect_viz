@@ -68,19 +68,18 @@ var DataFrameCoordinator = class {
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addDataFrame(name, queries, buffer) {
+  async addDataFrame(id, buffer, queries) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name,
+      name: id,
       create: true
     });
-    this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+    this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
   }
-  async getDataFrame(name) {
-    await waitForTable(this.conn_, name);
-    return this.dfs_.get(name);
+  async getDataFrame(id) {
+    await waitForTable(this.conn_, id);
+    return this.dfs_.get(id);
   }
-  async connectClient(dataframe, client) {
-    await waitForTable(this.conn_, dataframe);
+  async connectClient(client) {
     this.coordinator_.connect(client);
   }
 };
@@ -99,12 +98,17 @@ async function dataFrameCoordinator() {
 
 // js/widgets/menu_input.ts
 async function render({ model, el }) {
-  const table = model.get("table");
+  const df_id = model.get("df_id");
   const column = model.get("column");
   const coordinator = await dataFrameCoordinator();
-  const df = await coordinator.getDataFrame(table);
-  const menu = new Menu({ element: el, as: df.selection, from: table, column });
-  await coordinator.connectClient(table, menu);
+  const df = await coordinator.getDataFrame(df_id);
+  const menu = new Menu({
+    element: el,
+    as: df.selection,
+    from: df.table,
+    column
+  });
+  await coordinator.connectClient(menu);
 }
 var menu_input_default = { render };
 export {

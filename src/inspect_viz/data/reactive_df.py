@@ -42,8 +42,8 @@ class ReactiveDF(Protocol):
     # interoperate with libraries that take narwhals (e.g. plotly)
     def __narwhals_dataframe__(self) -> object: ...
 
-    # internal: name of table on the client
-    def _table(self) -> str: ...
+    # internal: unique id
+    def _id(self) -> str: ...
 
 
 def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
@@ -70,8 +70,8 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     # convert to narwhals
     ndf = nw.from_native(data)
 
-    # establish unique table name (for client)
-    table_name = uuid()
+    # dataframe id
+    id = uuid()
 
     # convert to arrow bytes to send to client/arquero
     reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
@@ -83,14 +83,14 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     # create and render ReactiveDFWidget on the client
     class ReactiveDFWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "reactive_df.js"
-        table = traitlets.CUnicode("").tag(sync=True)
+        id = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
         queries = traitlets.CUnicode("").tag(sync=True)
 
     # publish reactive_df to client
     def publish_reactive_df(*, queries: str = "") -> None:
         widget = ReactiveDFWidget()
-        widget.table = table_name
+        widget.id = id
         widget.buffer = table_buffer.getvalue().to_pybytes()
         widget.queries = queries
         display(widget)  # type: ignore
@@ -149,8 +149,8 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-        def _table(self) -> str:
-            return table_name
+        def _id(self) -> str:
+            return id
 
     return ReactiveDFImpl(queries=[], ndf=ndf)
 

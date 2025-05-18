@@ -65,19 +65,18 @@ var DataFrameCoordinator = class {
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addDataFrame(name, queries, buffer) {
+  async addDataFrame(id, buffer, queries) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name,
+      name: id,
       create: true
     });
-    this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+    this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
   }
-  async getDataFrame(name) {
-    await waitForTable(this.conn_, name);
-    return this.dfs_.get(name);
+  async getDataFrame(id) {
+    await waitForTable(this.conn_, id);
+    return this.dfs_.get(id);
   }
-  async connectClient(dataframe, client) {
-    await waitForTable(this.conn_, dataframe);
+  async connectClient(client) {
     this.coordinator_.connect(client);
   }
 };
@@ -104,11 +103,11 @@ var TableView = class extends Table {
 
 // js/widgets/table_view.ts
 async function render({ model, el }) {
-  const table = model.get("table");
+  const df_id = model.get("df_id");
   const coordinator = await dataFrameCoordinator();
-  const df = await coordinator.getDataFrame(table);
-  const view = new TableView(el, table, df.selection);
-  await coordinator.connectClient(table, view);
+  const df = await coordinator.getDataFrame(df_id);
+  const view = new TableView(el, df.table, df.selection);
+  await coordinator.connectClient(view);
 }
 var table_view_default = { render };
 export {

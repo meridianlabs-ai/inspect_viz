@@ -65,19 +65,18 @@ var DataFrameCoordinator = class {
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addDataFrame(name, queries, buffer) {
+  async addDataFrame(id, buffer, queries) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name,
+      name: id,
       create: true
     });
-    this.dfs_.set(name, new DataFrame(name, queries, {}, Selection.intersect()));
+    this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
   }
-  async getDataFrame(name) {
-    await waitForTable(this.conn_, name);
-    return this.dfs_.get(name);
+  async getDataFrame(id) {
+    await waitForTable(this.conn_, id);
+    return this.dfs_.get(id);
   }
-  async connectClient(dataframe, client) {
-    await waitForTable(this.conn_, dataframe);
+  async connectClient(client) {
     this.coordinator_.connect(client);
   }
 };
@@ -180,13 +179,13 @@ function isOrientable(t) {
 
 // js/widgets/figure_view.ts
 async function render({ model, el }) {
-  const table = model.get("table");
+  const df_id = model.get("df_id");
   const figure_json = model.get("figure_json");
   const figure = JSON.parse(figure_json);
   const coordinator = await dataFrameCoordinator();
-  const df = await coordinator.getDataFrame(table);
-  const view = new FigureView(el, table, figure, df.selection);
-  await coordinator.connectClient(table, view);
+  const df = await coordinator.getDataFrame(df_id);
+  const view = new FigureView(el, df.table, figure, df.selection);
+  await coordinator.connectClient(view);
 }
 var figure_view_default = { render };
 export {
