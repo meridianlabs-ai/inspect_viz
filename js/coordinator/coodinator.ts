@@ -4,21 +4,12 @@ import {
     MosaicClient,
     Coordinator,
     wasmConnector,
-    Param,
     Selection,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
 import { initDuckdb, waitForTable } from './duckdb';
 import { MosaicQuery } from './query';
-
-class DataFrame {
-    constructor(
-        public readonly table: string,
-        public readonly queries: MosaicQuery[],
-        public readonly params: Record<string, Param>,
-        public readonly selection: Selection
-    ) {}
-}
+import { DataFrame } from './dataframe';
 
 class DataFrameCoordinator {
     private readonly coordinator_: Coordinator;
@@ -65,4 +56,4 @@ async function dataFrameCoordinator(): Promise<DataFrameCoordinator> {
     return globalScope[REACTIVE_DF_COORDINATOR_KEY] as Promise<DataFrameCoordinator>;
 }
 
-export { DataFrame, DataFrameCoordinator, dataFrameCoordinator };
+export { DataFrameCoordinator, dataFrameCoordinator };

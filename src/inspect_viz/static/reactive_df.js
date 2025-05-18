@@ -49,7 +49,7 @@ async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {})
   }
 }
 
-// js/coordinator/coodinator.ts
+// js/coordinator/dataframe.ts
 var DataFrame = class {
   constructor(table, queries, params, selection) {
     this.table = table;
@@ -58,6 +58,8 @@ var DataFrame = class {
     this.selection = selection;
   }
 };
+
+// js/coordinator/coodinator.ts
 var DataFrameCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
