@@ -5,6 +5,7 @@ import {
     Coordinator,
     wasmConnector,
     Selection,
+    Param,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
 import { initDuckdb, waitForTable } from './duckdb';
@@ -27,8 +28,16 @@ class DataFrameCoordinator {
             create: true,
         });
 
-        // create df
-        this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
+        // create mosaic params
+        const params = new Map<string, Param>();
+        for (const query of queries) {
+            for (const p of Object.values(query.parameters)) {
+                params.set(p.name, Param.value(p.value));
+            }
+        }
+
+        // create and regsiter df
+        this.dfs_.set(id, new DataFrame(id, queries, params, Selection.intersect()));
     }
 
     async getDataFrame(id: string) {

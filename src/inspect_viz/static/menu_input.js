@@ -5,7 +5,8 @@ import { Menu } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/
 import {
   Coordinator,
   wasmConnector,
-  Selection
+  Selection,
+  Param
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -75,7 +76,13 @@ var DataFrameCoordinator = class {
       name: id,
       create: true
     });
-    this.dfs_.set(id, new DataFrame(id, queries, {}, Selection.intersect()));
+    const params = /* @__PURE__ */ new Map();
+    for (const query of queries) {
+      for (const p of Object.values(query.parameters)) {
+        params.set(p.name, Param.value(p.value));
+      }
+    }
+    this.dfs_.set(id, new DataFrame(id, queries, params, Selection.intersect()));
   }
   async getDataFrame(id) {
     await waitForTable(this.conn_, id);

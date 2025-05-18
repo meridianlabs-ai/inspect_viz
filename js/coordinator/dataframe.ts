@@ -5,7 +5,7 @@ export class DataFrame {
     constructor(
         public readonly table: string,
         public readonly queries: MosaicQuery[],
-        public readonly params: Record<string, Param>,
+        public readonly params: Map<string, Param>,
         public readonly selection: Selection
     ) {}
 }
