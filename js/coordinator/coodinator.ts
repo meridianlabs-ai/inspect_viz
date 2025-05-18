@@ -8,9 +8,10 @@ import {
     Param,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import { initDuckdb, waitForTable } from './duckdb';
+import { initDuckdb } from './duckdb';
 import { MosaicQuery } from './query';
 import { DataFrame } from './dataframe';
+import { sleep } from '../util/wait';
 
 class DataFrameCoordinator {
     private readonly coordinator_: Coordinator;
@@ -21,14 +22,16 @@ class DataFrameCoordinator {
         this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
-    async addDataFrame(id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
-        // insert table into database
-        await this.conn_?.insertArrowFromIPCStream(buffer, {
-            name: id,
-            create: true,
-        });
+    async addDataFrame(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
+        // insert table into database if the id and source_id are the same
+        if (id === source_id) {
+            await this.conn_?.insertArrowFromIPCStream(buffer, {
+                name: id,
+                create: true,
+            });
+        }
 
-        // create mosaic params
+        // create mosaic params from queries
         const params = new Map<string, Param>();
         for (const query of queries) {
             for (const p of Object.values(query.parameters)) {
@@ -37,12 +40,20 @@ class DataFrameCoordinator {
         }
 
         // create and regsiter df
-        this.dfs_.set(id, new DataFrame(id, queries, params, Selection.intersect()));
+        this.dfs_.set(id, new DataFrame(source_id, queries, params, Selection.intersect()));
     }
 
     async getDataFrame(id: string) {
-        await waitForTable(this.conn_, id);
-        return this.dfs_.get(id)!;
+        // at startup we can't control the order of df producing and df consuming
+        // widgets, so we may need to wait and retry for the data frame
+        while (true) {
+            const df = this.dfs_.get(id);
+            if (df) {
+                return df;
+            } else {
+                await sleep(100);
+            }
+        }
     }
 
     async connectClient(client: MosaicClient) {

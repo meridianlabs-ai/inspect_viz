@@ -11,5 +11,5 @@ class TableView(anywidget.AnyWidget):
 
 
 def table_view(df: ReactiveDF) -> TableView:
-    view = TableView(df_id=df._id())
+    view = TableView(df_id=df.id())
     return view

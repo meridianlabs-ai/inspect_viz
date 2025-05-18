@@ -24,6 +24,10 @@ from ._query.parser import parse_sql
 class ReactiveDF(Protocol):
     """Reactive dataframe for use with views and inputs."""
 
+    def id(self) -> str:
+        """Unique identifier for dataframe."""
+        ...
+
     def query(self, sql: str | Select, **parameters: Any) -> "ReactiveDF":
         """Apply a query to this dataframe to yield another dataframe.
 
@@ -41,9 +45,6 @@ class ReactiveDF(Protocol):
 
     # interoperate with libraries that take narwhals (e.g. plotly)
     def __narwhals_dataframe__(self) -> object: ...
-
-    # internal: unique id
-    def _id(self) -> str: ...
 
 
 def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
@@ -70,8 +71,8 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     # convert to narwhals
     ndf = nw.from_native(data)
 
-    # dataframe id
-    id = uuid()
+    # dataframe source id (all derivative dataframes will also carry this)
+    source_id = uuid()
 
     # convert to arrow bytes to send to client/arquero
     reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
@@ -84,38 +85,47 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     class ReactiveDFWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "reactive_df.js"
         id = traitlets.CUnicode("").tag(sync=True)
+        source_id = traitlets.CUnicode("").tag(sync=True)
         buffer = traitlets.Bytes(b"").tag(sync=True)
         queries = traitlets.CUnicode("").tag(sync=True)
 
     # publish reactive_df to client
-    def publish_reactive_df(*, queries: str = "") -> None:
+    def publish_reactive_df(*, id: str | None = None, queries: str = "") -> None:
         widget = ReactiveDFWidget()
-        widget.id = id
-        widget.buffer = table_buffer.getvalue().to_pybytes()
+        widget.id = id or source_id
+        widget.source_id = source_id
         widget.queries = queries
+        widget.buffer = table_buffer.getvalue().to_pybytes()
         display(widget)  # type: ignore
 
     publish_reactive_df()
 
     # return handle fo ReactiveDF
     class ReactiveDFImpl:
-        def __init__(self, *, queries: list[MosaicQuery], ndf: DataFrame[Any]) -> None:
-            self._ndf = ndf
+        def __init__(
+            self, *, id: str, queries: list[MosaicQuery], ndf: DataFrame[Any]
+        ) -> None:
+            self._id = id
             self._queries = queries
+            self._ndf = ndf
 
         def query(self, sql: str | Select, **parameters: Any) -> ReactiveDF:
             # parse query and add it to the stack of queries
             query = parse_sql(sql, **parameters)
             queries = self._queries + [query]
 
-            # push to client (note that underlying ndf is the same, queries change)
-            publish_reactive_df(queries=to_json(queries).decode())
+            # allocate a new id
+            id = uuid()
+
+            # push to client
+            publish_reactive_df(id=id, queries=to_json(queries).decode())
 
             # execute the query and yield a new ndf
             ndf = execute_query(self._ndf, query)
+            print(ndf.to_pandas())
 
             # return handle with updated ndf and queries
-            return ReactiveDFImpl(queries=queries, ndf=ndf)
+            return ReactiveDFImpl(id=id, queries=queries, ndf=ndf)
 
         def __dataframe__(
             self,
@@ -149,10 +159,10 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         def __narwhals_dataframe__(self) -> object:
             return self._ndf._compliant_frame
 
-        def _id(self) -> str:
-            return id
+        def id(self) -> str:
+            return self._id
 
-    return ReactiveDFImpl(queries=[], ndf=ndf)
+    return ReactiveDFImpl(id=source_id, queries=[], ndf=ndf)
 
 
 def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
