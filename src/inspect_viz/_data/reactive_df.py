@@ -1,6 +1,6 @@
 import os
 from os import PathLike
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Optional, Protocol, runtime_checkable
 
 import anywidget
 import duckdb
@@ -52,6 +52,9 @@ class ReactiveDF(Protocol):
     # interoperate with libraries that take narwhals (e.g. plotly)
     def __narwhals_dataframe__(self) -> object: ...
 
+    # internal: ensure data is on client
+    def _ensure(self) -> None: ...
+
 
 def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     """Create a reactive dataframe for use with linked views and inputs.
@@ -88,8 +91,12 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         buffer = traitlets.Bytes(b"").tag(sync=True)
         queries = traitlets.CUnicode("").tag(sync=True)
 
-    # publish reactive_df to client
-    def publish_reactive_df(*, id: str | None = None, queries: str = "") -> None:
+    # create reactive_df_widget (will be printed on demand)
+    def reactive_df_widget(
+        *,
+        id: str | None = None,
+        queries: str = "",
+    ) -> ReactiveDFWidget:
         # create widget
         widget = ReactiveDFWidget()
         widget.id = id or source_id
@@ -106,19 +113,25 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
                 writer.write_table(table)
             widget.buffer = table_buffer.getvalue().to_pybytes()
 
-        # push to client
-        display(widget)  # type: ignore
-
-    publish_reactive_df()
+        # return widget
+        return widget
 
     # return handle fo ReactiveDF
     class ReactiveDFImpl:
         def __init__(
-            self, *, id: str, queries: list[MosaicQuery], ndf: DataFrame[Any]
+            self,
+            *,
+            id: str,
+            queries: list[MosaicQuery],
+            ndf: DataFrame[Any],
+            widget: ReactiveDFWidget,
+            parent: Optional["ReactiveDFImpl"] = None,
         ) -> None:
             self._id = id
             self._queries = queries
             self._ndf = ndf
+            self._widget: ReactiveDFWidget | None = widget
+            self._parent = parent
 
         @property
         def id(self) -> str:
@@ -136,14 +149,16 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
             # allocate a new id
             id = uuid()
 
-            # push to client
-            publish_reactive_df(id=id, queries=to_json(queries).decode())
+            # create widget
+            widget = reactive_df_widget(id=id, queries=to_json(queries).decode())
 
             # execute the query and yield a new ndf
             ndf = execute_query(self._ndf, query)
 
             # return handle with updated ndf and queries
-            return ReactiveDFImpl(id=id, queries=queries, ndf=ndf)
+            return ReactiveDFImpl(
+                id=id, queries=queries, ndf=ndf, widget=widget, parent=self
+            )
 
         def __str__(self) -> str:
             return self._replace_caption(self._ndf.__str__())
@@ -189,7 +204,16 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         def _replace_caption(self, text: str) -> str:
             return text.replace("Narwhals DataFrame", "Reactive Dataframe")
 
-    return ReactiveDFImpl(id=source_id, queries=[], ndf=ndf)
+        def _ensure(self) -> None:
+            if self._widget is not None:
+                if self._parent is not None:
+                    self._parent._ensure()
+                display(self._widget)  # type: ignore[no-untyped-call]
+                self._widget = None
+
+    return ReactiveDFImpl(
+        id=source_id, queries=[], ndf=ndf, widget=reactive_df_widget()
+    )
 
 
 def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:

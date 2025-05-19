@@ -6,6 +6,8 @@ from .._util.constants import STATIC_DIR
 
 
 def table_view(df: ReactiveDF) -> AnyWidget:
+    df._ensure()
+
     class TableView(AnyWidget):
         _esm = STATIC_DIR / "table_view.js"
         df_id = traitlets.CUnicode("").tag(sync=True)

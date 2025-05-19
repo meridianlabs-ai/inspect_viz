@@ -13,6 +13,8 @@ from .._util.constants import STATIC_DIR
 def figure_view(df: ReactiveDF, fig: go.Figure) -> AnyWidget:
     # TODO: validate fig._data against df.columns to confirm they match
 
+    df._ensure()
+
     class FigureView(AnyWidget):
         _esm = STATIC_DIR / "figure_view.js"
         df_id = traitlets.CUnicode("").tag(sync=True)
