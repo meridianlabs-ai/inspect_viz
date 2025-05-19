@@ -3,7 +3,7 @@ import {
   Coordinator,
   wasmConnector,
   Selection,
-  Param
+  Param as Param2
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -45,56 +45,6 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// js/coordinator/coodinator.ts
-var DataFrameCoordinator = class {
-  constructor(conn_) {
-    this.conn_ = conn_;
-    this.dfs_ = /* @__PURE__ */ new Map();
-    this.coordinator_ = new Coordinator();
-    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
-  }
-  async addDataFrame(id, source_id, buffer, queries) {
-    if (id === source_id) {
-      await this.conn_?.insertArrowFromIPCStream(buffer, {
-        name: id,
-        create: true
-      });
-    }
-    const params = /* @__PURE__ */ new Map();
-    for (const query of queries) {
-      for (const p of Object.values(query.parameters)) {
-        params.set(p.name, Param.value(p.value));
-      }
-    }
-    this.dfs_.set(id, new DataFrame(source_id, queries, params, Selection.intersect()));
-  }
-  async getDataFrame(id) {
-    while (true) {
-      const df = this.dfs_.get(id);
-      if (df) {
-        return df;
-      } else {
-        await sleep(100);
-      }
-    }
-  }
-  async connectClient(client) {
-    this.coordinator_.connect(client);
-  }
-};
-var REACTIVE_DF_COORDINATOR_KEY = Symbol.for("@@reactive-df-coordinator");
-async function dataFrameCoordinator() {
-  const globalScope = typeof window !== "undefined" ? window : globalThis;
-  if (!globalScope[REACTIVE_DF_COORDINATOR_KEY]) {
-    globalScope[REACTIVE_DF_COORDINATOR_KEY] = (async () => {
-      const duckdb = await initDuckdb();
-      const conn = await duckdb.connect();
-      return new DataFrameCoordinator(conn);
-    })();
-  }
-  return globalScope[REACTIVE_DF_COORDINATOR_KEY];
-}
-
 // js/coordinator/select.ts
 import {
   SelectQuery,
@@ -123,7 +73,7 @@ import {
   ParamNode,
   VerbatimNode
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
-import { Param as Param2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { Param } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 function toSelectQuery(query) {
   const selectExpressions = {};
   for (const [alias, expr] of Object.entries(query.select)) {
@@ -247,7 +197,7 @@ function buildExpressionNode(expr) {
     return new LiteralNode(expr);
   } else if ("type" in expr) {
     if (expr.type === "parameter") {
-      return new ParamNode(new Param2(expr.name));
+      return new ParamNode(new Param(expr.name));
     } else if (expr.type === "unknown") {
       return new VerbatimNode(expr.expression);
     } else if (expr.type === "function") {
@@ -311,6 +261,57 @@ function buildBinaryExpression(expr) {
     default:
       return new BinaryOpNode(type, buildExpressionNode(left), buildExpressionNode(right));
   }
+}
+
+// js/coordinator/coodinator.ts
+var DataFrameCoordinator = class {
+  constructor(conn_) {
+    this.conn_ = conn_;
+    this.dfs_ = /* @__PURE__ */ new Map();
+    this.coordinator_ = new Coordinator();
+    this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+  }
+  async addDataFrame(id, source_id, buffer, queries) {
+    if (buffer.length > 0) {
+      await this.conn_?.insertArrowFromIPCStream(buffer, {
+        name: id,
+        create: true
+      });
+    }
+    const params = /* @__PURE__ */ new Map();
+    for (const query of queries) {
+      for (const p of Object.values(query.parameters)) {
+        params.set(p.name, Param2.value(p.value));
+      }
+    }
+    const selectQueries = queries.map(toSelectQuery);
+    this.dfs_.set(id, new DataFrame(source_id, selectQueries, params, Selection.intersect()));
+  }
+  async getDataFrame(id) {
+    while (true) {
+      const df = this.dfs_.get(id);
+      if (df) {
+        return df;
+      } else {
+        await sleep(100);
+      }
+    }
+  }
+  async connectClient(client) {
+    this.coordinator_.connect(client);
+  }
+};
+var REACTIVE_DF_COORDINATOR_KEY = Symbol.for("@@reactive-df-coordinator");
+async function dataFrameCoordinator() {
+  const globalScope = typeof window !== "undefined" ? window : globalThis;
+  if (!globalScope[REACTIVE_DF_COORDINATOR_KEY]) {
+    globalScope[REACTIVE_DF_COORDINATOR_KEY] = (async () => {
+      const duckdb = await initDuckdb();
+      const conn = await duckdb.connect();
+      return new DataFrameCoordinator(conn);
+    })();
+  }
+  return globalScope[REACTIVE_DF_COORDINATOR_KEY];
 }
 
 // js/clients/figure_view.ts
@@ -421,8 +422,7 @@ async function render({ model, el }) {
   const axis_mappings = JSON.parse(axis_mappings_json);
   const coordinator = await dataFrameCoordinator();
   const df = await coordinator.getDataFrame(df_id);
-  const queries = df.queries.map(toSelectQuery);
-  const view = new FigureView(el, figure, axis_mappings, df.table, df.selection, queries);
+  const view = new FigureView(el, figure, axis_mappings, df.table, df.selection, df.queries);
   await coordinator.connectClient(view);
 }
 var figure_view_default = { render };

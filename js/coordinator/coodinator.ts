@@ -12,6 +12,7 @@ import { initDuckdb } from './duckdb';
 import { MosaicQuery } from './query';
 import { DataFrame } from './dataframe';
 import { sleep } from '../util/wait';
+import { toSelectQuery } from './select';
 
 class DataFrameCoordinator {
     private readonly coordinator_: Coordinator;
@@ -23,15 +24,15 @@ class DataFrameCoordinator {
     }
 
     async addDataFrame(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
-        // insert table into database if the id and source_id are the same
-        if (id === source_id) {
+        // insert table into database if there is data
+        if (buffer.length > 0) {
             await this.conn_?.insertArrowFromIPCStream(buffer, {
                 name: id,
                 create: true,
             });
         }
 
-        // create mosaic params from queries
+        // create params from queries
         const params = new Map<string, Param>();
         for (const query of queries) {
             for (const p of Object.values(query.parameters)) {
@@ -39,8 +40,11 @@ class DataFrameCoordinator {
             }
         }
 
+        // convert to select queries
+        const selectQueries = queries.map(toSelectQuery);
+
         // create and regsiter df
-        this.dfs_.set(id, new DataFrame(source_id, queries, params, Selection.intersect()));
+        this.dfs_.set(id, new DataFrame(source_id, selectQueries, params, Selection.intersect()));
     }
 
     async getDataFrame(id: string) {
