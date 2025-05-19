@@ -1,27 +1,37 @@
 ---
-jupyter: python3  
+title: "Explore the Iris Dataset"
+format: dashboard
 execute:
   daemon: false
 ---
 
-
+## {.sidebar}
 
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_viz import reactive_df, select, param, figure_view, table_view, menu_input
+from inspect_viz import (
+    reactive_df, select, param, menu_input, figure_view, table_view
+)
 
-sepal_length_max = param(5)
+# parameters
+petal_width = param(2)
+petal_length = param(4)
 
+# data source
 df = reactive_df(px.data.iris()).query(
     select("*")
-    .where(f"sepal_length < {sepal_length_max}")
+    .where(f"petal_width < {petal_width}")
+    .where(f"petal_length < {petal_length}")
 )
 ```
+
 
 ```{python}
 menu_input(df, column="species")
 ```
+
+## Column 
 
 ```{python}
 fig = px.scatter(df, x="sepal_width", y="sepal_length")
