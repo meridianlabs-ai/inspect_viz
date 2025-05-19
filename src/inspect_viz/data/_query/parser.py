@@ -60,19 +60,6 @@ def _convert_select(select: exp.Select) -> dict[str, Any]:
     _process_clause(select, "order", result, "orderby", _convert_order_by)
     _process_clause(select, "limit", result, "limit", _convert_limit)
 
-    # Handle SAMPLE clause (if sqlglot supports it)
-    if hasattr(select, "sample") and select.sample is not None:
-        # Sample might be expressed as a percentage or count
-        sample_expr = select.sample
-        if isinstance(sample_expr, exp.Literal):
-            sample_value = _convert_expression(sample_expr)
-            # If it's a percentage (0-1), keep as is, otherwise convert to count
-            if isinstance(sample_value, (int, float)):
-                if sample_value <= 1:  # Percentage
-                    result["sample"] = sample_value
-                else:  # Count
-                    result["sample"] = int(sample_value)
-
     return result
 
 

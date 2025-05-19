@@ -62,7 +62,9 @@ def test_execute_where_clause(sample_dataframe: nw.DataFrame[Any]) -> None:
 
 def test_execute_aggregation(sample_dataframe: nw.DataFrame[Any]) -> None:
     """Test executing a query with aggregation."""
-    query = parse_sql("SELECT department, AVG(salary) as avg_salary FROM data GROUP BY department")
+    query = parse_sql(
+        "SELECT department, AVG(salary) as avg_salary FROM data GROUP BY department"
+    )
     result = execute_query(sample_dataframe, query)
 
     # Check result
@@ -159,10 +161,10 @@ def test_reactive_df_query_method() -> None:
 
     # Since ReactiveDF is a Protocol, we can't directly use isinstance
     # Instead, verify it has the correct methods
-    assert hasattr(result_df, "query")
+    assert hasattr(result_df, "_id")
+    assert hasattr(result_df, "_queries")
     assert hasattr(result_df, "__dataframe__")
     assert hasattr(result_df, "__narwhals_dataframe__")
-    assert hasattr(result_df, "_table")
 
     # Extract narwhals dataframe from the implementation
     ndf = cast(nw.DataFrame[Any], result_df.__narwhals_dataframe__())
