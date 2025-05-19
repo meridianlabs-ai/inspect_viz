@@ -1,24 +1,23 @@
 import json
 from typing import TypedDict, cast
 
-import anywidget
 import plotly.graph_objects as go
 import plotly.io as pio
 import traitlets
+from anywidget import AnyWidget
 
+from .._data.reactive_df import ReactiveDF
 from .._util.constants import STATIC_DIR
-from ..data.reactive_df import ReactiveDF
 
 
-class FigureView(anywidget.AnyWidget):
-    _esm = STATIC_DIR / "figure_view.js"
-    df_id = traitlets.CUnicode("").tag(sync=True)
-    figure = traitlets.CUnicode("").tag(sync=True)
-    axis_mappings = traitlets.CUnicode("").tag(sync=True)
-
-
-def figure_view(df: ReactiveDF, fig: go.Figure) -> FigureView:
+def figure_view(df: ReactiveDF, fig: go.Figure) -> AnyWidget:
     # TODO: validate fig._data against df.columns to confirm they match
+
+    class FigureView(AnyWidget):
+        _esm = STATIC_DIR / "figure_view.js"
+        df_id = traitlets.CUnicode("").tag(sync=True)
+        figure = traitlets.CUnicode("").tag(sync=True)
+        axis_mappings = traitlets.CUnicode("").tag(sync=True)
 
     # return view
     return FigureView(

@@ -1,5 +1,5 @@
-from inspect_viz.data.parse_sql import parse_sql
-from inspect_viz.data.query import (
+from inspect_viz._data.parse_sql import parse_sql
+from inspect_viz._data.query import (
     BinaryExpression,
     FunctionExpression,
     LogicalExpression,

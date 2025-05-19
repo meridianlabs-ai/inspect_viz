@@ -4,8 +4,8 @@ import narwhals as nw
 import numpy as np
 import pandas as pd
 import pytest
-from inspect_viz.data.parse_sql import parse_sql
-from inspect_viz.data.reactive_df import execute_query, reactive_df
+from inspect_viz._data.parse_sql import parse_sql
+from inspect_viz._data.reactive_df import execute_query, reactive_df
 from sqlglot import parse_one
 from sqlglot.expressions import Select
 
