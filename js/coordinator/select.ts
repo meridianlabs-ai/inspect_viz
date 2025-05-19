@@ -234,9 +234,17 @@ function buildExpressionNode(expr: Expression): ExprNode {
     }
 }
 
+// TODO: "*" is getting parsed as unknown
 function buildExpressionValue(expr: Expression): ExprValue {
-    if (typeof expr == 'string') {
+    if (typeof expr === 'string') {
         return expr;
+    } else if (
+        typeof expr !== 'number' &&
+        typeof expr !== 'boolean' &&
+        'type' in expr &&
+        expr.type === 'unknown'
+    ) {
+        return (expr as UnknownExpression).expression;
     } else {
         return buildExpressionNode(expr);
     }

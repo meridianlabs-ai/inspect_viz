@@ -262,8 +262,10 @@ function buildExpressionNode(expr) {
   }
 }
 function buildExpressionValue(expr) {
-  if (typeof expr == "string") {
+  if (typeof expr === "string") {
     return expr;
+  } else if (typeof expr !== "number" && typeof expr !== "boolean" && "type" in expr && expr.type === "unknown") {
+    return expr.expression;
   } else {
     return buildExpressionNode(expr);
   }
