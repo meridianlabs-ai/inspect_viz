@@ -316,9 +316,39 @@ async function dataFrameCoordinator() {
 
 // js/clients/table_view.ts
 import { Table } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm";
+
+// js/clients/viz_client.ts
+import {
+  MosaicClient as MosaicClient2
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { SelectQuery as SelectQuery2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
+var VizClient = class _VizClient extends MosaicClient2 {
+  constructor(table_, filterBy, queries_) {
+    super(filterBy);
+    this.table_ = table_;
+    this.queries_ = queries_;
+  }
+  query(filter = []) {
+    let query = SelectQuery2.select("*").from(this.table_).where(filter);
+    return _VizClient.applyQueries(query, this.queries_);
+  }
+  static applyQueries(query, queries) {
+    for (const q of queries) {
+      query = q.clone().from(query);
+    }
+    return query;
+  }
+};
+
+// js/clients/table_view.ts
 var TableView = class extends Table {
-  constructor(el, table, filterBy) {
+  constructor(el, table, filterBy, queries_) {
     super({ element: el, filterBy, from: table });
+    this.queries_ = queries_;
+  }
+  query(filter) {
+    let query = super.query(filter);
+    return VizClient.applyQueries(query, this.queries_);
   }
 };
 
@@ -327,7 +357,7 @@ async function render({ model, el }) {
   const df_id = model.get("df_id");
   const coordinator = await dataFrameCoordinator();
   const df = await coordinator.getDataFrame(df_id);
-  const view = new TableView(el, df.table, df.selection);
+  const view = new TableView(el, df.table, df.selection, df.queries);
   await coordinator.connectClient(view);
 }
 var table_view_default = { render };

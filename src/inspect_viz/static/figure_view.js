@@ -315,15 +315,17 @@ async function dataFrameCoordinator() {
 }
 
 // js/clients/figure_view.ts
+import {
+  toDataColumns
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 
 // js/clients/viz_client.ts
 import {
-  MosaicClient as MosaicClient2,
-  toDataColumns
+  MosaicClient as MosaicClient2
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { SelectQuery as SelectQuery2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
-var VizClient = class extends MosaicClient2 {
+var VizClient = class _VizClient extends MosaicClient2 {
   constructor(table_, filterBy, queries_) {
     super(filterBy);
     this.table_ = table_;
@@ -331,15 +333,13 @@ var VizClient = class extends MosaicClient2 {
   }
   query(filter = []) {
     let query = SelectQuery2.select("*").from(this.table_).where(filter);
-    for (const q of this.queries_) {
-      query = q.from(query);
+    return _VizClient.applyQueries(query, this.queries_);
+  }
+  static applyQueries(query, queries) {
+    for (const q of queries) {
+      query = q.clone().from(query);
     }
     return query;
-  }
-  queryResult(data) {
-    const columns = toDataColumns(data).columns;
-    this.onQueryResult(columns);
-    return this;
   }
 };
 
@@ -351,9 +351,11 @@ var FigureView = class extends VizClient {
     this.figure_ = figure_;
     this.axisMappings_ = axisMappings_;
   }
-  onQueryResult(columns) {
+  queryResult(data) {
+    const columns = toDataColumns(data).columns;
     const table = bindTable(this.figure_, this.axisMappings_, columns);
     Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+    return this;
   }
 };
 function bindTable(figure, axisMappings, columns) {

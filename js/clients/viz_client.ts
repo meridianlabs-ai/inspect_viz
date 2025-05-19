@@ -1,7 +1,6 @@
 import {
     MosaicClient,
     Selection,
-    toDataColumns,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
@@ -19,19 +18,13 @@ export abstract class VizClient extends MosaicClient {
         let query = SelectQuery.select('*').from(this.table_).where(filter);
 
         // run any subqueries
-        for (const q of this.queries_) {
-            query = q.from(query);
-        }
+        return VizClient.applyQueries(query, this.queries_);
+    }
 
-        // return
+    static applyQueries(query: SelectQuery, queries: SelectQuery[]): SelectQuery {
+        for (const q of queries) {
+            query = q.clone().from(query);
+        }
         return query;
     }
-
-    queryResult(data: any) {
-        const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
-        this.onQueryResult(columns);
-        return this;
-    }
-
-    abstract onQueryResult(columns: Record<string, ArrayLike<unknown>>): void;
 }

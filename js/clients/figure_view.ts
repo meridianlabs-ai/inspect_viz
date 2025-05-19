@@ -1,4 +1,7 @@
-import { Selection } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+import {
+    Selection,
+    toDataColumns,
+} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
@@ -28,9 +31,11 @@ export class FigureView extends VizClient {
         super(table, filterBy, queries);
     }
 
-    onQueryResult(columns: Record<string, ArrayLike<unknown>>): void {
+    queryResult(data: any) {
+        const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
         const table = bindTable(this.figure_, this.axisMappings_, columns);
         Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+        return this;
     }
 }
 
