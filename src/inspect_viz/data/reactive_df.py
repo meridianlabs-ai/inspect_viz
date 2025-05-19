@@ -141,7 +141,6 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
 
             # execute the query and yield a new ndf
             ndf = execute_query(self._ndf, query)
-            print(ndf.to_pandas())
 
             # return handle with updated ndf and queries
             return ReactiveDFImpl(id=id, queries=queries, ndf=ndf)

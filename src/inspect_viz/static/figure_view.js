@@ -316,17 +316,17 @@ function buildBinaryExpression(expr) {
 }
 
 // js/clients/figure_view.ts
+import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
+
+// js/clients/viz_client.ts
 import {
   MosaicClient as MosaicClient2,
   toDataColumns
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { SelectQuery as SelectQuery2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
-import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
-var FigureView = class extends MosaicClient2 {
-  constructor(el_, figure_, table_, filterBy, queries_) {
+var VizClient = class extends MosaicClient2 {
+  constructor(table_, filterBy, queries_) {
     super(filterBy);
-    this.el_ = el_;
-    this.figure_ = figure_;
     this.table_ = table_;
     this.queries_ = queries_;
   }
@@ -339,9 +339,21 @@ var FigureView = class extends MosaicClient2 {
   }
   queryResult(data) {
     const columns = toDataColumns(data).columns;
+    this.onQueryResult(columns);
+    return this;
+  }
+};
+
+// js/clients/figure_view.ts
+var FigureView = class extends VizClient {
+  constructor(el_, figure_, table, filterBy, queries) {
+    super(table, filterBy, queries);
+    this.el_ = el_;
+    this.figure_ = figure_;
+  }
+  onQueryResult(columns) {
     const table = bindTable(this.figure_.data, columns);
     Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
-    return this;
   }
 };
 function bindTable(traces, columns) {

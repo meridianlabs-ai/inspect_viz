@@ -1,11 +1,8 @@
-import {
-    MosaicClient,
-    Selection,
-    toDataColumns,
-} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+import { Selection } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
+import { VizClient } from './viz_client';
 
 export interface PlotlyFigure {
     data: Plotly.Data[];
@@ -13,35 +10,20 @@ export interface PlotlyFigure {
     config?: Partial<Plotly.Config>;
 }
 
-export class FigureView extends MosaicClient {
+export class FigureView extends VizClient {
     constructor(
         private readonly el_: HTMLElement,
         private readonly figure_: PlotlyFigure,
-        private readonly table_: string,
+        table: string,
         filterBy: Selection,
-        private readonly queries_: SelectQuery[]
+        queries: SelectQuery[]
     ) {
-        super(filterBy);
+        super(table, filterBy, queries);
     }
 
-    query(filter: any[] = []): SelectQuery {
-        // run the main query
-        let query = SelectQuery.select('*').from(this.table_).where(filter);
-
-        // run any subqueries
-        for (const q of this.queries_) {
-            query = q.from(query);
-        }
-
-        // return
-        return query;
-    }
-
-    queryResult(data: any) {
-        const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
+    onQueryResult(columns: Record<string, ArrayLike<unknown>>): void {
         const table = bindTable(this.figure_.data, columns);
         Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
-        return this;
     }
 }
 
