@@ -6,7 +6,6 @@ execute:
 ---
 
 ```{python}
-import pandas as pd
 import plotly.express as px
 from inspect_viz import (
     reactive_df, param, 
