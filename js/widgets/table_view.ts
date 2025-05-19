@@ -1,6 +1,6 @@
 import type { RenderProps } from '@anywidget/types';
 
-import { dataFrameCoordinator } from '../coordinator';
+import { reactiveDFCoordinator } from '../coordinator';
 
 import { TableView } from '../clients/table_view';
 
@@ -13,8 +13,8 @@ async function render({ model, el }: RenderProps<TableProps>) {
     const df_id: string = model.get('df_id');
 
     // get the data frame
-    const coordinator = await dataFrameCoordinator();
-    const df = await coordinator.getDataFrame(df_id);
+    const coordinator = await reactiveDFCoordinator();
+    const df = await coordinator.getReactiveDF(df_id);
 
     // create and connect the table view
     const view = new TableView(el, df.table, df.selection, df.queries);

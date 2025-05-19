@@ -2,7 +2,7 @@ import type { RenderProps } from '@anywidget/types';
 
 import { Menu } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm';
 
-import { dataFrameCoordinator } from '../coordinator';
+import { reactiveDFCoordinator } from '../coordinator';
 
 interface MenuProps {
     df_id: string;
@@ -15,8 +15,8 @@ async function render({ model, el }: RenderProps<MenuProps>) {
     const column: string = model.get('column');
 
     // get the data frame
-    const coordinator = await dataFrameCoordinator();
-    const df = await coordinator.getDataFrame(df_id);
+    const coordinator = await reactiveDFCoordinator();
+    const df = await coordinator.getReactiveDF(df_id);
 
     // initialize the menu and connect it
     const menu = new Menu({

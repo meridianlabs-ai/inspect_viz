@@ -17,8 +17,8 @@ from sqlglot.expressions import Select
 
 from .._util.constants import STATIC_DIR
 from .constants import DEFAULT_TABLE
-from .mosaic import MosaicQuery
 from .parse_sql import parse_sql
+from .query import MosaicQuery
 
 
 @runtime_checkable

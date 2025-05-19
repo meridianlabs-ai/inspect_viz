@@ -30,13 +30,13 @@ async function initDuckdb() {
   return db;
 }
 
-// js/coordinator/dataframe.ts
-var DataFrame = class {
-  constructor(table, queries, params, selection) {
+// js/coordinator/reactive_df.ts
+var ReactiveDF = class {
+  constructor(table, selection, queries, params) {
     this.table = table;
+    this.selection = selection;
     this.queries = queries;
     this.params = params;
-    this.selection = selection;
   }
 };
 
@@ -264,14 +264,14 @@ function buildBinaryExpression(expr) {
 }
 
 // js/coordinator/coodinator.ts
-var DataFrameCoordinator = class {
+var ReactiveDFCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.dfs_ = /* @__PURE__ */ new Map();
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addDataFrame(id, source_id, buffer, queries) {
+  async addReactiveDF(id, source_id, buffer, queries) {
     if (buffer.length > 0) {
       await this.conn_?.insertArrowFromIPCStream(buffer, {
         name: id,
@@ -285,9 +285,9 @@ var DataFrameCoordinator = class {
       }
     }
     const selectQueries = queries.map(toSelectQuery);
-    this.dfs_.set(id, new DataFrame(source_id, selectQueries, params, Selection.intersect()));
+    this.dfs_.set(id, new ReactiveDF(source_id, Selection.intersect(), selectQueries, params));
   }
-  async getDataFrame(id) {
+  async getReactiveDF(id) {
     while (true) {
       const df = this.dfs_.get(id);
       if (df) {
@@ -302,13 +302,13 @@ var DataFrameCoordinator = class {
   }
 };
 var REACTIVE_DF_COORDINATOR_KEY = Symbol.for("@@reactive-df-coordinator");
-async function dataFrameCoordinator() {
+async function reactiveDFCoordinator() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[REACTIVE_DF_COORDINATOR_KEY]) {
     globalScope[REACTIVE_DF_COORDINATOR_KEY] = (async () => {
       const duckdb = await initDuckdb();
       const conn = await duckdb.connect();
-      return new DataFrameCoordinator(conn);
+      return new ReactiveDFCoordinator(conn);
     })();
   }
   return globalScope[REACTIVE_DF_COORDINATOR_KEY];
@@ -321,9 +321,9 @@ async function render({ model }) {
   const buffer = model.get("buffer");
   const queries = model.get("queries");
   const dfQueries = queries ? JSON.parse(queries) : [];
-  const coordinator = await dataFrameCoordinator();
+  const coordinator = await reactiveDFCoordinator();
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-  await coordinator.addDataFrame(id, source_id, arrowBuffer, dfQueries);
+  await coordinator.addReactiveDF(id, source_id, arrowBuffer, dfQueries);
 }
 var reactive_df_default = { render };
 export {

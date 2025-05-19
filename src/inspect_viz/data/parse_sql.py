@@ -4,7 +4,7 @@ import sqlglot
 import sqlglot.expressions as exp
 
 from .constants import DEFAULT_TABLE
-from .mosaic import (
+from .query import (
     BinaryExpression,
     Expression,
     FunctionExpression,

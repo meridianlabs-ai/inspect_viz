@@ -1,4 +1,4 @@
 export * from './coodinator';
-export * from './dataframe';
+export * from './reactive_df';
 
 export { toSelectQuery } from './select';

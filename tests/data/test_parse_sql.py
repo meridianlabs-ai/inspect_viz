@@ -1,4 +1,5 @@
-from inspect_viz.data.mosaic import (
+from inspect_viz.data.parse_sql import parse_sql
+from inspect_viz.data.query import (
     BinaryExpression,
     FunctionExpression,
     LogicalExpression,
@@ -6,7 +7,6 @@ from inspect_viz.data.mosaic import (
     OrderByItem,
     ParameterExpression,
 )
-from inspect_viz.data.parse_sql import parse_sql
 
 
 def test_simple_select() -> None:
