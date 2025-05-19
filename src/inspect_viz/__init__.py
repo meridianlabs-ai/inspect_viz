@@ -1,3 +1,4 @@
+from ._data.param import Param, param
 from ._data.reactive_df import ReactiveDF, reactive_df
 from ._data.select import Select, select
 from ._widgets.figure_view import figure_view
@@ -9,6 +10,8 @@ __all__ = [
     "ReactiveDF",
     "select",
     "Select",
+    "param",
+    "Param",
     "figure_view",
     "table_view",
     "menu_input",
