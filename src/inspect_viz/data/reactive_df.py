@@ -80,13 +80,6 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
     # dataframe source id (all derivative dataframes will also carry this)
     source_id = uuid()
 
-    # convert to arrow bytes to send to client/arquero
-    reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
-    table = reader.read_all()
-    table_buffer = pa.BufferOutputStream()
-    with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
-        writer.write_table(table)
-
     # create and render ReactiveDFWidget on the client
     class ReactiveDFWidget(anywidget.AnyWidget):
         _esm = STATIC_DIR / "reactive_df.js"
@@ -97,11 +90,23 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
 
     # publish reactive_df to client
     def publish_reactive_df(*, id: str | None = None, queries: str = "") -> None:
+        # create widget
         widget = ReactiveDFWidget()
         widget.id = id or source_id
         widget.source_id = source_id
         widget.queries = queries
-        widget.buffer = table_buffer.getvalue().to_pybytes()
+
+        # include arrow ipc buffer if this is the source data
+        if id is None:
+            # convert to arrow bytes
+            reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
+            table = reader.read_all()
+            table_buffer = pa.BufferOutputStream()
+            with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
+                writer.write_table(table)
+            widget.buffer = table_buffer.getvalue().to_pybytes()
+
+        # push to client
         display(widget)  # type: ignore
 
     publish_reactive_df()
