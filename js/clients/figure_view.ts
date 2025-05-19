@@ -4,6 +4,12 @@ import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.1
 import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
 import { VizClient } from './viz_client';
 
+export interface PlotlyAxisMappings {
+    x: string | null;
+    y: string | null;
+    z: string | null;
+}
+
 export interface PlotlyFigure {
     data: Plotly.Data[];
     layout?: Partial<Plotly.Layout>;
@@ -14,6 +20,7 @@ export class FigureView extends VizClient {
     constructor(
         private readonly el_: HTMLElement,
         private readonly figure_: PlotlyFigure,
+        private readonly axisMappings_: PlotlyAxisMappings,
         table: string,
         filterBy: Selection,
         queries: SelectQuery[]
@@ -22,22 +29,23 @@ export class FigureView extends VizClient {
     }
 
     onQueryResult(columns: Record<string, ArrayLike<unknown>>): void {
-        const table = bindTable(this.figure_.data, columns);
+        const table = bindTable(this.figure_, this.axisMappings_, columns);
         Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
     }
 }
 
 function bindTable(
-    traces: Plotly.Data[],
+    figure: PlotlyFigure,
+    axisMappings: PlotlyAxisMappings,
     columns: Record<string, ArrayLike<unknown>>
 ): Plotly.Data[] {
     // don't mutate the passed traces
-    traces = structuredClone(traces);
+    const traces = structuredClone(figure.data);
 
     // handle each trace
     traces.forEach((trace: Plotly.Data) => {
         // map the columns
-        const mapping = columnMapping(trace, Object.keys(columns));
+        const mapping = columnMapping(trace, Object.keys(columns), axisMappings);
 
         // apply the data from the arquero table
         for (const [attr, col] of Object.entries(mapping)) {
@@ -54,7 +62,11 @@ function bindTable(
     return traces;
 }
 
-function columnMapping(trace: Plotly.Data, cols: string[]): Record<string, string> {
+function columnMapping(
+    trace: Plotly.Data,
+    cols: string[],
+    axisMappings: PlotlyAxisMappings
+): Record<string, string> {
     const map: Record<string, string> = {};
     const lc = cols.map(c => c.toLowerCase());
 
@@ -67,27 +79,22 @@ function columnMapping(trace: Plotly.Data, cols: string[]): Record<string, strin
         if (exists) map[p] = cols[i];
     }
 
-    // discover required bindings
-    const used = new Set(Object.values(map));
-    const unused = cols.filter(c => !used.has(c));
-    let i = 0;
-    const needsX = !map.x && (!isOrientable(trace) || trace.orientation !== 'h');
-    const needsY = !map.y && (isOrientable(trace) && trace.orientation === 'h' ? false : true);
-
     // fill x
-    if (needsX && unused[i]) {
-        map.x = unused[i++];
+    const needsX = !map.x && (!isOrientable(trace) || trace.orientation !== 'h');
+    if (needsX && axisMappings.x) {
+        map.x = axisMappings.x;
     }
 
     // fill y
-    if (needsY && unused[i]) {
-        map.y = unused[i++];
+    const needsY = !map.y && (isOrientable(trace) && trace.orientation === 'h' ? false : true);
+    if (needsY && axisMappings.y) {
+        map.y = axisMappings.y;
     }
 
     // optional z for 3-D traces
     const is3d = ['scatter3d', 'surface', 'mesh3d'].includes(trace.type ?? '');
-    if (is3d && !map.z && unused[i]) {
-        map.z = unused[i++];
+    if (is3d && !map.z && axisMappings.z) {
+        map.z = axisMappings.z;
     }
 
     return map;

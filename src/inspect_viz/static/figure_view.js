@@ -344,20 +344,21 @@ var VizClient = class extends MosaicClient2 {
 
 // js/clients/figure_view.ts
 var FigureView = class extends VizClient {
-  constructor(el_, figure_, table, filterBy, queries) {
+  constructor(el_, figure_, axisMappings_, table, filterBy, queries) {
     super(table, filterBy, queries);
     this.el_ = el_;
     this.figure_ = figure_;
+    this.axisMappings_ = axisMappings_;
   }
   onQueryResult(columns) {
-    const table = bindTable(this.figure_.data, columns);
+    const table = bindTable(this.figure_, this.axisMappings_, columns);
     Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
   }
 };
-function bindTable(traces, columns) {
-  traces = structuredClone(traces);
+function bindTable(figure, axisMappings, columns) {
+  const traces = structuredClone(figure.data);
   traces.forEach((trace) => {
-    const mapping = columnMapping(trace, Object.keys(columns));
+    const mapping = columnMapping(trace, Object.keys(columns), axisMappings);
     for (const [attr, col] of Object.entries(mapping)) {
       const arr = columns[col];
       if (arr) {
@@ -369,30 +370,27 @@ function bindTable(traces, columns) {
   });
   return traces;
 }
-function columnMapping(trace, cols) {
+function columnMapping(trace, cols, axisMappings) {
   const map = {};
   const lc = cols.map((c) => c.toLowerCase());
   for (const p of arrayProps(trace)) {
     const simple = p.split(".").pop().toLowerCase();
-    const i2 = lc.indexOf(simple);
-    if (i2 === -1) continue;
+    const i = lc.indexOf(simple);
+    if (i === -1) continue;
     const exists = p.split(".").reduce((o, k) => o?.[k], trace) !== void 0;
-    if (exists) map[p] = cols[i2];
+    if (exists) map[p] = cols[i];
   }
-  const used = new Set(Object.values(map));
-  const unused = cols.filter((c) => !used.has(c));
-  let i = 0;
   const needsX = !map.x && (!isOrientable(trace) || trace.orientation !== "h");
-  const needsY = !map.y && (isOrientable(trace) && trace.orientation === "h" ? false : true);
-  if (needsX && unused[i]) {
-    map.x = unused[i++];
+  if (needsX && axisMappings.x) {
+    map.x = axisMappings.x;
   }
-  if (needsY && unused[i]) {
-    map.y = unused[i++];
+  const needsY = !map.y && (isOrientable(trace) && trace.orientation === "h" ? false : true);
+  if (needsY && axisMappings.y) {
+    map.y = axisMappings.y;
   }
   const is3d = ["scatter3d", "surface", "mesh3d"].includes(trace.type ?? "");
-  if (is3d && !map.z && unused[i]) {
-    map.z = unused[i++];
+  if (is3d && !map.z && axisMappings.z) {
+    map.z = axisMappings.z;
   }
   return map;
 }
@@ -417,12 +415,14 @@ function isOrientable(t) {
 // js/widgets/figure_view.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
-  const figure_json = model.get("figure_json");
+  const figure_json = model.get("figure");
   const figure = JSON.parse(figure_json);
+  const axis_mappings_json = model.get("axis_mappings");
+  const axis_mappings = JSON.parse(axis_mappings_json);
   const coordinator = await dataFrameCoordinator();
   const df = await coordinator.getDataFrame(df_id);
   const queries = df.queries.map(toSelectQuery);
-  const view = new FigureView(el, figure, df.table, df.selection, queries);
+  const view = new FigureView(el, figure, axis_mappings, df.table, df.selection, queries);
   await coordinator.connectClient(view);
 }
 var figure_view_default = { render };

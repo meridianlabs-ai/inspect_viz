@@ -1,4 +1,3 @@
-import pytest
 from inspect_viz.data._query.mosaic import (
     BinaryExpression,
     FunctionExpression,
