@@ -1,10 +1,9 @@
 import type { RenderProps } from '@anywidget/types';
 
-import { dataFrameCoordinator } from '../coordinator';
+import { dataFrameCoordinator, toSelectQuery } from '../coordinator';
 
 import { FigureView } from '../clients/figure_view';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
-import { convertToSelectQuery } from '../coordinator/convert';
 
 interface FigureProps {
     df_id: string;
@@ -24,8 +23,7 @@ async function render({ model, el }: RenderProps<FigureProps>) {
     // it keep getting the first one by id, need a new id but need original table
 
     // build sub-queries
-    const queries: SelectQuery[] = df.queries.map(convertToSelectQuery);
-    console.log(queries);
+    const queries: SelectQuery[] = df.queries.map(toSelectQuery);
 
     // create the view and connect it
     const view = new FigureView(el, figure, df.table, df.selection, queries);

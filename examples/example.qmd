@@ -11,6 +11,7 @@ from inspect_viz.data import reactive_df
 from inspect_viz.widgets import figure_view, table_view, menu_input
 
 df = reactive_df(px.data.iris())
+df = df.query("SELECT * WHERE species = 'setosa'")
 ```
 
 ```{python}
