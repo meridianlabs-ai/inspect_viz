@@ -1,4 +1,4 @@
-from typing import Any, Sequence, cast
+from typing import Any, Callable, Sequence, TypeVar, cast
 
 import sqlglot
 import sqlglot.expressions as exp
@@ -16,6 +16,8 @@ from .mosaic import (
     UnknownExpression,
 )
 from .params import extract_parameters_with_types
+
+T = TypeVar("T")
 
 
 def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
@@ -47,15 +49,16 @@ def _convert_select(select: exp.Select) -> dict[str, Any]:
     """Convert a SELECT statement to mosaic-sql structure."""
     result: dict[str, object] = {"sql": select.sql(dialect="duckdb"), "parameters": {}}
 
-    # Handle SELECT expressions
-    if select.args.get("expressions"):
-        result["select"] = _convert_select_expressions(select.args["expressions"])
-
-    # Handle DISTINCT clause
-    if select.args.get("distinct"):
-        # DISTINCT can be a boolean or an expression in sqlglot
-        # For mosaic-sql, we just need a boolean flag
-        result["distinct"] = True
+    # Process each clause in the SELECT statement
+    _process_clause(
+        select, "expressions", result, "select", _convert_select_expressions
+    )
+    _process_clause(select, "distinct", result, "distinct", lambda x: True)
+    _process_clause(select, "where", result, "where", _convert_where)
+    _process_clause(select, "group", result, "groupby", _convert_group_by)
+    _process_clause(select, "having", result, "having", _convert_having)
+    _process_clause(select, "order", result, "orderby", _convert_order_by)
+    _process_clause(select, "limit", result, "limit", _convert_limit)
 
     # Handle SAMPLE clause (if sqlglot supports it)
     if hasattr(select, "sample") and select.sample is not None:
@@ -70,27 +73,26 @@ def _convert_select(select: exp.Select) -> dict[str, Any]:
                 else:  # Count
                     result["sample"] = int(sample_value)
 
-    # Handle WHERE clause
-    if select.args.get("where"):
-        result["where"] = _convert_where(select.args["where"])
-
-    # Handle GROUP BY clause
-    if select.args.get("group"):
-        result["groupby"] = _convert_group_by(select.args["group"])
-
-    # Handle HAVING clause
-    if select.args.get("having"):
-        result["having"] = _convert_having(select.args["having"])
-
-    # Handle ORDER BY clause
-    if select.args.get("order"):
-        result["orderby"] = _convert_order_by(select.args["order"])
-
-    # Handle LIMIT clause
-    if select.args.get("limit"):
-        result["limit"] = _convert_limit(select.args["limit"])
-
     return result
+
+
+def _process_clause(
+    sql_obj: exp.Expression,
+    arg_name: str,
+    result: dict[str, Any],
+    result_key: str,
+    converter: Callable[[Any], T],
+) -> None:
+    """Process a SQL clause and add it to the result if present."""
+    if arg := sql_obj.args.get(arg_name):
+        result[result_key] = converter(arg)
+
+
+def _get_expression_from_args(expr: exp.Expression, arg_name: str) -> exp.Expression:
+    """Extract an expression from args."""
+    if arg_name in expr.args and expr.args[arg_name] is not None:
+        return cast(exp.Expression, expr.args[arg_name])
+    return expr
 
 
 def _convert_having(
@@ -131,10 +133,7 @@ def _convert_select_expressions(
                 # More complex aliased expression
                 result[alias_name] = _convert_expression(expression)
 
-        elif any(
-            isinstance(expr, agg_type)
-            for agg_type in [exp.Avg, exp.Count, exp.Sum, exp.Min, exp.Max]
-        ):
+        elif _is_aggregate_function(expr):
             # Aggregate functions without aliases
             result[expr.key] = _convert_expression(expr)
 
@@ -155,12 +154,23 @@ def _convert_where(
     where_clause: exp.Expression,
 ) -> BinaryExpression | LogicalExpression | UnknownExpression:
     """Convert WHERE clause to mosaic-sql structure."""
-    if isinstance(where_clause, exp.Where):
-        where_expr = where_clause.args["this"]
-    else:
-        where_expr = where_clause
-
+    where_expr = (
+        _get_expression_from_args(where_clause, "this")
+        if isinstance(where_clause, exp.Where)
+        else where_clause
+    )
     return _convert_logical_expression(where_expr)
+
+
+def _is_same_logical_type(expr: exp.Expression, logical_type: str) -> bool:
+    """Check if an expression is of the same logical type (AND/OR)."""
+    return (
+        (isinstance(expr, exp.And) or (hasattr(expr, "key") and expr.key == "and"))
+        and logical_type == "and"
+    ) or (
+        (isinstance(expr, exp.Or) or (hasattr(expr, "key") and expr.key == "or"))
+        and logical_type == "or"
+    )
 
 
 def _convert_logical_expression(
@@ -187,62 +197,25 @@ def _convert_logical_expression(
         # Start with expressions from the current logical operation
         expressions = []
 
-        # Handle left side (this)
-        if "this" in expr.args and expr.args["this"] is not None:
-            left_expr = expr.args["this"]
-            # If the left side is the same logical operation, flatten it
-            if (
-                (
-                    isinstance(left_expr, exp.And)
-                    or (hasattr(left_expr, "key") and left_expr.key == "and")
-                )
-                and logical_type == "and"
-                or (
-                    isinstance(left_expr, exp.Or)
-                    or (hasattr(left_expr, "key") and left_expr.key == "or")
-                )
-                and logical_type == "or"
-            ):
-                # Recursively convert and merge the expressions
-                left_result = _convert_logical_expression(left_expr)
-                if (
-                    isinstance(left_result, LogicalExpression)
-                    and left_result.type == logical_type
-                ):
-                    expressions.extend(left_result.expressions)
-                else:
-                    expressions.append(left_result)
-            else:
-                # Different logical operation or basic expression
-                expressions.append(_convert_logical_expression(left_expr))
+        # Process left and right side expressions
+        for arg_name in ["this", "expression"]:
+            if arg_name in expr.args and expr.args[arg_name] is not None:
+                side_expr = expr.args[arg_name]
 
-        # Handle right side (expression)
-        if "expression" in expr.args and expr.args["expression"] is not None:
-            right_expr = expr.args["expression"]
-            if (
-                (
-                    isinstance(right_expr, exp.And)
-                    or (hasattr(right_expr, "key") and right_expr.key == "and")
-                )
-                and logical_type == "and"
-                or (
-                    isinstance(right_expr, exp.Or)
-                    or (hasattr(right_expr, "key") and right_expr.key == "or")
-                )
-                and logical_type == "or"
-            ):
-                # Recursively convert and merge the expressions
-                right_result = _convert_logical_expression(right_expr)
-                if (
-                    isinstance(right_result, LogicalExpression)
-                    and right_result.type == logical_type
-                ):
-                    expressions.extend(right_result.expressions)
+                # If the side is the same logical operation, flatten it
+                if _is_same_logical_type(side_expr, logical_type):
+                    # Recursively convert and merge the expressions
+                    side_result = _convert_logical_expression(side_expr)
+                    if (
+                        isinstance(side_result, LogicalExpression)
+                        and side_result.type == logical_type
+                    ):
+                        expressions.extend(side_result.expressions)
+                    else:
+                        expressions.append(side_result)
                 else:
-                    expressions.append(right_result)
-            else:
-                # Different logical operation or basic expression
-                expressions.append(_convert_logical_expression(right_expr))
+                    # Different logical operation or basic expression
+                    expressions.append(_convert_logical_expression(side_expr))
 
         # Create the logical expression with all collected expressions
         return LogicalExpression(
@@ -273,10 +246,7 @@ def _convert_group_by(group_clause: exp.Expression) -> list[str | GroupByField]:
                 # Column with alias
                 field = expr.args["this"].args["this"].args["this"]
                 result.append(GroupByField(field=field))
-            elif any(
-                isinstance(expr, func_type)
-                for func_type in [exp.Avg, exp.Count, exp.Sum, exp.Min, exp.Max]
-            ):
+            elif _is_aggregate_function(expr):
                 # Function expression
                 func_expr = _convert_expression(expr)
                 if isinstance(func_expr, FunctionExpression):
@@ -301,6 +271,19 @@ def _convert_group_by(group_clause: exp.Expression) -> list[str | GroupByField]:
     return result
 
 
+def _extract_field_from_expression(expression: exp.Expression) -> Any:
+    """Extract field from an expression."""
+    if isinstance(expression, exp.Column):
+        return expression.args["this"].args["this"]
+    else:
+        return _convert_expression(expression)
+
+
+def _extract_direction(expr: exp.Expression) -> str:
+    """Extract sort direction from an expression."""
+    return "desc" if expr.args.get("desc") else "asc"
+
+
 def _convert_order_by(order_clause: exp.Expression) -> list[OrderByItem]:
     """Convert ORDER BY clause to mosaic-sql structure."""
     result: list[OrderByItem] = []
@@ -311,16 +294,10 @@ def _convert_order_by(order_clause: exp.Expression) -> list[OrderByItem]:
             expressions = order_clause.args["expressions"]
             for expr in expressions:
                 if isinstance(expr, exp.Ordered):
-                    direction = "desc" if expr.args.get("desc") else "asc"
+                    direction = _extract_direction(expr)
 
                     if "this" in expr.args and expr.args["this"] is not None:
-                        expression = expr.args["this"]
-
-                        if isinstance(expression, exp.Column):
-                            field = expression.args["this"].args["this"]
-                        else:
-                            field = _convert_expression(expression)
-
+                        field = _extract_field_from_expression(expr.args["this"])
                         result.append(
                             OrderByItem(
                                 field=field,
@@ -333,23 +310,14 @@ def _convert_order_by(order_clause: exp.Expression) -> list[OrderByItem]:
     if isinstance(order_clause, list):
         for expr in order_clause:
             if hasattr(expr, "args"):
-                direction = "desc" if expr.args.get("desc") else "asc"
-
+                direction = _extract_direction(expr)
                 field = None
-                if "expression" in expr.args:
-                    expression = expr.args["expression"]
 
-                    if isinstance(expression, exp.Column):
-                        field = expression.args["this"].args["this"]
-                    else:
-                        field = _convert_expression(expression)
-                elif "this" in expr.args:
-                    # Sometimes the expression is in 'this' instead
-                    expression = expr.args["this"]
-                    if isinstance(expression, exp.Column):
-                        field = expression.args["this"].args["this"]
-                    else:
-                        field = _convert_expression(expression)
+                # Try to extract field from different arg positions
+                for arg_name in ["expression", "this"]:
+                    if arg_name in expr.args and expr.args[arg_name] is not None:
+                        field = _extract_field_from_expression(expr.args[arg_name])
+                        break
 
                 if field is not None:
                     result.append(
@@ -379,6 +347,14 @@ def _convert_limit(limit_clause: exp.Expression) -> int:
     return cast(int, _convert_expression(limit_clause))
 
 
+def _is_aggregate_function(expr: exp.Expression) -> bool:
+    """Check if an expression is an aggregate function."""
+    return any(
+        isinstance(expr, agg_type)
+        for agg_type in [exp.Avg, exp.Count, exp.Sum, exp.Min, exp.Max]
+    )
+
+
 def _convert_expression(expr: exp.Expression) -> Any:
     """
     Convert a sqlglot expression to a mosaic-sql compatible structure.
@@ -401,67 +377,14 @@ def _convert_expression(expr: exp.Expression) -> Any:
         return expr.args["this"].args["this"]
 
     elif isinstance(expr, exp.Parameter | exp.Placeholder):
-        # Handle parameter expressions (e.g., :param_name or $param_name)
-        param_name = expr.args.get("this", "")
-        # For unnamed parameters (like ?), we can't create a meaningful parameter expression
-        if not param_name:
-            # Return a placeholder that will be recognized as a parameter but without a specific name
-            return UnknownExpression(expression="?")
-
-        # Remove any prefix like : or $ if present
-        if (
-            param_name.startswith(":")
-            or param_name.startswith("$")
-            or param_name.startswith("@")
-        ):
-            param_name = param_name[1:]
-
-        return ParameterExpression(name=param_name)
+        return _convert_parameter_expression(expr)
 
     elif isinstance(expr, exp.Literal):
-        # Convert literals to appropriate Python types
-        value = expr.args["this"]
-        is_string = expr.args.get("is_string", False)
-
-        if is_string:
-            return value
-
-        try:
-            if "." in value:
-                return float(value)
-            else:
-                return int(value)
-        except (ValueError, TypeError):
-            if value.lower() in ("true", "false"):
-                return value.lower() == "true"
-            return value
+        return _convert_literal(expr)
 
     # Handle logical operations (AND, OR)
     elif isinstance(expr, (exp.And, exp.Or)):
-        # Determine logical operation type
-        logical_type = "and" if isinstance(expr, exp.And) else "or"
-
-        # Get the expressions to combine
-        left = _convert_expression(cast(exp.Expression, expr.args.get("this")))
-        right = _convert_expression(cast(exp.Expression, expr.args.get("expression")))
-
-        # Create a list of expressions
-        expressions = []
-
-        # If either side is the same type of logical expression, flatten it
-        if isinstance(left, LogicalExpression) and left.type == logical_type:
-            expressions.extend(left.expressions)
-        else:
-            expressions.append(left)
-
-        if isinstance(right, LogicalExpression) and right.type == logical_type:
-            expressions.extend(right.expressions)
-        else:
-            expressions.append(right)
-
-        return LogicalExpression(
-            type="and" if logical_type == "and" else "or", expressions=expressions
-        )
+        return _convert_logical_op(expr)
 
     elif (
         isinstance(expr, exp.Binary)
@@ -469,56 +392,133 @@ def _convert_expression(expr: exp.Expression) -> Any:
         and "this" in expr.args
         and "expression" in expr.args
     ):
-        # Handle binary operations (comparisons, arithmetic, etc.)
-        left = _convert_expression(expr.args["this"])
-        right = _convert_expression(expr.args["expression"])
-        op = expr.key
-
-        # Map sqlglot operators to mosaic-sql operators
-        op_map = {
-            "eq": "eq",  # equals
-            "neq": "neq",  # not equals
-            "gt": "gt",  # greater than
-            "gte": "gte",  # greater than or equal
-            "lt": "lt",  # less than
-            "lte": "lte",  # less than or equal
-            "and": "and",  # logical AND
-            "or": "or",  # logical OR
-            "add": "add",  # addition
-            "sub": "sub",  # subtraction
-            "mul": "mul",  # multiplication
-            "div": "div",  # division
-        }
-
-        if op in op_map:
-            return BinaryExpression(type=op_map[op], left=left, right=right)
-
-        # Special case for AND/OR since they could be binary or logical depending on the SQL dialect/version
-        elif op == "and" or op == "or":
-            return LogicalExpression(
-                type="and" if op == "and" else "or", expressions=[left, right]
-            )
-        else:
-            # Default structure for unsupported operators
-            return BinaryExpression(type="binary", left=left, right=right)
+        return _convert_binary_expression(expr)
 
     # Handle aggregate functions
-    elif any(
-        isinstance(expr, agg_type)
-        for agg_type in [exp.Avg, exp.Count, exp.Sum, exp.Min, exp.Max]
-    ):
-        func_name = expr.key.upper()
-
-        # Handle different argument patterns for aggregates
-        args: list[Expression] = []
-
-        # Handle COUNT(*) special case
-        if isinstance(expr, exp.Count) and isinstance(expr.args["this"], exp.Star):
-            args = ["*"]
-        elif "this" in expr.args and expr.args["this"] is not None:
-            args = [_convert_expression(expr.args["this"])]
-
-        return FunctionExpression(name=func_name, args=args)
+    elif _is_aggregate_function(expr):
+        return _convert_function_expression(expr)
 
     # Return a generic representation for unsupported expressions
     return UnknownExpression(expression=str(expr.sql(dialect="duckdb")))
+
+
+def _convert_parameter_expression(
+    expr: exp.Expression,
+) -> ParameterExpression | UnknownExpression:
+    """Convert parameter expressions."""
+    # Handle parameter expressions (e.g., :param_name or $param_name)
+    param_name = expr.args.get("this", "")
+    # For unnamed parameters (like ?), we can't create a meaningful parameter expression
+    if not param_name:
+        # Return a placeholder that will be recognized as a parameter but without a specific name
+        return UnknownExpression(expression="?")
+
+    # Remove any prefix like : or $ if present
+    if (
+        param_name.startswith(":")
+        or param_name.startswith("$")
+        or param_name.startswith("@")
+    ):
+        param_name = param_name[1:]
+
+    return ParameterExpression(name=param_name)
+
+
+def _convert_literal(expr: exp.Literal) -> Any:
+    """Convert literal expressions to appropriate Python types."""
+    value = expr.args["this"]
+    is_string = expr.args.get("is_string", False)
+
+    if is_string:
+        return value
+
+    try:
+        if "." in value:
+            return float(value)
+        else:
+            return int(value)
+    except (ValueError, TypeError):
+        if value.lower() in ("true", "false"):
+            return value.lower() == "true"
+        return value
+
+
+def _convert_logical_op(expr: exp.Expression) -> LogicalExpression:
+    """Convert logical operations (AND, OR)."""
+    # Determine logical operation type
+    logical_type = "and" if isinstance(expr, exp.And) else "or"
+
+    # Get the expressions to combine
+    left = _convert_expression(cast(exp.Expression, expr.args.get("this")))
+    right = _convert_expression(cast(exp.Expression, expr.args.get("expression")))
+
+    # Create a list of expressions
+    expressions = []
+
+    # If either side is the same type of logical expression, flatten it
+    if isinstance(left, LogicalExpression) and left.type == logical_type:
+        expressions.extend(left.expressions)
+    else:
+        expressions.append(left)
+
+    if isinstance(right, LogicalExpression) and right.type == logical_type:
+        expressions.extend(right.expressions)
+    else:
+        expressions.append(right)
+
+    return LogicalExpression(
+        type="and" if logical_type == "and" else "or", expressions=expressions
+    )
+
+
+def _convert_binary_expression(
+    expr: exp.Expression,
+) -> BinaryExpression | LogicalExpression:
+    """Convert binary expressions."""
+    left = _convert_expression(expr.args["this"])
+    right = _convert_expression(expr.args["expression"])
+    op = expr.key
+
+    # Map sqlglot operators to mosaic-sql operators
+    op_map = {
+        "eq": "eq",  # equals
+        "neq": "neq",  # not equals
+        "gt": "gt",  # greater than
+        "gte": "gte",  # greater than or equal
+        "lt": "lt",  # less than
+        "lte": "lte",  # less than or equal
+        "and": "and",  # logical AND
+        "or": "or",  # logical OR
+        "add": "add",  # addition
+        "sub": "sub",  # subtraction
+        "mul": "mul",  # multiplication
+        "div": "div",  # division
+    }
+
+    if op in op_map:
+        return BinaryExpression(type=op_map[op], left=left, right=right)
+
+    # Special case for AND/OR since they could be binary or logical depending on the SQL dialect/version
+    elif op == "and" or op == "or":
+        return LogicalExpression(
+            type="and" if op == "and" else "or", expressions=[left, right]
+        )
+    else:
+        # Default structure for unsupported operators
+        return BinaryExpression(type="binary", left=left, right=right)
+
+
+def _convert_function_expression(expr: exp.Expression) -> FunctionExpression:
+    """Convert function expressions."""
+    func_name = expr.key.upper()
+
+    # Handle different argument patterns for aggregates
+    args: list[Expression] = []
+
+    # Handle COUNT(*) special case
+    if isinstance(expr, exp.Count) and isinstance(expr.args["this"], exp.Star):
+        args = ["*"]
+    elif "this" in expr.args and expr.args["this"] is not None:
+        args = [_convert_expression(expr.args["this"])]
+
+    return FunctionExpression(name=func_name, args=args)
