@@ -2,6 +2,8 @@ from typing import Any, Literal, Union
 
 from pydantic import BaseModel
 
+from .param import Param
+
 
 class FunctionExpression(BaseModel):
     type: Literal["function"] = "function"
@@ -121,9 +123,7 @@ def extract_parameter_names(query: MosaicQuery) -> list[str]:
     return list(set(parameter_names))
 
 
-def extract_parameters_with_types(
-    query: MosaicQuery, values: dict[str, int | float | bool | str]
-) -> dict[str, Parameter]:
+def extract_parameters_with_types(query: MosaicQuery) -> dict[str, Parameter]:
     """
     Extract parameters from a MosaicQuery and create Parameter objects with types.
 
@@ -140,15 +140,20 @@ def extract_parameters_with_types(
     # Get all parameter names from the query
     parameter_names = extract_parameter_names(query)
 
+    # Get all parameter values (globally)
+    parameter_values = {k: v.default for k, v in Param.get_all().items()}
+
     # Create Parameter objects for each parameter name
     parameters = {}
     for name in parameter_names:
-        if name in values:
+        if name in parameter_values:
             # Infer the SQL type of the parameter value
-            param_type = _infer_type(values[name])
+            param_type = _infer_type(parameter_values[name])
 
             # Create Parameter object
-            parameters[name] = Parameter(name=name, value=values[name], type=param_type)
+            parameters[name] = Parameter(
+                name=name, value=parameter_values[name], type=param_type
+            )
         else:
             raise ValueError(f"Default value not provided for parameter '{name}'")
 

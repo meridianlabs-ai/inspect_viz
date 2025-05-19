@@ -20,7 +20,7 @@ from .query import (
 T = TypeVar("T")
 
 
-def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
+def parse_sql(sql: str | exp.Select) -> MosaicQuery:
     # resolve to exp.Select
     if isinstance(sql, str):
         expr = sqlglot.parse_one(sql, dialect="duckdb")
@@ -35,11 +35,9 @@ def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
     # map from to the target table
     sql = sql.from_(DEFAULT_TABLE)
 
-    # create query
+    # create query and extract parameters
     query = MosaicQuery.model_validate(_convert_select(sql))
-
-    # extract parameters
-    query.parameters = extract_parameters_with_types(query, parameters)
+    query.parameters = extract_parameters_with_types(query)
 
     # return
     return query

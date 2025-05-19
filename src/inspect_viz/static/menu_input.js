@@ -6,7 +6,7 @@ import {
   Coordinator,
   wasmConnector,
   Selection,
-  Param as Param2
+  Param
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -76,24 +76,23 @@ import {
   ParamNode,
   VerbatimNode
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
-import { Param } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-function toSelectQuery(query) {
+function toSelectQuery(query, params) {
   const selectExpressions = {};
   for (const [alias, expr] of Object.entries(query.select)) {
-    selectExpressions[alias] = buildExpressionValue(expr);
+    selectExpressions[alias] = buildExpressionValue(expr, params);
   }
   let select = SelectQuery.select(selectExpressions);
   if (query.distinct === true) {
     select = select.distinct();
   }
   if (query.where) {
-    select = applyWhereClause(select, query.where);
+    select = applyWhereClause(select, params, query.where);
   }
   if (query.groupby && query.groupby.length > 0) {
-    select = applyGroupByClause(select, query.groupby);
+    select = applyGroupByClause(select, params, query.groupby);
   }
   if (query.having) {
-    select = applyHavingClause(select, query.having);
+    select = applyHavingClause(select, params, query.having);
   }
   if (query.orderby && query.orderby.length > 0) {
     select = applyOrderByClause(select, query.orderby);
@@ -106,9 +105,9 @@ function toSelectQuery(query) {
   }
   return select;
 }
-function interpretFunction(func) {
+function interpretFunction(func, params) {
   const funcName = func.name.toLowerCase();
-  const args = func.args.map(buildExpressionNode);
+  const args = func.args.map((a) => buildExpressionNode(a, params));
   switch (funcName) {
     case "sum":
       return sum(args[0]);
@@ -128,27 +127,28 @@ function interpretFunction(func) {
       return new FunctionNode(funcName, args);
   }
 }
-function applyWhereClause(query, whereExpr) {
+function applyWhereClause(query, params, whereExpr) {
   if (whereExpr.type === "and" || whereExpr.type === "or") {
-    return applyLogicalExpression(query, whereExpr);
+    return applyLogicalExpression(query, params, whereExpr);
   } else if (whereExpr.type === "unknown") {
     return query.where(new VerbatimNode(whereExpr.expression));
   } else {
-    const condition = buildBinaryExpression(whereExpr);
+    const condition = buildBinaryExpression(whereExpr, params);
     return query.where(condition);
   }
 }
-function applyLogicalExpression(query, expr) {
+function applyLogicalExpression(query, params, expr) {
   const { type, expressions } = expr;
   if (expressions.length === 0) {
     return query;
   } else if (expressions.length === 1) {
     return applyWhereClause(
       query,
+      params,
       expressions[0]
     );
   } else {
-    const conditions = expressions.map(buildExpressionValue);
+    const conditions = expressions.map((e) => buildExpressionValue(e, params));
     if (type === "and") {
       return query.where(and(...conditions));
     } else {
@@ -156,7 +156,7 @@ function applyLogicalExpression(query, expr) {
     }
   }
 }
-function applyGroupByClause(query, groupByFields) {
+function applyGroupByClause(query, params, groupByFields) {
   const fields = groupByFields.map((field) => {
     if (typeof field === "string") {
       return field;
@@ -164,17 +164,17 @@ function applyGroupByClause(query, groupByFields) {
       if (typeof field.field === "string") {
         return field.field;
       } else {
-        return interpretFunction(field.field);
+        return interpretFunction(field.field, params);
       }
     }
   });
   return query.groupby(...fields);
 }
-function applyHavingClause(query, havingExpr) {
+function applyHavingClause(query, params, havingExpr) {
   if ("type" in havingExpr) {
     if (havingExpr.type === "and" || havingExpr.type === "or") {
       const { type, expressions } = havingExpr;
-      const conditions = expressions.map(buildExpressionValue);
+      const conditions = expressions.map((e) => buildExpressionValue(e, params));
       if (type === "and") {
         return query.having(and(...conditions));
       } else {
@@ -183,7 +183,7 @@ function applyHavingClause(query, havingExpr) {
     } else if (havingExpr.type === "unknown") {
       return query.having(new VerbatimNode(havingExpr.expression));
     } else {
-      const condition = buildBinaryExpression(havingExpr);
+      const condition = buildBinaryExpression(havingExpr, params);
       return query.having(condition);
     }
   }
@@ -195,40 +195,45 @@ function applyOrderByClause(query, orderByItems) {
   });
   return query.orderby(...orderByFields);
 }
-function buildExpressionNode(expr) {
+function buildExpressionNode(expr, params) {
   if (typeof expr === "string" || typeof expr === "number" || typeof expr === "boolean") {
     return new LiteralNode(expr);
   } else if ("type" in expr) {
     if (expr.type === "parameter") {
-      return new ParamNode(new Param(expr.name));
+      const name = expr.name;
+      const param = params.get(name);
+      if (param === void 0) {
+        throw new Error(`Unknown parameter ${name}`);
+      }
+      return new ParamNode(param);
     } else if (expr.type === "unknown") {
       return new VerbatimNode(expr.expression);
     } else if (expr.type === "function") {
-      return interpretFunction(expr);
+      return interpretFunction(expr, params);
     } else if (expr.type === "and" || expr.type === "or") {
-      return buildLogicalExpression(expr);
+      return buildLogicalExpression(expr, params);
     } else {
-      return buildBinaryExpression(expr);
+      return buildBinaryExpression(expr, params);
     }
   } else {
     throw Error(`Unexpected type for expression: ${typeof expr}`);
   }
 }
-function buildExpressionValue(expr) {
+function buildExpressionValue(expr, params) {
   if (typeof expr === "string") {
     return expr;
   } else {
-    return buildExpressionNode(expr);
+    return buildExpressionNode(expr, params);
   }
 }
-function buildLogicalExpression(expr) {
+function buildLogicalExpression(expr, params) {
   const { type, expressions } = expr;
   if (expressions.length === 0) {
     return new LiteralNode(true);
   } else if (expressions.length === 1) {
-    return buildExpressionNode(expressions[0]);
+    return buildExpressionNode(expressions[0], params);
   } else {
-    const conditions = expressions.map(buildExpressionNode);
+    const conditions = expressions.map((e) => buildExpressionNode(e, params));
     if (type === "and") {
       return and(...conditions);
     } else {
@@ -236,10 +241,10 @@ function buildLogicalExpression(expr) {
     }
   }
 }
-function buildBinaryExpression(expr) {
+function buildBinaryExpression(expr, params) {
   const { type, left, right } = expr;
-  const leftOperand = buildExpressionValue(left);
-  const rightOperand = buildExpressionNode(right);
+  const leftOperand = buildExpressionValue(left, params);
+  const rightOperand = buildExpressionNode(right, params);
   switch (type) {
     case "eq":
       return eq(leftOperand, rightOperand);
@@ -262,7 +267,11 @@ function buildBinaryExpression(expr) {
     case "div":
       return div(leftOperand, rightOperand);
     default:
-      return new BinaryOpNode(type, buildExpressionNode(left), buildExpressionNode(right));
+      return new BinaryOpNode(
+        type,
+        buildExpressionNode(left, params),
+        buildExpressionNode(right, params)
+      );
   }
 }
 
@@ -271,8 +280,18 @@ var ReactiveDFCoordinator = class {
   constructor(conn_) {
     this.conn_ = conn_;
     this.dfs_ = /* @__PURE__ */ new Map();
+    this.params_ = /* @__PURE__ */ new Map();
     this.coordinator_ = new Coordinator();
     this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+  }
+  addParam(name, value) {
+    if (!this.params_.has(name)) {
+      this.params_.set(name, Param.value(value));
+    }
+    return this.params_.get(name);
+  }
+  getParam(name) {
+    return this.params_.get(name);
   }
   async addReactiveDF(id, source_id, buffer, queries) {
     if (buffer.length > 0) {
@@ -284,11 +303,16 @@ var ReactiveDFCoordinator = class {
     const params = /* @__PURE__ */ new Map();
     for (const query of queries) {
       for (const p of Object.values(query.parameters)) {
-        params.set(p.name, Param2.value(p.value));
+        params.set(p.name, this.addParam(p.name, p.value));
       }
     }
-    const selectQueries = queries.map(toSelectQuery);
-    this.dfs_.set(id, new ReactiveDF(source_id, Selection.intersect(), selectQueries, params));
+    const df = new ReactiveDF(
+      source_id,
+      Selection.intersect(),
+      queries.map((q) => toSelectQuery(q, params)),
+      params
+    );
+    this.dfs_.set(id, df);
   }
   async getReactiveDF(id) {
     while (true) {
@@ -321,11 +345,12 @@ async function reactiveDFCoordinator() {
 async function render({ model, el }) {
   const df_id = model.get("df_id");
   const column = model.get("column");
+  const param = model.get("param");
   const coordinator = await reactiveDFCoordinator();
   const df = await coordinator.getReactiveDF(df_id);
   const menu = new Menu({
     element: el,
-    as: df.selection,
+    as: param ? df.params.get(param) : df.selection,
     from: df.table,
     column
   });

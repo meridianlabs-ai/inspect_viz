@@ -7,12 +7,14 @@ import { reactiveDFCoordinator } from '../coordinator';
 interface MenuProps {
     df_id: string;
     column: string;
+    param: string;
 }
 
 async function render({ model, el }: RenderProps<MenuProps>) {
     // unwrap widget parameters
     const df_id: string = model.get('df_id');
     const column: string = model.get('column');
+    const param: string = model.get('param');
 
     // get the data frame
     const coordinator = await reactiveDFCoordinator();
@@ -21,7 +23,7 @@ async function render({ model, el }: RenderProps<MenuProps>) {
     // initialize the menu and connect it
     const menu = new Menu({
         element: el,
-        as: df.selection,
+        as: param ? df.params.get(param) : df.selection,
         from: df.table,
         column: column,
     });

@@ -42,11 +42,11 @@ import {
 } from './query';
 import { Param } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-export function toSelectQuery(query: MosaicQuery): SelectQuery {
+export function toSelectQuery(query: MosaicQuery, params: Map<string, Param>): SelectQuery {
     // convert to expressions
     const selectExpressions: Record<string, ExprValue> = {};
     for (const [alias, expr] of Object.entries(query.select)) {
-        selectExpressions[alias] = buildExpressionValue(expr);
+        selectExpressions[alias] = buildExpressionValue(expr, params);
     }
     let select = SelectQuery.select(selectExpressions);
 
@@ -57,17 +57,17 @@ export function toSelectQuery(query: MosaicQuery): SelectQuery {
 
     // Apply WHERE clause if present
     if (query.where) {
-        select = applyWhereClause(select, query.where);
+        select = applyWhereClause(select, params, query.where);
     }
 
     // Apply GROUP BY clause if present
     if (query.groupby && query.groupby.length > 0) {
-        select = applyGroupByClause(select, query.groupby);
+        select = applyGroupByClause(select, params, query.groupby);
     }
 
     // Apply HAVING clause if present
     if (query.having) {
-        select = applyHavingClause(select, query.having);
+        select = applyHavingClause(select, params, query.having);
     }
 
     // Apply ORDER BY clause if present
@@ -88,9 +88,12 @@ export function toSelectQuery(query: MosaicQuery): SelectQuery {
     return select;
 }
 
-function interpretFunction(func: FunctionExpression): AggregateNode | FunctionNode {
+function interpretFunction(
+    func: FunctionExpression,
+    params: Map<string, Param>
+): AggregateNode | FunctionNode {
     const funcName = func.name.toLowerCase();
-    const args: ExprNode[] = func.args.map(buildExpressionNode);
+    const args: ExprNode[] = func.args.map(a => buildExpressionNode(a, params));
 
     // Handle common aggregate functions directly
     switch (funcName) {
@@ -116,22 +119,27 @@ function interpretFunction(func: FunctionExpression): AggregateNode | FunctionNo
 
 function applyWhereClause(
     query: SelectQuery,
+    params: Map<string, Param>,
     whereExpr: BinaryExpression | LogicalExpression | UnknownExpression
 ): SelectQuery {
     // Handle different expression types
     if (whereExpr.type === 'and' || whereExpr.type === 'or') {
         // Logical AND/OR expression
-        return applyLogicalExpression(query, whereExpr as LogicalExpression);
+        return applyLogicalExpression(query, params, whereExpr as LogicalExpression);
     } else if (whereExpr.type === 'unknown') {
         // Unknown expression - pass raw SQL
         return query.where(new VerbatimNode((whereExpr as UnknownExpression).expression));
     } else {
-        const condition = buildBinaryExpression(whereExpr as BinaryExpression);
+        const condition = buildBinaryExpression(whereExpr as BinaryExpression, params);
         return query.where(condition);
     }
 }
 
-function applyLogicalExpression(query: SelectQuery, expr: LogicalExpression): SelectQuery {
+function applyLogicalExpression(
+    query: SelectQuery,
+    params: Map<string, Param>,
+    expr: LogicalExpression
+): SelectQuery {
     const { type, expressions } = expr;
 
     if (expressions.length === 0) {
@@ -139,10 +147,11 @@ function applyLogicalExpression(query: SelectQuery, expr: LogicalExpression): Se
     } else if (expressions.length === 1) {
         return applyWhereClause(
             query,
+            params,
             expressions[0] as BinaryExpression | LogicalExpression | UnknownExpression
         );
     } else {
-        const conditions = expressions.map(buildExpressionValue);
+        const conditions = expressions.map(e => buildExpressionValue(e, params));
         if (type === 'and') {
             return query.where(and(...conditions));
         } else {
@@ -153,6 +162,7 @@ function applyLogicalExpression(query: SelectQuery, expr: LogicalExpression): Se
 
 function applyGroupByClause(
     query: SelectQuery,
+    params: Map<string, Param>,
     groupByFields: (string | GroupByField)[]
 ): SelectQuery {
     const fields = groupByFields.map(field => {
@@ -164,7 +174,7 @@ function applyGroupByClause(
                 return field.field;
             } else {
                 // Function expression in GROUP BY
-                return interpretFunction(field.field);
+                return interpretFunction(field.field, params);
             }
         }
     });
@@ -174,6 +184,7 @@ function applyGroupByClause(
 
 function applyHavingClause(
     query: SelectQuery,
+    params: Map<string, Param>,
     havingExpr: BinaryExpression | LogicalExpression | UnknownExpression
 ): SelectQuery {
     // Having clauses are similar to WHERE clauses
@@ -184,7 +195,7 @@ function applyHavingClause(
             const { type, expressions } = havingExpr as LogicalExpression;
 
             // Build the conditions array
-            const conditions = expressions.map(buildExpressionValue);
+            const conditions = expressions.map(e => buildExpressionValue(e, params));
 
             // Apply the conditions using the appropriate logical operator
             if (type === 'and') {
@@ -196,7 +207,7 @@ function applyHavingClause(
             return query.having(new VerbatimNode((havingExpr as UnknownExpression).expression));
         } else {
             // Binary expression (comparison)
-            const condition = buildBinaryExpression(havingExpr as BinaryExpression);
+            const condition = buildBinaryExpression(havingExpr as BinaryExpression, params);
             return query.having(condition);
         }
     }
@@ -214,20 +225,25 @@ function applyOrderByClause(query: SelectQuery, orderByItems: OrderByItem[]): Se
     return query.orderby(...orderByFields);
 }
 
-function buildExpressionNode(expr: Expression): ExprNode {
+function buildExpressionNode(expr: Expression, params: Map<string, Param>): ExprNode {
     if (typeof expr === 'string' || typeof expr === 'number' || typeof expr === 'boolean') {
         return new LiteralNode(expr);
     } else if ('type' in expr) {
         if (expr.type === 'parameter') {
-            return new ParamNode(new Param((expr as ParameterExpression).name));
+            const name = (expr as ParameterExpression).name;
+            const param = params.get(name);
+            if (param === undefined) {
+                throw new Error(`Unknown parameter ${name}`);
+            }
+            return new ParamNode(param);
         } else if (expr.type === 'unknown') {
             return new VerbatimNode((expr as UnknownExpression).expression);
         } else if (expr.type === 'function') {
-            return interpretFunction(expr as FunctionExpression);
+            return interpretFunction(expr as FunctionExpression, params);
         } else if (expr.type === 'and' || expr.type === 'or') {
-            return buildLogicalExpression(expr as LogicalExpression);
+            return buildLogicalExpression(expr as LogicalExpression, params);
         } else {
-            return buildBinaryExpression(expr as BinaryExpression);
+            return buildBinaryExpression(expr as BinaryExpression, params);
         }
     } else {
         throw Error(`Unexpected type for expression: ${typeof expr}`);
@@ -235,23 +251,23 @@ function buildExpressionNode(expr: Expression): ExprNode {
 }
 
 // TODO: "*" is getting parsed as unknown
-function buildExpressionValue(expr: Expression): ExprValue {
+function buildExpressionValue(expr: Expression, params: Map<string, Param>): ExprValue {
     if (typeof expr === 'string') {
         return expr;
     } else {
-        return buildExpressionNode(expr);
+        return buildExpressionNode(expr, params);
     }
 }
 
-function buildLogicalExpression(expr: LogicalExpression): ExprNode {
+function buildLogicalExpression(expr: LogicalExpression, params: Map<string, Param>): ExprNode {
     const { type, expressions } = expr;
 
     if (expressions.length === 0) {
         return new LiteralNode(true);
     } else if (expressions.length === 1) {
-        return buildExpressionNode(expressions[0]);
+        return buildExpressionNode(expressions[0], params);
     } else {
-        const conditions = expressions.map(buildExpressionNode);
+        const conditions = expressions.map(e => buildExpressionNode(e, params));
         if (type === 'and') {
             return and(...conditions);
         } else {
@@ -260,11 +276,11 @@ function buildLogicalExpression(expr: LogicalExpression): ExprNode {
     }
 }
 
-function buildBinaryExpression(expr: BinaryExpression): BinaryOpNode {
+function buildBinaryExpression(expr: BinaryExpression, params: Map<string, Param>): BinaryOpNode {
     const { type, left, right } = expr;
 
-    const leftOperand = buildExpressionValue(left);
-    const rightOperand = buildExpressionNode(right);
+    const leftOperand = buildExpressionValue(left, params);
+    const rightOperand = buildExpressionNode(right, params);
 
     // Map common comparison operators to Mosaic SQL methods
     switch (type) {
@@ -289,6 +305,10 @@ function buildBinaryExpression(expr: BinaryExpression): BinaryOpNode {
         case 'div':
             return div(leftOperand, rightOperand);
         default:
-            return new BinaryOpNode(type, buildExpressionNode(left), buildExpressionNode(right));
+            return new BinaryOpNode(
+                type,
+                buildExpressionNode(left, params),
+                buildExpressionNode(right, params)
+            );
     }
 }

@@ -17,7 +17,7 @@ async function render({ model, el }: RenderProps<TableProps>) {
     const df = await coordinator.getReactiveDF(df_id);
 
     // create and connect the table view
-    const view = new TableView(el, df.table, df.selection, df.queries);
+    const view = new TableView(el, df.table, df.selection, df.queries, df.params);
     await coordinator.connectClient(view);
 }
 

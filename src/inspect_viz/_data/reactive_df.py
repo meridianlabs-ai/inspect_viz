@@ -35,12 +35,11 @@ class ReactiveDF(Protocol):
         """Column names for dataframe."""
         ...
 
-    def query(self, sql: str | Select, **parameters: Any) -> "ReactiveDF":
+    def query(self, sql: str | Select) -> "ReactiveDF":
         """Apply a query to this dataframe to yield another dataframe.
 
         Args:
             sql: SQL string or `Select` statement created via `select()`.
-            **parameters: Default values for query parameters.
 
         Returns:
             Reactive dataframe resulting from running the specified query.
@@ -129,9 +128,9 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         def columns(self) -> list[str]:
             return self._ndf.columns
 
-        def query(self, sql: str | Select, **parameters: Any) -> ReactiveDF:
+        def query(self, sql: str | Select) -> ReactiveDF:
             # parse query and add it to the stack of queries
-            query = parse_sql(sql, **parameters)
+            query = parse_sql(sql)
             queries = self._queries + [query]
 
             # allocate a new id

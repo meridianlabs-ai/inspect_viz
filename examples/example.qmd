@@ -9,13 +9,13 @@ execute:
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_viz import reactive_df, select, figure_view, table_view, menu_input
+from inspect_viz import reactive_df, select, param, figure_view, table_view, menu_input
 
-df = reactive_df(px.data.iris())
-# df = df.query("SELECT * WHERE sepal_length < 5")
-df = df.query(
+sepal_length_max = param(5)
+
+df = reactive_df(px.data.iris()).query(
     select("*")
-    .where(f"sepal_length < 6")
+    .where(f"sepal_length < {sepal_length_max}")
 )
 ```
 

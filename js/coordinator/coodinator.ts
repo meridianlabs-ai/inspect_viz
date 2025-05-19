@@ -17,10 +17,22 @@ import { toSelectQuery } from './select';
 class ReactiveDFCoordinator {
     private readonly coordinator_: Coordinator;
     private readonly dfs_ = new Map<string, ReactiveDF>();
+    private readonly params_ = new Map<string, Param>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
         this.coordinator_ = new Coordinator();
         this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    }
+
+    addParam(name: string, value: number | boolean | string): Param {
+        if (!this.params_.has(name)) {
+            this.params_.set(name, Param.value(value));
+        }
+        return this.params_.get(name)!;
+    }
+
+    getParam(name: string): Param | undefined {
+        return this.params_.get(name);
     }
 
     async addReactiveDF(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
@@ -32,19 +44,22 @@ class ReactiveDFCoordinator {
             });
         }
 
-        // create params from queries
+        // extract parameters from queries and register them
         const params = new Map<string, Param>();
         for (const query of queries) {
             for (const p of Object.values(query.parameters)) {
-                params.set(p.name, Param.value(p.value));
+                params.set(p.name, this.addParam(p.name, p.value));
             }
         }
 
-        // convert to select queries
-        const selectQueries = queries.map(toSelectQuery);
-
-        // create and regsiter df
-        this.dfs_.set(id, new ReactiveDF(source_id, Selection.intersect(), selectQueries, params));
+        // create and register df
+        const df = new ReactiveDF(
+            source_id,
+            Selection.intersect(),
+            queries.map(q => toSelectQuery(q, params)),
+            params
+        );
+        this.dfs_.set(id, df);
     }
 
     async getReactiveDF(id: string) {

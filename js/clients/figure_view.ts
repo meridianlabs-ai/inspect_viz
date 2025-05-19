@@ -1,4 +1,5 @@
 import {
+    Param,
     Selection,
     toDataColumns,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
@@ -26,9 +27,10 @@ export class FigureView extends VizClient {
         private readonly axisMappings_: PlotlyAxisMappings,
         table: string,
         filterBy: Selection,
-        queries: SelectQuery[]
+        queries: SelectQuery[],
+        params: Map<string, Param>
     ) {
-        super(table, filterBy, queries);
+        super(table, filterBy, queries, params);
     }
 
     queryResult(data: any) {

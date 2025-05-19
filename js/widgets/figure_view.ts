@@ -23,7 +23,15 @@ async function render({ model, el }: RenderProps<FigureProps>) {
     const df = await coordinator.getReactiveDF(df_id);
 
     // create the view and connect it
-    const view = new FigureView(el, figure, axis_mappings, df.table, df.selection, df.queries);
+    const view = new FigureView(
+        el,
+        figure,
+        axis_mappings,
+        df.table,
+        df.selection,
+        df.queries,
+        df.params
+    );
     await coordinator.connectClient(view);
 }
 
