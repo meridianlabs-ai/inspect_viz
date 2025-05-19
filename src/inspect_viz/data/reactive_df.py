@@ -3,6 +3,7 @@ from os import PathLike
 from typing import Any, Protocol, runtime_checkable
 
 import anywidget
+import duckdb
 import narwhals as nw
 import pandas as pd
 import pyarrow as pa
@@ -15,9 +16,9 @@ from shortuuid import uuid
 from sqlglot.expressions import Select
 
 from .._util.constants import STATIC_DIR
-from ._query.execute import execute_query
-from ._query.mosaic import MosaicQuery
-from ._query.parser import parse_sql
+from .constants import DEFAULT_TABLE
+from .mosaic import MosaicQuery
+from .parse_sql import parse_sql
 
 
 @runtime_checkable
@@ -217,3 +218,11 @@ def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
         return pd.read_fwf(path)
     else:
         raise ValueError(f"Unsupported file extension: {ext}")
+
+
+def execute_query(df: nw.DataFrame[Any], query: MosaicQuery) -> nw.DataFrame[Any]:
+    con = duckdb.connect(database=":memory:")
+    con.register(DEFAULT_TABLE, df.to_pandas())
+    parameters = {k: v.value for k, v in query.parameters.items()}
+    pdf = con.execute(query.sql, parameters or None).fetch_df()
+    return nw.from_native(pdf)

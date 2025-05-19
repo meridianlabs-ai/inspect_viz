@@ -7,11 +7,15 @@ execute:
 ```{python}
 import pandas as pd
 import plotly.express as px
-from inspect_viz.data import reactive_df
+from inspect_viz.data import reactive_df, select
 from inspect_viz.widgets import figure_view, table_view, menu_input
 
 df = reactive_df(px.data.iris())
-df = df.query("SELECT * WHERE species = 'setosa'")
+# df = df.query("SELECT * WHERE sepal_length < 5")
+df = df.query(
+    select("*")
+    .where("sepal_length < 6")
+)
 ```
 
 ```{python}

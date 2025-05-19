@@ -14,8 +14,8 @@ from .mosaic import (
     OrderByItem,
     ParameterExpression,
     UnknownExpression,
+    extract_parameters_with_types,
 )
-from .params import extract_parameters_with_types
 
 T = TypeVar("T")
 
