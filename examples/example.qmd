@@ -9,7 +9,7 @@ execute:
 import pandas as pd
 import plotly.express as px
 from inspect_viz import (
-    reactive_df, select, param, 
+    reactive_df, param, 
     menu_input, slider_input, 
     figure_view, table_view
 )
