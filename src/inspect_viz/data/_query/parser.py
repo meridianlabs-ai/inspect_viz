@@ -30,7 +30,7 @@ def parse_sql(sql: str | exp.Select, **parameters: Any) -> MosaicQuery:
     if len(sql.selects) == 0:
         sql = sql.select("*")
 
-    # ensure we have a from clause
+    # map from to the target table
     sql = sql.from_(DEFAULT_TABLE)
 
     # create query
@@ -387,6 +387,10 @@ def _convert_expression(expr: exp.Expression) -> Any:
     """
     if expr is None:
         return None
+
+    # star as string
+    if isinstance(expr, exp.Star):
+        return "*"
 
     # Unwrap parenthesized expressions
     if isinstance(expr, exp.Paren) and "this" in expr.args:

@@ -238,13 +238,6 @@ function buildExpressionNode(expr: Expression): ExprNode {
 function buildExpressionValue(expr: Expression): ExprValue {
     if (typeof expr === 'string') {
         return expr;
-    } else if (
-        typeof expr !== 'number' &&
-        typeof expr !== 'boolean' &&
-        'type' in expr &&
-        expr.type === 'unknown'
-    ) {
-        return (expr as UnknownExpression).expression;
     } else {
         return buildExpressionNode(expr);
     }
