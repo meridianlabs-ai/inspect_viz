@@ -16,7 +16,9 @@ def validate_bindings(df: ReactiveDF, column: str, param: Param | None = None) -
     # validate that the column in in the data frame
     dtype = df.schema.get(column, None)
     if dtype is None:
-        raise ValueError(f"Column '{column}' is not in the specified dataframe.")
+        raise ValueError(
+            f"Column '{column}' does not exist in the dataframe (expected one of {', '.join(df.columns)})."
+        )
 
     # if a param is specified ensure that the type matches the column type
     if param is not None:
