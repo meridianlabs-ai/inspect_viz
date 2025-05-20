@@ -31,6 +31,7 @@ dev = [
     "pandas",
     "ruff",
     "mypy",
+    "datamodel-code-generator",
     "pandas-stubs",
     "plotly-stubs"
 ]
