@@ -19,7 +19,7 @@ pio.renderers.default = "notebook_connected"
 from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
 ```
 
-
+# Working
 
 ## Row
 
@@ -390,6 +390,7 @@ figure_view(df, fig)
 ## Row
 
 ```{python}
+df = reactive_df(px.data.iris())
 fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
 fig
 ```
@@ -398,9 +399,12 @@ fig
 figure_view(df, fig)
 ```
 
+# Failing
+
 ## Row {.failing}
 
 ```{python}
+df = reactive_df(px.data.iris())
 fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", marginal_y="violin",
                  marginal_x="box", trendline="ols", template="simple_white")
 fig
