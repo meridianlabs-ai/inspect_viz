@@ -339,12 +339,16 @@ async function reactiveDFCoordinator() {
 }
 
 // js/widgets/reactive_df.ts
-async function render({ model }) {
+async function render({ model, el }) {
   const id = model.get("id");
   const source_id = model.get("source_id");
   const buffer = model.get("buffer");
   const queries = model.get("queries");
   const dfQueries = queries ? JSON.parse(queries) : [];
+  const elCellOutput = el.closest(".cell-output");
+  if (elCellOutput) {
+    elCellOutput.style.display = "none";
+  }
   const coordinator = await reactiveDFCoordinator();
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   await coordinator.addReactiveDF(id, source_id, arrowBuffer, dfQueries);

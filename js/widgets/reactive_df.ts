@@ -10,13 +10,19 @@ interface ReactiveDFProps {
     queries: string;
 }
 
-async function render({ model }: RenderProps<ReactiveDFProps>) {
+async function render({ model, el }: RenderProps<ReactiveDFProps>) {
     // unwrap widget parameters
     const id = model.get('id');
     const source_id = model.get('source_id');
     const buffer = model.get('buffer');
     const queries = model.get('queries');
     const dfQueries: MosaicQuery[] = queries ? JSON.parse(queries) : [];
+
+    // mark cell output div hidden for layout
+    const elCellOutput = el.closest('.cell-output') as HTMLDivElement | undefined;
+    if (elCellOutput) {
+        elCellOutput.style.display = 'none';
+    }
 
     // register data frame
     const coordinator = await reactiveDFCoordinator();
