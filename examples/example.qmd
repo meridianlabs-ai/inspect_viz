@@ -7,11 +7,7 @@ execute:
 
 ```{python}
 import plotly.express as px
-from inspect_viz import (
-    reactive_df, param, 
-    menu_input, slider_input, 
-    figure_view, table_view
-)
+from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
 
 # parameters
 petal_width = param(2.5)
