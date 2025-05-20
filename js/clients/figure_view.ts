@@ -34,9 +34,20 @@ export class FigureView extends VizClient {
     }
 
     queryResult(data: any) {
+        // resolve data
         const columns = toDataColumns(data).columns as Record<string, ArrayLike<unknown>>;
         const table = bindTable(this.figure_, this.axisMappings_, columns);
-        Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+
+        // resolve layout
+        const layout = this.figure_.layout || {};
+        layout.autosize = true;
+
+        // resolve config
+        const config = this.figure_.config || {};
+        config.responsive = true;
+
+        // render
+        Plotly.react(this.el_, table, layout, config);
         return this;
     }
 }

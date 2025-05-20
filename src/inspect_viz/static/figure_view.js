@@ -382,7 +382,11 @@ var FigureView = class extends VizClient {
   queryResult(data) {
     const columns = toDataColumns(data).columns;
     const table = bindTable(this.figure_, this.axisMappings_, columns);
-    Plotly.react(this.el_, table, this.figure_.layout, this.figure_.config);
+    const layout = this.figure_.layout || {};
+    layout.autosize = true;
+    const config = this.figure_.config || {};
+    config.responsive = true;
+    Plotly.react(this.el_, table, layout, config);
     return this;
   }
 };
