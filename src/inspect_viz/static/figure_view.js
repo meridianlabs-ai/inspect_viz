@@ -382,6 +382,9 @@ var FigureView = class extends VizClient {
   queryResult(data) {
     const columns = toDataColumns(data).columns;
     const table = bindTable(this.figure_, this.axisMappings_, columns);
+    console.log(this.figure_.data);
+    console.log("---------");
+    console.log(table);
     const layout = this.figure_.layout || {};
     layout.autosize = true;
     const config = this.figure_.config || {};
@@ -392,12 +395,81 @@ var FigureView = class extends VizClient {
 };
 function bindTable(figure, axisMappings, columns) {
   const traces = structuredClone(figure.data);
-  traces.forEach((trace) => {
+  const isMultiTrace = traces.length > 1;
+  if (!isMultiTrace) {
+    const trace = traces[0];
     const mapping = columnMapping(trace, Object.keys(columns), axisMappings);
     for (const [attr, col] of Object.entries(mapping)) {
       const arr = columns[col];
       if (arr) {
         setData(trace, attr.split("."), arr);
+      } else {
+        console.warn(`Column "${col}" not found in table`);
+      }
+    }
+    return traces;
+  }
+  const isPlotlyExpressFigure = detectPlotlyExpressFigure(traces);
+  const hasFacets = detectFacetSubplots(traces, figure.layout);
+  if (hasFacets) {
+    traces.forEach((trace) => {
+      const mapping = columnMapping(trace, Object.keys(columns), axisMappings);
+      for (const [attr, col] of Object.entries(mapping)) {
+        const arr = columns[col];
+        if (arr) {
+          setData(trace, attr.split("."), arr);
+        } else {
+          console.warn(`Column "${col}" not found in table`);
+        }
+      }
+    });
+    return traces;
+  }
+  const possibleCatColumns = findPossibleCategoricalColumns(traces, columns);
+  const tracesByType = groupTracesByType(traces);
+  traces.forEach((trace, _traceIndex) => {
+    const mapping = columnMapping(trace, Object.keys(columns), axisMappings);
+    let indexArray = void 0;
+    if (isPlotlyExpressFigure) {
+      indexArray = findIndicesForPlotlyExpressTrace(trace, possibleCatColumns, columns);
+    }
+    if (!indexArray) {
+      const traceAny = trace;
+      if (getProp(traceAny, "_index") !== void 0) {
+        const indices = getProp(traceAny, "_index");
+        if (Array.isArray(indices)) {
+          indexArray = indices;
+        }
+      } else if (getProp(traceAny, "_filter") !== void 0) {
+        const filterExpr = getProp(traceAny, "_filter");
+        if (typeof filterExpr === "string") {
+          indexArray = applyFilterExpression(filterExpr, columns);
+        }
+      } else {
+        indexArray = inferIndicesFromTraceProperties(trace, columns, possibleCatColumns);
+      }
+    }
+    const traceType = getProp(trace, "type") || "scatter";
+    const tracesOfSameType = tracesByType[traceType] || [];
+    if (!indexArray && tracesOfSameType.length > 1) {
+      const tracePosition = tracesOfSameType.indexOf(trace);
+      if (tracePosition !== -1 && tracePosition < tracesOfSameType.length) {
+        const dataLength = Object.values(columns)[0]?.length || 0;
+        const chunkSize = Math.ceil(dataLength / tracesOfSameType.length);
+        const startIdx = tracePosition * chunkSize;
+        const endIdx = Math.min(startIdx + chunkSize, dataLength);
+        indexArray = Array.from({ length: endIdx - startIdx }, (_, i) => startIdx + i);
+      }
+    }
+    for (const [attr, col] of Object.entries(mapping)) {
+      const arr = columns[col];
+      if (arr) {
+        if (indexArray && indexArray.length > 0) {
+          const filteredArr = Array.from(arr).filter((_, i) => indexArray.includes(i));
+          setData(trace, attr.split("."), filteredArr);
+        } else {
+          setData(trace, attr.split("."), arr);
+        }
       } else {
         console.warn(`Column "${col}" not found in table`);
       }
@@ -445,6 +517,217 @@ function arrayProps(obj, prefix = "") {
 }
 function isOrientable(t) {
   return "orientation" in t;
+}
+function groupTracesByType(traces) {
+  const result = {};
+  traces.forEach((trace) => {
+    const type = trace.type || "scatter";
+    if (!result[type]) {
+      result[type] = [];
+    }
+    result[type].push(trace);
+  });
+  return result;
+}
+function getProp(obj, prop, defaultVal) {
+  return obj && prop in obj ? obj[prop] : defaultVal;
+}
+function detectPlotlyExpressFigure(traces) {
+  return traces.some((trace) => {
+    const t = trace;
+    if (t._px !== void 0 || t._plotlyExpressDefaults !== void 0) {
+      return true;
+    }
+    const legendgroup = getProp(t, "legendgroup");
+    if (legendgroup && typeof legendgroup === "string" && legendgroup.includes(":")) {
+      return true;
+    }
+    const name = getProp(t, "name");
+    if (name !== void 0 && typeof name === "string") {
+      if (name.includes(" =") || name.match(/^[a-zA-Z_]+=[a-zA-Z0-9_]+$/)) {
+        return true;
+      }
+    }
+    return false;
+  });
+}
+function detectFacetSubplots(traces, layout) {
+  if (layout) {
+    const hasGridStructure = layout.grid !== void 0 || Object.keys(layout).some((key) => key.startsWith("xaxis") && key !== "xaxis") || Object.keys(layout).some((key) => key.startsWith("yaxis") && key !== "yaxis");
+    if (hasGridStructure) return true;
+  }
+  return traces.some((trace) => {
+    const xaxis = getProp(trace, "xaxis");
+    const yaxis = getProp(trace, "yaxis");
+    const hasSubplot = getProp(trace, "_subplot") !== void 0;
+    return xaxis !== void 0 && xaxis !== "x" || yaxis !== void 0 && yaxis !== "y" || // Some Plotly Express facet plots contain this meta information
+    hasSubplot;
+  });
+}
+function findIndicesForPlotlyExpressTrace(trace, categoricalColumns, columns) {
+  const name = getProp(trace, "name");
+  if (name === void 0) return void 0;
+  for (const colName of categoricalColumns) {
+    const colValues = columns[colName];
+    if (!colValues) continue;
+    const exactMatches = Array.from(colValues).map((val, idx) => val === name ? idx : -1).filter((idx) => idx !== -1);
+    if (exactMatches.length > 0) {
+      return exactMatches;
+    }
+    if (typeof name === "string" && name.includes("=")) {
+      const parts = name.split("=").map((s) => s.trim());
+      if (parts.length === 2 && parts[0] === colName) {
+        const targetValue = parts[1];
+        const matches = Array.from(colValues).map((val, idx) => String(val) === targetValue ? idx : -1).filter((idx) => idx !== -1);
+        if (matches.length > 0) {
+          return matches;
+        }
+      }
+    }
+  }
+  const legendgroup = getProp(trace, "legendgroup");
+  if (legendgroup) {
+    for (const colName of categoricalColumns) {
+      const colValues = columns[colName];
+      if (!colValues) continue;
+      if (typeof legendgroup === "string" && legendgroup.includes(colName) && legendgroup.includes(":")) {
+        const valueMatch = legendgroup.match(new RegExp(`${colName}:([^:]+)`));
+        if (valueMatch && valueMatch[1]) {
+          const targetValue = valueMatch[1];
+          const matches = Array.from(colValues).map((val, idx) => String(val) === targetValue ? idx : -1).filter((idx) => idx !== -1);
+          if (matches.length > 0) {
+            return matches;
+          }
+        }
+      }
+    }
+  }
+  return void 0;
+}
+function applyFilterExpression(filterExpr, columns) {
+  const matches = filterExpr.match(/(\w+)\s*==\s*["']?([^"']+)["']?/);
+  if (matches && matches.length === 3) {
+    const [_, colName, value] = matches;
+    if (columns[colName]) {
+      const colValues = columns[colName];
+      return Array.from(colValues).map((val, idx) => String(val) === value ? idx : -1).filter((idx) => idx !== -1);
+    }
+  }
+  return void 0;
+}
+function inferIndicesFromTraceProperties(trace, columns, categoricalColumns) {
+  const name = getProp(trace, "name");
+  if (name !== void 0) {
+    for (const colName of categoricalColumns) {
+      const colValues = columns[colName];
+      if (!colValues) continue;
+      const matches = Array.from(colValues).map((val, idx) => String(val) === String(name) ? idx : -1).filter((idx) => idx !== -1);
+      if (matches.length > 0) {
+        return matches;
+      }
+    }
+    if (typeof name === "string" && name.includes("=")) {
+      const parts = name.split("=").map((p) => p.trim());
+      if (parts.length === 2 && columns[parts[0]]) {
+        const colValues = columns[parts[0]];
+        const matches = Array.from(colValues).map((val, idx) => String(val) === parts[1] ? idx : -1).filter((idx) => idx !== -1);
+        if (matches.length > 0) {
+          return matches;
+        }
+      }
+    }
+  }
+  const marker = getProp(trace, "marker");
+  if (marker) {
+    if (Array.isArray(marker.color)) {
+      const nonNullIndices = marker.color.map((val, idx) => val != null ? idx : -1).filter((idx) => idx !== -1);
+      if (nonNullIndices.length > 0 && nonNullIndices.length < (Object.values(columns)[0]?.length || 0)) {
+        return nonNullIndices;
+      }
+    }
+    if (Array.isArray(marker.symbol)) {
+      const symbolName = marker.symbol[0];
+      if (symbolName && typeof symbolName === "string") {
+        const nonNullIndices = marker.symbol.map((val, idx) => val === symbolName ? idx : -1).filter((idx) => idx !== -1);
+        if (nonNullIndices.length > 0) {
+          return nonNullIndices;
+        }
+      }
+    }
+  }
+  const line = getProp(trace, "line");
+  if (line) {
+    if (Array.isArray(line.color)) {
+      const nonNullIndices = line.color.map((val, idx) => val != null ? idx : -1).filter((idx) => idx !== -1);
+      if (nonNullIndices.length > 0 && nonNullIndices.length < (Object.values(columns)[0]?.length || 0)) {
+        return nonNullIndices;
+      }
+    }
+    if (Array.isArray(line.dash)) {
+      const dashStyle = line.dash[0];
+      if (dashStyle) {
+        const matchingIndices = line.dash.map((val, idx) => val === dashStyle ? idx : -1).filter((idx) => idx !== -1);
+        if (matchingIndices.length > 0) {
+          return matchingIndices;
+        }
+      }
+    }
+  }
+  const legendgroup = getProp(trace, "legendgroup");
+  if (legendgroup && typeof legendgroup === "string") {
+    const lgParts = legendgroup.split(":");
+    if (lgParts.length >= 2 && columns[lgParts[0]]) {
+      const colValues = columns[lgParts[0]];
+      const matches = Array.from(colValues).map((val, idx) => String(val) === lgParts[1] ? idx : -1).filter((idx) => idx !== -1);
+      if (matches.length > 0) {
+        return matches;
+      }
+    }
+  }
+  return void 0;
+}
+function findPossibleCategoricalColumns(traces, columns) {
+  const categoricalColumns = [];
+  const traceNames = [];
+  traces.forEach((trace) => {
+    const name = getProp(trace, "name");
+    if (name !== void 0) traceNames.push(name);
+  });
+  if (traceNames.length === 0) return [];
+  for (const [colName, colValues] of Object.entries(columns)) {
+    if (!colValues || colValues.length === 0) continue;
+    const values = Array.from(colValues);
+    const allNumbers = values.every((val) => typeof val === "number");
+    if (allNumbers) {
+      const matchesAnyTraceName = traceNames.some((name) => {
+        if (typeof name === "string") {
+          return values.some((val) => val === Number(name));
+        } else {
+          return values.some((val) => val === name);
+        }
+      });
+      if (!matchesAnyTraceName) continue;
+    }
+    const uniqueValues = new Set(values);
+    if (uniqueValues.size >= values.length * 0.5 && uniqueValues.size > 10) continue;
+    const matchesTraceName = traceNames.some((name) => values.some((val) => val === name));
+    const legendGroups = [];
+    traces.forEach((trace) => {
+      const legendgroup = getProp(trace, "legendgroup");
+      if (legendgroup) legendGroups.push(legendgroup);
+    });
+    const matchesLegendGroup = legendGroups.some(
+      (group) => values.some((val) => String(val) === group)
+    );
+    if (matchesTraceName || matchesLegendGroup) {
+      categoricalColumns.push(colName);
+    } else {
+      if (uniqueValues.size <= 25 && uniqueValues.size > 0 && uniqueValues.size < values.length * 0.25) {
+        categoricalColumns.push(colName);
+      }
+    }
+  }
+  return categoricalColumns;
 }
 
 // js/widgets/figure_view.ts

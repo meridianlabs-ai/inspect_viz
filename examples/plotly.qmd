@@ -1,6 +1,8 @@
 ---
 title: "Explore the Iris Dataset"
-format: dashboard
+format: 
+  dashboard:
+     scrolling: true 
 execute:
   daemon: false
 ---
@@ -8,16 +10,23 @@ execute:
 ```{python}
 import plotly.express as px
 import plotly.io as pio
+import plotly.graph_objects as go
+import pandas as pd
 pio.renderers.default = "notebook_connected"
 ```
 
 ```{python}
 from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
-df = reactive_df(px.data.iris())
 ```
 
+
+
+## Row
+
 ```{python}
-fig = px.scatter(df, x="sepal_width", y="sepal_length")
+df = reactive_df(px.data.election())
+fig = px.scatter_ternary(df, a="Joly", b="Coderre", c="Bergeron", color="winner", size="total", hover_name="district",
+                   size_max=15, color_discrete_map = {"Joly": "blue", "Bergeron": "green", "Coderre":"red"} )
 fig
 ```
 
@@ -25,3 +34,478 @@ fig
 figure_view(df, fig)
 ```
 
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.election())
+fig = px.scatter_3d(df, x="Joly", y="Coderre", z="Bergeron", color="winner", size="total", hover_name="district",
+                  symbol="result", color_discrete_map = {"Joly": "blue", "Bergeron": "green", "Coderre":"red"})
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.wind())
+fig = px.bar_polar(df, r="frequency", theta="direction", color="strength", template="plotly_dark",
+            color_discrete_sequence= px.colors.sequential.Plasma_r)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.wind())
+fig = px.line_polar(df, r="frequency", theta="direction", color="strength", line_close=True,
+            color_discrete_sequence=px.colors.sequential.Plasma_r)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.wind())
+fig = px.scatter_polar(df, r="frequency", theta="direction", color="strength", symbol="strength",
+            color_discrete_sequence=px.colors.sequential.Plasma_r)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.election())
+geojson = px.data.election_geojson()
+
+fig = px.choropleth_map(df, geojson=geojson, color="Bergeron",
+                           locations="district", featureidkey="properties.district",
+                           center={"lat": 45.5517, "lon": -73.7073},
+                           map_style="carto-positron", zoom=9)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.carshare())
+fig = px.scatter_map(df, lat="centroid_lat", lon="centroid_lon", color="peak_hour", size="car_hours",
+                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10,
+                  map_style="carto-positron")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.iris())
+fig = px.density_contour(df, x="sepal_width", y="sepal_length")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.strip(df, x="total_bill", y="time", orientation="h", color="smoker")
+
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.violin(df, y="tip", x="smoker", color="sex", box=True, points="all", hover_data=df.columns)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.box(df, x="day", y="total_bill", color="smoker", notched=True)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+import numpy as np
+df = reactive_df(px.data.gapminder().query("year == 2007"))
+fig = px.icicle(df, path=[px.Constant('world'), 'continent', 'country'], values='pop',
+                  color='lifeExp', hover_data=['iso_alpha'])
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+import numpy as np
+df = reactive_df(px.data.gapminder().query("year == 2007"))
+fig = px.treemap(df, path=[px.Constant('world'), 'continent', 'country'], values='pop',
+                  color='lifeExp', hover_data=['iso_alpha'])
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.gapminder().query("year == 2007"))
+fig = px.sunburst(df, path=['continent', 'country'], values='pop',
+                  color='lifeExp', hover_data=['iso_alpha'])
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df.loc[df['pop'] < 2.e6, 'country'] = 'Other countries' # Represent only large countries
+df = reactive_df(df)
+fig = px.pie(df, values='pop', names='country', title='Population of European continent')
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(pd.DataFrame(dict(
+    number=[39, 27.4, 20.6, 11, 2],
+    stage=["Website visit", "Downloads", "Potential customers", "Requested price", "Invoice sent"])))
+fig = px.funnel(df, x='number', y='stage')
+fig
+```
+
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(pd.DataFrame([
+    dict(Task="Job A", Start='2009-01-01', Finish='2009-02-28', Resource="Alex"),
+    dict(Task="Job B", Start='2009-03-05', Finish='2009-04-15', Resource="Alex"),
+    dict(Task="Job C", Start='2009-02-20', Finish='2009-05-30', Resource="Max")
+]))
+
+fig = px.timeline(df, x_start="Start", x_end="Finish", y="Resource", color="Resource")
+fig
+```
+
+
+```{python}
+figure_view(df, fig)
+```
+
+## Row
+
+```{python}
+df = reactive_df(px.data.gapminder())
+fig = px.line(df, x="year", y="lifeExp", color="continent", line_group="country", hover_name="country",
+        line_shape="spline", render_mode="svg")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.gapminder()).query("SELECT * WHERE year=2007")
+fig = px.scatter(df, x="gdpPercap", y="lifeExp", size="pop", color="continent",
+           hover_name="country", log_x=True, size_max=60)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.parallel_categories(df, color="size", color_continuous_scale=px.colors.sequential.Inferno)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.iris())
+fig = px.parallel_coordinates(df, color="species_id", labels={"species_id": "Species",
+                  "sepal_width": "Sepal Width", "sepal_length": "Sepal Length",
+                  "petal_width": "Petal Width", "petal_length": "Petal Length", },
+                    color_continuous_scale=px.colors.diverging.Tealrose, color_continuous_midpoint=2)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+df = reactive_df(px.data.iris())
+fig = px.scatter_matrix(df, dimensions=["sepal_width", "sepal_length", "petal_width", "petal_length"], color="species")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+
+## Row
+
+```{python}
+iris = px.data.iris()
+iris["e"] = iris["sepal_width"]/100
+df = reactive_df(iris)
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", error_x="e", error_y="e")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row
+
+```{python}
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+## Row {.failing}
+
+```{python}
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species", marginal_y="violin",
+                 marginal_x="box", trendline="ols", template="simple_white")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row {.failing}
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.bar(df, x="sex", y="total_bill", color="smoker", barmode="group", facet_row="time", facet_col="day",
+       category_orders={"day": ["Thur", "Fri", "Sat", "Sun"], "time": ["Lunch", "Dinner"]})
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+## Row {.failing}
+
+```{python}
+df = reactive_df(px.data.gapminder())
+fig = px.area(df, x="year", y="pop", color="continent", line_group="country")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row {.failing}
+
+```{python}
+import numpy as np
+df = reactive_df(px.data.tips())
+fig = px.histogram(df, x="total_bill", y="tip", color="sex", marginal="rug", hover_data=df.columns)
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row {.failing}
+
+```{python}
+df = reactive_df(px.data.tips())
+fig = px.ecdf(df, x="total_bill", color="sex")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+
+## Row {.failing}
+
+```{python}
+df = reactive_df(px.data.iris())
+fig = px.density_heatmap(df, x="sepal_width", y="sepal_length", marginal_x="rug", marginal_y="histogram")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+## Row {.failing}
+
+
+
+```{python}
+df = reactive_df(px.data.gapminder())
+fig = px.scatter_geo(df, locations="iso_alpha", color="continent", hover_name="country", size="pop",
+               animation_frame="year", projection="natural earth")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
+
+## Row {.failing}
+
+```{python}
+df = reactive_df(px.data.gapminder())
+fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80])
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```

@@ -19,10 +19,12 @@ async function render({ model, el }: RenderProps<ReactiveDFProps>) {
     const dfQueries: MosaicQuery[] = queries ? JSON.parse(queries) : [];
 
     // mark cell output div hidden for layout
-    const elCellOutput = el.closest('.cell-output') as HTMLDivElement | undefined;
-    if (elCellOutput) {
-        elCellOutput.style.display = 'none';
-    }
+    setTimeout(() => {
+        const elCellOutput = el.closest('.cell-output') as HTMLDivElement | undefined;
+        if (elCellOutput) {
+            elCellOutput.style.display = 'none';
+        }
+    }, 100);
 
     // register data frame
     const coordinator = await reactiveDFCoordinator();

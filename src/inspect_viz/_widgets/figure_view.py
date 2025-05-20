@@ -64,15 +64,15 @@ def axis_mappings(fig: go.Figure) -> AxisMappings:
         if hasattr(trace, "hovertemplate"):
             # Parse the hovertemplate to extract column names
             template = trace.hovertemplate
-
-            for axis in ["x", "y", "z"]:
-                if f"%{{{axis}}}" in template and not mappings[axis]:
-                    # Try to infer from customdata or other properties
-                    for prop in dir(trace):
-                        if prop.startswith("custom") and prop != "customdata":
-                            # e.g. customdata_x_column
-                            if f"_{axis}_" in prop:
-                                mappings[axis] = getattr(trace, prop)
+            if template:
+                for axis in ["x", "y", "z"]:
+                    if f"%{{{axis}}}" in template and not mappings[axis]:
+                        # Try to infer from customdata or other properties
+                        for prop in dir(trace):
+                            if prop.startswith("custom") and prop != "customdata":
+                                # e.g. customdata_x_column
+                                if f"_{axis}_" in prop:
+                                    mappings[axis] = getattr(trace, prop)
 
         # For 3D plots, trace sometimes has direct access to the column names
         if is_3d:
