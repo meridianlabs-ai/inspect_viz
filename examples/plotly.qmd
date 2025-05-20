@@ -7,6 +7,11 @@ execute:
 
 ```{python}
 import plotly.express as px
+import plotly.io as pio
+pio.renderers.default = "notebook_connected"
+```
+
+```{python}
 from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
 df = reactive_df(px.data.iris())
 ```
