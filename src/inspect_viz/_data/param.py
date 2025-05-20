@@ -20,6 +20,15 @@ class Param(BaseModel):
     default: int | float | bool | str
     """Default value for parameter."""
 
+    def is_numeric(self) -> bool:
+        return isinstance(self.default, (int | float))
+
+    def is_bool(self) -> bool:
+        return isinstance(self.default, bool)
+
+    def is_string(self) -> bool:
+        return isinstance(self.default, str)
+
     def __str__(self) -> str:
         return f":{self.id}"
 

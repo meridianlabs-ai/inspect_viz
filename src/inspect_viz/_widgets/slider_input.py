@@ -1,14 +1,14 @@
 import traitlets
 from anywidget import AnyWidget
 
-from inspect_viz._data.param import Param
-
+from .._data.param import Param
 from .._data.reactive_df import ReactiveDF
 from .._util.constants import STATIC_DIR
+from .valdidate import validate_bindings
 
 
 def slider_input(df: ReactiveDF, column: str, param: Param | None = None) -> AnyWidget:
-    df._ensure()
+    validate_bindings(df, column, param)
 
     class SliderInput(AnyWidget):
         _esm = STATIC_DIR / "slider_input.js"

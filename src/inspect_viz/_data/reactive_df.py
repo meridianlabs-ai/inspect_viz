@@ -9,7 +9,7 @@ import pandas as pd
 import pyarrow as pa
 import traitlets
 from IPython.display import display
-from narwhals import DataFrame
+from narwhals import DataFrame, Schema
 from narwhals.typing import IntoDataFrame
 from pydantic_core import to_json
 from shortuuid import uuid
@@ -33,6 +33,11 @@ class ReactiveDF(Protocol):
     @property
     def columns(self) -> list[str]:
         """Column names for dataframe."""
+        ...
+
+    @property
+    def schema(self) -> Schema:
+        """Schema for dataframe."""
         ...
 
     def query(self, sql: str | Select) -> "ReactiveDF":
@@ -140,6 +145,11 @@ def reactive_df(data: IntoDataFrame | str | PathLike[str]) -> ReactiveDF:
         @property
         def columns(self) -> list[str]:
             return self._ndf.columns
+
+        @property
+        def schema(self) -> Schema:
+            """Schema for dataframe."""
+            return self._ndf.schema
 
         def query(self, sql: str | Select) -> ReactiveDF:
             # parse query and add it to the stack of queries
