@@ -1,0 +1,22 @@
+---
+title: "Explore the Iris Dataset"
+format: dashboard
+execute:
+  daemon: false
+---
+
+```{python}
+import plotly.express as px
+from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
+df = reactive_df(px.data.iris())
+```
+
+```{python}
+fig = px.scatter(df, x="sepal_width", y="sepal_length")
+fig
+```
+
+```{python}
+figure_view(df, fig)
+```
+
