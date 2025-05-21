@@ -1,16 +1,16 @@
 import { RenderProps } from '@anywidget/types';
 
-import { reactiveDFCoordinator } from '../coordinator';
+import { vizCoordinator } from '../coordinator';
 import { MosaicQuery } from '../coordinator/query';
 
-interface ReactiveDFProps {
+interface DataFrameProps {
     id: string;
     source_id: string;
     buffer: DataView;
     queries: string;
 }
 
-async function render({ model, el }: RenderProps<ReactiveDFProps>) {
+async function render({ model, el }: RenderProps<DataFrameProps>) {
     // unwrap widget parameters
     const id = model.get('id');
     const source_id = model.get('source_id');
@@ -27,9 +27,9 @@ async function render({ model, el }: RenderProps<ReactiveDFProps>) {
     }, 100);
 
     // register data frame
-    const coordinator = await reactiveDFCoordinator();
+    const coordinator = await vizCoordinator();
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-    await coordinator.addReactiveDF(id, source_id, arrowBuffer, dfQueries);
+    await coordinator.addDataFrame(id, source_id, arrowBuffer, dfQueries);
 }
 
 export default { render };

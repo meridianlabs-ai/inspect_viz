@@ -1,11 +1,12 @@
 from typing import Any, cast
 
+import inspect_viz as vz
 import narwhals as nw
 import numpy as np
 import pandas as pd
 import pytest
+from inspect_viz._data.dataframe import _execute_query
 from inspect_viz._data.parse_sql import parse_sql
-from inspect_viz._data.reactive_df import execute_query, reactive_df
 from sqlglot import parse_one
 from sqlglot.expressions import Select
 
@@ -26,7 +27,7 @@ def sample_dataframe() -> nw.DataFrame[Any]:
 def test_execute_simple_select(sample_dataframe: nw.DataFrame[Any]) -> None:
     """Test executing a simple SELECT query."""
     query = parse_sql("SELECT name, age FROM data")
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     # Check the result structure
     assert isinstance(result, nw.DataFrame)
@@ -47,7 +48,7 @@ def test_execute_simple_select(sample_dataframe: nw.DataFrame[Any]) -> None:
 def test_execute_where_clause(sample_dataframe: nw.DataFrame[Any]) -> None:
     """Test executing a query with WHERE clause."""
     query = parse_sql("SELECT * FROM data WHERE age > 30")
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     # Convert to pandas for testing
     pdf = result.to_pandas()
@@ -63,7 +64,7 @@ def test_execute_aggregation(sample_dataframe: nw.DataFrame[Any]) -> None:
     query = parse_sql(
         "SELECT department, AVG(salary) as avg_salary FROM data GROUP BY department"
     )
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     # Check result
     pdf = result.to_pandas()
@@ -82,7 +83,7 @@ def test_execute_aggregation(sample_dataframe: nw.DataFrame[Any]) -> None:
 def test_execute_order_by(sample_dataframe: nw.DataFrame[Any]) -> None:
     """Test executing a query with ORDER BY clause."""
     query = parse_sql("SELECT name, age FROM data ORDER BY age DESC")
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     pdf = result.to_pandas()
     assert len(pdf) == 5
@@ -95,20 +96,10 @@ def test_execute_order_by(sample_dataframe: nw.DataFrame[Any]) -> None:
 def test_execute_limit(sample_dataframe: nw.DataFrame[Any]) -> None:
     """Test executing a query with LIMIT clause."""
     query = parse_sql("SELECT * FROM data LIMIT 3")
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     pdf = result.to_pandas()
     assert len(pdf) == 3
-
-
-def test_execute_parameterized_query(sample_dataframe: nw.DataFrame[Any]) -> None:
-    """Test executing a parameterized query."""
-    query = parse_sql("SELECT * FROM data WHERE age > :min_age", min_age=30)
-    result = execute_query(sample_dataframe, query)
-
-    pdf = result.to_pandas()
-    assert len(pdf) == 3
-    assert all(age > 30 for age in pdf["age"])
 
 
 def test_execute_complex_query(sample_dataframe: nw.DataFrame[Any]) -> None:
@@ -126,7 +117,7 @@ def test_execute_complex_query(sample_dataframe: nw.DataFrame[Any]) -> None:
     """
 
     query = parse_sql(query_str)
-    result = execute_query(sample_dataframe, query)
+    result = _execute_query(sample_dataframe, query)
 
     pdf = result.to_pandas()
 
@@ -152,7 +143,7 @@ def test_reactive_df_query_method() -> None:
     )
 
     # Create a reactive dataframe
-    df = reactive_df(data)
+    df = vz.DataFrame(data)
 
     # Apply a query to the reactive dataframe
     result_df = df.query("SELECT name, age FROM data WHERE age > 30")
@@ -190,7 +181,7 @@ def test_reactive_df_chained_queries() -> None:
     )
 
     # Create a reactive dataframe
-    df = reactive_df(data)
+    df = vz.DataFrame(data)
 
     # Apply two chained queries
     filtered_df = df.query("SELECT * FROM data WHERE age > 30")
@@ -214,41 +205,6 @@ def test_reactive_df_chained_queries() -> None:
     assert list(pdf["name"]) == ["Charlie", "David", "Eve"]
 
 
-def test_reactive_df_with_parameterized_query() -> None:
-    """Test ReactiveDF with parameterized queries."""
-    # Create a sample dataframe
-    data = pd.DataFrame(
-        {
-            "id": [1, 2, 3, 4, 5],
-            "name": ["Alice", "Bob", "Charlie", "David", "Eve"],
-            "age": [25, 30, 35, 40, 45],
-            "department": ["HR", "Engineering", "Marketing", "Engineering", "HR"],
-            "salary": [60000, 75000, 65000, 80000, 70000],
-        }
-    )
-
-    # Create a reactive dataframe
-    df = reactive_df(data)
-
-    # Apply a parameterized query
-    min_age = 35
-    result_df = df.query("SELECT * FROM data WHERE age >= :min_age", min_age=min_age)
-
-    # Verify it's a valid ReactiveDF implementation
-    assert hasattr(result_df, "query")
-    assert hasattr(result_df, "__dataframe__")
-
-    # Extract narwhals dataframe from the implementation
-    ndf = cast(nw.DataFrame[Any], result_df.__narwhals_dataframe__())
-
-    # Convert to pandas for testing
-    pdf = ndf.to_pandas()
-
-    # Check that the query was correctly applied
-    assert len(pdf) == 3  # Charlie, David, Eve
-    assert all(age >= min_age for age in pdf["age"])
-
-
 def test_reactive_df_with_sqlglot_select() -> None:
     """Test ReactiveDF with sqlglot Select object instead of string."""
     # Create a sample dataframe
@@ -263,7 +219,7 @@ def test_reactive_df_with_sqlglot_select() -> None:
     )
 
     # Create a reactive dataframe
-    df = reactive_df(data)
+    df = vz.DataFrame(data)
 
     # Create a sqlglot Select object
     select_obj = parse_one("SELECT name, department FROM data WHERE age > 30")

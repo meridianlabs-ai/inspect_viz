@@ -7,14 +7,14 @@ execute:
 
 ```{python}
 import plotly.express as px
-from inspect_viz import reactive_df, param, menu_input, slider_input, figure_view, table_view
+import inspect_viz as vz
 
 # parameters
-petal_width = param(2.5)
-petal_length = param(7)
+petal_width = vz.Param(default=2.5)
+petal_length = vz.Param(default=7)
 
 # data source
-df = reactive_df(px.data.iris()).query(f"""
+df = vz.DataFrame(px.data.iris()).query(f"""
     SELECT * FROM df 
     WHERE petal_width < {petal_width} AND petal_length < {petal_length}
 """)
@@ -24,9 +24,9 @@ df = reactive_df(px.data.iris()).query(f"""
 ## Row {.toolbar}
 
 ```{python}
-menu_input(df, column="species")
-slider_input(df, column="petal_width", param=petal_width)
-slider_input(df, column="petal_length", param=petal_length)
+vz.menu_input(df, column="species")
+vz.slider_input(df, column="petal_width", param=petal_width)
+vz.slider_input(df, column="petal_length", param=petal_length)
 ```
 
 ## Row 
@@ -35,10 +35,10 @@ slider_input(df, column="petal_length", param=petal_length)
 
 ```{python}
 fig = px.scatter(df, x="sepal_width", y="sepal_length")
-figure_view(df, fig)
+vz.figure_view(df, fig)
 ```
 
 ```{python}
-table_view(df)
+vz.table_view(df)
 ```
 

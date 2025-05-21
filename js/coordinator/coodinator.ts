@@ -10,13 +10,13 @@ import {
 
 import { initDuckdb } from './duckdb';
 import { MosaicQuery } from './query';
-import { ReactiveDF } from './reactive_df';
+import { DataFrame } from './dataframe';
 import { sleep } from '../util/wait';
 import { toSelectQuery } from './select';
 
-class ReactiveDFCoordinator {
+class VizCoordinator {
     private readonly coordinator_: Coordinator;
-    private readonly dfs_ = new Map<string, ReactiveDF>();
+    private readonly dfs_ = new Map<string, DataFrame>();
     private readonly params_ = new Map<string, Param>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
@@ -35,7 +35,7 @@ class ReactiveDFCoordinator {
         return this.params_.get(name);
     }
 
-    async addReactiveDF(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
+    async addDataFrame(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
         // insert table into database if there is data
         if (buffer.length > 0) {
             await this.conn_?.insertArrowFromIPCStream(buffer, {
@@ -53,7 +53,7 @@ class ReactiveDFCoordinator {
         }
 
         // create and register df
-        const df = new ReactiveDF(
+        const df = new DataFrame(
             source_id,
             Selection.intersect(),
             queries.map(q => toSelectQuery(q, params)),
@@ -62,7 +62,7 @@ class ReactiveDFCoordinator {
         this.dfs_.set(id, df);
     }
 
-    async getReactiveDF(id: string) {
+    async getDataFrame(id: string) {
         // at startup we can't control the order of df producing and df consuming
         // widgets, so we may need to wait and retry for the data frame
         while (true) {
@@ -82,17 +82,17 @@ class ReactiveDFCoordinator {
 
 // get the global coordinators instance, ensuring we get the same
 // instance eval across different js bundles loaded into the page
-const REACTIVE_DF_COORDINATOR_KEY = Symbol.for('@@reactive-df-coordinator');
-async function reactiveDFCoordinator(): Promise<ReactiveDFCoordinator> {
+const VIZ_COORDINATOR_KEY = Symbol.for('@@inspect-viz-coordinator');
+async function vizCoordinator(): Promise<VizCoordinator> {
     const globalScope: any = typeof window !== 'undefined' ? window : globalThis;
-    if (!globalScope[REACTIVE_DF_COORDINATOR_KEY]) {
-        globalScope[REACTIVE_DF_COORDINATOR_KEY] = (async () => {
+    if (!globalScope[VIZ_COORDINATOR_KEY]) {
+        globalScope[VIZ_COORDINATOR_KEY] = (async () => {
             const duckdb = await initDuckdb();
             const conn = await duckdb.connect();
-            return new ReactiveDFCoordinator(conn);
+            return new VizCoordinator(conn);
         })();
     }
-    return globalScope[REACTIVE_DF_COORDINATOR_KEY] as Promise<ReactiveDFCoordinator>;
+    return globalScope[VIZ_COORDINATOR_KEY] as Promise<VizCoordinator>;
 }
 
-export { ReactiveDFCoordinator, reactiveDFCoordinator };
+export { VizCoordinator, vizCoordinator };

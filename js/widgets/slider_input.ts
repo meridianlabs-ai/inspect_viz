@@ -2,7 +2,7 @@ import type { RenderProps } from '@anywidget/types';
 
 import { Slider } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm';
 
-import { reactiveDFCoordinator } from '../coordinator';
+import { vizCoordinator } from '../coordinator';
 
 interface SliderProps {
     df_id: string;
@@ -17,8 +17,8 @@ async function render({ model, el }: RenderProps<SliderProps>) {
     const param: string = model.get('param');
 
     // get the data frame
-    const coordinator = await reactiveDFCoordinator();
-    const df = await coordinator.getReactiveDF(df_id);
+    const coordinator = await vizCoordinator();
+    const df = await coordinator.getDataFrame(df_id);
 
     // initialize the slider and connect it
     const menu = new Slider({

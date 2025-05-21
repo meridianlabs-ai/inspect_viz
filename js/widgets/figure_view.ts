@@ -1,6 +1,6 @@
 import type { RenderProps } from '@anywidget/types';
 
-import { reactiveDFCoordinator } from '../coordinator';
+import { vizCoordinator } from '../coordinator';
 
 import { FigureView, PlotlyAxisMappings, PlotlyFigure } from '../clients/figure_view';
 
@@ -19,8 +19,8 @@ async function render({ model, el }: RenderProps<FigureProps>) {
     const axis_mappings: PlotlyAxisMappings = JSON.parse(axis_mappings_json);
 
     // get the data frame
-    const coordinator = await reactiveDFCoordinator();
-    const df = await coordinator.getReactiveDF(df_id);
+    const coordinator = await vizCoordinator();
+    const df = await coordinator.getDataFrame(df_id);
 
     // create the view and connect it
     const view = new FigureView(

@@ -1,12 +1,12 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._data.reactive_df import ReactiveDF
+from .._data.dataframe import DataFrame
 from .._util.constants import STATIC_DIR
 from .valdidate import validate_df
 
 
-def table_view(df: ReactiveDF) -> AnyWidget:
+def table_view(df: DataFrame) -> AnyWidget:
     validate_df(df)
 
     class TableView(AnyWidget):

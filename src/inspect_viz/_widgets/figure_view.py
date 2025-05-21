@@ -6,12 +6,12 @@ import plotly.io as pio
 import traitlets
 from anywidget import AnyWidget
 
-from .._data.reactive_df import ReactiveDF
+from .._data.dataframe import DataFrame
 from .._util.constants import STATIC_DIR
 from .valdidate import validate_df
 
 
-def figure_view(df: ReactiveDF, fig: go.Figure) -> AnyWidget:
+def figure_view(df: DataFrame, fig: go.Figure) -> AnyWidget:
     validate_df(df)
 
     class FigureView(AnyWidget):

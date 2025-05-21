@@ -1,21 +1,21 @@
 from narwhals import Boolean, String
 
+from .._data.dataframe import DataFrame
 from .._data.param import Param
-from .._data.reactive_df import ReactiveDF
 
 
-def validate_df(df: ReactiveDF) -> None:
+def validate_df(df: DataFrame) -> None:
     # valdate type for people not using type-checkers
-    if not isinstance(df, ReactiveDF):
+    if not isinstance(df, DataFrame):
         raise TypeError(
-            "Passed dataframe is not a ReactiveDF. Did you forget to wrap it in reactive_df?"
+            "Passed dataframe is not an Inspect Viz DataFrame. Did you forget to call vz.dataframe()?"
         )
 
     # ensure the df is on the client
     df._ensure()
 
 
-def validate_bindings(df: ReactiveDF, column: str, param: Param | None = None) -> None:
+def validate_bindings(df: DataFrame, column: str, param: Param | None = None) -> None:
     def raise_type_error(type: str) -> None:
         raise TypeError(
             f"Parameter passed for column '{column}' must be a {type} type."

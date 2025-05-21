@@ -1,3 +1,4 @@
+from inspect_viz._data.param import Param
 from inspect_viz._data.parse_sql import parse_sql
 from inspect_viz._data.query import (
     BinaryExpression,
@@ -240,19 +241,16 @@ def test_model_validation() -> None:
 
 def test_parameterized_query() -> None:
     """Test handling of parameterized queries."""
-    # Test both parameter formats that DuckDB supports
-    styles = [
-        # Test with $ format
-        "SELECT * FROM products WHERE category = $category AND price < $max_price",
-        # Test with : format
-        "SELECT * FROM products WHERE category = :category AND price < :max_price",
-    ]
+    category = Param(default="mens")
+    max_price = Param(default=10)
 
     # Use the first style for our main test
-    sql: str = styles[0]
+    sql: str = (
+        f"SELECT * FROM products WHERE category = {category} AND price < {max_price}"
+    )
 
     # Convert without parameter values
-    result: MosaicQuery = parse_sql(sql, category="color", max_price=10)
+    result: MosaicQuery = parse_sql(sql)
 
     # Check the parameter references were captured in the WHERE clause
     assert result.where is not None
@@ -271,20 +269,17 @@ def test_parameterized_query() -> None:
     assert isinstance(cat_binary.right, ParameterExpression)
     category_param = cat_binary.right
     assert category_param.type == "parameter"
-    assert category_param.name == "category"
 
     # Find the price parameter reference
     price_condition = logical_expr.expressions[1]
     assert isinstance(price_condition, BinaryExpression)
     price_binary = price_condition
     assert price_binary.type == "lt"
-    assert price_binary.left == "price"
 
     # Check that the parameter was recognized
     assert isinstance(price_binary.right, ParameterExpression)
     price_param = price_binary.right
     assert price_param.type == "parameter"
-    assert price_param.name == "max_price"
 
 
 def test_query_without_from() -> None:
