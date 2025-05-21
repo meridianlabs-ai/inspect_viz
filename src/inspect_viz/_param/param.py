@@ -3,6 +3,9 @@ from typing import Any, ClassVar, Optional
 from pydantic import BaseModel, Field
 from shortuuid import uuid
 
+PARAM_ESCAPE = ":"
+PARAM_PREFIX = "param_"
+
 
 class Param(BaseModel):
     """Parameter that can be bound from inputs."""
@@ -10,7 +13,7 @@ class Param(BaseModel):
     default: int | float | bool | str
     """Default value for parameter."""
 
-    id: str = Field(default_factory=lambda: f"param_{uuid()}")
+    id: str = Field(default_factory=lambda: f"{PARAM_PREFIX}{uuid()}")
     """Unique id for parameter."""
 
     def is_numeric(self) -> bool:
@@ -23,7 +26,7 @@ class Param(BaseModel):
         return isinstance(self.default, str)
 
     def __str__(self) -> str:
-        return f":{self.id}"
+        return f"{PARAM_ESCAPE}{self.id}"
 
     # Class-level dictionary to store all instances
     _instances: ClassVar[dict[str, "Param"]] = {}

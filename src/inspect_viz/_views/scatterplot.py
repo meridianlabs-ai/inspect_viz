@@ -3,7 +3,7 @@ from anywidget import AnyWidget
 import inspect_viz as vz
 import inspect_viz.plot as pl
 
-from ..plot._widget import plot_widget
+from .plot import plot
 
 
 def scatterplot(df: vz.DataFrame, x: str, y: str) -> AnyWidget:
@@ -14,4 +14,4 @@ def scatterplot(df: vz.DataFrame, x: str, y: str) -> AnyWidget:
         x: Column name for x-coordinates.
         y: Column name for y-coordinates.
     """
-    return plot_widget(df, pl.Plot(plot=[]))
+    return plot(df, pl.Plot(plot=[]))
