@@ -8,7 +8,7 @@ def validate_df(df: DataFrame) -> None:
     # valdate type for people not using type-checkers
     if not isinstance(df, DataFrame):
         raise TypeError(
-            "Passed dataframe is not an Inspect Viz DataFrame. Did you forget to call vz.dataframe()?"
+            "Passed dataframe is not an Inspect Viz DataFrame. Did you forget to wrap it in vz.DataFrame()?"
         )
 
     # ensure the df is on the client
