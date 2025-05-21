@@ -2,7 +2,7 @@ from typing import Any, Literal, Union
 
 from pydantic import BaseModel
 
-from .param import Param
+from .._param.param import Param
 
 
 class FunctionExpression(BaseModel):

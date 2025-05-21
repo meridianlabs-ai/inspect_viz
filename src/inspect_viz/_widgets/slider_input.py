@@ -1,8 +1,8 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._data.dataframe import DataFrame
-from .._data.param import Param
+from .._dataframe.dataframe import DataFrame
+from .._param.param import Param
 from .._util.constants import STATIC_DIR
 from .valdidate import validate_bindings
 

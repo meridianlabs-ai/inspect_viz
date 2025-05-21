@@ -1,6 +1,5 @@
-from inspect_viz._data.param import Param
-from inspect_viz._data.parse_sql import parse_sql
-from inspect_viz._data.query import (
+from inspect_viz._dataframe.parse_sql import parse_sql
+from inspect_viz._dataframe.query import (
     BinaryExpression,
     FunctionExpression,
     LogicalExpression,
@@ -8,6 +7,7 @@ from inspect_viz._data.query import (
     OrderByItem,
     ParameterExpression,
 )
+from inspect_viz._param.param import Param
 
 
 def test_simple_select() -> None:

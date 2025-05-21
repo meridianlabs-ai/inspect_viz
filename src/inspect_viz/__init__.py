@@ -1,5 +1,5 @@
-from ._data.dataframe import DataFrame
-from ._data.param import Param
+from ._dataframe.dataframe import DataFrame
+from ._param.param import Param
 from ._widgets.figure_view import figure_view
 from ._widgets.menu_input import menu_input
 from ._widgets.slider_input import slider_input

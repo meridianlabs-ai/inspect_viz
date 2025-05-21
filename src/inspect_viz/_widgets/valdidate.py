@@ -1,7 +1,7 @@
 from narwhals import Boolean, String
 
-from .._data.dataframe import DataFrame
-from .._data.param import Param
+from .._dataframe.dataframe import DataFrame
+from .._param.param import Param
 
 
 def validate_df(df: DataFrame) -> None:

@@ -5,8 +5,8 @@ import narwhals as nw
 import numpy as np
 import pandas as pd
 import pytest
-from inspect_viz._data.dataframe import _execute_query
-from inspect_viz._data.parse_sql import parse_sql
+from inspect_viz._dataframe.dataframe import _execute_query
+from inspect_viz._dataframe.parse_sql import parse_sql
 from sqlglot import parse_one
 from sqlglot.expressions import Select
 
