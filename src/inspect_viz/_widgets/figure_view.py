@@ -8,12 +8,11 @@ from anywidget import AnyWidget
 
 from .._data.reactive_df import ReactiveDF
 from .._util.constants import STATIC_DIR
+from .valdidate import validate_df
 
 
 def figure_view(df: ReactiveDF, fig: go.Figure) -> AnyWidget:
-    # TODO: validate fig._data against df.columns to confirm they match
-
-    df._ensure()
+    validate_df(df)
 
     class FigureView(AnyWidget):
         _esm = STATIC_DIR / "figure_view.js"

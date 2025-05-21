@@ -4,14 +4,25 @@ from .._data.param import Param
 from .._data.reactive_df import ReactiveDF
 
 
+def validate_df(df: ReactiveDF) -> None:
+    # valdate type for people not using type-checkers
+    if not isinstance(df, ReactiveDF):
+        raise TypeError(
+            "Passed dataframe is not a ReactiveDF. Did you forget to wrap it in reactive_df?"
+        )
+
+    # ensure the df is on the client
+    df._ensure()
+
+
 def validate_bindings(df: ReactiveDF, column: str, param: Param | None = None) -> None:
     def raise_type_error(type: str) -> None:
         raise TypeError(
             f"Parameter passed for column '{column}' must be a {type} type."
         )
 
-    # ensure the df is on the client
-    df._ensure()
+    # validate df and ensure it is on the client
+    validate_df(df)
 
     # validate that the column in in the data frame
     dtype = df.schema.get(column, None)
