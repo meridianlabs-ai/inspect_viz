@@ -58,15 +58,9 @@ Expression = Union[
 ]
 
 
-class Parameter(BaseModel):
-    name: str
-    value: int | float | bool | str
-    type: str
-
-
 class MosaicQuery(BaseModel):
     sql: str
-    parameters: dict[str, Parameter]
+    parameters: dict[str, Param]
     select: dict[
         str, Union[str, FunctionExpression, BinaryExpression, UnknownExpression]
     ]
@@ -123,7 +117,7 @@ def extract_parameter_names(query: MosaicQuery) -> list[str]:
     return list(set(parameter_names))
 
 
-def extract_parameters_with_types(query: MosaicQuery) -> dict[str, Parameter]:
+def extract_parameters_with_types(query: MosaicQuery) -> dict[str, Param]:
     """
     Extract parameters from a MosaicQuery and create Parameter objects with types.
 
@@ -141,36 +135,14 @@ def extract_parameters_with_types(query: MosaicQuery) -> dict[str, Parameter]:
     parameter_names = extract_parameter_names(query)
 
     # Get all parameter values (globally)
-    parameter_values = {k: v.default for k, v in Param.get_all().items()}
+    all_parameters = {k: v for k, v in Param.get_all().items()}
 
     # Create Parameter objects for each parameter name
-    parameters = {}
+    parameters: dict[str, Param] = {}
     for name in parameter_names:
-        if name in parameter_values:
-            # Infer the SQL type of the parameter value
-            param_type = _infer_type(parameter_values[name])
-
-            # Create Parameter object
-            parameters[name] = Parameter(
-                name=name, value=parameter_values[name], type=param_type
-            )
+        if name in all_parameters:
+            parameters[name] = all_parameters[name]
         else:
             raise ValueError(f"Default value not provided for parameter '{name}'")
 
     return parameters
-
-
-def _infer_type(value: Any) -> str:
-    """Infer the SQL type of a Python value."""
-    if isinstance(value, int):
-        return "integer"
-    elif isinstance(value, float):
-        return "float"
-    elif isinstance(value, bool):
-        return "boolean"
-    elif isinstance(value, str):
-        return "text"
-    elif value is None:
-        return "null"
-    else:
-        return "text"  # Default fallback

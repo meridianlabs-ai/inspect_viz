@@ -300,7 +300,7 @@ var VizCoordinator = class {
     const params = /* @__PURE__ */ new Map();
     for (const query of queries) {
       for (const p of Object.values(query.parameters)) {
-        params.set(p.name, this.addParam(p.name, p.value));
+        params.set(p.id, this.addParam(p.id, p.default));
       }
     }
     const df = new DataFrame(
