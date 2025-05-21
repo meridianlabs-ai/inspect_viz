@@ -23,14 +23,14 @@ T = TypeVar("T")
 def parse_sql(sql: str | exp.Select) -> MosaicQuery:
     # resolve to exp.Select
     if isinstance(sql, str):
+        # ensure we have a SELECT
+        if not sql.strip().lower().startswith("select"):
+            sql = f"SELECT * {sql}"
+
         expr = sqlglot.parse_one(sql, dialect="duckdb")
         if not isinstance(expr, exp.Select):
             raise ValueError(f"Unsupported SQL expression type: {type(sql)}")
         sql = expr
-
-    # ensure we have a select clause
-    if len(sql.selects) == 0:
-        sql = sql.select("*")
 
     # map from to the target table
     sql = sql.from_(DEFAULT_TABLE)
