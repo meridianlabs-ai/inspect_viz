@@ -7,15 +7,15 @@ import traitlets
 from anywidget import AnyWidget
 
 from .._dataframe.dataframe import DataFrame
+from .._dataframe.valdidate import validate_df
 from .._util.constants import STATIC_DIR
-from .valdidate import validate_df
 
 
-def figure_view(df: DataFrame, fig: go.Figure) -> AnyWidget:
+def figure(df: DataFrame, fig: go.Figure) -> AnyWidget:
     validate_df(df)
 
     class FigureView(AnyWidget):
-        _esm = STATIC_DIR / "figure_view.js"
+        _esm = STATIC_DIR / "figure.js"
         df_id = traitlets.CUnicode("").tag(sync=True)
         figure = traitlets.CUnicode("").tag(sync=True)
         axis_mappings = traitlets.CUnicode("").tag(sync=True)

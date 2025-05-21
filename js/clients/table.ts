@@ -1,9 +1,9 @@
 import { Param, Selection } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
-import { Table } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm';
+import { Table as MosaicTable } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm';
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
-import { VizClient } from './viz_client';
+import { VizClient } from './viz';
 
-export class TableView extends Table {
+export class Table extends MosaicTable {
     constructor(
         el: HTMLElement,
         table: string,

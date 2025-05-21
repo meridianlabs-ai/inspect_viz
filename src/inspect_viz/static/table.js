@@ -338,10 +338,10 @@ async function vizCoordinator() {
   return globalScope[VIZ_COORDINATOR_KEY];
 }
 
-// js/clients/table_view.ts
-import { Table } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm";
+// js/clients/table.ts
+import { Table as MosaicTable } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm";
 
-// js/clients/viz_client.ts
+// js/clients/viz.ts
 import {
   MosaicClient as MosaicClient2
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
@@ -368,8 +368,8 @@ var VizClient = class _VizClient extends MosaicClient2 {
   }
 };
 
-// js/clients/table_view.ts
-var TableView = class extends Table {
+// js/clients/table.ts
+var Table = class extends MosaicTable {
   constructor(el, table, filterBy, queries_, params_) {
     super({ element: el, filterBy, from: table });
     this.queries_ = queries_;
@@ -384,15 +384,15 @@ var TableView = class extends Table {
   }
 };
 
-// js/widgets/table_view.ts
+// js/widgets/table.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
   const coordinator = await vizCoordinator();
   const df = await coordinator.getDataFrame(df_id);
-  const view = new TableView(el, df.table, df.selection, df.queries, df.params);
+  const view = new Table(el, df.table, df.selection, df.queries, df.params);
   await coordinator.connectClient(view);
 }
-var table_view_default = { render };
+var table_default = { render };
 export {
-  table_view_default as default
+  table_default as default
 };

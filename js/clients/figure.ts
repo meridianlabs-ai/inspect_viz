@@ -6,7 +6,7 @@ import {
 import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 import Plotly from 'https://esm.sh/plotly.js-dist-min@3.0.1';
-import { VizClient } from './viz_client';
+import { VizClient } from './viz';
 
 export interface PlotlyAxisMappings {
     x: string | null;
@@ -20,7 +20,7 @@ export interface PlotlyFigure {
     config?: Partial<Plotly.Config>;
 }
 
-export class FigureView extends VizClient {
+export class Figure extends VizClient {
     constructor(
         private readonly el_: HTMLElement,
         private readonly figure_: PlotlyFigure,
@@ -622,9 +622,8 @@ function findPossibleCategoricalColumns(
         const uniqueValues = new Set(values);
         if (uniqueValues.size >= values.length * 0.5 && uniqueValues.size > 10) continue;
 
-        // Check if any trace name is in this column 
-        const matchesTraceName = traceNames.some(name => 
-            values.some(val => val === name));
+        // Check if any trace name is in this column
+        const matchesTraceName = traceNames.some(name => values.some(val => val === name));
 
         // Also check if trace legendgroups match any column values
         const legendGroups: string[] = [];

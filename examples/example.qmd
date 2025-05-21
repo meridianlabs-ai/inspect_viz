@@ -24,9 +24,9 @@ df = vz.DataFrame(px.data.iris()).query(f"""
 ## Row {.toolbar}
 
 ```{python}
-vz.menu_input(df, column="species")
-vz.slider_input(df, column="petal_width", param=petal_width)
-vz.slider_input(df, column="petal_length", param=petal_length)
+vz.menu(df, column="species")
+vz.slider(df, column="petal_width", param=petal_width)
+vz.slider(df, column="petal_length", param=petal_length)
 ```
 
 ## Row 
@@ -35,10 +35,10 @@ vz.slider_input(df, column="petal_length", param=petal_length)
 
 ```{python}
 fig = px.scatter(df, x="sepal_width", y="sepal_length")
-vz.figure_view(df, fig)
+vz.figure(df, fig)
 ```
 
 ```{python}
-vz.table_view(df)
+vz.table(df)
 ```
 

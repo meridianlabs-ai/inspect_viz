@@ -2,16 +2,16 @@ import traitlets
 from anywidget import AnyWidget
 
 from .._dataframe.dataframe import DataFrame
+from .._dataframe.valdidate import validate_bindings
 from .._param.param import Param
 from .._util.constants import STATIC_DIR
-from .valdidate import validate_bindings
 
 
-def slider_input(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
+def slider(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
     validate_bindings(df, column, param)
 
     class SliderInput(AnyWidget):
-        _esm = STATIC_DIR / "slider_input.js"
+        _esm = STATIC_DIR / "slider.js"
         df_id = traitlets.CUnicode("").tag(sync=True)
         column = traitlets.CUnicode("").tag(sync=True)
         param = traitlets.CUnicode("").tag(sync=True)

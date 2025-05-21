@@ -338,13 +338,13 @@ async function vizCoordinator() {
   return globalScope[VIZ_COORDINATOR_KEY];
 }
 
-// js/clients/figure_view.ts
+// js/clients/figure.ts
 import {
   toDataColumns
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import Plotly from "https://esm.sh/plotly.js-dist-min@3.0.1";
 
-// js/clients/viz_client.ts
+// js/clients/viz.ts
 import {
   MosaicClient as MosaicClient2
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
@@ -371,8 +371,8 @@ var VizClient = class _VizClient extends MosaicClient2 {
   }
 };
 
-// js/clients/figure_view.ts
-var FigureView = class extends VizClient {
+// js/clients/figure.ts
+var Figure = class extends VizClient {
   constructor(el_, figure_, axisMappings_, table, filterBy, queries, params) {
     super(table, filterBy, queries, params);
     this.el_ = el_;
@@ -730,7 +730,7 @@ function findPossibleCategoricalColumns(traces, columns) {
   return categoricalColumns;
 }
 
-// js/widgets/figure_view.ts
+// js/widgets/figure.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
   const figure_json = model.get("figure");
@@ -739,7 +739,7 @@ async function render({ model, el }) {
   const axis_mappings = JSON.parse(axis_mappings_json);
   const coordinator = await vizCoordinator();
   const df = await coordinator.getDataFrame(df_id);
-  const view = new FigureView(
+  const view = new Figure(
     el,
     figure,
     axis_mappings,
@@ -750,7 +750,7 @@ async function render({ model, el }) {
   );
   await coordinator.connectClient(view);
 }
-var figure_view_default = { render };
+var figure_default = { render };
 export {
-  figure_view_default as default
+  figure_default as default
 };

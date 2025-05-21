@@ -2,16 +2,16 @@ import traitlets
 from anywidget import AnyWidget
 
 from .._dataframe.dataframe import DataFrame
+from .._dataframe.valdidate import validate_bindings
 from .._param.param import Param
 from .._util.constants import STATIC_DIR
-from .valdidate import validate_bindings
 
 
-def menu_input(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
+def menu(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
     validate_bindings(df, column, param)
 
     class MenuInput(AnyWidget):
-        _esm = STATIC_DIR / "menu_input.js"
+        _esm = STATIC_DIR / "menu.js"
         df_id = traitlets.CUnicode("").tag(sync=True)
         column = traitlets.CUnicode("").tag(sync=True)
         param = traitlets.CUnicode("").tag(sync=True)

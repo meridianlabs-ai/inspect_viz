@@ -2,7 +2,7 @@ import type { RenderProps } from '@anywidget/types';
 
 import { vizCoordinator } from '../coordinator';
 
-import { FigureView, PlotlyAxisMappings, PlotlyFigure } from '../clients/figure_view';
+import { Figure, PlotlyAxisMappings, PlotlyFigure } from '../clients/figure';
 
 interface FigureProps {
     df_id: string;
@@ -23,7 +23,7 @@ async function render({ model, el }: RenderProps<FigureProps>) {
     const df = await coordinator.getDataFrame(df_id);
 
     // create the view and connect it
-    const view = new FigureView(
+    const view = new Figure(
         el,
         figure,
         axis_mappings,

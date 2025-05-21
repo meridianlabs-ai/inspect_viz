@@ -1,4 +1,4 @@
-// js/widgets/menu_input.ts
+// js/widgets/menu.ts
 import { Menu } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm";
 
 // js/coordinator/coodinator.ts
@@ -341,7 +341,7 @@ async function vizCoordinator() {
   return globalScope[VIZ_COORDINATOR_KEY];
 }
 
-// js/widgets/menu_input.ts
+// js/widgets/menu.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
   const column = model.get("column");
@@ -356,7 +356,7 @@ async function render({ model, el }) {
   });
   await coordinator.connectClient(menu);
 }
-var menu_input_default = { render };
+var menu_default = { render };
 export {
-  menu_input_default as default
+  menu_default as default
 };
