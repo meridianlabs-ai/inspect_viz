@@ -52,10 +52,10 @@ def generate_mosaic_models() -> None:
             spec_pattern, "", models_content, flags=re.MULTILINE | re.DOTALL
         )
 
-        # strip model class
-        model_pattern = r"^class\s+Model\s*(?:\([^)]*\))?\s*:.*?(?=^class\s|\Z)"
+        # strip unwanted classes
+        unwanted_pattern = r"^class\s+(?:Config|Meta|Data\w*|Model)\s*(?:\([^)]*\))?\s*:.*?(?=^class\s|\Z)"
         models_content = re.sub(
-            model_pattern, "", models_content, flags=re.MULTILINE | re.DOTALL
+            unwanted_pattern, "", models_content, flags=re.MULTILINE | re.DOTALL
         )
         models_content = models_content.replace("\nModel.model_rebuild()", "", 1)
         models_content = models_content.replace("AnyUrl, ", "", 1)
