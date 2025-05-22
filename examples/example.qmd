@@ -6,7 +6,6 @@ execute:
 ---
 
 ```{python}
-import plotly.express as px
 import inspect_viz as vz
 
 # parameters
@@ -14,7 +13,7 @@ petal_width = vz.Param(default=2.5)
 petal_length = vz.Param(default=7)
 
 # data source
-df = vz.DataFrame(px.data.iris()).query(f"""
+df = vz.DataFrame("iris.csv").query(f"""
     SELECT * FROM df 
     WHERE petal_width < {petal_width} AND petal_length < {petal_length}
 """)

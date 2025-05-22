@@ -17,7 +17,6 @@ dependencies = [
     "traitlets",
     "narwhals>=1.15.1",
     "pyarrow>=15.0.0",
-    "plotly[express]>=6.0.0",
     "sqlglot>=26.0.0"
 ]
 
@@ -32,8 +31,7 @@ dev = [
     "ruff",
     "mypy",
     "datamodel-code-generator",
-    "pandas-stubs",
-    "plotly-stubs"
+    "pandas-stubs"
 ]
 
 [tool.hatch.build]

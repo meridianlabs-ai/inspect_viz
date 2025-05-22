@@ -10,7 +10,6 @@
 	"devDependencies": {
 		"@anywidget/types": "^0.2.0",
 		"@duckdb/duckdb-wasm": "^1.29.0",
-		"@types/plotly.js-dist-min": "^2.3.4",
 		"@uwdata/mosaic-core": "^0.16.2",
 		"@uwdata/mosaic-inputs": "^0.16.2",
 		"@uwdata/mosaic-plot": "^0.16.2",
