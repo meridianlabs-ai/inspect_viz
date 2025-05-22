@@ -34,8 +34,7 @@ vz.slider(df, column="petal_length", param=petal_length)
 ### Column
 
 ```{python}
-fig = px.scatter(df, x="sepal_width", y="sepal_length")
-vz.figure(df, fig)
+vz.line_y(df, x="sepal_width", y="sepal_length")
 ```
 
 ```{python}

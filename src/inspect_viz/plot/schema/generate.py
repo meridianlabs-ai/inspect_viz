@@ -3,10 +3,12 @@ import subprocess
 from pathlib import Path
 from textwrap import dedent
 
-# mypy: disable-error-code="type-arg"
-# ruff: noqa: D200, D301, W605, D205
+# we don't define params in the spec we send....in case we need to here are the aliases:
 
-# from builtins import float as float_aliased
+# ParamLiteral: TypeAlias = None | str | int | float | bool
+# ParamValue: TypeAlias = ParamLiteral | list[ParamLiteral | ParamRef]
+# ParamDefinition: TypeAlias = ParamValue | Param | ParamDate | Selection
+# Params: TypeAlias = dict[str, ParamDefinition]
 
 
 def generate_mosaic_models() -> None:

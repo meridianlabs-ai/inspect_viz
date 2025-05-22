@@ -10,6 +10,12 @@ declare module 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm' {
     export default mosaicCore;
 }
 
+declare module 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm' {
+    export * from '@uwdata/mosaic-spec';
+    import mosaicSpec from '@uwdata/mosaic-spec';
+    export default mosaicSpec;
+}
+
 declare module 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm' {
     export * from '@uwdata/mosaic-inputs';
     import mosaicInputs from '@uwdata/mosaic-inputs';

@@ -2,11 +2,12 @@ import { AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duck
 
 import {
     MosaicClient,
-    Coordinator,
     wasmConnector,
     Selection,
     Param,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+
+import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb } from './duckdb';
 import { MosaicQuery } from './query';
@@ -15,24 +16,23 @@ import { sleep } from '../util/wait';
 import { toSelectQuery } from './select';
 
 class VizCoordinator {
-    private readonly coordinator_: Coordinator;
+    private readonly ctx_: InstantiateContext;
     private readonly dfs_ = new Map<string, DataFrame>();
-    private readonly params_ = new Map<string, Param>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
-        this.coordinator_ = new Coordinator();
-        this.coordinator_.databaseConnector(wasmConnector({ connection: this.conn_ }));
+        this.ctx_ = new InstantiateContext();
+        this.ctx_.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
     addParam(name: string, value: number | boolean | string): Param {
-        if (!this.params_.has(name)) {
-            this.params_.set(name, Param.value(value));
+        if (!this.ctx_.activeParams.has(name)) {
+            this.ctx_.activeParams.set(name, Param.value(value));
         }
-        return this.params_.get(name)!;
+        return this.ctx_.activeParams.get(name)!;
     }
 
     getParam(name: string): Param | undefined {
-        return this.params_.get(name);
+        return this.ctx_.activeParams.get(name);
     }
 
     async addDataFrame(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
@@ -75,8 +75,12 @@ class VizCoordinator {
         }
     }
 
+    getInstantiateContext(): InstantiateContext {
+        return this.ctx_;
+    }
+
     async connectClient(client: MosaicClient) {
-        this.coordinator_.connect(client);
+        this.ctx_.coordinator.connect(client);
     }
 }
 

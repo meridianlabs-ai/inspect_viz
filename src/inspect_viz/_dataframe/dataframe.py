@@ -33,6 +33,7 @@ class DataFrame:
         id = uuid()
         self._bind(
             id=id,
+            source_id=id,
             queries=[],
             widget=dataframe_widget(source_id=id, ndf=self._ndf),
         )
@@ -40,11 +41,13 @@ class DataFrame:
     def _bind(
         self,
         id: str,
+        source_id: str,
         queries: list[MosaicQuery],
         widget: "DataFrameWidget",
         parent: Optional["DataFrame"] = None,
     ) -> None:
         self._id = id
+        self._source_id = source_id
         self._queries = queries
         self._widget: DataFrameWidget | None = widget
         self._parent = parent
@@ -52,6 +55,10 @@ class DataFrame:
     @property
     def id(self) -> str:
         return self._id
+
+    @property
+    def source_id(self) -> str:
+        return self._source_id
 
     @property
     def columns(self) -> list[str]:
@@ -78,7 +85,13 @@ class DataFrame:
 
         # return handle with updated ndf and queries
         df = DataFrame(ndf)
-        df._bind(id=id, queries=queries, widget=widget, parent=self)
+        df._bind(
+            id=id,
+            source_id=self._source_id,
+            queries=queries,
+            widget=widget,
+            parent=self,
+        )
         return df
 
     def __str__(self) -> str:
