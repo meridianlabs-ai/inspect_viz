@@ -1,9 +1,9 @@
 from ._data import Data
-from ._inputs.menu import menu
-from ._inputs.slider import slider
 from ._param import Param
 from ._views.line_y import line_y
-from ._views.table import table
+from ._widgets.menu import menu
+from ._widgets.slider import slider
+from ._widgets.table import table
 
 __all__ = [
     "Data",

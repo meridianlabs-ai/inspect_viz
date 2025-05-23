@@ -1,9 +1,9 @@
 import traitlets
 from anywidget import AnyWidget
 
+from .._constants import STATIC_DIR
 from .._data import Data
 from .._param import Param
-from .._util.constants import STATIC_DIR
 from ..plot import HConcat, Plot, VConcat
 
 

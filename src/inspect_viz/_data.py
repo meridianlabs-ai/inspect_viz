@@ -1,19 +1,15 @@
 import os
 from os import PathLike
-from typing import Any
 
-import anywidget
 import narwhals as nw
 import pandas as pd
-import pyarrow as pa
-import traitlets
 from IPython.display import display
 from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
 from ._param import Param
-from ._util.constants import STATIC_DIR
+from ._widgets.data import DataWidget, data_widget
 
 
 class Data:
@@ -82,32 +78,6 @@ def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
         return pd.read_fwf(path)
     else:
         raise ValueError(f"Unsupported file extension: {ext}")
-
-
-# create and render ReactiveDFWidget on the client
-class DataWidget(anywidget.AnyWidget):
-    _esm = STATIC_DIR / "data.js"
-    id = traitlets.CUnicode("").tag(sync=True)
-    buffer = traitlets.Bytes(b"").tag(sync=True)
-    params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
-
-
-# create reactive_df_widget (will be printed on demand)
-def data_widget(id: str, ndf: nw.DataFrame[Any]) -> DataWidget:
-    # create widget
-    widget = DataWidget()
-    widget.id = id
-
-    # create arrow ipc buffer
-    reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
-    table = reader.read_all()
-    table_buffer = pa.BufferOutputStream()
-    with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
-        writer.write_table(table)
-    widget.buffer = table_buffer.getvalue().to_pybytes()
-
-    # return widget
-    return widget
 
 
 def validate_data(data: Data) -> None:

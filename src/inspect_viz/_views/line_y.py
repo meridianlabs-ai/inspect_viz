@@ -4,7 +4,7 @@ import inspect_viz as vz
 import inspect_viz.plot as pl
 from inspect_viz.plot.schema.plot import LineY, PlotFrom
 
-from .plot import plot
+from .._widgets.plot import plot
 
 
 def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
