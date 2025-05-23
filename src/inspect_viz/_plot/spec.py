@@ -19,11 +19,14 @@ class SpecWidget(AnyWidget):
 
 def spec(
     data: Data,
-    component: Plot | HConcat | VConcat,
+    root: Plot | HConcat | VConcat,
     plot_defaults: PlotAttributes | None = None,
 ) -> SpecWidget:
     # base spec
-    spec: dict[str, Any] = component.model_dump(by_alias=True, exclude_none=True)
+    spec: dict[str, Any] = root.model_dump(by_alias=True, exclude_none=True)
+
+    # params
+    spec["params"] = {param.id: param.default for param in Param.get_all()}
 
     # plot defaults
     if plot_defaults is not None:
