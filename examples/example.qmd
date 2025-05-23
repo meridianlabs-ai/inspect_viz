@@ -36,6 +36,12 @@ vz.slider(df, column="petal_length", param=petal_length)
 vz.line_y(df, x="sepal_width", y="sepal_length")
 ```
 
+
+```{python}
+vz.line_y(df, x="sepal_width", y="sepal_length")
+```
+
+
 ```{python}
 vz.table(df)
 ```
