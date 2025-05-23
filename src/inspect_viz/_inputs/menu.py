@@ -2,7 +2,7 @@ import traitlets
 from anywidget import AnyWidget
 
 from .._data import Data, validate_bindings
-from .._param.param import Param
+from .._param import Param
 from .._util.constants import STATIC_DIR
 
 

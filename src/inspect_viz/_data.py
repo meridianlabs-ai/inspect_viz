@@ -12,8 +12,7 @@ from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
-from inspect_viz._param.param import Param
-
+from ._param import Param
 from ._util.constants import STATIC_DIR
 
 

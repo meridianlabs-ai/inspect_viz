@@ -1,9 +1,8 @@
 import traitlets
 from anywidget import AnyWidget
 
-from inspect_viz._param.param import Param
-
 from .._data import Data, validate_data
+from .._param import Param
 from .._util.constants import STATIC_DIR
 
 
