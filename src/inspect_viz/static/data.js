@@ -30,8 +30,8 @@ async function initDuckdb() {
   return db;
 }
 
-// js/coordinator/dataframe.ts
-var DataFrame = class {
+// js/coordinator/data.ts
+var Data = class {
   constructor(table, selection) {
     this.table = table;
     this.selection = selection;
@@ -68,15 +68,15 @@ var VizCoordinator = class {
   getParam(name) {
     return this.ctx_.activeParams.get(name);
   }
-  async addDataFrame(id, buffer) {
+  async addData(id, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
       name: id,
       create: true
     });
-    const df = new DataFrame(id, Selection.intersect());
+    const df = new Data(id, Selection.intersect());
     this.dfs_.set(id, df);
   }
-  async getDataFrame(id) {
+  async getData(id) {
     while (true) {
       const df = this.dfs_.get(id);
       if (df) {
@@ -106,7 +106,7 @@ async function vizCoordinator() {
   return globalScope[VIZ_COORDINATOR_KEY];
 }
 
-// js/widgets/dataframe.ts
+// js/widgets/data.ts
 async function render({ model, el }) {
   const id = model.get("id");
   const buffer = model.get("buffer");
@@ -118,10 +118,10 @@ async function render({ model, el }) {
   }, 100);
   const coordinator = await vizCoordinator();
   const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-  await coordinator.addDataFrame(id, arrowBuffer);
+  await coordinator.addData(id, arrowBuffer);
   coordinator.addParams(JSON.parse(model.get("params")));
 }
-var dataframe_default = { render };
+var data_default = { render };
 export {
-  dataframe_default as default
+  data_default as default
 };

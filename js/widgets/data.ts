@@ -2,13 +2,13 @@ import { RenderProps } from '@anywidget/types';
 
 import { vizCoordinator } from '../coordinator';
 
-interface DataFrameProps {
+interface DataProps {
     id: string;
     buffer: DataView;
     params: string;
 }
 
-async function render({ model, el }: RenderProps<DataFrameProps>) {
+async function render({ model, el }: RenderProps<DataProps>) {
     // unwrap widget parameters
     const id = model.get('id');
     const buffer = model.get('buffer');
@@ -24,7 +24,7 @@ async function render({ model, el }: RenderProps<DataFrameProps>) {
     // register data frame
     const coordinator = await vizCoordinator();
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-    await coordinator.addDataFrame(id, arrowBuffer);
+    await coordinator.addData(id, arrowBuffer);
 
     // add params
     coordinator.addParams(JSON.parse(model.get('params')));

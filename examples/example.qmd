@@ -14,7 +14,7 @@ petal_length = vz.Param(default=7)
 
 
 # data source
-df = vz.DataFrame("iris.csv")
+df = vz.Data("iris.csv")
 ```
 
 

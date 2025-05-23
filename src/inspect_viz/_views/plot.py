@@ -1,7 +1,7 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._dataframe.dataframe import DataFrame
+from .._data import Data
 from .._param.param import Param
 from .._util.constants import STATIC_DIR
 from ..plot import HConcat, Plot, VConcat
@@ -14,12 +14,12 @@ class PlotWidget(AnyWidget):
     params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
 
 
-def plot(df: DataFrame, plot: Plot | HConcat | VConcat) -> PlotWidget:
+def plot(data: Data, plot: Plot | HConcat | VConcat) -> PlotWidget:
     # convert plot to json
     plot_json = plot.model_dump_json(by_alias=True, exclude_none=True)
 
     # create and return widget
     widget = PlotWidget()
-    widget.df_id = df.id
+    widget.df_id = data.id
     widget.plot = plot_json
     return widget

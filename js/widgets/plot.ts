@@ -27,7 +27,7 @@ async function render({ model, el }: RenderProps<PlotProps>) {
     setTimeout(async () => {
         // get the context
         const coordinator = await vizCoordinator();
-        const df = await coordinator.getDataFrame(df_id);
+        const df = await coordinator.getData(df_id);
         const ctx = coordinator.getInstantiateContext();
 
         // add params

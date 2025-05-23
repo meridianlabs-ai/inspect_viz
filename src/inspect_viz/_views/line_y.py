@@ -7,17 +7,17 @@ from inspect_viz.plot.schema.plot import LineY, PlotFrom
 from .plot import plot
 
 
-def line_y(df: vz.DataFrame, x: str, y: str) -> AnyWidget:
+def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
     """LineY graph.
 
     Args:
-        df: Source DataFrame.
+        data: Source data.
         x: Column name for x-coordinates.
         y: Column name for y-coordinates.
     """
-    lineY = LineY(data=data_from_df(df), x=x, y=y)
-    return plot(df, pl.Plot(plot=[lineY]))
+    lineY = LineY(data=data_from(data), x=x, y=y)
+    return plot(data, pl.Plot(plot=[lineY]))
 
 
-def data_from_df(df: vz.DataFrame) -> PlotFrom:
+def data_from(df: vz.Data) -> PlotFrom:
     return PlotFrom.model_validate({"from": df.id})

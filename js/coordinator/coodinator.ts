@@ -10,13 +10,13 @@ import {
 import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb } from './duckdb';
-import { DataFrame } from './dataframe';
+import { Data } from './data';
 import { sleep } from '../util/wait';
 import { ParamDef } from './param';
 
 class VizCoordinator {
     private readonly ctx_: InstantiateContext;
-    private readonly dfs_ = new Map<string, DataFrame>();
+    private readonly dfs_ = new Map<string, Data>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
         this.ctx_ = new InstantiateContext();
@@ -44,7 +44,7 @@ class VizCoordinator {
         return this.ctx_.activeParams.get(name);
     }
 
-    async addDataFrame(id: string, buffer: Uint8Array) {
+    async addData(id: string, buffer: Uint8Array) {
         // insert table into database
         await this.conn_?.insertArrowFromIPCStream(buffer, {
             name: id,
@@ -52,11 +52,11 @@ class VizCoordinator {
         });
 
         // create and register df
-        const df = new DataFrame(id, Selection.intersect());
+        const df = new Data(id, Selection.intersect());
         this.dfs_.set(id, df);
     }
 
-    async getDataFrame(id: string) {
+    async getData(id: string) {
         // at startup we can't control the order of df producing and df consuming
         // widgets, so we may need to wait and retry for the data frame
         while (true) {

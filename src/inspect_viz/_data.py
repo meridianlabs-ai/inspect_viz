@@ -8,15 +8,16 @@ import pandas as pd
 import pyarrow as pa
 import traitlets
 from IPython.display import display
+from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
 from inspect_viz._param.param import Param
 
-from .._util.constants import STATIC_DIR
+from ._util.constants import STATIC_DIR
 
 
-class DataFrame:
+class Data:
     def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:
         # assign a unique id
         self._id = uuid()
@@ -29,7 +30,7 @@ class DataFrame:
         self._ndf = nw.from_native(data)
 
         # create widget
-        self._widget: DataFrameWidget | None = dataframe_widget(self._id, ndf=self._ndf)
+        self._widget: DataWidget | None = data_widget(self._id, ndf=self._ndf)
 
     @property
     def id(self) -> str:
@@ -85,17 +86,17 @@ def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
 
 
 # create and render ReactiveDFWidget on the client
-class DataFrameWidget(anywidget.AnyWidget):
-    _esm = STATIC_DIR / "dataframe.js"
+class DataWidget(anywidget.AnyWidget):
+    _esm = STATIC_DIR / "data.js"
     id = traitlets.CUnicode("").tag(sync=True)
     buffer = traitlets.Bytes(b"").tag(sync=True)
     params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
 
 
 # create reactive_df_widget (will be printed on demand)
-def dataframe_widget(id: str, ndf: nw.DataFrame[Any]) -> DataFrameWidget:
+def data_widget(id: str, ndf: nw.DataFrame[Any]) -> DataWidget:
     # create widget
-    widget = DataFrameWidget()
+    widget = DataWidget()
     widget.id = id
 
     # create arrow ipc buffer
@@ -108,3 +109,40 @@ def dataframe_widget(id: str, ndf: nw.DataFrame[Any]) -> DataFrameWidget:
 
     # return widget
     return widget
+
+
+def validate_data(data: Data) -> None:
+    # valdate type for people not using type-checkers
+    if not isinstance(data, Data):
+        raise TypeError(
+            "Passed data is not of type vz.Data. Did you forget to wrap it in vz.Data()?"
+        )
+
+    # ensure the df is on the client
+    data._ensure()
+
+
+def validate_bindings(data: Data, column: str, param: Param | None = None) -> None:
+    def raise_type_error(type: str) -> None:
+        raise TypeError(
+            f"Parameter passed for column '{column}' must be a {type} type."
+        )
+
+    # validate df and ensure it is on the client
+    validate_data(data)
+
+    # validate that the column in in the data frame
+    dtype = data._ndf.schema.get(column, None)
+    if dtype is None:
+        raise ValueError(
+            f"Column '{column}' does not exist in the data (expected one of {', '.join(data.columns)})."
+        )
+
+    # if a param is specified ensure that the type matches the column type
+    if param is not None:
+        if dtype.is_numeric() and not param.is_numeric():
+            raise_type_error("numeric")
+        elif isinstance(dtype, Boolean) and not param.is_bool():
+            raise_type_error("boolean")
+        elif isinstance(dtype, String) and not param.is_string():
+            raise_type_error("string")

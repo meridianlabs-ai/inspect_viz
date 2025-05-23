@@ -33,8 +33,8 @@ async function initDuckdb() {
   return db;
 }
 
-// js/coordinator/dataframe.ts
-var DataFrame = class {
+// js/coordinator/data.ts
+var Data = class {
   constructor(table, selection) {
     this.table = table;
     this.selection = selection;
@@ -71,15 +71,15 @@ var VizCoordinator = class {
   getParam(name) {
     return this.ctx_.activeParams.get(name);
   }
-  async addDataFrame(id, buffer) {
+  async addData(id, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
       name: id,
       create: true
     });
-    const df = new DataFrame(id, Selection.intersect());
+    const df = new Data(id, Selection.intersect());
     this.dfs_.set(id, df);
   }
-  async getDataFrame(id) {
+  async getData(id) {
     while (true) {
       const df = this.dfs_.get(id);
       if (df) {
@@ -115,7 +115,7 @@ async function render({ model, el }) {
   const column = model.get("column");
   const param = model.get("param");
   const coordinator = await vizCoordinator();
-  const df = await coordinator.getDataFrame(df_id);
+  const df = await coordinator.getData(df_id);
   coordinator.addParams(JSON.parse(model.get("params")));
   const menu = new Menu({
     element: el,

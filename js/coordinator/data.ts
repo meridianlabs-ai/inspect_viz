@@ -1,6 +1,6 @@
 import { Selection } from '@uwdata/mosaic-core';
 
-export class DataFrame {
+export class Data {
     constructor(
         public readonly table: string,
         public readonly selection: Selection

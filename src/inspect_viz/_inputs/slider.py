@@ -1,13 +1,12 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._dataframe.dataframe import DataFrame
-from .._dataframe.valdidate import validate_bindings
+from .._data import Data, validate_bindings
 from .._param.param import Param
 from .._util.constants import STATIC_DIR
 
 
-def slider(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
+def slider(df: Data, column: str, param: Param | None = None) -> AnyWidget:
     validate_bindings(df, column, param)
 
     class SliderInput(AnyWidget):

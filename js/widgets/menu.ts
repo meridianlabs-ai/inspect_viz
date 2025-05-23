@@ -19,7 +19,7 @@ async function render({ model, el }: RenderProps<MenuProps>) {
 
     // get the data frame
     const coordinator = await vizCoordinator();
-    const df = await coordinator.getDataFrame(df_id);
+    const df = await coordinator.getData(df_id);
 
     // add params
     coordinator.addParams(JSON.parse(model.get('params')));
