@@ -1,4 +1,4 @@
 node_modules
 dist
-src/inspect_viz/static
+src/inspect_viz/_widgets
 examples/example_files
