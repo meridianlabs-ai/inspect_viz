@@ -8,9 +8,9 @@ import {
 
 import { vizCoordinator } from '../coordinator';
 
-interface PlotProps {
+interface SpecProps {
     df_id: string;
-    plot: string;
+    spec: string;
     params: string;
 }
 
@@ -19,10 +19,10 @@ interface PlotProps {
 // https://github.com/uwdata/mosaic/blob/main/packages/spec/src/parse-spec.js
 // https://github.com/uwdata/mosaic/blob/main/packages/spec/src/ast-to-dom.js
 
-async function render({ model, el }: RenderProps<PlotProps>) {
+async function render({ model, el }: RenderProps<SpecProps>) {
     // unwrap widget parameters
     const df_id: string = model.get('df_id');
-    const plot_json: string = model.get('plot');
+    const spec_json: string = model.get('spec');
 
     setTimeout(async () => {
         // get the context
@@ -33,8 +33,8 @@ async function render({ model, el }: RenderProps<PlotProps>) {
         // add params
         coordinator.addParams(JSON.parse(model.get('params')));
 
-        // create spec
-        const spec: Spec = JSON.parse(plot_json);
+        // create spec and parse it to an ast
+        const spec: Spec = JSON.parse(spec_json);
         const ast = parseSpec(spec);
 
         // create dom

@@ -1,4 +1,4 @@
-// js/widgets/plot.ts
+// js/widgets/spec.ts
 import {
   parseSpec,
   astToDOM
@@ -112,16 +112,16 @@ async function vizCoordinator() {
   return globalScope[VIZ_COORDINATOR_KEY];
 }
 
-// js/widgets/plot.ts
+// js/widgets/spec.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
-  const plot_json = model.get("plot");
+  const spec_json = model.get("spec");
   setTimeout(async () => {
     const coordinator = await vizCoordinator();
     const df = await coordinator.getData(df_id);
     const ctx = coordinator.getInstantiateContext();
     coordinator.addParams(JSON.parse(model.get("params")));
-    const spec = JSON.parse(plot_json);
+    const spec = JSON.parse(spec_json);
     const ast = parseSpec(spec);
     const { element, params } = await astToDOM(ast, {
       api: ctx.api,
@@ -132,7 +132,7 @@ async function render({ model, el }) {
     el.appendChild(element);
   }, 1e3);
 }
-var plot_default = { render };
+var spec_default = { render };
 export {
-  plot_default as default
+  spec_default as default
 };
