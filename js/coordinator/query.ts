@@ -1,4 +1,4 @@
-import { Param } from './param';
+import { ParamDef } from './param';
 
 export type Expression =
     | string
@@ -48,7 +48,7 @@ export interface OrderByItem {
 
 export interface MosaicQuery {
     sql: string;
-    parameters: Record<string, Param>;
+    parameters: Record<string, ParamDef>;
     select: Record<string, string | FunctionExpression | BinaryExpression | UnknownExpression>;
     distinct?: boolean | null;
     sample?: number | null;

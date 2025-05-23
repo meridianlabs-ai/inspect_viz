@@ -6,6 +6,7 @@ import { Table } from '../clients/table';
 
 interface TableProps {
     df_id: string;
+    params: string;
 }
 
 async function render({ model, el }: RenderProps<TableProps>) {
@@ -15,6 +16,9 @@ async function render({ model, el }: RenderProps<TableProps>) {
     // get the data frame
     const coordinator = await vizCoordinator();
     const df = await coordinator.getDataFrame(df_id);
+
+    // add params
+    coordinator.addParams(JSON.parse(model.get('params')));
 
     // create and connect the table view
     const view = new Table(el, df.table, df.selection, df.queries, df.params);

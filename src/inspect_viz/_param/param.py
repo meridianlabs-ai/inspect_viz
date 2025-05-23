@@ -1,6 +1,7 @@
 from typing import Any, ClassVar, Optional
 
 from pydantic import BaseModel, Field
+from pydantic_core import to_json
 from shortuuid import uuid
 
 PARAM_ESCAPE = ":"
@@ -42,6 +43,11 @@ class Param(BaseModel):
         return cls._instances.get(param_id)
 
     @classmethod
-    def get_all(cls) -> dict[str, "Param"]:
+    def get_all(cls) -> list["Param"]:
         """Get all parameters."""
-        return cls._instances.copy()
+        return list(cls._instances.values()).copy()
+
+    @classmethod
+    def get_all_as_json(cls) -> str:
+        """Get all parameters as JSON."""
+        return to_json(cls.get_all()).decode()

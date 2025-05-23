@@ -7,7 +7,7 @@ import {
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { vizCoordinator } from '../coordinator';
-import { Param } from '../coordinator/param';
+import { ParamDef } from '../coordinator/param';
 
 interface PlotProps {
     df_id: string;
@@ -31,12 +31,8 @@ async function render({ model, el }: RenderProps<PlotProps>) {
         const df = await coordinator.getDataFrame(df_id);
         const ctx = coordinator.getInstantiateContext();
 
-        // register the params
-        const params_json: string = model.get('params');
-        const plot_params = JSON.parse(params_json);
-        for (const param of Object.keys(plot_params)) {
-            coordinator.addParam(param, plot_params[param].default);
-        }
+        // add params
+        coordinator.addParams(JSON.parse(model.get('params')));
 
         // create spec
         const spec: Spec = JSON.parse(plot_json);

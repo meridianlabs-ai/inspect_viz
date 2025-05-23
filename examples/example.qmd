@@ -12,11 +12,9 @@ import inspect_viz as vz
 petal_width = vz.Param(default=2.5)
 petal_length = vz.Param(default=7)
 
+
 # data source
-df = vz.DataFrame("iris.csv").query(f"""
-    SELECT * FROM df 
-    WHERE petal_width < {petal_width} AND petal_length < {petal_length}
-""")
+df = vz.DataFrame("iris.csv")
 ```
 
 

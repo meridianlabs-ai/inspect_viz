@@ -14,6 +14,8 @@ from pydantic_core import to_json
 from shortuuid import uuid
 from sqlglot.expressions import Select
 
+from inspect_viz._param.param import Param
+
 from .._util.constants import STATIC_DIR
 from .constants import DEFAULT_TABLE
 from .parse_sql import parse_sql
@@ -178,6 +180,7 @@ class DataFrameWidget(anywidget.AnyWidget):
     source_id = traitlets.CUnicode("").tag(sync=True)
     buffer = traitlets.Bytes(b"").tag(sync=True)
     queries = traitlets.CUnicode("").tag(sync=True)
+    params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
 
 
 # create reactive_df_widget (will be printed on demand)

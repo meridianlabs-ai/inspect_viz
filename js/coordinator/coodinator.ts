@@ -14,6 +14,7 @@ import { MosaicQuery } from './query';
 import { DataFrame } from './dataframe';
 import { sleep } from '../util/wait';
 import { toSelectQuery } from './select';
+import { ParamDef } from './param';
 
 class VizCoordinator {
     private readonly ctx_: InstantiateContext;
@@ -22,6 +23,12 @@ class VizCoordinator {
     constructor(private readonly conn_: AsyncDuckDBConnection) {
         this.ctx_ = new InstantiateContext();
         this.ctx_.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
+    }
+
+    addParams(params: ParamDef[]) {
+        for (const param of params) {
+            this.addParam(param.id, param.default);
+        }
     }
 
     addParam(name: string, value: number | boolean | string): Param {

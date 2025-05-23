@@ -2,11 +2,13 @@ import { RenderProps } from '@anywidget/types';
 
 import { vizCoordinator } from '../coordinator';
 import { MosaicQuery } from '../coordinator/query';
+import { ParamDef } from '../coordinator/param';
 
 interface DataFrameProps {
     id: string;
     source_id: string;
     buffer: DataView;
+    params: string;
     queries: string;
 }
 
@@ -30,6 +32,9 @@ async function render({ model, el }: RenderProps<DataFrameProps>) {
     const coordinator = await vizCoordinator();
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
     await coordinator.addDataFrame(id, source_id, arrowBuffer, dfQueries);
+
+    // add params
+    coordinator.addParams(JSON.parse(model.get('params')));
 }
 
 export default { render };

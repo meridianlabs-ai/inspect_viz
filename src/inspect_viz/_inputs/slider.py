@@ -15,5 +15,6 @@ def slider(df: DataFrame, column: str, param: Param | None = None) -> AnyWidget:
         df_id = traitlets.CUnicode("").tag(sync=True)
         column = traitlets.CUnicode("").tag(sync=True)
         param = traitlets.CUnicode("").tag(sync=True)
+        params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
 
     return SliderInput(df_id=df.id, column=column, param=param.id if param else "")
