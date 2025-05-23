@@ -5,7 +5,7 @@ from anywidget import AnyWidget
 from pydantic_core import to_json
 
 from .._core._data import Data
-from .._core._param import Param
+from .._core._mosaic import mosaic_params
 from .._util._constants import STATIC_DIR
 from ..mosaic import HConcat, Plot, PlotAttributes, VConcat
 
@@ -14,7 +14,6 @@ class SpecWidget(AnyWidget):
     _esm = STATIC_DIR / "spec.js"
     df_id = traitlets.CUnicode("").tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
-    params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
 
 
 def spec(
@@ -26,7 +25,7 @@ def spec(
     spec: dict[str, Any] = root.model_dump(by_alias=True, exclude_none=True)
 
     # params
-    spec["params"] = {param.id: param.default for param in Param.get_all()}
+    spec["params"] = mosaic_params()
 
     # plot defaults
     if plot_defaults is not None:

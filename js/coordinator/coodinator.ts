@@ -3,41 +3,39 @@ import { AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duck
 import {
     MosaicClient,
     wasmConnector,
-    Selection,
     Param,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
+import {
+    InstantiateContext,
+    parseSpec,
+} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb } from './duckdb';
-import { Data } from './data';
 import { sleep } from '../util/wait';
-import { ParamDef } from './param';
 
 class VizCoordinator {
     private readonly ctx_: InstantiateContext;
-    private readonly dfs_ = new Map<string, Data>();
+    private readonly tables_ = new Set<string>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
         this.ctx_ = new InstantiateContext();
         this.ctx_.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
-    addParams(params: ParamDef[]) {
-        for (const param of params) {
-            this.addParam(param.id, param.default);
+    addParams(params: Record<string, unknown>) {
+        const spec = { params: params, hspace: 10 } as any;
+        const ast = parseSpec(spec);
+        for (const [name, node] of Object.entries(ast.params)) {
+            if (!this.ctx_.activeParams.has(name)) {
+                const param = (node as any).instantiate(this.ctx_);
+                this.ctx_.activeParams.set(name, param);
+            }
         }
     }
 
     getParams() {
         return this.ctx_.activeParams;
-    }
-
-    addParam(name: string, value: number | boolean | string): Param {
-        if (!this.ctx_.activeParams.has(name)) {
-            this.ctx_.activeParams.set(name, Param.value(value));
-        }
-        return this.ctx_.activeParams.get(name)!;
     }
 
     getParam(name: string): Param | undefined {
@@ -51,18 +49,16 @@ class VizCoordinator {
             create: true,
         });
 
-        // create and register df
-        const df = new Data(id, Selection.intersect());
-        this.dfs_.set(id, df);
+        // add to list of tables
+        this.tables_.add(id);
     }
 
-    async getData(id: string) {
+    async waitForData(id: string) {
         // at startup we can't control the order of df producing and df consuming
         // widgets, so we may need to wait and retry for the data frame
         while (true) {
-            const df = this.dfs_.get(id);
-            if (df) {
-                return df;
+            if (this.tables_.has(id)) {
+                return;
             } else {
                 await sleep(100);
             }

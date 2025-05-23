@@ -19,7 +19,7 @@ async function render({ model, el }: RenderProps<MenuProps>) {
 
     // get the data frame
     const coordinator = await vizCoordinator();
-    const df = await coordinator.getData(df_id);
+    await coordinator.waitForData(df_id);
 
     // add params
     coordinator.addParams(JSON.parse(model.get('params')));
@@ -27,8 +27,8 @@ async function render({ model, el }: RenderProps<MenuProps>) {
     // initialize the menu and connect it
     const menu = new Menu({
         element: el,
-        as: param ? coordinator.getParam(param) : df.selection,
-        from: df.table,
+        as: coordinator.getParam(param),
+        from: df_id,
         column: column,
     });
     await coordinator.connectClient(menu);

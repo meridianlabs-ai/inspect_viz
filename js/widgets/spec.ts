@@ -27,11 +27,8 @@ async function render({ model, el }: RenderProps<SpecProps>) {
     setTimeout(async () => {
         // get the context
         const coordinator = await vizCoordinator();
-        const df = await coordinator.getData(df_id);
         const ctx = coordinator.getInstantiateContext();
-
-        // add params
-        coordinator.addParams(JSON.parse(model.get('params')));
+        await coordinator.waitForData(df_id);
 
         // create spec and parse it to an ast
         const spec: Spec = JSON.parse(spec_json);

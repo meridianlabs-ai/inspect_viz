@@ -7,19 +7,24 @@ import narwhals as nw
 import pandas as pd
 import pyarrow as pa
 import traitlets
-from inspect_viz._util._constants import STATIC_DIR
+from inspect_viz._core._mosaic import mosaic_params_json
 from IPython.display import display
 from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
+from .._util._constants import STATIC_DIR
 from ._param import Param
+from ._selection import Selection
 
 
 class Data:
     def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:
         # assign a unique id
         self._id = uuid()
+
+        # create a default selection
+        self._selection = Selection(select="intersect", unique=self._id)
 
         # convert to pandas if its a path
         if isinstance(data, (str, PathLike)):
@@ -34,6 +39,10 @@ class Data:
     @property
     def id(self) -> str:
         return self._id
+
+    @property
+    def selection(self) -> Selection:
+        return self._selection
 
     @property
     def columns(self) -> list[str]:
@@ -88,7 +97,7 @@ class DataWidget(anywidget.AnyWidget):
     _esm = STATIC_DIR / "data.js"
     id = traitlets.CUnicode("").tag(sync=True)
     buffer = traitlets.Bytes(b"").tag(sync=True)
-    params = traitlets.CUnicode(Param.get_all_as_json()).tag(sync=True)
+    params = traitlets.CUnicode(mosaic_params_json()).tag(sync=True)
 
 
 def data_widget(id: str, ndf: nw.DataFrame[Any]) -> DataWidget:
@@ -139,6 +148,8 @@ def validate_bindings(data: Data, column: str, param: Param | None = None) -> No
     if param is not None:
         if dtype.is_numeric() and not param.is_numeric():
             raise_type_error("numeric")
+        elif dtype.is_temporal() and not param.is_datetime():
+            raise_type_error("datetime")
         elif isinstance(dtype, Boolean) and not param.is_bool():
             raise_type_error("boolean")
         elif isinstance(dtype, String) and not param.is_string():

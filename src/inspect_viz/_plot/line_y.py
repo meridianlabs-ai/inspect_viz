@@ -19,4 +19,4 @@ def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
 
 
 def data_from(df: vz.Data) -> PlotFrom:
-    return PlotFrom.model_validate({"from": df.id})
+    return PlotFrom.model_validate({"from": df.id, "filterBy": f"${df.selection.id}"})
