@@ -1,10 +1,10 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._constants import STATIC_DIR
-from .._data import Data
-from .._param import Param
-from ..plot import HConcat, Plot, VConcat
+from .._core._data import Data
+from .._core._param import Param
+from .._util._constants import STATIC_DIR
+from ..mosaic import HConcat, Plot, VConcat
 
 
 class PlotWidget(AnyWidget):

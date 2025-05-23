@@ -14,7 +14,7 @@ from textwrap import dedent
 def generate_mosaic_models() -> None:
     dir = Path(__file__).parent
     schema = (dir / "v0.16.2.json").as_posix()
-    models = (dir / "plot.py").as_posix()
+    models = (dir.parent / "__init__.py").as_posix()
     subprocess.run(
         [
             "datamodel-codegen",

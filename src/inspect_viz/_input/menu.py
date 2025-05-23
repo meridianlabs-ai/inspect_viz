@@ -1,9 +1,9 @@
 import traitlets
 from anywidget import AnyWidget
 
-from .._constants import STATIC_DIR
-from .._data import Data, validate_bindings
-from .._param import Param
+from .._core._data import Data, validate_bindings
+from .._core._param import Param
+from .._util._constants import STATIC_DIR
 
 
 def menu(df: Data, column: str, param: Param | None = None) -> AnyWidget:
