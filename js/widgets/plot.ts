@@ -7,7 +7,6 @@ import {
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { vizCoordinator } from '../coordinator';
-import { ParamDef } from '../coordinator/param';
 
 interface PlotProps {
     df_id: string;

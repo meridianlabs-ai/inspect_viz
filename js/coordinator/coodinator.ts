@@ -10,10 +10,8 @@ import {
 import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb } from './duckdb';
-import { MosaicQuery } from './query';
 import { DataFrame } from './dataframe';
 import { sleep } from '../util/wait';
-import { toSelectQuery } from './select';
 import { ParamDef } from './param';
 
 class VizCoordinator {
@@ -31,6 +29,10 @@ class VizCoordinator {
         }
     }
 
+    getParams() {
+        return this.ctx_.activeParams;
+    }
+
     addParam(name: string, value: number | boolean | string): Param {
         if (!this.ctx_.activeParams.has(name)) {
             this.ctx_.activeParams.set(name, Param.value(value));
@@ -42,30 +44,15 @@ class VizCoordinator {
         return this.ctx_.activeParams.get(name);
     }
 
-    async addDataFrame(id: string, source_id: string, buffer: Uint8Array, queries: MosaicQuery[]) {
-        // insert table into database if there is data
-        if (buffer.length > 0) {
-            await this.conn_?.insertArrowFromIPCStream(buffer, {
-                name: id,
-                create: true,
-            });
-        }
-
-        // extract parameters from queries and register them
-        const params = new Map<string, Param>();
-        for (const query of queries) {
-            for (const p of Object.values(query.parameters)) {
-                params.set(p.id, this.addParam(p.id, p.default));
-            }
-        }
+    async addDataFrame(id: string, buffer: Uint8Array) {
+        // insert table into database
+        await this.conn_?.insertArrowFromIPCStream(buffer, {
+            name: id,
+            create: true,
+        });
 
         // create and register df
-        const df = new DataFrame(
-            source_id,
-            Selection.intersect(),
-            queries.map(q => toSelectQuery(q, params)),
-            params
-        );
+        const df = new DataFrame(id, Selection.intersect());
         this.dfs_.set(id, df);
     }
 

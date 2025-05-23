@@ -27,7 +27,7 @@ async function render({ model, el }: RenderProps<MenuProps>) {
     // initialize the menu and connect it
     const menu = new Menu({
         element: el,
-        as: param ? df.params.get(param) : df.selection,
+        as: param ? coordinator.getParam(param) : df.selection,
         from: df.table,
         column: column,
     });

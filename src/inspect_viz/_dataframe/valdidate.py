@@ -25,7 +25,7 @@ def validate_bindings(df: DataFrame, column: str, param: Param | None = None) ->
     validate_df(df)
 
     # validate that the column in in the data frame
-    dtype = df.schema.get(column, None)
+    dtype = df._ndf.schema.get(column, None)
     if dtype is None:
         raise ValueError(
             f"Column '{column}' does not exist in the dataframe (expected one of {', '.join(df.columns)})."

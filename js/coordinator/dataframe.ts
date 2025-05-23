@@ -1,11 +1,8 @@
-import { Param, Selection } from '@uwdata/mosaic-core';
-import { SelectQuery } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
+import { Selection } from '@uwdata/mosaic-core';
 
 export class DataFrame {
     constructor(
         public readonly table: string,
-        public readonly selection: Selection,
-        public readonly queries: SelectQuery[],
-        public readonly params: Map<string, Param>
+        public readonly selection: Selection
     ) {}
 }

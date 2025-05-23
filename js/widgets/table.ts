@@ -21,7 +21,7 @@ async function render({ model, el }: RenderProps<TableProps>) {
     coordinator.addParams(JSON.parse(model.get('params')));
 
     // create and connect the table view
-    const view = new Table(el, df.table, df.selection, df.queries, df.params);
+    const view = new Table(el, df.table, df.selection, coordinator.getParams());
     await coordinator.connectClient(view);
 }
 

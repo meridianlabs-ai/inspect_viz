@@ -1,5 +1,3 @@
-import re
-
 import traitlets
 from anywidget import AnyWidget
 

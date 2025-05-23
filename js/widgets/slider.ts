@@ -27,7 +27,7 @@ async function render({ model, el }: RenderProps<SliderProps>) {
     // initialize the slider and connect it
     const menu = new Slider({
         element: el,
-        as: param ? df.params.get(param) : df.selection,
+        as: param ? coordinator.getParam(param) : df.selection,
         from: df.table,
         column: column,
     });

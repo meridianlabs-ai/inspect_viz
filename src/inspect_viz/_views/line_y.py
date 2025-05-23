@@ -20,4 +20,4 @@ def line_y(df: vz.DataFrame, x: str, y: str) -> AnyWidget:
 
 
 def data_from_df(df: vz.DataFrame) -> PlotFrom:
-    return PlotFrom.model_validate({"from": df.source_id})
+    return PlotFrom.model_validate({"from": df.id})
