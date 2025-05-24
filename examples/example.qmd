@@ -7,10 +7,18 @@ execute:
 
 ```{python}
 import inspect_viz as vz
-
 df = vz.Data("penguins.parquet")
 ```
 
+```{python}
+species = vz.Param(default="Gentoo")
+species
+```
+
+```{python}
+sel = vz.Selection(select="intersect")
+sel
+```
 
 
 ```{python}
