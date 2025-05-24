@@ -1,6 +1,6 @@
 ---
 title: "Explore the Iris Dataset"
-format: dashboard
+format: html
 execute:
   daemon: false
 ---
@@ -8,30 +8,12 @@ execute:
 ```{python}
 import inspect_viz as vz
 
-# parameters
-petal_width = vz.Param(default=2.5)
-petal_length = vz.Param(default=7)
-
-
-# data source
 df = vz.Data("iris.csv")
 ```
 
 
-## Row {.toolbar}
-
 ```{python}
 vz.menu(df, column="species")
-vz.slider(df, column="petal_width", param=petal_width)
-vz.slider(df, column="petal_length", param=petal_length)
-```
-
-## Row 
-
-### Column
-
-```{python}
-vz.line_y(df, x="sepal_width", y="sepal_length")
 ```
 
 
@@ -40,7 +22,4 @@ vz.line_y(df, x="sepal_width", y="sepal_length")
 ```
 
 
-```{python}
-vz.table(df)
-```
 
