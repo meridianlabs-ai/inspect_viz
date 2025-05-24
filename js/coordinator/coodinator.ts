@@ -6,10 +6,7 @@ import {
     Param,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import {
-    InstantiateContext,
-    parseSpec,
-} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
+import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb } from './duckdb';
 import { sleep } from '../util/wait';
