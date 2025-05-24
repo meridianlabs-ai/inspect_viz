@@ -1,16 +1,13 @@
 // js/widgets/mosaic.ts
 import {
-  parseSpec as parseSpec2,
-  astToDOM
+  parseSpec
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/coordinator/coodinator.ts
 import {
   wasmConnector
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-import {
-  InstantiateContext
-} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
+import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
 import {
@@ -199,11 +196,23 @@ async function render({ model, el }) {
       }
     ]
   };
-  const ast = parseSpec2(spec);
-  const { element, params } = await astToDOM(ast);
+  const ast = parseSpec(spec);
+  const { element, params } = await astToDOM(ast, coordinator.getInstantiateContext());
   el.appendChild(element);
 }
 var mosaic_default = { render };
+async function astToDOM(ast, ctx) {
+  for (const [name, node] of Object.entries(ast.params)) {
+    if (!ctx.activeParams.has(name)) {
+      const param = node.instantiate(ctx);
+      ctx.activeParams.set(name, param);
+    }
+  }
+  return {
+    element: ast.root.instantiate(ctx),
+    params: ctx.activeParams
+  };
+}
 export {
   mosaic_default as default
 };

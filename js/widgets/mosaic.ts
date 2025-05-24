@@ -2,8 +2,10 @@ import type { RenderProps } from '@anywidget/types';
 
 import {
     Spec,
+    SpecNode,
     parseSpec,
-    astToDOM,
+    InstantiateContext,
+    ASTNode,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { vizCoordinator } from '../coordinator';
@@ -137,8 +139,24 @@ async function render({ model, el }: RenderProps<SpecProps>) {
     const ast = parseSpec(spec);
 
     // create dom
-    const { element, params } = await astToDOM(ast);
+    const { element, params } = await astToDOM(ast, coordinator.getInstantiateContext());
     el.appendChild(element);
 }
 
 export default { render };
+
+async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
+    // process param/selection definitions
+    // skip definitions with names already defined
+    for (const [name, node] of Object.entries(ast.params)) {
+        if (!ctx.activeParams.has(name)) {
+            const param = (node as ASTNode).instantiate(ctx);
+            ctx.activeParams.set(name, param);
+        }
+    }
+
+    return {
+        element: ast.root.instantiate(ctx),
+        params: ctx.activeParams,
+    };
+}
