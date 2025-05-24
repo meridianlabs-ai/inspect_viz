@@ -2,8 +2,8 @@ import type { RenderProps } from '@anywidget/types';
 
 import { vizCoordinator } from '../coordinator';
 
-import { Table } from '../clients/table';
 import { Selection } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+import { Table } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2/+esm';
 
 interface TableProps {
     df_id: string;
@@ -30,7 +30,7 @@ async function render({ model, el }: RenderProps<TableProps>) {
     }
 
     // create and connect the table view
-    const view = new Table(el, df_id, sel as Selection, coordinator.getParams());
+    const view = new Table({ element: el, from: df_id, filterBy: sel as Selection });
     await coordinator.connectClient(view);
 }
 
