@@ -1,9 +1,8 @@
 from anywidget import AnyWidget
 
 import inspect_viz as vz
-from inspect_viz.mosaic import LineY, Plot, PlotFrom
 
-from .spec import spec
+from ..mosaic import LineY, Plot, PlotFrom, mosaic
 
 
 def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
@@ -15,7 +14,7 @@ def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
         y: Column name for y-coordinates.
     """
     lineY = LineY(data=data_from(data), x=x, y=y)
-    return spec(data, Plot(plot=[lineY]))
+    return mosaic(data=data, component=Plot(plot=[lineY]))
 
 
 def data_from(df: vz.Data) -> PlotFrom:

@@ -11,7 +11,6 @@ import { vizCoordinator } from '../coordinator';
 interface SpecProps {
     df_id: string;
     spec: string;
-    params: string;
 }
 
 // https://idl.uw.edu/mosaic/api/vgplot/plot.html

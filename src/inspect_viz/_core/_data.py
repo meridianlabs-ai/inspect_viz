@@ -7,7 +7,6 @@ import narwhals as nw
 import pandas as pd
 import pyarrow as pa
 import traitlets
-from inspect_viz._core._mosaic import mosaic_params_json
 from IPython.display import display
 from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
@@ -97,7 +96,6 @@ class DataWidget(anywidget.AnyWidget):
     _esm = STATIC_DIR / "data.js"
     id = traitlets.CUnicode("").tag(sync=True)
     buffer = traitlets.Bytes(b"").tag(sync=True)
-    params = traitlets.CUnicode(mosaic_params_json()).tag(sync=True)
 
 
 def data_widget(id: str, ndf: nw.DataFrame[Any]) -> DataWidget:

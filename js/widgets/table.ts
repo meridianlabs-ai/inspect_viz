@@ -8,7 +8,6 @@ import { Table } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-inputs@0.16.2
 interface TableProps {
     df_id: string;
     selection: string;
-    params: string;
 }
 
 async function render({ model, el }: RenderProps<TableProps>) {
@@ -19,9 +18,6 @@ async function render({ model, el }: RenderProps<TableProps>) {
     // get the data frame
     const coordinator = await vizCoordinator();
     await coordinator.waitForData(df_id);
-
-    // add params
-    coordinator.addParams(JSON.parse(model.get('params')));
 
     // get selection param
     const sel = coordinator.getParam(selection);

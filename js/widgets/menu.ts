@@ -8,7 +8,6 @@ interface MenuProps {
     df_id: string;
     column: string;
     param: string;
-    params: string;
 }
 
 async function render({ model, el }: RenderProps<MenuProps>) {
@@ -20,9 +19,6 @@ async function render({ model, el }: RenderProps<MenuProps>) {
     // get the data frame
     const coordinator = await vizCoordinator();
     await coordinator.waitForData(df_id);
-
-    // add params
-    coordinator.addParams(JSON.parse(model.get('params')));
 
     // initialize the menu and connect it
     const menu = new Menu({

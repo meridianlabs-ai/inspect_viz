@@ -2,7 +2,6 @@ import traitlets
 from anywidget import AnyWidget
 
 from .._core._data import Data, validate_bindings
-from .._core._mosaic import mosaic_params_json
 from .._core._param import Param
 from .._util._constants import STATIC_DIR
 
@@ -15,7 +14,6 @@ def menu(df: Data, column: str, param: Param | None = None) -> AnyWidget:
         df_id = traitlets.CUnicode("").tag(sync=True)
         column = traitlets.CUnicode("").tag(sync=True)
         param = traitlets.CUnicode("").tag(sync=True)
-        params = traitlets.CUnicode(mosaic_params_json()).tag(sync=True)
 
     return MenuInput(
         df_id=df.id, column=column, param=param.id if param else df.selection
