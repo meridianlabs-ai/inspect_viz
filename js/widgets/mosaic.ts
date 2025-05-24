@@ -43,7 +43,7 @@ async function render({ model, el }: RenderProps<SpecProps>) {
     }
 
     // create spec and parse it to an ast
-    const spec: Spec = {
+    const spec1: Spec = {
         params: {
             x: 'body_mass',
             y: 'flipper_length',
@@ -99,48 +99,58 @@ async function render({ model, el }: RenderProps<SpecProps>) {
                     },
                 ],
             },
+        ],
+    };
+
+    const ast1 = parseSpec(spec1);
+
+    // create dom
+    const domResult1 = await astToDOM(ast1, coordinator.getInstantiateContext());
+    el.appendChild(domResult1.element);
+
+    // create spec and parse it to an ast
+    const spec2: Spec = {
+        params: {
+            x: 'body_mass',
+            y: 'flipper_length',
+        },
+
+        hconcat: [
             {
-                vspace: 20,
-            },
-            {
-                hconcat: [
+                name: 'filled',
+                plot: [
                     {
-                        name: 'filled',
-                        plot: [
-                            {
-                                mark: 'dot',
-                                data: {
-                                    from: df_id,
-                                },
-                                x: {
-                                    column: '$x',
-                                },
-                                y: {
-                                    column: '$y',
-                                },
-                                fill: 'species',
-                                symbol: 'species',
-                            },
-                        ],
-                        grid: true,
-                        xLabel: 'Body mass (g) →',
-                        yLabel: '↑ Flipper length (mm)',
-                    },
-                    {
-                        legend: 'symbol',
-                        for: 'filled',
-                        columns: 1,
+                        mark: 'dot',
+                        data: {
+                            from: df_id,
+                        },
+                        x: {
+                            column: '$x',
+                        },
+                        y: {
+                            column: '$y',
+                        },
+                        fill: 'species',
+                        symbol: 'species',
                     },
                 ],
+                grid: true,
+                xLabel: 'Body mass (g) →',
+                yLabel: '↑ Flipper length (mm)',
+            },
+            {
+                legend: 'symbol',
+                for: 'filled',
+                columns: 1,
             },
         ],
     };
 
-    const ast = parseSpec(spec);
+    const ast2 = parseSpec(spec2);
 
     // create dom
-    const { element, params } = await astToDOM(ast, coordinator.getInstantiateContext());
-    el.appendChild(element);
+    const domResult2 = await astToDOM(ast2, coordinator.getInstantiateContext());
+    el.appendChild(domResult2.element);
 }
 
 export default { render };

@@ -104,7 +104,7 @@ async function render({ model, el }) {
   } else {
     await coordinator.waitForData(df_id);
   }
-  const spec = {
+  const spec1 = {
     params: {
       x: "body_mass",
       y: "flipper_length"
@@ -159,46 +159,50 @@ async function render({ model, el }) {
             columns: 1
           }
         ]
-      },
-      {
-        vspace: 20
-      },
-      {
-        hconcat: [
-          {
-            name: "filled",
-            plot: [
-              {
-                mark: "dot",
-                data: {
-                  from: df_id
-                },
-                x: {
-                  column: "$x"
-                },
-                y: {
-                  column: "$y"
-                },
-                fill: "species",
-                symbol: "species"
-              }
-            ],
-            grid: true,
-            xLabel: "Body mass (g) \u2192",
-            yLabel: "\u2191 Flipper length (mm)"
-          },
-          {
-            legend: "symbol",
-            for: "filled",
-            columns: 1
-          }
-        ]
       }
     ]
   };
-  const ast = parseSpec(spec);
-  const { element, params } = await astToDOM(ast, coordinator.getInstantiateContext());
-  el.appendChild(element);
+  const ast1 = parseSpec(spec1);
+  const domResult1 = await astToDOM(ast1, coordinator.getInstantiateContext());
+  el.appendChild(domResult1.element);
+  const spec2 = {
+    params: {
+      x: "body_mass",
+      y: "flipper_length"
+    },
+    hconcat: [
+      {
+        name: "filled",
+        plot: [
+          {
+            mark: "dot",
+            data: {
+              from: df_id
+            },
+            x: {
+              column: "$x"
+            },
+            y: {
+              column: "$y"
+            },
+            fill: "species",
+            symbol: "species"
+          }
+        ],
+        grid: true,
+        xLabel: "Body mass (g) \u2192",
+        yLabel: "\u2191 Flipper length (mm)"
+      },
+      {
+        legend: "symbol",
+        for: "filled",
+        columns: 1
+      }
+    ]
+  };
+  const ast2 = parseSpec(spec2);
+  const domResult2 = await astToDOM(ast2, coordinator.getInstantiateContext());
+  el.appendChild(domResult2.element);
 }
 var mosaic_default = { render };
 async function astToDOM(ast, ctx) {
