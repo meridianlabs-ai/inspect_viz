@@ -26,20 +26,107 @@ async function render({ model, el }: RenderProps<SpecProps>) {
     setTimeout(async () => {
         // get the context
         const coordinator = await vizCoordinator();
-        const ctx = coordinator.getInstantiateContext();
+        // const ctx = coordinator.getInstantiateContext();
         await coordinator.waitForData(df_id);
 
         // create spec and parse it to an ast
-        const spec: Spec = JSON.parse(spec_json);
+        const spec: Spec = {
+            params: {
+                x: 'body_mass',
+                y: 'flipper_length',
+            },
+            vconcat: [
+                {
+                    hconcat: [
+                        {
+                            input: 'menu',
+                            label: 'Y',
+                            options: ['body_mass', 'flipper_length', 'bill_depth', 'bill_length'],
+                            as: '$y',
+                        },
+                        {
+                            input: 'menu',
+                            label: 'X',
+                            options: ['body_mass', 'flipper_length', 'bill_depth', 'bill_length'],
+                            as: '$x',
+                        },
+                    ],
+                },
+                {
+                    vspace: 10,
+                },
+                {
+                    hconcat: [
+                        {
+                            name: 'stroked',
+                            plot: [
+                                {
+                                    mark: 'dot',
+                                    data: {
+                                        from: 'penguins',
+                                    },
+                                    x: {
+                                        column: '$x',
+                                    },
+                                    y: {
+                                        column: '$y',
+                                    },
+                                    stroke: 'species',
+                                    symbol: 'species',
+                                },
+                            ],
+                            grid: true,
+                            xLabel: 'Body mass (g) →',
+                            yLabel: '↑ Flipper length (mm)',
+                        },
+                        {
+                            legend: 'symbol',
+                            for: 'stroked',
+                            columns: 1,
+                        },
+                    ],
+                },
+                {
+                    vspace: 20,
+                },
+                {
+                    hconcat: [
+                        {
+                            name: 'filled',
+                            plot: [
+                                {
+                                    mark: 'dot',
+                                    data: {
+                                        from: 'penguins',
+                                    },
+                                    x: {
+                                        column: '$x',
+                                    },
+                                    y: {
+                                        column: '$y',
+                                    },
+                                    fill: 'species',
+                                    symbol: 'species',
+                                },
+                            ],
+                            grid: true,
+                            xLabel: 'Body mass (g) →',
+                            yLabel: '↑ Flipper length (mm)',
+                        },
+                        {
+                            legend: 'symbol',
+                            for: 'filled',
+                            columns: 1,
+                        },
+                    ],
+                },
+            ],
+        };
+
         const ast = parseSpec(spec);
 
         // create dom
-        const { element, params } = await astToDOM(ast, {
-            api: ctx.api,
-            plotDefaults: ctx.plotDefaults,
-            params: ctx.activeParams,
-            baseURL: ctx.baseURL,
-        });
+        const { element, params } = await astToDOM(ast);
         el.appendChild(element);
 
         //await coordinator.connectClient(menu);

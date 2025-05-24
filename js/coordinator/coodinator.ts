@@ -23,17 +23,6 @@ class VizCoordinator {
         this.ctx_.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
-    addParams(params: Record<string, unknown>) {
-        const spec = { params: params, hspace: 10 } as any;
-        const ast = parseSpec(spec);
-        for (const [name, node] of Object.entries(ast.params)) {
-            if (!this.ctx_.activeParams.has(name)) {
-                const param = (node as any).instantiate(this.ctx_);
-                this.ctx_.activeParams.set(name, param);
-            }
-        }
-    }
-
     getParams() {
         return this.ctx_.activeParams;
     }

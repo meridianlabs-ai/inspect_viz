@@ -20,7 +20,7 @@ from ._selection import Selection
 class Data:
     def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:
         # assign a unique id
-        self._id = uuid()
+        self._id = "penguins"
 
         # create a default selection
         self._selection = Selection(select="intersect", unique=self._id)

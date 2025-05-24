@@ -8,7 +8,7 @@ execute:
 ```{python}
 import inspect_viz as vz
 
-df = vz.Data("iris.csv")
+df = vz.Data("penguins.parquet")
 ```
 
 

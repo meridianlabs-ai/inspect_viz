@@ -5,7 +5,6 @@ import { vizCoordinator } from '../coordinator';
 interface DataProps {
     id: string;
     buffer: DataView;
-    params: string;
 }
 
 async function render({ model, el }: RenderProps<DataProps>) {
@@ -25,9 +24,6 @@ async function render({ model, el }: RenderProps<DataProps>) {
     const coordinator = await vizCoordinator();
     const arrowBuffer = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
     await coordinator.addData(id, arrowBuffer);
-
-    // add params
-    coordinator.addParams(JSON.parse(model.get('params')));
 }
 
 export default { render };
