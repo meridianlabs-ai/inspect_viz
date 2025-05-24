@@ -8,6 +8,7 @@ from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
+from ..mosaic import PlotFrom
 from ._param import Param
 from ._selection import Selection
 
@@ -42,6 +43,11 @@ class Data:
     @property
     def selection(self) -> Selection:
         return self._selection
+
+    def plot_from(self) -> PlotFrom:
+        return PlotFrom.model_validate(
+            {"from": self.id, "filterBy": f"${self.selection.id}"}
+        )
 
     @property
     def columns(self) -> list[str]:
