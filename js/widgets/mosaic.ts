@@ -16,11 +16,6 @@ interface SpecProps {
     spec: string;
 }
 
-// https://idl.uw.edu/mosaic/api/vgplot/plot.html
-
-// https://github.com/uwdata/mosaic/blob/main/packages/spec/src/parse-spec.js
-// https://github.com/uwdata/mosaic/blob/main/packages/spec/src/ast-to-dom.js
-
 async function render({ model, el }: RenderProps<SpecProps>) {
     // unwrap widget parameters
     const df_id: string = model.get('df_id');
@@ -42,115 +37,13 @@ async function render({ model, el }: RenderProps<SpecProps>) {
         await coordinator.waitForData(df_id);
     }
 
-    // create spec and parse it to an ast
-    const spec1: Spec = {
-        params: {
-            x: 'body_mass',
-            y: 'flipper_length',
-        },
-        vconcat: [
-            {
-                hconcat: [
-                    {
-                        input: 'menu',
-                        label: 'Y',
-                        options: ['body_mass', 'flipper_length', 'bill_depth', 'bill_length'],
-                        as: '$y',
-                    },
-                    {
-                        input: 'menu',
-                        label: 'X',
-                        options: ['body_mass', 'flipper_length', 'bill_depth', 'bill_length'],
-                        as: '$x',
-                    },
-                ],
-            },
-            {
-                vspace: 10,
-            },
-            {
-                hconcat: [
-                    {
-                        name: 'stroked',
-                        plot: [
-                            {
-                                mark: 'dot',
-                                data: {
-                                    from: df_id,
-                                },
-                                x: {
-                                    column: '$x',
-                                },
-                                y: {
-                                    column: '$y',
-                                },
-                                stroke: 'species',
-                                symbol: 'species',
-                            },
-                        ],
-                        grid: true,
-                        xLabel: 'Body mass (g) →',
-                        yLabel: '↑ Flipper length (mm)',
-                    },
-                    {
-                        legend: 'symbol',
-                        for: 'stroked',
-                        columns: 1,
-                    },
-                ],
-            },
-        ],
-    };
-
-    const ast1 = parseSpec(spec1);
+    // render spec
+    const spec: Spec = JSON.parse(spec_json);
+    const ast = parseSpec(spec);
 
     // create dom
-    const domResult1 = await astToDOM(ast1, coordinator.getInstantiateContext());
-    el.appendChild(domResult1.element);
-
-    // create spec and parse it to an ast
-    const spec2: Spec = {
-        params: {
-            x: 'body_mass',
-            y: 'flipper_length',
-        },
-
-        hconcat: [
-            {
-                name: 'filled',
-                plot: [
-                    {
-                        mark: 'dot',
-                        data: {
-                            from: df_id,
-                        },
-                        x: {
-                            column: '$x',
-                        },
-                        y: {
-                            column: '$y',
-                        },
-                        fill: 'species',
-                        symbol: 'species',
-                    },
-                ],
-                grid: true,
-                xLabel: 'Body mass (g) →',
-                yLabel: '↑ Flipper length (mm)',
-            },
-            {
-                legend: 'symbol',
-                for: 'filled',
-                columns: 1,
-            },
-        ],
-    };
-
-    const ast2 = parseSpec(spec2);
-
-    // create dom
-    const domResult2 = await astToDOM(ast2, coordinator.getInstantiateContext());
-    el.appendChild(domResult2.element);
+    const domResult = await astToDOM(ast, coordinator.getInstantiateContext());
+    el.appendChild(domResult.element);
 }
 
 export default { render };

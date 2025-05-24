@@ -12,7 +12,7 @@ class Param(str):
     _id: str
     _default: int | float | bool | str | datetime
 
-    def __new__(cls, *, default: int | float | bool | str | datetime) -> "Param":
+    def __new__(cls, default: int | float | bool | str | datetime) -> "Param":
         # assign a unique id
         id = f"{PARAM_PREFIX}{uuid()}"
 

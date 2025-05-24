@@ -58,6 +58,7 @@ from ._schema.schema import (
     ParamDate,
     ParamRef,
     Plot,
+    PlotLegend,
     Raster,
     RasterTile,
     Rect,
@@ -160,6 +161,7 @@ PlotMark: TypeAlias = (
     | Spike
     | WaffleX
     | WaffleY
+    | PlotLegend
 )
 
 

@@ -104,105 +104,10 @@ async function render({ model, el }) {
   } else {
     await coordinator.waitForData(df_id);
   }
-  const spec1 = {
-    params: {
-      x: "body_mass",
-      y: "flipper_length"
-    },
-    vconcat: [
-      {
-        hconcat: [
-          {
-            input: "menu",
-            label: "Y",
-            options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
-            as: "$y"
-          },
-          {
-            input: "menu",
-            label: "X",
-            options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
-            as: "$x"
-          }
-        ]
-      },
-      {
-        vspace: 10
-      },
-      {
-        hconcat: [
-          {
-            name: "stroked",
-            plot: [
-              {
-                mark: "dot",
-                data: {
-                  from: df_id
-                },
-                x: {
-                  column: "$x"
-                },
-                y: {
-                  column: "$y"
-                },
-                stroke: "species",
-                symbol: "species"
-              }
-            ],
-            grid: true,
-            xLabel: "Body mass (g) \u2192",
-            yLabel: "\u2191 Flipper length (mm)"
-          },
-          {
-            legend: "symbol",
-            for: "stroked",
-            columns: 1
-          }
-        ]
-      }
-    ]
-  };
-  const ast1 = parseSpec(spec1);
-  const domResult1 = await astToDOM(ast1, coordinator.getInstantiateContext());
-  el.appendChild(domResult1.element);
-  const spec2 = {
-    params: {
-      x: "body_mass",
-      y: "flipper_length"
-    },
-    hconcat: [
-      {
-        name: "filled",
-        plot: [
-          {
-            mark: "dot",
-            data: {
-              from: df_id
-            },
-            x: {
-              column: "$x"
-            },
-            y: {
-              column: "$y"
-            },
-            fill: "species",
-            symbol: "species"
-          }
-        ],
-        grid: true,
-        xLabel: "Body mass (g) \u2192",
-        yLabel: "\u2191 Flipper length (mm)"
-      },
-      {
-        legend: "symbol",
-        for: "filled",
-        columns: 1
-      }
-    ]
-  };
-  const ast2 = parseSpec(spec2);
-  const domResult2 = await astToDOM(ast2, coordinator.getInstantiateContext());
-  el.appendChild(domResult2.element);
+  const spec = JSON.parse(spec_json);
+  const ast = parseSpec(spec);
+  const domResult = await astToDOM(ast, coordinator.getInstantiateContext());
+  el.appendChild(domResult.element);
 }
 var mosaic_default = { render };
 async function astToDOM(ast, ctx) {

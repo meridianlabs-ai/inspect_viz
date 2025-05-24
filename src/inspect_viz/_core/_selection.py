@@ -15,8 +15,8 @@ class Selection(str):
 
     def __new__(
         cls,
-        *,
         select: Literal["crossfilter", "intersect", "single", "union"],
+        *,
         cross: bool | None = None,
         empty: bool | None = None,
         unique: str = uuid(),

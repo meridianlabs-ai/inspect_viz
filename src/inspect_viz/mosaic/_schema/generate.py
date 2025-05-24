@@ -35,6 +35,7 @@ def generate_mosaic_models() -> None:
             "--use-default-kwarg",
             "--collapse-root-models",
             "--use-double-quotes",
+            "--allow-population-by-field-name",
         ]
     )
 
