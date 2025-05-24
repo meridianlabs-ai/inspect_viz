@@ -16,6 +16,7 @@ from ._types import Component, Params
 class MosaicWidget(AnyWidget):
     _esm = STATIC_DIR / "mosaic.js"
     df_id = traitlets.CUnicode("").tag(sync=True)
+    df_buffer = traitlets.Bytes(b"").tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
 
@@ -40,6 +41,7 @@ def mosaic(
     # create and return widget
     widget = MosaicWidget()
     widget.df_id = data.id
+    widget.df_buffer = data.collect_buffer()
     widget.spec = to_json(spec).decode()
     return widget
 

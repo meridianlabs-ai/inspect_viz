@@ -12,10 +12,6 @@ df = vz.Data("penguins.parquet")
 ```
 
 
-```{python}
-vz.menu(df, column="species")
-```
-
 
 ```{python}
 vz.line_y(df, x="sepal_width", y="sepal_length")

@@ -94,106 +94,114 @@ async function vizCoordinator() {
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
   const df_id = model.get("df_id");
+  const df_buffer = model.get("df_buffer");
   const spec_json = model.get("spec");
-  setTimeout(async () => {
-    const coordinator = await vizCoordinator();
+  const coordinator = await vizCoordinator();
+  if (df_buffer && df_buffer.byteLength > 0) {
+    const arrowBuffer = new Uint8Array(
+      df_buffer.buffer,
+      df_buffer.byteOffset,
+      df_buffer.byteLength
+    );
+    await coordinator.addData(df_id, arrowBuffer);
+  } else {
     await coordinator.waitForData(df_id);
-    const spec = {
-      params: {
-        x: "body_mass",
-        y: "flipper_length"
+  }
+  const spec = {
+    params: {
+      x: "body_mass",
+      y: "flipper_length"
+    },
+    vconcat: [
+      {
+        hconcat: [
+          {
+            input: "menu",
+            label: "Y",
+            options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
+            as: "$y"
+          },
+          {
+            input: "menu",
+            label: "X",
+            options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
+            as: "$x"
+          }
+        ]
       },
-      vconcat: [
-        {
-          hconcat: [
-            {
-              input: "menu",
-              label: "Y",
-              options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
-              as: "$y"
-            },
-            {
-              input: "menu",
-              label: "X",
-              options: ["body_mass", "flipper_length", "bill_depth", "bill_length"],
-              as: "$x"
-            }
-          ]
-        },
-        {
-          vspace: 10
-        },
-        {
-          hconcat: [
-            {
-              name: "stroked",
-              plot: [
-                {
-                  mark: "dot",
-                  data: {
-                    from: df_id
-                  },
-                  x: {
-                    column: "$x"
-                  },
-                  y: {
-                    column: "$y"
-                  },
-                  stroke: "species",
-                  symbol: "species"
-                }
-              ],
-              grid: true,
-              xLabel: "Body mass (g) \u2192",
-              yLabel: "\u2191 Flipper length (mm)"
-            },
-            {
-              legend: "symbol",
-              for: "stroked",
-              columns: 1
-            }
-          ]
-        },
-        {
-          vspace: 20
-        },
-        {
-          hconcat: [
-            {
-              name: "filled",
-              plot: [
-                {
-                  mark: "dot",
-                  data: {
-                    from: df_id
-                  },
-                  x: {
-                    column: "$x"
-                  },
-                  y: {
-                    column: "$y"
-                  },
-                  fill: "species",
-                  symbol: "species"
-                }
-              ],
-              grid: true,
-              xLabel: "Body mass (g) \u2192",
-              yLabel: "\u2191 Flipper length (mm)"
-            },
-            {
-              legend: "symbol",
-              for: "filled",
-              columns: 1
-            }
-          ]
-        }
-      ]
-    };
-    const ast = parseSpec2(spec);
-    const { element, params } = await astToDOM(ast);
-    el.appendChild(element);
-  }, 1e3);
+      {
+        vspace: 10
+      },
+      {
+        hconcat: [
+          {
+            name: "stroked",
+            plot: [
+              {
+                mark: "dot",
+                data: {
+                  from: df_id
+                },
+                x: {
+                  column: "$x"
+                },
+                y: {
+                  column: "$y"
+                },
+                stroke: "species",
+                symbol: "species"
+              }
+            ],
+            grid: true,
+            xLabel: "Body mass (g) \u2192",
+            yLabel: "\u2191 Flipper length (mm)"
+          },
+          {
+            legend: "symbol",
+            for: "stroked",
+            columns: 1
+          }
+        ]
+      },
+      {
+        vspace: 20
+      },
+      {
+        hconcat: [
+          {
+            name: "filled",
+            plot: [
+              {
+                mark: "dot",
+                data: {
+                  from: df_id
+                },
+                x: {
+                  column: "$x"
+                },
+                y: {
+                  column: "$y"
+                },
+                fill: "species",
+                symbol: "species"
+              }
+            ],
+            grid: true,
+            xLabel: "Body mass (g) \u2192",
+            yLabel: "\u2191 Flipper length (mm)"
+          },
+          {
+            legend: "symbol",
+            for: "filled",
+            columns: 1
+          }
+        ]
+      }
+    ]
+  };
+  const ast = parseSpec2(spec);
+  const { element, params } = await astToDOM(ast);
+  el.appendChild(element);
 }
 var mosaic_default = { render };
 export {

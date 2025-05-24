@@ -1,18 +1,13 @@
 import os
 from os import PathLike
-from typing import Any
 
-import anywidget
 import narwhals as nw
 import pandas as pd
 import pyarrow as pa
-import traitlets
-from IPython.display import display
 from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
-from .._util._constants import STATIC_DIR
 from ._param import Param
 from ._selection import Selection
 
@@ -32,8 +27,13 @@ class Data:
         # convert to narwhals
         self._ndf = nw.from_native(data)
 
-        # create widget
-        self._widget: DataWidget | None = data_widget(self._id, ndf=self._ndf)
+        # create buffer
+        reader = pa.ipc.RecordBatchStreamReader.from_stream(self._ndf)
+        table = reader.read_all()
+        table_buffer = pa.BufferOutputStream()
+        with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
+            writer.write_table(table)
+        self._buffer: bytes | None = table_buffer.getvalue().to_pybytes()
 
     @property
     def id(self) -> str:
@@ -47,6 +47,14 @@ class Data:
     def columns(self) -> list[str]:
         return self._ndf.columns
 
+    def collect_buffer(self) -> bytes:
+        if self._buffer:
+            buffer = self._buffer
+            self._buffer = None
+            return buffer
+        else:
+            return bytes()
+
     def __str__(self) -> str:
         return self._replace_caption(self._ndf.__str__())
 
@@ -58,11 +66,6 @@ class Data:
 
     def _replace_caption(self, text: str) -> str:
         return text.replace("Narwhals DataFrame", "     Viz Data     ")
-
-    def _ensure(self) -> None:
-        if self._widget is not None:
-            display(self._widget)  # type: ignore[no-untyped-call]
-            self._widget = None
 
 
 def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
@@ -92,38 +95,12 @@ def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:
         raise ValueError(f"Unsupported file extension: {ext}")
 
 
-class DataWidget(anywidget.AnyWidget):
-    _esm = STATIC_DIR / "data.js"
-    id = traitlets.CUnicode("").tag(sync=True)
-    buffer = traitlets.Bytes(b"").tag(sync=True)
-
-
-def data_widget(id: str, ndf: nw.DataFrame[Any]) -> DataWidget:
-    # create widget
-    widget = DataWidget()
-    widget.id = id
-
-    # create arrow ipc buffer
-    reader = pa.ipc.RecordBatchStreamReader.from_stream(ndf)
-    table = reader.read_all()
-    table_buffer = pa.BufferOutputStream()
-    with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
-        writer.write_table(table)
-    widget.buffer = table_buffer.getvalue().to_pybytes()
-
-    # return widget
-    return widget
-
-
 def validate_data(data: Data) -> None:
     # valdate type for people not using type-checkers
     if not isinstance(data, Data):
         raise TypeError(
             "Passed data is not of type vz.Data. Did you forget to wrap it in vz.Data()?"
         )
-
-    # ensure the df is on the client
-    data._ensure()
 
 
 def validate_bindings(data: Data, column: str, param: Param | None = None) -> None:
