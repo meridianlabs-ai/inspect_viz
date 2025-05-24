@@ -131,7 +131,7 @@ async function render({ model, el }) {
                 {
                   mark: "dot",
                   data: {
-                    from: "penguins"
+                    from: df_id
                   },
                   x: {
                     column: "$x"
@@ -165,7 +165,7 @@ async function render({ model, el }) {
                 {
                   mark: "dot",
                   data: {
-                    from: "penguins"
+                    from: df_id
                   },
                   x: {
                     column: "$x"
