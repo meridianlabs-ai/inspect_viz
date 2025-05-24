@@ -34,6 +34,7 @@ def generate_mosaic_models() -> None:
             "--use-union-operator",
             "--use-default-kwarg",
             "--collapse-root-models",
+            "--use-double-quotes",
         ]
     )
 
