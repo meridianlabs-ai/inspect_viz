@@ -1,11 +1,10 @@
 import os
 from os import PathLike
-from typing import Any
 
 import narwhals as nw
 import pandas as pd
 import pyarrow as pa
-from narwhals import Boolean, DataFrame, String
+from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
@@ -13,40 +12,28 @@ from ._param import Param
 from ._selection import Selection
 
 
-class Data(str):
-    _id: str
-    _selection: Selection
-    _ndf: DataFrame[Any]
-    _buffer: bytes | None
-
-    def __new__(cls, data: IntoDataFrame | str | PathLike[str]) -> "Data":
+class Data:
+    def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:
         # assign a unique id
-        id = f"data_{uuid()}"
-
-        # create the string instance and bind the id to it
-        instance = super().__new__(cls, f"${id}")
-        instance._id = id
+        self._id = uuid()
 
         # create a default selection
-        instance._selection = Selection(select="intersect", unique=instance._id)
+        self._selection = Selection(select="intersect", unique=self._id)
 
         # convert to pandas if its a path
         if isinstance(data, (str, PathLike)):
             data = _read_df_from_file(data)
 
         # convert to narwhals
-        instance._ndf = nw.from_native(data)
+        self._ndf = nw.from_native(data)
 
         # create buffer
-        reader = pa.ipc.RecordBatchStreamReader.from_stream(instance._ndf)
+        reader = pa.ipc.RecordBatchStreamReader.from_stream(self._ndf)
         table = reader.read_all()
         table_buffer = pa.BufferOutputStream()
         with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
             writer.write_table(table)
-        instance._buffer = table_buffer.getvalue().to_pybytes()
-
-        # return instance
-        return instance
+        self._buffer: bytes | None = table_buffer.getvalue().to_pybytes()
 
     @property
     def id(self) -> str:
@@ -67,6 +54,9 @@ class Data(str):
             return buffer
         else:
             return bytes()
+
+    def __str__(self) -> str:
+        return self._replace_caption(self._ndf.__str__())
 
     def __repr__(self) -> str:
         return self._replace_caption(self._ndf.__repr__())
