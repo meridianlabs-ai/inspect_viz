@@ -82526,5 +82526,3 @@ class VConcat(BaseModel):
         | DensityY3
         | DensityY4
     ] = Field(..., description="Vertically concatenate components in a column layout.")
-
-

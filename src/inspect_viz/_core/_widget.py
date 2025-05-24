@@ -5,12 +5,12 @@ import traitlets
 from anywidget import AnyWidget
 from pydantic_core import to_json
 
-from .._core._data import Data
-from .._core._param import Param as VizParam
-from .._core._selection import Selection as VizSelection
 from .._util._constants import STATIC_DIR
-from ._schema.schema import Param, ParamDate, PlotAttributes, Selection
-from ._types import Component, Params
+from ..mosaic._schema.schema import Param, ParamDate, Selection
+from ..mosaic._types import Component, Params
+from ._data import Data
+from ._param import Param as VizParam
+from ._selection import Selection as VizSelection
 
 
 class MosaicWidget(AnyWidget):
@@ -20,23 +20,16 @@ class MosaicWidget(AnyWidget):
     spec = traitlets.CUnicode("").tag(sync=True)
 
 
-def mosaic(
+def mosaic_widget(
     *,
     data: Data,
     component: Component,
-    plot_defaults: PlotAttributes | None = None,
 ) -> MosaicWidget:
     # base spec
     spec: dict[str, Any] = component.model_dump(by_alias=True, exclude_none=True)
 
-    # add params
+    # add current params
     spec["params"] = mosaic_params()
-
-    # add plot defaults
-    if plot_defaults is not None:
-        spec["plotDefaults"] = plot_defaults.model_dump(
-            by_alias=True, exclude_none=True
-        )
 
     # create and return widget
     widget = MosaicWidget()
