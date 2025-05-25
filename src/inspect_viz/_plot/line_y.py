@@ -3,7 +3,7 @@ from anywidget import AnyWidget
 import inspect_viz as vz
 
 from .._core._widget import mosaic_widget
-from ..mosaic import LineY, Plot
+from ..types.mosaic import LineY, Plot
 
 
 def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:

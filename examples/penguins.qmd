@@ -17,7 +17,7 @@ y = vz.Param("flipper_length")
 
 ```{python}
 from inspect_viz._core._widget import mosaic_widget
-from inspect_viz.mosaic import HConcat, VConcat, VSpace, Plot, Menu, Column, Dot, Legend
+from inspect_viz.types.mosaic import HConcat, VConcat, VSpace, Plot, Menu, Column, Dot, Legend
 
 spec = VConcat(
     vconcat=[

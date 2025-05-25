@@ -8,7 +8,7 @@ from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
 from shortuuid import uuid
 
-from ..mosaic import PlotFrom
+from ..types.mosaic import PlotFrom
 from ._param import Param
 from ._selection import Selection
 
