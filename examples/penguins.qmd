@@ -3,6 +3,7 @@ title: "Explore the Iris Dataset"
 format: html
 execute:
   daemon: false
+  echo: false
 ---
 
 ```{python}
@@ -16,7 +17,7 @@ y = vz.Param("flipper_length")
 
 
 ```{python}
-from inspect_viz._core._widget import mosaic_widget
+from inspect_viz._core._widget import Widget
 from inspect_viz.mosaic import HConcat, VConcat, VSpace, Plot, Menu, Column, Dot, Legend
 
 spec = VConcat(
@@ -69,7 +70,7 @@ spec = VConcat(
     ]
 )
 
-mosaic_widget(data=data, component=spec)
+Widget(data=data, component=spec)
 ```
 
 
@@ -95,5 +96,5 @@ spec2 = HConcat(
     ]
 )
 
-mosaic_widget(data=data, component=spec2)
+Widget(data=data, component=spec2)
 ```

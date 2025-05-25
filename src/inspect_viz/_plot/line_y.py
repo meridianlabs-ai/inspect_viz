@@ -1,12 +1,10 @@
-from anywidget import AnyWidget
-
 import inspect_viz as vz
 
-from .._core._widget import mosaic_widget
+from .._core._widget import Widget
 from ..mosaic import LineY, Plot
 
 
-def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
+def line_y(data: vz.Data, x: str, y: str) -> Widget:
     """LineY graph.
 
     Args:
@@ -15,4 +13,4 @@ def line_y(data: vz.Data, x: str, y: str) -> AnyWidget:
         y: Column name for y-coordinates.
     """
     lineY = LineY(data=data.plot_from(), x=x, y=y)
-    return mosaic_widget(data=data, component=Plot(plot=[lineY]))
+    return Widget(data=data, component=Plot(plot=[lineY]))

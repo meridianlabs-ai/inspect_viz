@@ -1,11 +1,10 @@
-from ._core._data import Data
-from ._core._param import Param
-from ._core._selection import Selection
-from ._plot.line_y import line_y
+from ._core import Data, Param, Selection, Widget
+from ._plot import line_y
 
 __all__ = [
     "Data",
     "Param",
     "Selection",
+    "Widget",
     "line_y",
 ]

@@ -6,37 +6,79 @@ from anywidget import AnyWidget
 from pydantic_core import to_json
 
 from .._util._constants import STATIC_DIR
-from ..mosaic._schema.schema import Param, ParamDate, Selection
-from ..mosaic._types import Component, Params
+from ..mosaic import Component as Component
+from ..mosaic import Param, ParamDate, Params, Selection
 from ._data import Data
 from ._param import Param as VizParam
 from ._selection import Selection as VizSelection
 
 
-class MosaicWidget(AnyWidget):
+class Widget(AnyWidget):
+    """Visualization widget (input, plot, table, etc.)."""
+
     _esm = STATIC_DIR / "mosaic.js"
     df_id = traitlets.CUnicode("").tag(sync=True)
     df_buffer = traitlets.Bytes(b"").tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
+    def __init__(self, component: Component, data: Data | None = None) -> None:
+        super().__init__()
+        self._component = component
+        self._data = data
 
-def mosaic_widget(
-    *,
-    data: Data,
-    component: Component,
-) -> MosaicWidget:
-    # base spec
-    spec: dict[str, Any] = component.model_dump(by_alias=True, exclude_none=True)
+    @property
+    def component(self) -> Component:
+        """Mosaic component."""
+        return self.component
 
-    # add current params
-    spec["params"] = mosaic_params()
+    def _repr_mimebundle_(
+        self, **kwargs: Any
+    ) -> tuple[dict[str, Any], dict[str, Any]] | None:
+        # ensure data
+        if self._data is not None:
+            self.df_id = self._data.id
+            self.df_buffer = self._data.collect_buffer()
 
-    # create and return widget
-    widget = MosaicWidget()
-    widget.df_id = data.id
-    widget.df_buffer = data.collect_buffer()
-    widget.spec = to_json(spec).decode()
-    return widget
+        # ensure spec
+        if not self.spec:
+            # base spec
+            spec: dict[str, Any] = self._component.model_dump(
+                by_alias=True, exclude_none=True
+            )
+
+            # add current params
+            spec["params"] = mosaic_params()
+
+            # to json
+            self.spec = to_json(spec).decode()
+
+        return super()._repr_mimebundle_(**kwargs)
+
+
+# class MosaicWidget(AnyWidget):
+#     _esm = STATIC_DIR / "mosaic.js"
+#     df_id = traitlets.CUnicode("").tag(sync=True)
+#     df_buffer = traitlets.Bytes(b"").tag(sync=True)
+#     spec = traitlets.CUnicode("").tag(sync=True)
+
+
+# def mosaic_widget(
+#     *,
+#     data: Data,
+#     component: Component,
+# ) -> MosaicWidget:
+#     # base spec
+#     spec: dict[str, Any] = component.model_dump(by_alias=True, exclude_none=True)
+
+#     # add current params
+#     spec["params"] = mosaic_params()
+
+#     # create and return widget
+#     widget = MosaicWidget()
+#     widget.df_id = data.id
+#     widget.df_buffer = data.collect_buffer()
+#     widget.spec = to_json(spec).decode()
+#     return widget
 
 
 def mosaic_params() -> Params:

@@ -3,13 +3,6 @@ import subprocess
 from pathlib import Path
 from textwrap import dedent
 
-# we don't define params in the spec we send....in case we need to here are the aliases:
-
-# ParamLiteral: TypeAlias = None | str | int | float | bool
-# ParamValue: TypeAlias = ParamLiteral | list[ParamLiteral | ParamRef]
-# ParamDefinition: TypeAlias = ParamValue | Param | ParamDate | Selection
-# Params: TypeAlias = dict[str, ParamDefinition]
-
 
 def generate_mosaic_models() -> None:
     dir = Path(__file__).parent
