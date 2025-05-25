@@ -9,8 +9,8 @@ def dot(
 
     Args:
         data: The data source for the mark.
-        x: Column with x coordinate
-        y: Column with y coordinate.
+        x: Column with x coordinates
+        y: Column with y coordinates.
         stroke: Categorical column to bind colors to or CSS color string.
         symbol: Categorical column to bind symbols to or CSS color string.
     """
