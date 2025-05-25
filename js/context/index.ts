@@ -15,22 +15,22 @@ class VizContext extends InstantiateContext {
         this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 
-    async addData(id: string, buffer: Uint8Array) {
+    async insertTable(table: string, data: Uint8Array) {
         // insert table into database
-        await this.conn_?.insertArrowFromIPCStream(buffer, {
-            name: id,
+        await this.conn_?.insertArrowFromIPCStream(data, {
+            name: table,
             create: true,
         });
 
         // add to list of tables
-        this.tables_.add(id);
+        this.tables_.add(table);
     }
 
-    async waitForData(id: string) {
+    async waitForTable(table: string) {
         // at startup we can't control the order of df producing and df consuming
         // widgets, so we may need to wait and retry for the data frame
         while (true) {
-            if (this.tables_.has(id)) {
+            if (this.tables_.has(table)) {
                 return;
             } else {
                 await sleep(100);

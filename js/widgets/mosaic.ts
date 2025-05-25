@@ -11,33 +11,29 @@ import {
 import { vizContext } from '../context';
 
 interface MosaicProps {
-    df_id: string;
-    df_buffer?: DataView;
+    table: string;
+    data?: DataView;
     spec: string;
 }
 
 async function render({ model, el }: RenderProps<MosaicProps>) {
     // unwrap widget parameters
-    const df_id: string = model.get('df_id');
-    const df_buffer = model.get('df_buffer');
+    const table: string = model.get('table');
+    const data = model.get('data');
     const spec_json: string = model.get('spec');
 
     // get context
     const ctx = await vizContext();
 
     // handle data if necessary
-    if (df_id) {
+    if (table) {
         // actual data buffer to insert
-        if (df_buffer && df_buffer.byteLength > 0) {
-            const arrowBuffer = new Uint8Array(
-                df_buffer.buffer,
-                df_buffer.byteOffset,
-                df_buffer.byteLength
-            );
-            await ctx.addData(df_id, arrowBuffer);
+        if (data && data.byteLength > 0) {
+            const arrowBuffer = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+            await ctx.insertTable(table, arrowBuffer);
             // just wait for the data to be available
         } else {
-            await ctx.waitForData(df_id);
+            await ctx.waitForTable(table);
         }
     }
 

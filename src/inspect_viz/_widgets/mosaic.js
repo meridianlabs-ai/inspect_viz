@@ -44,16 +44,16 @@ var VizContext = class extends InstantiateContext {
     this.tables_ = /* @__PURE__ */ new Set();
     this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
-  async addData(id, buffer) {
-    await this.conn_?.insertArrowFromIPCStream(buffer, {
-      name: id,
+  async insertTable(table, data) {
+    await this.conn_?.insertArrowFromIPCStream(data, {
+      name: table,
       create: true
     });
-    this.tables_.add(id);
+    this.tables_.add(table);
   }
-  async waitForData(id) {
+  async waitForTable(table) {
     while (true) {
-      if (this.tables_.has(id)) {
+      if (this.tables_.has(table)) {
         return;
       } else {
         await sleep(100);
@@ -76,20 +76,16 @@ async function vizContext() {
 
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
-  const df_id = model.get("df_id");
-  const df_buffer = model.get("df_buffer");
+  const table = model.get("table");
+  const data = model.get("data");
   const spec_json = model.get("spec");
   const ctx = await vizContext();
-  if (df_id) {
-    if (df_buffer && df_buffer.byteLength > 0) {
-      const arrowBuffer = new Uint8Array(
-        df_buffer.buffer,
-        df_buffer.byteOffset,
-        df_buffer.byteLength
-      );
-      await ctx.addData(df_id, arrowBuffer);
+  if (table) {
+    if (data && data.byteLength > 0) {
+      const arrowBuffer = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+      await ctx.insertTable(table, arrowBuffer);
     } else {
-      await ctx.waitForData(df_id);
+      await ctx.waitForTable(table);
     }
   }
   const spec = JSON.parse(spec_json);

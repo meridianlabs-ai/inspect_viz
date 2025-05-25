@@ -12,16 +12,14 @@ from ..mosaic import PlotFrom
 from ._param import Param
 from ._selection import Selection
 
-DATA_PREFIX = "data_"
-
 
 class Data:
     def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:
-        # assign a unique id
-        self._id = f"{DATA_PREFIX}{uuid()}"
+        # assign a unique table name
+        self._table = uuid()
 
         # create a default selection
-        self._selection = Selection(select="intersect", unique=self._id)
+        self._selection = Selection(select="intersect", unique=self._table)
 
         # convert to pandas if its a path
         if isinstance(data, (str, PathLike)):
@@ -33,14 +31,14 @@ class Data:
         # create buffer
         reader = pa.ipc.RecordBatchStreamReader.from_stream(self._ndf)
         table = reader.read_all()
-        table_buffer = pa.BufferOutputStream()
-        with pa.RecordBatchStreamWriter(table_buffer, table.schema) as writer:
+        buffer = pa.BufferOutputStream()
+        with pa.RecordBatchStreamWriter(buffer, table.schema) as writer:
             writer.write_table(table)
-        self._buffer: bytes | None = table_buffer.getvalue().to_pybytes()
+        self._data: bytes | None = buffer.getvalue().to_pybytes()
 
     @property
-    def id(self) -> str:
-        return self._id
+    def table(self) -> str:
+        return self._table
 
     @property
     def selection(self) -> Selection:
@@ -48,17 +46,17 @@ class Data:
 
     def plot_from(self) -> PlotFrom:
         return PlotFrom.model_validate(
-            {"from": self.id, "filterBy": f"${self.selection.id}"}
+            {"from": self.table, "filterBy": f"${self.selection.id}"}
         )
 
     @property
     def columns(self) -> list[str]:
         return self._ndf.columns
 
-    def collect_buffer(self) -> bytes:
-        if self._buffer:
-            buffer = self._buffer
-            self._buffer = None
+    def collect_data(self) -> bytes:
+        if self._data:
+            buffer = self._data
+            self._data = None
             return buffer
         else:
             return bytes()
