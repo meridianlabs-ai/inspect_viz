@@ -1,3 +1,3 @@
-from .line_y import line_y
+from .dot import dot
 
-__all__ = ["line_y"]
+__all__ = ["dot"]

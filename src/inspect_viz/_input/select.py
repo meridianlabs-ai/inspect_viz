@@ -44,17 +44,11 @@ def select(
         # validate and set column
         if column is None:
             raise ValueError("You must pass a `column` value along with `data`")
-        elif column not in data.columns:
-            raise ValueError(f"The specified column '{column}' does not exist.")
         else:
-            menu_args["column"] = column
+            menu_args["column"] = data.validate_column(column)
 
         # validate and set field
-        if field is not None:
-            if field not in data.columns:
-                raise ValueError(
-                    f"The specified target field '{field}' does not exist."
-                )
+        menu_args["field"] = data.validate_column(field)
 
         # set filter_by
         menu_args["filterBy"] = filter_by
