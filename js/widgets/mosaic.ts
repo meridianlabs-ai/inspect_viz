@@ -25,16 +25,20 @@ async function render({ model, el }: RenderProps<SpecProps>) {
     // get coordinator
     const coordinator = await vizCoordinator();
 
-    // add data if necessary (alternatively wait for it)
-    if (df_buffer && df_buffer.byteLength > 0) {
-        const arrowBuffer = new Uint8Array(
-            df_buffer.buffer,
-            df_buffer.byteOffset,
-            df_buffer.byteLength
-        );
-        await coordinator.addData(df_id, arrowBuffer);
-    } else {
-        await coordinator.waitForData(df_id);
+    // handle data if necessary
+    if (df_id) {
+        // actual data buffer to insert
+        if (df_buffer && df_buffer.byteLength > 0) {
+            const arrowBuffer = new Uint8Array(
+                df_buffer.buffer,
+                df_buffer.byteOffset,
+                df_buffer.byteLength
+            );
+            await coordinator.addData(df_id, arrowBuffer);
+            // just wait for the data to be available
+        } else {
+            await coordinator.waitForData(df_id);
+        }
     }
 
     // render spec

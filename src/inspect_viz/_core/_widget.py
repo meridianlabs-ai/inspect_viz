@@ -6,8 +6,7 @@ from anywidget import AnyWidget
 from pydantic_core import to_json
 
 from .._util._constants import STATIC_DIR
-from ..mosaic import Component as Component
-from ..mosaic import Param, ParamDate, Params, Selection
+from ..mosaic import Component, Param, ParamDate, Params, Selection
 from ._data import Data
 from ._param import Param as VizParam
 from ._selection import Selection as VizSelection
@@ -22,6 +21,15 @@ class Widget(AnyWidget):
     spec = traitlets.CUnicode("").tag(sync=True)
 
     def __init__(self, component: Component, data: Data | None = None) -> None:
+        """Create a visualization widget.
+
+        Args:
+            component: Visualization component wrapped by the widget.
+            data: Data source for wiget (optional).
+
+        Returns:
+            Visualization widget.
+        """
         super().__init__()
         self._component = component
         self._data = data

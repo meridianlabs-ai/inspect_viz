@@ -94,15 +94,17 @@ async function render({ model, el }) {
   const df_buffer = model.get("df_buffer");
   const spec_json = model.get("spec");
   const coordinator = await vizCoordinator();
-  if (df_buffer && df_buffer.byteLength > 0) {
-    const arrowBuffer = new Uint8Array(
-      df_buffer.buffer,
-      df_buffer.byteOffset,
-      df_buffer.byteLength
-    );
-    await coordinator.addData(df_id, arrowBuffer);
-  } else {
-    await coordinator.waitForData(df_id);
+  if (df_id) {
+    if (df_buffer && df_buffer.byteLength > 0) {
+      const arrowBuffer = new Uint8Array(
+        df_buffer.buffer,
+        df_buffer.byteOffset,
+        df_buffer.byteLength
+      );
+      await coordinator.addData(df_id, arrowBuffer);
+    } else {
+      await coordinator.waitForData(df_id);
+    }
   }
   const spec = JSON.parse(spec_json);
   const ast = parseSpec(spec);
