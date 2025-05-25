@@ -4,9 +4,7 @@ import {
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/coordinator/coodinator.ts
-import {
-  wasmConnector
-} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/coordinator/duckdb.ts
@@ -39,18 +37,12 @@ function sleep(ms) {
 }
 
 // js/coordinator/coodinator.ts
-var VizCoordinator = class {
+var VizContext = class extends InstantiateContext {
   constructor(conn_) {
+    super();
     this.conn_ = conn_;
     this.tables_ = /* @__PURE__ */ new Set();
-    this.ctx_ = new InstantiateContext();
-    this.ctx_.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
-  }
-  getParams() {
-    return this.ctx_.activeParams;
-  }
-  getParam(name) {
-    return this.ctx_.activeParams.get(name);
+    this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
   }
   async addData(id, buffer) {
     await this.conn_?.insertArrowFromIPCStream(buffer, {
@@ -68,24 +60,18 @@ var VizCoordinator = class {
       }
     }
   }
-  getInstantiateContext() {
-    return this.ctx_;
-  }
-  async connectClient(client) {
-    this.ctx_.coordinator.connect(client);
-  }
 };
-var VIZ_COORDINATOR_KEY = Symbol.for("@@inspect-viz-coordinator");
-async function vizCoordinator() {
+var VIZ_CONTEXT_KEY = Symbol.for("@@inspect-viz-context");
+async function vizContext() {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
-  if (!globalScope[VIZ_COORDINATOR_KEY]) {
-    globalScope[VIZ_COORDINATOR_KEY] = (async () => {
+  if (!globalScope[VIZ_CONTEXT_KEY]) {
+    globalScope[VIZ_CONTEXT_KEY] = (async () => {
       const duckdb = await initDuckdb();
       const conn = await duckdb.connect();
-      return new VizCoordinator(conn);
+      return new VizContext(conn);
     })();
   }
-  return globalScope[VIZ_COORDINATOR_KEY];
+  return globalScope[VIZ_CONTEXT_KEY];
 }
 
 // js/widgets/mosaic.ts
@@ -93,7 +79,7 @@ async function render({ model, el }) {
   const df_id = model.get("df_id");
   const df_buffer = model.get("df_buffer");
   const spec_json = model.get("spec");
-  const coordinator = await vizCoordinator();
+  const ctx = await vizContext();
   if (df_id) {
     if (df_buffer && df_buffer.byteLength > 0) {
       const arrowBuffer = new Uint8Array(
@@ -101,14 +87,14 @@ async function render({ model, el }) {
         df_buffer.byteOffset,
         df_buffer.byteLength
       );
-      await coordinator.addData(df_id, arrowBuffer);
+      await ctx.addData(df_id, arrowBuffer);
     } else {
-      await coordinator.waitForData(df_id);
+      await ctx.waitForData(df_id);
     }
   }
   const spec = JSON.parse(spec_json);
   const ast = parseSpec(spec);
-  const domResult = await astToDOM(ast, coordinator.getInstantiateContext());
+  const domResult = await astToDOM(ast, ctx);
   el.appendChild(domResult.element);
 }
 var mosaic_default = { render };
