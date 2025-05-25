@@ -1,5 +1,6 @@
 import os
 from os import PathLike
+from typing import ClassVar
 
 import narwhals as nw
 import pandas as pd
@@ -39,6 +40,9 @@ class Data:
         with pa.RecordBatchStreamWriter(buffer, table.schema) as writer:
             writer.write_table(table)
         self._data: bytes | None = buffer.getvalue().to_pybytes()
+
+        # track instances
+        Data._instances.append(self)
 
     @property
     def table(self) -> str:
@@ -81,6 +85,14 @@ class Data:
 
     def _replace_caption(self, text: str) -> str:
         return text.replace("Narwhals DataFrame", "     Viz Data     ")
+
+    # Class-level dictionary to store all instances
+    _instances: ClassVar[list["Data"]] = []
+
+    @classmethod
+    def get_all(cls) -> list["Data"]:
+        """Get all data."""
+        return cls._instances.copy()
 
 
 def _read_df_from_file(path: str | PathLike[str]) -> pd.DataFrame:

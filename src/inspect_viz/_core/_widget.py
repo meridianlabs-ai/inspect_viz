@@ -47,7 +47,7 @@ class Widget(AnyWidget):
     tables = TablesData({}).tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
-    def __init__(self, component: Component, data: Data | None = None) -> None:
+    def __init__(self, component: Component) -> None:
         """Create a visualization widget.
 
         Args:
@@ -59,7 +59,6 @@ class Widget(AnyWidget):
         """
         super().__init__()
         self._component = component
-        self._data = data
 
     @property
     def component(self) -> Component:
@@ -69,11 +68,8 @@ class Widget(AnyWidget):
     def _repr_mimebundle_(
         self, **kwargs: Any
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
-        # collect data from all Data objects
-        if self._data:
-            tables_data_dict: dict[str, str | bytes] = {}
-            tables_data_dict[self._data.table] = self._data.collect_data()
-            self.tables = tables_data_dict
+        # set current tables
+        self.tables = all_tables()
 
         # ensure spec
         if not self.spec:
@@ -83,7 +79,7 @@ class Widget(AnyWidget):
             )
 
             # add current params
-            spec["params"] = mosaic_params()
+            spec["params"] = all_params()
 
             # to json
             self.spec = to_json(spec).decode()
@@ -91,7 +87,14 @@ class Widget(AnyWidget):
         return super()._repr_mimebundle_(**kwargs)
 
 
-def mosaic_params() -> Params:
+def all_tables() -> dict[str, str | bytes]:
+    all_data: dict[str, str | bytes] = {}
+    for data in Data.get_all():
+        all_data[data.table] = data.collect_data()
+    return all_data
+
+
+def all_params() -> Params:
     all_params: Params = {}
 
     for param in VizParam.get_all():

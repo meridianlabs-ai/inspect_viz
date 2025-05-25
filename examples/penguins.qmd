@@ -72,7 +72,7 @@ spec = VConcat(
     ]
 )
 
-Widget(data=data, component=spec)
+Widget(component=spec)
 ```
 
 
@@ -98,5 +98,5 @@ spec2 = HConcat(
     ]
 )
 
-Widget(data=data, component=spec2)
+Widget(component=spec2)
 ```

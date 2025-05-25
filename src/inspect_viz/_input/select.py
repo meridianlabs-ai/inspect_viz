@@ -54,4 +54,4 @@ def select(
         menu_args["filterBy"] = filter_by
 
     # return widget
-    return Widget(component=Menu(**menu_args), data=data)
+    return Widget(component=Menu(**menu_args))

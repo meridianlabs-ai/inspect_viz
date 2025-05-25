@@ -21,6 +21,5 @@ def dot(
             y=data.validate_column(y),
             stroke=stroke,
             symbol=symbol,
-        ),
-        data=data,
+        )
     )
