@@ -12,6 +12,8 @@ data = vz.Data("penguins.parquet")
 
 x = vz.Param("body_mass")
 y = vz.Param("flipper_length")
+
+vz.select("Foo", data, column="species")
 ```
 
 
