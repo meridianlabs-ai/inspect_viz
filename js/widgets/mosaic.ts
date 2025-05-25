@@ -8,7 +8,7 @@ import {
     ASTNode,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
-import { vizContext } from '../coordinator';
+import { vizContext } from '../context';
 
 interface MosaicProps {
     df_id: string;

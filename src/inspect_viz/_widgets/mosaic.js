@@ -3,11 +3,11 @@ import {
   parseSpec
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
-// js/coordinator/coodinator.ts
+// js/context/index.ts
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
-// js/coordinator/duckdb.ts
+// js/context/duckdb.ts
 import {
   getJsDelivrBundles,
   selectBundle,
@@ -36,7 +36,7 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// js/coordinator/coodinator.ts
+// js/context/index.ts
 var VizContext = class extends InstantiateContext {
   constructor(conn_) {
     super();
