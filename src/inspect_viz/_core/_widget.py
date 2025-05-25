@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime
 from typing import Any
 
@@ -12,12 +13,38 @@ from ._param import Param as VizParam
 from ._selection import Selection as VizSelection
 
 
+class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
+    """Custom traitlet for handling multiple table/data pairs.
+
+    Accepts a dict of {table_name: bytes_data} and serializes it as JSON
+    with base64-encoded data values for transmission to the frontend.
+    """
+
+    info_text = "a dict of table names to data bytes"
+
+    def validate(self, obj: Any, value: Any) -> dict[str, str]:
+        if not isinstance(value, dict):
+            self.error(obj, value)
+
+        # Convert bytes values to base64 strings for JSON serialization
+        serialized = {}
+        for key, data in value.items():
+            if isinstance(data, bytes):
+                serialized[key] = base64.b64encode(data).decode("utf-8")
+            elif isinstance(data, str):
+                # Already base64 encoded
+                serialized[key] = data
+            else:
+                self.error(obj, value)
+
+        return serialized
+
+
 class Widget(AnyWidget):
     """Visualization widget (input, plot, table, etc.)."""
 
     _esm = STATIC_DIR / "mosaic.js"
-    table = traitlets.CUnicode("").tag(sync=True)
-    data = traitlets.Bytes(b"").tag(sync=True)
+    tables = TablesData({}).tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
     def __init__(self, component: Component, data: Data | None = None) -> None:
@@ -25,7 +52,7 @@ class Widget(AnyWidget):
 
         Args:
             component: Visualization component wrapped by the widget.
-            data: Data source for wiget (optional).
+            data: Data source(s) for widget (optional). Can be a single Data object or list of Data objects.
 
         Returns:
             Visualization widget.
@@ -42,10 +69,11 @@ class Widget(AnyWidget):
     def _repr_mimebundle_(
         self, **kwargs: Any
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
-        # ensure data
-        if self._data is not None:
-            self.table = self._data.table
-            self.data = self._data.collect_data()
+        # collect data from all Data objects
+        if self._data:
+            tables_data_dict: dict[str, str | bytes] = {}
+            tables_data_dict[self._data.table] = self._data.collect_data()
+            self.tables = tables_data_dict
 
         # ensure spec
         if not self.spec:

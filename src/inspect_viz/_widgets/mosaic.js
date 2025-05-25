@@ -76,16 +76,19 @@ async function vizContext() {
 
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
-  const table = model.get("table");
-  const data = model.get("data");
+  const tables = model.get("tables") || {};
   const spec_json = model.get("spec");
   const ctx = await vizContext();
-  if (table) {
-    if (data && data.byteLength > 0) {
-      const arrowBuffer = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
-      await ctx.insertTable(table, arrowBuffer);
+  for (const [tableName, base64Data] of Object.entries(tables)) {
+    if (base64Data) {
+      const binaryString = atob(base64Data);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      await ctx.insertTable(tableName, bytes);
     } else {
-      await ctx.waitForTable(table);
+      await ctx.waitForTable(tableName);
     }
   }
   const spec = JSON.parse(spec_json);

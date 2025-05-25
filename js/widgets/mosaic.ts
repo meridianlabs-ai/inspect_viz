@@ -11,29 +11,33 @@ import {
 import { vizContext } from '../context';
 
 interface MosaicProps {
-    table: string;
-    data?: DataView;
+    tables: Record<string, string>;
     spec: string;
 }
 
 async function render({ model, el }: RenderProps<MosaicProps>) {
     // unwrap widget parameters
-    const table: string = model.get('table');
-    const data = model.get('data');
+    const tables: Record<string, string> = model.get('tables') || {};
     const spec_json: string = model.get('spec');
 
     // get context
     const ctx = await vizContext();
 
-    // handle data if necessary
-    if (table) {
-        // actual data buffer to insert
-        if (data && data.byteLength > 0) {
-            const arrowBuffer = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
-            await ctx.insertTable(table, arrowBuffer);
-            // just wait for the data to be available
+    // handle multiple tables data
+    for (const [tableName, base64Data] of Object.entries(tables)) {
+        if (base64Data) {
+            // decode base64 to bytes
+            const binaryString = atob(base64Data);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+
+            // insert table into context
+            await ctx.insertTable(tableName, bytes);
         } else {
-            await ctx.waitForTable(table);
+            // wait for table if no data provided
+            await ctx.waitForTable(tableName);
         }
     }
 
