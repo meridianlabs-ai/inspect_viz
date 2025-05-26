@@ -1,5 +1,5 @@
 ---
-title: "Explore the Iris Dataset"
+title: "Explore the Penguins Dataset"
 format: 
   dashboard:
     scrolling: false
