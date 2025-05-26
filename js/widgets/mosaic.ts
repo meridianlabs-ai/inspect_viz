@@ -50,28 +50,34 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
         widgetEl.style.marginBottom = '0';
     }
 
+    // detect whether we should be auto-filling our container
+    const autoFill =
+        window.document.body.classList.contains('quarto-dashboard') &&
+        window.document.body.classList.contains('dashboard-fill');
+
     // render spec according to container size
     const spec: Spec = JSON.parse(spec_json);
     const renderSpec = async () => {
-        const sizedSpec = sizeToContainer(spec, el);
-        const ast = parseSpec(sizedSpec);
+        const targetSpec = autoFill ? sizeToContainer(spec, el) : spec;
+        const ast = parseSpec(targetSpec);
         const { element } = await astToDOM(ast, ctx);
         el.innerHTML = '';
         el.appendChild(element);
     };
     await renderSpec();
 
-    // re-render on container size changed
-    const resizeObserver = new ResizeObserver(throttle(renderSpec));
-    resizeObserver.observe(el);
+    // re-render when size changes in quarto dashboards
+    if (autoFill) {
+        // re-render on container size changed
+        const resizeObserver = new ResizeObserver(throttle(renderSpec));
+        resizeObserver.observe(el);
 
-    // cleanup resize observer on disconnect
-    return () => {
-        resizeObserver.disconnect();
-    };
+        // cleanup resize observer on disconnect
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }
 }
-
-export default { render };
 
 async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
     // process param/selection definitions
@@ -113,3 +119,5 @@ function sizeToContainer(spec: Spec, containerEl: HTMLElement): Spec {
     }
     return spec;
 }
+
+export default { render };
