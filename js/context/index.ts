@@ -4,8 +4,7 @@ import { wasmConnector } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@
 
 import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
-import { initDuckdb } from './duckdb';
-import { sleep } from '../util/wait';
+import { initDuckdb, waitForTable } from './duckdb';
 
 class VizContext extends InstantiateContext {
     private readonly tables_ = new Set<string>();
@@ -27,15 +26,7 @@ class VizContext extends InstantiateContext {
     }
 
     async waitForTable(table: string) {
-        // at startup we can't control the order of df producing and df consuming
-        // widgets, so we may need to wait and retry for the data frame
-        while (true) {
-            if (this.tables_.has(table)) {
-                return;
-            } else {
-                await sleep(100);
-            }
-        }
+        await waitForTable(this.conn_, table);
     }
 }
 

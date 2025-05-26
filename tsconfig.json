@@ -22,7 +22,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"typeRoots": [
 			"./node_modules/@types",
-			"./js/types" 
+			"./js/@types" 
 		],
 	}
 }

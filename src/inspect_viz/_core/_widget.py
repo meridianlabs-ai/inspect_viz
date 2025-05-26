@@ -6,7 +6,7 @@ import traitlets
 from anywidget import AnyWidget
 from pydantic_core import to_json
 
-from .._util._constants import STATIC_DIR
+from .._util._constants import WIDGETS_DIR
 from ..mosaic import Component, Param, ParamDate, Params, Selection
 from ._data import Data
 from ._param import Param as VizParam
@@ -43,7 +43,7 @@ class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
 class Widget(AnyWidget):
     """Visualization widget (input, plot, table, etc.)."""
 
-    _esm = STATIC_DIR / "mosaic.js"
+    _esm = WIDGETS_DIR / "mosaic.js"
     tables = TablesData({}).tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
