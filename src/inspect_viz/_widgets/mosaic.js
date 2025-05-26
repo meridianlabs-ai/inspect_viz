@@ -24,7 +24,7 @@ async function initDuckdb() {
     })
   );
   const worker = new Worker(worker_url);
-  const logger = new ConsoleLogger(LogLevel.INFO);
+  const logger = new ConsoleLogger(LogLevel.WARNING);
   const db = new AsyncDuckDB(logger, worker);
   await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
   URL.revokeObjectURL(worker_url);
@@ -43,6 +43,9 @@ async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {})
       );
       if (res.numRows) return;
     } catch (err) {
+      console.log(
+        `Table ${table} not yet available, trying again in ${interval}ms (error: ${err})`
+      );
     }
     if (performance.now() - t0 > timeout) {
       throw new Error(`Timed out waiting for table "${table}"`);

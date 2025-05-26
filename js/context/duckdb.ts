@@ -21,7 +21,7 @@ export async function initDuckdb() {
 
     // Instantiate the asynchronous version of DuckDB-wasm
     const worker = new Worker(worker_url);
-    const logger = new ConsoleLogger(LogLevel.INFO);
+    const logger = new ConsoleLogger(LogLevel.WARNING);
     const db = new AsyncDuckDB(logger, worker);
     await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
     URL.revokeObjectURL(worker_url);
@@ -48,8 +48,9 @@ export async function waitForTable(
 
             if (res.numRows) return; // success ✨
         } catch (err) {
-            /* Table or even the database file may not be ready yet.
-         Ignore the error and keep polling. */
+            console.log(
+                `Table ${table} not yet available, trying again in ${interval}ms (error: ${err})`
+            );
         }
 
         if (performance.now() - t0 > timeout) {
