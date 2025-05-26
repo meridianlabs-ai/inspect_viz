@@ -2,7 +2,11 @@ import { AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duck
 
 import { wasmConnector } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
+import {
+    InstantiateContext,
+    PlotAttributeNode,
+    LiteralNode,
+} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb, waitForTable } from './duckdb';
 import { CUSTOM_INPUTS } from '../inputs';
@@ -11,7 +15,15 @@ class VizContext extends InstantiateContext {
     private readonly tables_ = new Set<string>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
-        super();
+        // bump up the default font size
+        const styleAttrib = new PlotAttributeNode('attribute');
+        styleAttrib.name = 'style';
+        styleAttrib.value = new LiteralNode({
+            fontSize: '12px',
+        });
+        super({
+            plotDefaults: [styleAttrib],
+        });
         this.api = { ...this.api, ...CUSTOM_INPUTS };
         this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }

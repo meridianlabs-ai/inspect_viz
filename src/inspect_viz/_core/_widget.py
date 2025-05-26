@@ -7,7 +7,13 @@ from anywidget import AnyWidget
 from pydantic_core import to_json
 
 from .._util._constants import WIDGETS_DIR
-from ..mosaic import Component, Param, ParamDate, Params, Selection
+from ..mosaic import (
+    Component,
+    Param,
+    ParamDate,
+    Params,
+    Selection,
+)
 from ._data import Data
 from ._param import Param as VizParam
 from ._selection import Selection as VizSelection
