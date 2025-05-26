@@ -5,14 +5,14 @@ import { wasmConnector } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@
 import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb, waitForTable } from './duckdb';
-import { customInputs } from '../inputs';
+import { CUSTOM_INPUTS } from '../inputs';
 
 class VizContext extends InstantiateContext {
     private readonly tables_ = new Set<string>();
 
     constructor(private readonly conn_: AsyncDuckDBConnection) {
         super();
-        this.api = { ...this.api, ...customInputs };
+        this.api = { ...this.api, ...CUSTOM_INPUTS };
         this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
     }
 

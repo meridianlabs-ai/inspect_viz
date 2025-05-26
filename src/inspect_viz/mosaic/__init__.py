@@ -3,7 +3,7 @@
 from typing import TypeAlias
 
 from ._generate.schema import *
-from ._inputs import *
+from ._input import *
 
 PlotMark: TypeAlias = (
     Area

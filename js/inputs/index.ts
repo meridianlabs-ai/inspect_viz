@@ -1,6 +1,6 @@
-import { radio } from './radio';
-import { InputFunction } from './types';
+import { Radio } from './radio';
+import { input, InputFunction } from './input';
 
-export const customInputs: Record<string, InputFunction> = {
-    radio: radio,
+export const CUSTOM_INPUTS: Record<string, InputFunction> = {
+    radio: options => input(Radio, options),
 };
