@@ -28,7 +28,7 @@ def select(
     menu_args: dict[str, Any] = {"label": label, "as_": param}
 
     if label is not None:
-        menu_args["label"] = label
+        menu_args["label"] = f"{label}: "
 
     if options is not None:
         if isinstance(options, list):
