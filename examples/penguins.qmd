@@ -47,4 +47,6 @@ vz.plot(
 
 ## Row
 
-This is the bottom row
+```{python}
+vz.table(penguins)
+```
