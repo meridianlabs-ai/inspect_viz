@@ -18,8 +18,9 @@ y_axis = vz.Param("flipper_length")
 ## Row {.toolbar}
 
 ```{python}
-vz.select("Y", param=y_axis, options=axes)
-vz.select("X", param=x_axis, options=axes)
+vz.select("Species", penguins, column="species")
+vz.select("X", options=axes, param=x_axis)
+vz.select("Y", options=axes, param=y_axis)
 ```
 
 ## Row
