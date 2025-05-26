@@ -63,7 +63,7 @@ class Widget(AnyWidget):
     @property
     def component(self) -> Component:
         """Mosaic component."""
-        return self.component
+        return self._component
 
     def _repr_mimebundle_(
         self, **kwargs: Any

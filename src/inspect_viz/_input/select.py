@@ -44,11 +44,10 @@ def select(
         # validate and set column
         if column is None:
             raise ValueError("You must pass a `column` value along with `data`")
-        else:
-            menu_args["column"] = data.validate_column(column)
+        menu_args["column"] = column
 
-        # validate and set field
-        menu_args["field"] = data.validate_column(field)
+        # set field (optional, defaults to column)
+        menu_args["field"] = field
 
         # set filter_by
         menu_args["filterBy"] = filter_by

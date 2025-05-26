@@ -8,15 +8,41 @@ execute:
 
 ```{python}
 import inspect_viz as vz
-data = vz.Data("penguins.parquet")
+penguins = vz.Data("penguins.parquet")
 
-x = vz.Param("body_mass")
-y = vz.Param("flipper_length")
-
-vz.select("Foo", data, column="species")
+param_x = vz.Param("body_mass")
+param_y = vz.Param("flipper_length")
 ```
 
 
+```{python}
+axes = ["body_mass", "flipper_length", "bill_depth", "bill_length"]
+
+vz.vconcat(
+    vz.hconcat(
+        vz.select("Y", param=param_y, options=axes),
+        vz.select("X", param=param_x, options=axes),
+    ),
+    vz.vspace(10),
+    vz.plot(
+        vz.dot(penguins, x=param_x, y=param_y, stroke="species", symbol="species"),
+        grid=True,
+        x_label="Body mass (g) →",
+        y_label="↑ Flipper length (mm)",
+        legend="symbol",
+    )
+)
+```
+
+```{python}
+vz.plot(
+    vz.dot(penguins, x=param_x, y=param_y, fill="species", symbol="species"),
+    grid=True,
+    x_label="Body mass (g) →",
+    y_label="↑ Flipper length (mm)",
+    legend="symbol",
+)
+```
 
 ```{python}
 from inspect_viz._core._widget import Widget
@@ -34,7 +60,7 @@ spec = VConcat(
                         "bill_depth",
                         "bill_length",
                     ],
-                    as_=y,
+                    as_=param_y,
                 ),
                 Menu(
                     label="X",
@@ -44,7 +70,7 @@ spec = VConcat(
                         "bill_depth",
                         "bill_length",
                     ],
-                    as_=x,
+                    as_=param_x,
                 ),
             ]
         ),
@@ -55,9 +81,9 @@ spec = VConcat(
                     name="stroked",
                     plot=[
                         Dot(
-                            data=data.plot_from(),
-                            x=Column(column=x),
-                            y=Column(column=y),
+                            data=penguins.plot_from(),
+                            x=Column(column=param_x),
+                            y=Column(column=param_y),
                             stroke = 'species',
                             symbol = 'species',
                         )
@@ -83,9 +109,9 @@ spec2 = HConcat(
             name="filled",
             plot=[
                 Dot(
-                    data=data.plot_from(),
-                    x=Column(column=x),
-                    y=Column(column=y),
+                    data=penguins.plot_from(),
+                    x=Column(column=param_x),
+                    y=Column(column=param_y),
                     fill="species",
                     symbol="species",
                 )
