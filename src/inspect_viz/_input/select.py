@@ -25,7 +25,7 @@ def select(
        filter_by: A selection to filter the data source indicated by the `data` property.
        options: A `list` or `dict` of options (provide a `dict` if you want values to map to alternate labels). If `options` is not specified you must pass a `data` argument.
     """
-    menu_args: dict[str, Any] = {"label": label, "as_": param}
+    menu_args: dict[str, Any] = {"label": label}
 
     if label is not None:
         menu_args["label"] = f"{label}: "
@@ -37,9 +37,14 @@ def select(
             menu_args["options"] = [
                 Options(label=k, value=v) for k, v in options.items()
             ]
+        if param is None:
+            raise ValueError("You must pass a `param` value along with `options`")
+        menu_args["as_"] = param
+
     elif data is not None:
-        # set data table
+        # set data table and as_
         menu_args["from_"] = data.table
+        menu_args["as_"] = data.selection
 
         # validate and set column
         if column is None:

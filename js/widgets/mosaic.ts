@@ -23,7 +23,7 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     // get context
     const ctx = await vizContext();
 
-    // handle multiple tables data
+    // handle tables
     for (const [tableName, base64Data] of Object.entries(tables)) {
         if (base64Data) {
             // decode base64 to bytes
