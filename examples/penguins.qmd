@@ -1,6 +1,6 @@
 ---
 title: "Explore the Iris Dataset"
-format: html
+format: dashboard
 execute:
   daemon: false
   echo: false
@@ -9,37 +9,41 @@ execute:
 ```{python}
 import inspect_viz as vz
 penguins = vz.Data("penguins.parquet")
-
-param_x = vz.Param("body_mass")
-param_y = vz.Param("flipper_length")
-```
-
-
-```{python}
 axes = ["body_mass", "flipper_length", "bill_depth", "bill_length"]
 
-vz.vconcat(
-    vz.hconcat(
-        vz.select("Y", param=param_y, options=axes),
-        vz.select("X", param=param_x, options=axes),
-    ),
-    vz.vspace(10),
-    vz.plot(
-        vz.dot(penguins, x=param_x, y=param_y, stroke="species", symbol="species"),
-        grid=True,
-        x_label="Body mass (g) →",
-        y_label="↑ Flipper length (mm)",
-        legend="symbol",
-    )
-)
+x_axis = vz.Param("body_mass")
+y_axis = vz.Param("flipper_length")
 ```
+
+## Row {.toolbar}
+
+```{python}
+vz.select("Y", param=y_axis, options=axes)
+vz.select("X", param=x_axis, options=axes)
+```
+
+## Row
 
 ```{python}
 vz.plot(
-    vz.dot(penguins, x=param_x, y=param_y, fill="species", symbol="species"),
+    vz.dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
     grid=True,
     x_label="Body mass (g) →",
     y_label="↑ Flipper length (mm)",
     legend="symbol",
 )
 ```
+
+```{python}
+vz.plot(
+    vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
+    grid=True,
+    x_label="Body mass (g) →",
+    y_label="↑ Flipper length (mm)",
+    legend="symbol",
+)
+```
+
+## Row
+
+This is the bottom row
