@@ -24,7 +24,12 @@ def plot(
     """
     # create plot
     components = [m.component for m in mark]
-    plot = Plot(plot=components, grid=grid, xLabel=x_label, yLabel=y_label)  # type: ignore[arg-type]
+    plot = Plot(
+        plot=components,  # type: ignore[arg-type]
+        grid=grid,
+        xLabel=x_label,
+        yLabel=y_label,
+    )
 
     # wrap with legend if specified
     if legend is not None:

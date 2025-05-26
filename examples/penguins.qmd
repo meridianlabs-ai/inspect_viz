@@ -1,6 +1,8 @@
 ---
 title: "Explore the Iris Dataset"
-format: dashboard
+format: 
+  dashboard:
+    scrolling: true
 execute:
   daemon: false
   echo: false
@@ -34,6 +36,8 @@ vz.plot(
     legend="symbol",
 )
 ```
+
+## Row
 
 ```{python}
 vz.plot(

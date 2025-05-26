@@ -107,6 +107,18 @@ async function render({ model, el }) {
   const ast = parseSpec(spec);
   const domResult = await astToDOM(ast, ctx);
   el.appendChild(domResult.element);
+  const plot = domResult.element.querySelector(".plot");
+  if (plot) {
+    plot.style.width = "100%";
+    plot.style.height = "auto";
+    const svgs = await waitForSvgs(plot);
+    svgs.forEach((svg) => {
+      svg.removeAttribute("width");
+      svg.removeAttribute("height");
+      svg.style.width = "100%";
+      svg.style.height = "auto";
+    });
+  }
 }
 var mosaic_default = { render };
 async function astToDOM(ast, ctx) {
@@ -120,6 +132,31 @@ async function astToDOM(ast, ctx) {
     element: ast.root.instantiate(ctx),
     params: ctx.activeParams
   };
+}
+function waitForSvgs(element, timeout = 5e3) {
+  return new Promise((resolve, reject) => {
+    const existingSvgs = element.querySelectorAll("svg");
+    if (existingSvgs.length > 0) {
+      resolve(existingSvgs);
+      return;
+    }
+    const observer = new MutationObserver((_mutations) => {
+      const svgs = element.querySelectorAll("svg");
+      if (svgs.length > 0) {
+        observer.disconnect();
+        clearTimeout(timeoutId);
+        resolve(svgs);
+      }
+    });
+    const timeoutId = setTimeout(() => {
+      observer.disconnect();
+      reject(new Error("SVGs not found within timeout"));
+    }, timeout);
+    observer.observe(element, {
+      childList: true,
+      subtree: true
+    });
+  });
 }
 export {
   mosaic_default as default
