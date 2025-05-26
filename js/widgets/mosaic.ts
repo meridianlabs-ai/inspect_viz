@@ -11,6 +11,7 @@ import {
 import { throttle } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
 import { vizContext } from '../context';
+import { customInputs } from '../inputs';
 
 interface MosaicProps {
     tables: Record<string, string>;
@@ -59,7 +60,10 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     const spec: Spec = JSON.parse(spec_json);
     const renderSpec = async () => {
         const targetSpec = autoFill ? sizeToContainer(spec, el) : spec;
-        const ast = parseSpec(targetSpec);
+        const inputs = new Set(
+            ['menu', 'search', 'slider', 'table'].concat(Object.keys(customInputs))
+        );
+        const ast = parseSpec(targetSpec, { inputs });
         const { element } = await astToDOM(ast, ctx);
         el.innerHTML = '';
         el.appendChild(element);

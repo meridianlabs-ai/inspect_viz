@@ -3,6 +3,7 @@
 from typing import TypeAlias
 
 from ._generate.schema import *
+from ._inputs import *
 
 PlotMark: TypeAlias = (
     Area
@@ -79,19 +80,10 @@ PlotMark: TypeAlias = (
     | PlotLegend
 )
 
+Input: TypeAlias = Menu | Search | Slider | Table | Radio
 
 Component: TypeAlias = (
-    HConcat
-    | VConcat
-    | HSpace
-    | VSpace
-    | Menu
-    | Search
-    | Slider
-    | Table
-    | Plot
-    | PlotMark
-    | Legend
+    HConcat | VConcat | HSpace | VSpace | Input | Plot | PlotMark | Legend
 )
 
 ParamLiteral: TypeAlias = None | str | int | float | bool
