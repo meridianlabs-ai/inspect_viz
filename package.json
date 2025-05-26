@@ -2,7 +2,7 @@
 	"scripts": {
 		"dev": "npm run build -- --watch",
 		"dev-sourcemap": "npm run dev -- --sourcemap=inline",
-		"build": "esbuild js/widgets/*.ts --format=esm --bundle --outdir=src/inspect_viz/_widgets",
+		"build": "esbuild js/widgets/*.ts --format=esm --bundle --outdir=src/inspect_viz/_www",
 		"typecheck": "tsc --noEmit",
 		"format": "prettier --write \"js/**/*.{ts,tsx}\"",
 		"format:check": "prettier --check \"js/**/*.{ts,tsx}\""
