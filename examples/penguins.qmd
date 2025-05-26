@@ -2,7 +2,7 @@
 title: "Explore the Iris Dataset"
 format: 
   dashboard:
-    scrolling: true
+    scrolling: false
 execute:
   daemon: false
   echo: false

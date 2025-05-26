@@ -8,6 +8,8 @@ import {
     ASTNode,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
+import { throttle } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
+
 import { vizContext } from '../context';
 
 interface MosaicProps {
@@ -41,76 +43,73 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
         }
     }
 
-    // render spec
-    const spec: Spec = JSON.parse(spec_json);
-    const ast = parseSpec(spec);
-
-    // create dom
-    const domResult = await astToDOM(ast, ctx);
-
-    // append it
-    el.appendChild(domResult.element);
-
-    const plot = domResult.element.querySelector('.plot') as HTMLElement;
-    if (plot) {
-        plot.style.width = '100%';
-        plot.style.height = 'auto';
-        const svgs = await waitForSvgs(plot);
-        svgs.forEach((svg: SVGElement) => {
-            svg.removeAttribute('width');
-            svg.removeAttribute('height');
-            svg.style.width = '100%';
-            svg.style.height = 'auto';
-        });
+    // mosaic widgets already have sufficient margin/padding so override
+    // any host prescribed bottom margin.
+    const widgetEl = el.closest('.widget-subarea') as HTMLElement | undefined;
+    if (widgetEl) {
+        widgetEl.style.marginBottom = '0';
     }
+
+    // render spec according to container size
+    const spec: Spec = JSON.parse(spec_json);
+    const renderSpec = async () => {
+        const sizedSpec = sizeToContainer(spec, el);
+        const ast = parseSpec(sizedSpec);
+        const { element } = await astToDOM(ast, ctx);
+        el.innerHTML = '';
+        el.appendChild(element);
+    };
+    await renderSpec();
+
+    // re-render on container size changed
+    const resizeObserver = new ResizeObserver(throttle(renderSpec));
+    resizeObserver.observe(el);
+
+    // cleanup resize observer on disconnect
+    return () => {
+        resizeObserver.disconnect();
+    };
 }
 
 export default { render };
 
 async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
     // process param/selection definitions
-    // skip definitions with names already defined
     for (const [name, node] of Object.entries(ast.params)) {
+        // skip definitions with names already defined
         if (!ctx.activeParams.has(name)) {
             const param = (node as ASTNode).instantiate(ctx);
             ctx.activeParams.set(name, param);
         }
     }
 
+    // instantiate and return root context + params
     return {
         element: ast.root.instantiate(ctx),
         params: ctx.activeParams,
     };
 }
 
-function waitForSvgs(
-    element: HTMLElement,
-    timeout: number = 5000
-): Promise<NodeListOf<SVGElement>> {
-    return new Promise((resolve, reject) => {
-        const existingSvgs = element.querySelectorAll<SVGElement>('svg');
-        if (existingSvgs.length > 0) {
-            resolve(existingSvgs);
-            return;
+function sizeToContainer(spec: Spec, containerEl: HTMLElement): Spec {
+    spec = structuredClone(spec);
+    if ('plot' in spec) {
+        const plot = spec.plot[0];
+        if ('width' in plot && 'height' in plot) {
+            plot.width = containerEl.clientWidth;
+            plot.height = containerEl.clientHeight;
         }
-
-        const observer = new MutationObserver((_mutations: MutationRecord[]) => {
-            const svgs = element.querySelectorAll<SVGElement>('svg');
-            if (svgs.length > 0) {
-                observer.disconnect();
-                clearTimeout(timeoutId);
-                resolve(svgs);
-            }
-        });
-
-        const timeoutId = setTimeout(() => {
-            observer.disconnect();
-            reject(new Error('SVGs not found within timeout'));
-        }, timeout);
-
-        observer.observe(element, {
-            childList: true,
-            subtree: true,
-        });
-    });
+    } else if ('hconcat' in spec) {
+        const hconcat = spec.hconcat;
+        if ('plot' in hconcat[0]) {
+            hconcat[0].width = containerEl.clientWidth;
+            hconcat[0].height = containerEl.clientHeight;
+        }
+    } else if ('vconcat' in spec) {
+        const vconcat = spec.vconcat;
+        if ('plot' in vconcat[0]) {
+            vconcat[0].width = containerEl.clientWidth;
+            vconcat[0].height = containerEl.clientHeight;
+        }
+    }
+    return spec;
 }
