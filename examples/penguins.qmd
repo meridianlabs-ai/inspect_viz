@@ -37,8 +37,6 @@ vz.plot(
 )
 ```
 
-## Row
-
 ```{python}
 vz.plot(
     vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),

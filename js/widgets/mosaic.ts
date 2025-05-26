@@ -19,14 +19,42 @@ interface MosaicProps {
 }
 
 async function render({ model, el }: RenderProps<MosaicProps>) {
-    // unwrap widget parameters
+    // insert/wait for tables to be ready
     const tables: Record<string, string> = model.get('tables') || {};
-    const spec_json: string = model.get('spec');
+    await syncTables(tables);
 
-    // get context
+    // render mosaic spec
+    const { autoFill } = renderSetup(el);
     const ctx = await vizContext();
+    const inputs = new Set(
+        ['menu', 'search', 'slider', 'table'].concat(Object.keys(CUSTOM_INPUTS))
+    );
+    const spec: Spec = JSON.parse(model.get('spec'));
+    const renderSpec = async () => {
+        const targetSpec = autoFill ? responsiveSpec(spec, el) : spec;
+        const ast = parseSpec(targetSpec, { inputs });
+        const specEl = await astToDOM(ast, ctx);
+        el.innerHTML = '';
+        el.appendChild(specEl);
+    };
+    await renderSpec();
 
-    // handle tables
+    // if we are doing auto-fill then re-render when size changes
+    if (autoFill) {
+        // re-render on container size changed
+        const resizeObserver = new ResizeObserver(throttle(renderSpec));
+        resizeObserver.observe(el);
+
+        // cleanup resize observer on disconnect
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }
+}
+
+// insert/wait for tables to be ready
+async function syncTables(tables: Record<string, string>) {
+    const ctx = await vizContext();
     for (const [tableName, base64Data] of Object.entries(tables)) {
         if (base64Data) {
             // decode base64 to bytes
@@ -43,10 +71,16 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
             await ctx.waitForTable(tableName);
         }
     }
+}
 
+interface RenderOptions {
+    autoFill: boolean;
+}
+
+function renderSetup(containerEl: HTMLElement): RenderOptions {
     // mosaic widgets already have sufficient margin/padding so override
     // any host prescribed bottom margin.
-    const widgetEl = el.closest('.widget-subarea') as HTMLElement | undefined;
+    const widgetEl = containerEl.closest('.widget-subarea') as HTMLElement | undefined;
     if (widgetEl) {
         widgetEl.style.marginBottom = '0';
     }
@@ -56,51 +90,10 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
         window.document.body.classList.contains('quarto-dashboard') &&
         window.document.body.classList.contains('dashboard-fill');
 
-    // render spec according to container size
-    const spec: Spec = JSON.parse(spec_json);
-    const renderSpec = async () => {
-        const targetSpec = autoFill ? sizeToContainer(spec, el) : spec;
-        const inputs = new Set(
-            ['menu', 'search', 'slider', 'table'].concat(Object.keys(CUSTOM_INPUTS))
-        );
-        const ast = parseSpec(targetSpec, { inputs });
-        const { element } = await astToDOM(ast, ctx);
-        el.innerHTML = '';
-        el.appendChild(element);
-    };
-    await renderSpec();
-
-    // re-render when size changes in quarto dashboards
-    if (autoFill) {
-        // re-render on container size changed
-        const resizeObserver = new ResizeObserver(throttle(renderSpec));
-        resizeObserver.observe(el);
-
-        // cleanup resize observer on disconnect
-        return () => {
-            resizeObserver.disconnect();
-        };
-    }
+    return { autoFill };
 }
 
-async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
-    // process param/selection definitions
-    for (const [name, node] of Object.entries(ast.params)) {
-        // skip definitions with names already defined
-        if (!ctx.activeParams.has(name)) {
-            const param = (node as ASTNode).instantiate(ctx);
-            ctx.activeParams.set(name, param);
-        }
-    }
-
-    // instantiate and return root context + params
-    return {
-        element: ast.root.instantiate(ctx),
-        params: ctx.activeParams,
-    };
-}
-
-function sizeToContainer(spec: Spec, containerEl: HTMLElement): Spec {
+function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
     spec = structuredClone(spec);
     if ('plot' in spec) {
         const plot = spec.plot[0];
@@ -122,6 +115,20 @@ function sizeToContainer(spec: Spec, containerEl: HTMLElement): Spec {
         }
     }
     return spec;
+}
+
+async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
+    // process param/selection definitions
+    for (const [name, node] of Object.entries(ast.params)) {
+        // skip definitions with names already defined
+        if (!ctx.activeParams.has(name)) {
+            const param = (node as ASTNode).instantiate(ctx);
+            ctx.activeParams.set(name, param);
+        }
+    }
+
+    // instantiate and return element
+    return ast.root.instantiate(ctx);
 }
 
 export default { render };
