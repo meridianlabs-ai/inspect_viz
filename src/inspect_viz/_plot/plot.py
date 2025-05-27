@@ -34,7 +34,9 @@ def plot(
     # wrap with legend if specified
     if legend is not None:
         plot.name = uuid()
-        legend_args: dict[str, Any] = dict(legend=legend, for_=plot.name, columns=1)
+        legend_args: dict[str, Any] = dict(
+            legend=legend, for_=plot.name, columns=1, width=80
+        )
         return Widget(HConcat(hconcat=[plot, Legend(**legend_args)]))
     else:
         return Widget(plot)

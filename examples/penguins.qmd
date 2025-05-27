@@ -1,8 +1,8 @@
 ---
 title: "Explore the Penguins Dataset"
-format: 
+format:
   dashboard:
-    scrolling: false
+    scrolling: true
 execute:
   daemon: false
   echo: false
@@ -25,6 +25,7 @@ vz.select("X", options=axes, param=x_axis)
 vz.select("Y", options=axes, param=y_axis)
 ```
 
+
 ## Row
 
 ```{python}
@@ -36,6 +37,8 @@ vz.plot(
     legend="symbol",
 )
 ```
+
+## Row
 
 ```{python}
 vz.plot(
