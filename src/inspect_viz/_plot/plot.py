@@ -7,7 +7,7 @@ from inspect_viz.mosaic import HConcat, Legend, Plot
 
 
 def plot(
-    *mark: Widget,
+    mark: Widget | list[Widget],
     grid: bool | str = False,
     x_label: str | None = None,
     y_label: str | None = None,
@@ -16,12 +16,15 @@ def plot(
     """Plot.
 
     Args:
-        *mark: Plot marks.
+        mark: Plot mark(s).
         grid: Whether to show a grid aligned with the scale’s ticks. If true, show a grid with the current color stroke; if a string, show a grid with the specified stroke color;
         x_label: A textual label to show on the axis or legend; if `None`, show no label.
         y_label: A textual label to show on the axis or legend; if `None`, show no label.
         legend: foo
     """
+    # resolve to list
+    mark = mark if isinstance(mark, list) else [mark]
+
     # create plot
     components = [m.component for m in mark]
     plot = Plot(
