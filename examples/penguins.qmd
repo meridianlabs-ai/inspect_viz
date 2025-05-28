@@ -1,6 +1,8 @@
 ---
 title: "Explore the Penguins Dataset"
-format: html
+format:
+  dashboard:
+    scrolling: true
 execute:
   daemon: false
   echo: false
@@ -15,28 +17,40 @@ x_axis = vz.Param("body_mass")
 y_axis = vz.Param("flipper_length")
 ```
 
+## Row {.toolbar}
 
 ```{python}
-vz.vconcat(
-    vz.hconcat(
-        vz.select("Species", penguins, column="species"),
-        vz.select("X", options=axes, param=x_axis),
-        vz.select("Y", options=axes, param=y_axis),
-    ),
-    vz.plot(
-      vz.dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
-      grid=True,
-      x_label="Body mass (g) →",
-      y_label="↑ Flipper length (mm)",
-      legend="symbol",
-    ),
-    vz.plot(
-      vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
-      grid=True,
-      x_label="Body mass (g) →",
-      y_label="↑ Flipper length (mm)",
-      legend="symbol",
-    ),
-    vz.table(penguins)
+vz.select("Species", penguins, column="species")
+vz.select("X", options=axes, param=x_axis)
+vz.select("Y", options=axes, param=y_axis)
+```
+
+## Row
+
+```{python}
+vz.plot(
+    vz.dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
+    grid=True,
+    x_label="Body mass (g) →",
+    y_label="↑ Flipper length (mm)",
+    legend="symbol",
 )
+```
+
+## Row
+
+```{python}
+vz.plot(
+    vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
+    grid=True,
+    x_label="Body mass (g) →",
+    y_label="↑ Flipper length (mm)",
+    legend="symbol",
+)
+```
+
+## Row
+
+```{python}
+vz.table(penguins)
 ```
