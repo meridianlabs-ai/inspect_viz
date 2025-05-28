@@ -82,9 +82,6 @@ PlotMark: TypeAlias = (
 
 Input: TypeAlias = Menu | Search | Slider | Table | Radio
 
-Component: TypeAlias = (
-    HConcat | VConcat | HSpace | VSpace | Input | Plot | PlotMark | Legend
-)
 
 ParamLiteral: TypeAlias = None | str | int | float | bool
 ParamValue: TypeAlias = ParamLiteral | list[ParamLiteral | ParamRef]

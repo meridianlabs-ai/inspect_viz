@@ -1,4 +1,4 @@
-from ._core import Data, Param, Selection, Component
+from ._core import Component, Data, Param, Selection
 from ._input import radio, select, table
 from ._layout import hconcat, hspace, vconcat, vspace
 from ._plot import dot, plot
