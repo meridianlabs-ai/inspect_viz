@@ -49,10 +49,12 @@ def select(
         menu["column"] = column
 
         # set field (optional, defaults to column)
-        menu["field"] = field
+        if field is not None:
+            menu["field"] = field
 
         # set filter_by
-        menu["filterBy"] = filter_by
+        if filter_by is not None:
+            menu["filterBy"] = filter_by
 
     # return widget
     return Component(config=menu)
