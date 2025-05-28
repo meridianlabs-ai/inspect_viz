@@ -1,6 +1,8 @@
-from inspect_viz._core import Widget
-from inspect_viz.mosaic import Radio
+from pydantic import JsonValue
+
+from inspect_viz._core import Component
 
 
-def radio() -> Widget:
-    return Widget(Radio())
+def radio(label: str | None = None) -> Component:
+    radio: dict[str, JsonValue] = {"input": "radio", "label": label}
+    return Component(config=radio)

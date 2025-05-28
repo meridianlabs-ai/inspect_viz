@@ -1,9 +1,12 @@
-from typing import Any
+from pydantic import JsonValue
 
-from inspect_viz._core import Data, Widget
-from inspect_viz.mosaic import Table
+from inspect_viz._core import Component, Data
 
 
-def table(data: Data) -> Widget:
-    table_args: dict[str, Any] = {"from_": data.table, "filterBy": data.selection}
-    return Widget(Table(**table_args))
+def table(data: Data) -> Component:
+    table: dict[str, JsonValue] = {
+        "input": "table",
+        "from": data.table,
+        "filterBy": data.selection,
+    }
+    return Component(config=table)

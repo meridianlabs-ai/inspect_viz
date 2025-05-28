@@ -7,9 +7,9 @@ import pandas as pd
 import pyarrow as pa
 from narwhals import Boolean, String
 from narwhals.typing import IntoDataFrame
+from pydantic import JsonValue
 from shortuuid import uuid
 
-from ..mosaic import PlotFrom
 from ._param import Param
 from ._selection import Selection
 
@@ -52,10 +52,8 @@ class Data:
     def selection(self) -> Selection:
         return self._selection
 
-    def plot_from(self) -> PlotFrom:
-        return PlotFrom.model_validate(
-            {"from": self.table, "filterBy": f"${self.selection.id}"}
-        )
+    def plot_from(self) -> dict[str, JsonValue]:
+        return {"from": self.table, "filterBy": f"${self.selection.id}"}
 
     @property
     def columns(self) -> list[str]:

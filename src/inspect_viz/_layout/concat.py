@@ -1,22 +1,23 @@
-from .._core import Widget
-from ..mosaic import HConcat, VConcat
+from pydantic import JsonValue
+
+from .._core import Component
 
 
-def vconcat(*widget: Widget) -> Widget:
-    """Vertically concatenate widgets in a column layout.
-
-    Args:
-        *widget: Widgets to concatenate.
-    """
-    components = [w.component for w in widget]
-    return Widget(VConcat(vconcat=components))  # type: ignore[arg-type]
-
-
-def hconcat(*widget: Widget) -> Widget:
-    """Horizontally concatenate widgets in a row layout.
+def vconcat(*component: Component) -> Component:
+    """Vertically concatenate components in a column layout.
 
     Args:
-        *widget: Widgets to layout.
+        *component: Components to concatenate.
     """
-    components = [w.component for w in widget]
-    return Widget(HConcat(hconcat=components))  # type: ignore[arg-type]
+    components: list[JsonValue] = [w.config for w in component]
+    return Component(config=dict(vconcat=components))
+
+
+def hconcat(*component: Component) -> Component:
+    """Horizontally concatenate components in a row layout.
+
+    Args:
+        *component: Components to concatenate.
+    """
+    components: list[JsonValue] = [w.config for w in component]
+    return Component(config=dict(hconcat=components))

@@ -1,18 +1,19 @@
-from typing import Any, Literal
+from typing import Literal
 
+from pydantic import JsonValue
 from shortuuid import uuid
 
-from inspect_viz._core import Widget
-from inspect_viz.mosaic import HConcat, Legend, Plot
+from inspect_viz._core import Component
+from inspect_viz._layout.concat import hconcat
 
 
 def plot(
-    mark: Widget | list[Widget],
+    mark: Component | list[Component],
     grid: bool | str = False,
     x_label: str | None = None,
     y_label: str | None = None,
     legend: Literal["color", "opacity", "symbol"] | None = None,
-) -> Widget:
+) -> Component:
     """Plot.
 
     Args:
@@ -26,9 +27,9 @@ def plot(
     mark = mark if isinstance(mark, list) else [mark]
 
     # create plot
-    components = [m.component for m in mark]
-    plot = Plot(
-        plot=components,  # type: ignore[arg-type]
+    components = [m.config for m in mark]
+    plot: dict[str, JsonValue] = dict(
+        plot=components,
         grid=grid,
         xLabel=x_label,
         yLabel=y_label,
@@ -36,10 +37,13 @@ def plot(
 
     # wrap with legend if specified
     if legend is not None:
-        plot.name = uuid()
-        legend_args: dict[str, Any] = dict(
-            legend=legend, for_=plot.name, columns=1, width=80
-        )
-        return Widget(HConcat(hconcat=[plot, Legend(**legend_args)]))
+        plot["name"] = uuid()
+        legend_config: dict[str, JsonValue] = {
+            "legend": legend,
+            "for": plot["name"],
+            "columns": 1,
+            "width": 80,
+        }
+        return hconcat(Component(config=plot), Component(config=legend_config))
     else:
-        return Widget(plot)
+        return Component(config=plot)

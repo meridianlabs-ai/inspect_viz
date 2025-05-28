@@ -1,19 +1,13 @@
 import base64
 from datetime import datetime
-from typing import Any
+from typing import Any, cast
 
 import traitlets
 from anywidget import AnyWidget
-from pydantic_core import to_json
+from pydantic import JsonValue
+from pydantic_core import to_json, to_jsonable_python
 
 from .._util._constants import WIDGETS_DIR
-from ..mosaic import (
-    Component,
-    Param,
-    ParamDate,
-    Params,
-    Selection,
-)
 from ._data import Data
 from ._param import Param as VizParam
 from ._selection import Selection as VizSelection
@@ -46,30 +40,25 @@ class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
         return serialized
 
 
-class Widget(AnyWidget):
-    """Visualization widget (input, plot, table, etc.)."""
+class Component(AnyWidget):
+    """Viz component (input, plot, table, etc.)."""
 
-    _esm = WIDGETS_DIR / "mosaic.js"
-    tables = TablesData({}).tag(sync=True)
-    spec = traitlets.CUnicode("").tag(sync=True)
-
-    def __init__(self, component: Component) -> None:
-        """Create a visualization widget.
+    def __init__(self, config: dict[str, JsonValue]) -> None:
+        """Create a visualization component.
 
         Args:
-            component: Visualization component wrapped by the widget.
-            data: Data source(s) for widget (optional). Can be a single Data object or list of Data objects.
+            config: Component configuration.
 
         Returns:
-            Visualization widget.
+            Visualization component.
         """
         super().__init__()
-        self._component = component
+        self._config = config
 
     @property
-    def component(self) -> Component:
-        """Mosaic component."""
-        return self._component
+    def config(self) -> dict[str, JsonValue]:
+        """Component config."""
+        return self._config
 
     def _repr_mimebundle_(
         self, **kwargs: Any
@@ -80,17 +69,19 @@ class Widget(AnyWidget):
         # ensure spec
         if not self.spec:
             # base spec
-            spec: dict[str, Any] = self._component.model_dump(
-                by_alias=True, exclude_none=True
-            )
+            spec = self._config.copy()
 
             # add current params
             spec["params"] = all_params()
 
             # to json
-            self.spec = to_json(spec).decode()
+            self.spec = to_json(spec, exclude_none=True).decode()
 
         return super()._repr_mimebundle_(**kwargs)
+
+    _esm = WIDGETS_DIR / "mosaic.js"
+    tables = TablesData({}).tag(sync=True)
+    spec = traitlets.CUnicode("").tag(sync=True)
 
 
 def all_tables() -> dict[str, str | bytes]:
@@ -100,18 +91,18 @@ def all_tables() -> dict[str, str | bytes]:
     return all_data
 
 
-def all_params() -> Params:
-    all_params: Params = {}
+def all_params() -> dict[str, JsonValue]:
+    all_params: dict[str, JsonValue] = {}
 
     for param in VizParam.get_all():
         if isinstance(param.default, datetime):
-            all_params[param.id] = ParamDate(date=param.default.isoformat())
+            all_params[param.id] = dict(select="value", date=param.default.isoformat())
         else:
-            all_params[param.id] = Param(value=param.default)
+            all_params[param.id] = dict(select="value", value=param.default)
 
     for selection in VizSelection.get_all():
-        all_params[selection.id] = Selection(
+        all_params[selection.id] = dict(
             select=selection.select, cross=selection.cross, empty=selection.empty
         )
 
-    return all_params
+    return cast(dict[str, JsonValue], to_jsonable_python(all_params, exclude_none=True))

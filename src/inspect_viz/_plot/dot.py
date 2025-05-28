@@ -1,5 +1,4 @@
-from inspect_viz._core import Data, Widget
-from inspect_viz.mosaic import Column, Dot
+from inspect_viz._core import Component, Data
 
 
 def dot(
@@ -9,7 +8,7 @@ def dot(
     stroke: str | None = None,
     symbol: str | None = None,
     fill: str | None = None,
-) -> Widget:
+) -> Component:
     """A dot mark that draws circles, or other symbols, as in a scatterplot.
 
     Args:
@@ -20,11 +19,12 @@ def dot(
         symbol: Categorical column to bind symbols to or CSS color string.
         fill: Categorical column to bind fill colors to or CSS color string.
     """
-    return Widget(
-        component=Dot(
+    return Component(
+        config=dict(
+            mark="dot",
             data=data.plot_from(),
-            x=Column(column=x),
-            y=Column(column=y),
+            x=dict(column=x),
+            y=dict(column=y),
             stroke=stroke,
             symbol=symbol,
             fill=fill,

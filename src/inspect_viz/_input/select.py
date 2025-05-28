@@ -1,7 +1,6 @@
 from typing import Any
 
-from inspect_viz._core import Data, Widget
-from inspect_viz.mosaic import Menu, Options
+from inspect_viz._core import Component, Data
 
 
 def select(
@@ -13,7 +12,7 @@ def select(
     param: str | None = None,
     filter_by: str | None = None,
     options: list[str] | dict[str, str] | None = None,
-) -> Widget:
+) -> Component:
     """Select input widget.
 
     Args:
@@ -25,37 +24,35 @@ def select(
        filter_by: A selection to filter the data source indicated by the `data` property.
        options: A `list` or `dict` of options (provide a `dict` if you want values to map to alternate labels). If `options` is not specified you must pass a `data` argument.
     """
-    menu_args: dict[str, Any] = {"label": label}
+    menu: dict[str, Any] = {"input": "menu"}
 
     if label is not None:
-        menu_args["label"] = f"{label}: "
+        menu["label"] = f"{label}: "
 
     if options is not None:
         if isinstance(options, list):
-            menu_args["options"] = options
+            menu["options"] = options
         else:
-            menu_args["options"] = [
-                Options(label=k, value=v) for k, v in options.items()
-            ]
+            menu["options"] = [dict(label=k, value=v) for k, v in options.items()]
         if param is None:
             raise ValueError("You must pass a `param` value along with `options`")
-        menu_args["as_"] = param
+        menu["as"] = param
 
     elif data is not None:
         # set data table and as_
-        menu_args["from_"] = data.table
-        menu_args["as_"] = data.selection
+        menu["from"] = data.table
+        menu["as"] = data.selection
 
         # validate and set column
         if column is None:
             raise ValueError("You must pass a `column` value along with `data`")
-        menu_args["column"] = column
+        menu["column"] = column
 
         # set field (optional, defaults to column)
-        menu_args["field"] = field
+        menu["field"] = field
 
         # set filter_by
-        menu_args["filterBy"] = filter_by
+        menu["filterBy"] = filter_by
 
     # return widget
-    return Widget(component=Menu(**menu_args))
+    return Component(config=menu)
