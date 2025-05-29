@@ -10,10 +10,10 @@ from typing import Any, Literal, TypedDict
 
 from pydantic import JsonValue
 
-from .._core._channel import Channel, SortOrder
 from .._core._component import Component
 from .._core._param import Param
 from .._util.casing import snake_to_camel
+from .channel import Channel, SortOrder
 
 
 class MarkOptions(TypedDict, total=False):

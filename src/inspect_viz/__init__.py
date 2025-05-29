@@ -1,25 +1,31 @@
-from ._core import Channel, Component, Data, Param, Selection, SortOrder
+from ._core import Component, Data, Param, Selection
 from ._input import radio, select, table
 from ._layout import hconcat, hspace, vconcat, vspace
-from ._plot import Mark, MarkOptions, PlotOptions, dot, plot
+from ._plot import Channel, Mark, MarkOptions, PlotOptions, dot, plot
 
 __all__ = [
+    # core
     "Data",
     "Param",
     "Selection",
     "Component",
-    "Channel",
-    "SortOrder",
+    # input
+    "select",
+    "radio",
+    # plot
+    "plot",
+    "PlotOptions",
     "Mark",
     "MarkOptions",
-    "PlotOptions",
+    "Channel",
+    "dot",
+    # table
+    "table",
+    # layout
     "hconcat",
     "vconcat",
     "hspace",
     "vspace",
-    "select",
-    "dot",
-    "plot",
-    "table",
-    "radio",
+    # views
+    # ...
 ]

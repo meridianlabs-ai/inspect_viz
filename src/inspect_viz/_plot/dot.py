@@ -1,8 +1,8 @@
 from typing import Any, Unpack
 
 from .._core import Component, Data
-from .._core._channel import Channel
 from .._core._param import Param
+from .channel import Channel
 from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
 
