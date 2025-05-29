@@ -177,15 +177,6 @@ class PlotOptions(TypedDict, total=False):
     """A unique name for the plot. The name is used by standalone legend
     components to to lookup the plot and access scale mappings."""
 
-    width: float | Param
-    """The outer width of the plot in pixels, including margins. Defaults to 640."""
-
-    height: float | Param
-    """The outer height of the plot in pixels, including margins. The default
-    depends on the plot's scales, and the plot's width if an aspectRatio is
-    specified. For example, if the *y* scale is linear and there is no *fy*
-    scale, it might be 396."""
-
     aspect_ratio: float | bool | None | Param
     """The desired aspect ratio of the *x* and *y* scales, affecting the default
     height. Given an aspect ratio of *dx* / *dy*, and assuming that the *x* and
@@ -282,14 +273,6 @@ class PlotOptions(TypedDict, total=False):
 
     For position axes only."""
 
-    grid: bool | str | Param
-    """Whether to show a grid aligned with the scale's ticks. If true, show a grid
-    with the currentColor stroke; if a string, show a grid with the specified
-    stroke color; if an approximate number of ticks, an interval, or an array
-    of tick values, show corresponding grid lines. See also the grid mark.
-
-    For axes only."""
-
     aria_label: str | None
     """The [aria-label attribute][1] on the SVG root.
 
@@ -317,7 +300,7 @@ class PlotOptions(TypedDict, total=False):
     intended for quantitative data. The plot's marks may also impose a scale
     type; for example, the barY mark requires that *x* is a *band* scale."""
 
-    x_domain: list[str | float] | Param
+    x_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -331,7 +314,7 @@ class PlotOptions(TypedDict, total=False):
     Opacity scales have a default domain from 0 to the maximum value of
     associated channels."""
 
-    x_range: list[str | float] | Param
+    x_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and for position scales, the plot's
     dimensions. For continuous data (numbers and dates), and for ordinal
@@ -414,7 +397,7 @@ class PlotOptions(TypedDict, total=False):
     If *both*, an implicit axis will be rendered on both sides of the plot
     (*top* and *bottom* for *x*). If null, the implicit axis is suppressed."""
 
-    x_ticks: float | Interval | list[str | float] | Param
+    x_ticks: float | Interval | list[str | float | bool] | Param
     """The desired approximate number of axis ticks, or an explicit array of tick
     values, or an interval such as *day* or *month*."""
 
@@ -445,23 +428,8 @@ class PlotOptions(TypedDict, total=False):
     x_tick_rotate: float | Param
     """The rotation angle of axis tick labels in degrees clocksize; defaults to 0."""
 
-    x_grid: bool | str | Interval | list[str | float] | Param
-    """Whether to show a grid aligned with the scale's ticks. If true, show a grid
-    with the currentColor stroke; if a string, show a grid with the specified
-    stroke color; if an approximate number of ticks, an interval, or an array
-    of tick values, show corresponding grid lines. See also the grid mark.
-
-    For axes only."""
-
     x_line: bool | Param
     """If true, draw a line along the axis; if false (default), do not."""
-
-    x_label: str | None | Param
-    """A textual label to show on the axis or legend; if null, show no label. By
-    default the scale label is inferred from channel definitions, possibly with
-    an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
-
-    For axes and legends only."""
 
     x_label_anchor: Literal["top", "right", "bottom", "left", "center"] | Param
     """Where to place the axis **label** relative to the plot's frame. For
@@ -528,7 +496,7 @@ class PlotOptions(TypedDict, total=False):
     a scale type; for example, the barY mark requires that *x* is a *band*
     scale."""
 
-    y_domain: list[str | float] | Param
+    y_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -538,7 +506,7 @@ class PlotOptions(TypedDict, total=False):
     Linear scales have a default domain of [0, 1]. Log scales have a default
     domain of [1, 10] and cannot include zero."""
 
-    y_range: list[str | float] | Param
+    y_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred
     from the scale's **type** and **domain**, and for position scales, the
     plot's dimensions. For continuous data (numbers and dates), and for
@@ -621,7 +589,7 @@ class PlotOptions(TypedDict, total=False):
     If *both*, an implicit axis will be rendered on both sides of the plot
     (*left* and *right* for *y*). If null, the implicit axis is suppressed."""
 
-    y_ticks: float | Interval | list[str | float] | Param
+    y_ticks: float | Interval | list[str | float | bool] | Param
     """The desired approximate number of axis ticks, or an explicit array of tick
     values, or an interval such as *day* or *month*."""
 
@@ -652,23 +620,8 @@ class PlotOptions(TypedDict, total=False):
     y_tick_rotate: float | Param
     """The rotation angle of axis tick labels in degrees clocksize; defaults to 0."""
 
-    y_grid: bool | str | Interval | list[str | float] | Param
-    """Whether to show a grid aligned with the scale's ticks. If true, show a grid
-    with the currentColor stroke; if a string, show a grid with the specified
-    stroke color; if an approximate number of ticks, an interval, or an array
-    of tick values, show corresponding grid lines. See also the grid mark.
-
-    For axes only."""
-
     y_line: bool | Param
     """If true, draw a line along the axis; if false (default), do not."""
-
-    y_label: str | None | Param
-    """A textual label to show on the axis or legend; if null, show no label. By
-    default the scale label is inferred from channel definitions, possibly with
-    an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
-
-    For axes and legends only."""
 
     y_label_anchor: Literal["top", "right", "bottom", "left", "center"] | Param
     """Where to place the axis **label** relative to the plot's frame. For
@@ -725,7 +678,7 @@ class PlotOptions(TypedDict, total=False):
     """A symlog scale's constant, expressing the magnitude of the linear region
     around the origin; defaults to 1. For *symlog* scales only."""
 
-    xy_domain: list[str | float] | Param
+    xy_domain: list[str | float | bool] | Param
     """Set the *x* and *y* scale domains."""
 
     # facet attributes
@@ -750,7 +703,7 @@ class PlotOptions(TypedDict, total=False):
     """The left facet margin; the (minimum) distance in pixels between the left
     edges of the inner and outer plot area."""
 
-    facet_grid: bool | str | Interval | list[str | float] | Param
+    facet_grid: bool | str | Interval | list[str | float | bool] | Param
     """Default axis grid for fx and fy scales; typically set to true to enable."""
 
     facet_label: str | None | Param
@@ -758,13 +711,13 @@ class PlotOptions(TypedDict, total=False):
 
     # fx scale attributes
 
-    fx_domain: list[str | float] | Param
+    fx_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For ordinal data (strings or booleans), it is an
     array (or iterable) of values is the desired order, defaulting to natural
     ascending order."""
 
-    fx_range: list[str | float] | Param
+    fx_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and the plot's dimensions. For ordinal
     position scales (*point* and *band*), it is typically [*min*, *max*]; it
@@ -826,7 +779,7 @@ class PlotOptions(TypedDict, total=False):
     If *both*, an implicit axis will be rendered on both sides of the plot
     (*top* and *bottom* for *fx*). If null, the implicit axis is suppressed."""
 
-    fx_ticks: float | Interval | list[str | float] | Param
+    fx_ticks: float | Interval | list[str | float | bool] | Param
     """The desired approximate number of axis ticks, or an explicit array of tick
     values, or an interval such as *day* or *month*."""
 
@@ -857,7 +810,7 @@ class PlotOptions(TypedDict, total=False):
     fx_tick_rotate: float | Param
     """The rotation angle of axis tick labels in degrees clocksize; defaults to 0."""
 
-    fx_grid: bool | str | Interval | list[str | float] | Param
+    fx_grid: bool | str | Interval | list[str | float | bool] | Param
     """Whether to show a grid aligned with the scale's ticks. If true, show a grid
     with the currentColor stroke; if a string, show a grid with the specified
     stroke color; if an approximate number of ticks, an interval, or an array
@@ -902,13 +855,13 @@ class PlotOptions(TypedDict, total=False):
 
     # fy scale attributes
 
-    fy_domain: list[str | float] | Param
+    fy_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For ordinal data (strings or booleans), it is an
     array (or iterable) of values is the desired order, defaulting to natural
     ascending order."""
 
-    fy_range: list[str | float] | Param
+    fy_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and the plot's dimensions. For ordinal
     position scales (*point* and *band*), it is typically [*min*, *max*]; it
@@ -969,7 +922,7 @@ class PlotOptions(TypedDict, total=False):
     If *both*, an implicit axis will be rendered on both sides of the plot
     (*left* and *right* for *fy*). If null, the implicit axis is suppressed."""
 
-    fy_ticks: float | Interval | list[str | float] | Param
+    fy_ticks: float | Interval | list[str | float | bool] | Param
     """The desired approximate number of axis ticks, or an explicit array of tick
     values, or an interval such as *day* or *month*."""
 
@@ -1000,7 +953,7 @@ class PlotOptions(TypedDict, total=False):
     fy_tick_rotate: float | Param
     """The rotation angle of axis tick labels in degrees clocksize; defaults to 0."""
 
-    fy_grid: bool | str | Interval | list[str | float] | Param
+    fy_grid: bool | str | Interval | list[str | float | bool] | Param
     """Whether to show a grid aligned with the scale's ticks. If true, show a grid
     with the currentColor stroke; if a string, show a grid with the specified
     stroke color; if an approximate number of ticks, an interval, or an array
@@ -1054,14 +1007,14 @@ class PlotOptions(TypedDict, total=False):
     defaults to *point* for position scales, *categorical* for color scales,
     and otherwise *ordinal*."""
 
-    color_domain: list[str | float] | Param
+    color_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
     For ordinal data (strings or booleans), it is an array (or iterable) of
     values is the desired order, defaulting to natural ascending order."""
 
-    color_range: list[str | float] | Param
+    color_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**. For other ordinal data, it is an array
     (or iterable) of output values in the same order as the **domain**."""
@@ -1171,7 +1124,7 @@ class PlotOptions(TypedDict, total=False):
     disabled. The opacity scale defaults to *linear*; this scales is intended
     for quantitative data."""
 
-    opacity_domain: list[str | float] | Param
+    opacity_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1181,7 +1134,7 @@ class PlotOptions(TypedDict, total=False):
     Opacity scales have a default domain from 0 to the maximum value of
     associated channels."""
 
-    opacity_range: list[str | float] | Param
+    opacity_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values).
 
     Opacity scales have a default range of [0, 1]."""
@@ -1257,13 +1210,13 @@ class PlotOptions(TypedDict, total=False):
     say by applying a mathematical transformation. If null, the scale is
     disabled. Defaults to an *ordinal* scale type."""
 
-    symbol_domain: list[str | float] | Param
+    symbol_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. As symbol scales are discrete, the domain is an array
     (or iterable) of values is the desired order, defaulting to natural
     ascending order."""
 
-    symbol_range: list[str | float] | Param
+    symbol_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and for position scales, the plot's
     dimensions. For continuous data (numbers and dates), and for ordinal
@@ -1283,7 +1236,7 @@ class PlotOptions(TypedDict, total=False):
     is disabled. The radius scale defaults to *sqrt*; this scale is intended
     for quantitative data."""
 
-    r_domain: list[str | float] | Param
+    r_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1293,7 +1246,7 @@ class PlotOptions(TypedDict, total=False):
     Radius scales have a default domain from 0 to the median first quartile
     of associated channels."""
 
-    r_range: list[str | float] | Param
+    r_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and for position scales, the plot's
     dimensions. For continuous data (numbers and dates), and for ordinal
@@ -1361,7 +1314,7 @@ class PlotOptions(TypedDict, total=False):
     disabled. The length scale defaults to *linear*, as this scale is intended
     for quantitative data."""
 
-    length_domain: list[str | float] | Param
+    length_domain: list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1375,7 +1328,7 @@ class PlotOptions(TypedDict, total=False):
     Opacity scales have a default domain from 0 to the maximum value of
     associated channels."""
 
-    length_range: list[str | float] | Param
+    length_range: list[str | float | bool] | Param
     """The extent of the scale's outputs (visual values). By default inferred from
     the scale's **type** and **domain**, and for position scales, the plot's
     dimensions. For continuous data (numbers and dates), and for ordinal

@@ -1,7 +1,7 @@
 from ._core import Channel, Component, Data, Param, Selection, SortOrder
 from ._input import radio, select, table
 from ._layout import hconcat, hspace, vconcat, vspace
-from ._plot import dot, plot
+from ._plot import MarkOptions, PlotOptions, dot, plot
 
 __all__ = [
     "Data",
@@ -10,6 +10,8 @@ __all__ = [
     "Component",
     "Channel",
     "SortOrder",
+    "MarkOptions",
+    "PlotOptions",
     "hconcat",
     "vconcat",
     "hspace",
