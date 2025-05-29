@@ -11,7 +11,7 @@ from typing import Any, Literal, TypedDict
 from inspect_viz._core._param import Param
 from inspect_viz._util.casing import snake_to_camel
 
-from ._channel import Channel, SortOrder
+from .._core._channel import Channel, SortOrder
 
 
 class MarkOptions(TypedDict, total=False):

@@ -2,8 +2,8 @@ from typing import Any, Unpack
 
 from .._core import Component, Data
 from .._core._channel import Channel
-from .._core._mark_options import MarkOptions, mark_options_to_camel
 from .._core._param import Param
+from .mark import MarkOptions, mark_options_to_camel
 from .types import FrameAnchor, Symbol
 
 
