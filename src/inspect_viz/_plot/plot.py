@@ -1,11 +1,12 @@
 from typing import Any, Literal, Unpack
 
-from pydantic import JsonValue
 from shortuuid import uuid
 
 from .._core import Component
 from .._core.param import Param
 from .._layout.concat import hconcat
+from .legend import Legend
+from .legend import legend as create_legend
 from .mark import Mark
 from .options import Interval, PlotOptions, plot_options_to_camel
 
@@ -19,7 +20,8 @@ def plot(
     y_grid: bool | str | Interval | list[str | float] | Param | None = None,
     width: float | Param | None = None,
     height: float | Param | None = None,
-    legend: Literal["color", "opacity", "symbol"] | None = None,
+    name: str | None = None,
+    legend: Literal["color", "opacity", "symbol"] | Legend | None = None,
     **options: Unpack[PlotOptions],
 ) -> Component:
     """Plot.
@@ -50,6 +52,8 @@ def plot(
           depends on the plot's scales, and the plot's width if an aspectRatio is
           specified. For example, if the *y* scale is linear and there is no *fy*
           scale, it might be 396.
+        name: A unique name for the plot. The name is used by standalone legend
+          components to to lookup the plot and access scale mappings.
         legend: Plot legend.
         options: Additional `PlotOptions`.
     """
@@ -81,18 +85,20 @@ def plot(
     if height is not None:
         plot["height"] = height
 
+    if name is not None:
+        plot["name"] = name
+
     # merge other plot options
     plot = plot | plot_options_to_camel(options)
 
     # wrap with legend if specified
     if legend is not None:
-        plot["name"] = uuid()
-        legend_config: dict[str, JsonValue] = {
-            "legend": legend,
-            "for": plot["name"],
-            "columns": 1,
-            "width": 80,
-        }
-        return hconcat(Component(config=plot), Component(config=legend_config))
+        plot["name"] = f"plot_{uuid()}"
+        if isinstance(legend, str):
+            legend = create_legend(legend)
+        if "width" not in legend.config:
+            legend.config["width"] = 80
+        legend.config["for"] = plot["name"]
+        return hconcat(Component(config=plot), legend)
     else:
         return Component(config=plot)

@@ -1,7 +1,7 @@
 from ._core import Component, Data, Param, Selection
 from ._input import radio, select, table
 from ._layout import hconcat, hspace, vconcat, vspace
-from ._plot import Channel, Mark, MarkOptions, PlotOptions, dot, plot
+from ._plot import Channel, Mark, MarkOptions, PlotOptions, dot, legend, plot
 
 __all__ = [
     # root
@@ -15,6 +15,7 @@ __all__ = [
     # plot
     "plot",
     "PlotOptions",
+    "legend",
     # mark
     "Mark",
     "MarkOptions",

@@ -173,10 +173,6 @@ LabelArrow = (
 class PlotOptions(TypedDict, total=False):
     """Plot attributes."""
 
-    name: str
-    """A unique name for the plot. The name is used by standalone legend
-    components to to lookup the plot and access scale mappings."""
-
     aspect_ratio: float | bool | None | Param
     """The desired aspect ratio of the *x* and *y* scales, affecting the default
     height. Given an aspect ratio of *dx* / *dy*, and assuming that the *x* and

@@ -1,11 +1,3 @@
-# ParamRef is string
-# ChannelValue is Channel
-# ChannelValueSpec is Channel
-# SortOrder is SortOrder (ignore/exclude ChannelDomainSort)
-
-# ignore tip for now
-
-
 from typing import Any, Literal, TypedDict
 
 from pydantic import JsonValue
