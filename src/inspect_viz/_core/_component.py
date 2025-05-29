@@ -7,7 +7,7 @@ from anywidget import AnyWidget
 from pydantic import JsonValue
 from pydantic_core import to_json, to_jsonable_python
 
-from .._util._constants import WIDGETS_DIR
+from .._util.constants import WIDGETS_DIR
 from ._data import Data
 from ._param import Param as VizParam
 from ._selection import Selection as VizSelection

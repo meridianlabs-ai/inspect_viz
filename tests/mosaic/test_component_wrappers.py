@@ -17,7 +17,13 @@ def penguins() -> vz.Data:
 @pytest.fixture
 def dot_mark(penguins: vz.Data) -> vz.Component:
     return vz.dot(
-        penguins, x="bill_depth", y="flipper_length", fill="species", symbol="species"
+        penguins,
+        x="bill_depth",
+        y="flipper_length",
+        fill="species",
+        symbol="species",
+        margin_bottom=0,
+        margin_right=0,
     )
 
 
