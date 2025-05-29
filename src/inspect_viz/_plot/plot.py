@@ -4,7 +4,7 @@ from pydantic import JsonValue
 from shortuuid import uuid
 
 from .._core import Component
-from .._core._param import Param
+from .._core.param import Param
 from .._layout.concat import hconcat
 from .mark import Mark
 from .options import Interval, PlotOptions, plot_options_to_camel

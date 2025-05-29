@@ -1,8 +1,8 @@
 # ruff: noqa: F401
 
-from ._component import Component
-from ._data import Data
-from ._param import Param
-from ._selection import Selection
+from .component import Component
+from .data import Data
+from .param import Param
+from .selection import Selection
 
 __all__ = ["Data", "Param", "Selection", "Component"]

@@ -10,8 +10,8 @@ from typing import Any, Literal, TypedDict
 
 from pydantic import JsonValue
 
-from .._core._component import Component
-from .._core._param import Param
+from .._core.component import Component
+from .._core.param import Param
 from .._util.casing import snake_to_camel
 from .channel import Channel, SortOrder
 

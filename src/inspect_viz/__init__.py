@@ -4,7 +4,7 @@ from ._layout import hconcat, hspace, vconcat, vspace
 from ._plot import Channel, Mark, MarkOptions, PlotOptions, dot, plot
 
 __all__ = [
-    # core
+    # root
     "Data",
     "Param",
     "Selection",
@@ -15,6 +15,7 @@ __all__ = [
     # plot
     "plot",
     "PlotOptions",
+    # mark
     "Mark",
     "MarkOptions",
     "Channel",
@@ -26,6 +27,8 @@ __all__ = [
     "vconcat",
     "hspace",
     "vspace",
-    # views
-    # ...
+    # transform
+    # "sql"
+    # "agg"
+    # Transform
 ]

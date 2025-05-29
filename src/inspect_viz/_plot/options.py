@@ -1,6 +1,6 @@
 from typing import Any, Literal, TypedDict
 
-from inspect_viz._core._param import Param
+from inspect_viz._core.param import Param
 from inspect_viz._util.casing import snake_to_camel
 
 # Type aliases for literal types

@@ -10,8 +10,8 @@ from narwhals.typing import IntoDataFrame
 from pydantic import JsonValue
 from shortuuid import uuid
 
-from ._param import Param
-from ._selection import Selection
+from .param import Param
+from .selection import Selection
 
 # data needs to be accumulated like params
 # all data needs to be sent with every widget that is printed (subject to collection)

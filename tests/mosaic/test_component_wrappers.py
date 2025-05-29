@@ -3,7 +3,7 @@ from typing import Type
 
 import inspect_viz as vz
 import pytest
-from inspect_viz._core._component import Component
+from inspect_viz._core.component import Component
 from pydantic import BaseModel
 
 from ._schema import Dot, HConcat, HSpace, Menu, Plot, Table, VConcat, VSpace

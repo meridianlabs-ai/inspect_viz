@@ -8,9 +8,9 @@ from pydantic import JsonValue
 from pydantic_core import to_json, to_jsonable_python
 
 from .._util.constants import WIDGETS_DIR
-from ._data import Data
-from ._param import Param as VizParam
-from ._selection import Selection as VizSelection
+from .data import Data
+from .param import Param as VizParam
+from .selection import Selection as VizSelection
 
 
 class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
