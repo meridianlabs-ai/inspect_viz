@@ -92,6 +92,13 @@ def all_tables() -> dict[str, str | bytes]:
 
 
 def all_params() -> dict[str, JsonValue]:
+    """Using some mosaic types (see tests/mosaic) here is the shape of params:
+
+    ParamLiteral: TypeAlias = None | str | int | float | bool
+    ParamValue: TypeAlias = ParamLiteral | list[ParamLiteral | ParamRef]
+    ParamDefinition: TypeAlias = ParamValue | Param | ParamDate | Selection
+    Params: TypeAlias = dict[str, ParamDefinition]
+    """
     all_params: dict[str, JsonValue] = {}
 
     for param in VizParam.get_all():

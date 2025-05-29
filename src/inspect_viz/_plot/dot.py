@@ -1,3 +1,5 @@
+from pydantic import JsonValue
+
 from inspect_viz._core import Component, Data
 
 
@@ -19,14 +21,17 @@ def dot(
         symbol: Categorical column to bind symbols to or CSS color string.
         fill: Categorical column to bind fill colors to or CSS color string.
     """
-    return Component(
-        config=dict(
-            mark="dot",
-            data=data.plot_from(),
-            x=dict(column=x),
-            y=dict(column=y),
-            stroke=stroke,
-            symbol=symbol,
-            fill=fill,
-        )
+    config: dict[str, JsonValue] = dict(
+        mark="dot",
+        data=data.plot_from(),
+        x=dict(column=x),
+        y=dict(column=y),
     )
+    if stroke is not None:
+        config["stroke"] = stroke
+    if symbol is not None:
+        config["symbol"] = symbol
+    if fill is not None:
+        config["fill"] = fill
+
+    return Component(config=config)
