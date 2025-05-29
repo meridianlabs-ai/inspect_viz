@@ -6,11 +6,12 @@ from shortuuid import uuid
 from .._core import Component
 from .._core._param import Param
 from .._layout.concat import hconcat
+from .mark import Mark
 from .options import Interval, PlotOptions, plot_options_to_camel
 
 
 def plot(
-    marks: Component | list[Component],
+    marks: Mark | list[Mark],
     x_label: str | Param | None = None,
     y_label: str | Param | None = None,
     grid: bool | str | Param | None = None,

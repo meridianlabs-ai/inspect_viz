@@ -3,7 +3,7 @@ from typing import Any, Unpack
 from .._core import Component, Data
 from .._core._channel import Channel
 from .._core._param import Param
-from .mark import MarkOptions, mark_options_to_camel
+from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
 
 
@@ -37,7 +37,6 @@ def dot(
         options: Additional `MarkOptions`.
     """
     config: dict[str, Any] = dict(
-        mark="dot",
         data=data.plot_from(),
         x=dict(column=x),
         y=dict(column=y),
@@ -53,6 +52,4 @@ def dot(
     if frame_anchor is not None:
         config["frameAnchor"] = frame_anchor
 
-    config = config | mark_options_to_camel(options)
-
-    return Component(config=config)
+    return Mark("dot", config, options)

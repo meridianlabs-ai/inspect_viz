@@ -8,10 +8,12 @@
 
 from typing import Any, Literal, TypedDict
 
-from inspect_viz._core._param import Param
-from inspect_viz._util.casing import snake_to_camel
+from pydantic import JsonValue
 
 from .._core._channel import Channel, SortOrder
+from .._core._component import Component
+from .._core._param import Param
+from .._util.casing import snake_to_camel
 
 
 class MarkOptions(TypedDict, total=False):
@@ -221,6 +223,13 @@ class MarkOptions(TypedDict, total=False):
 
     target: str | Param
     """A constant string specifying the target window (_e.g. *_blank*) for clickable links; used in conjunction with the **href** option (<https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/target>)."""
+
+
+class Mark(Component):
+    def __init__(
+        self, type: str, config: dict[str, JsonValue], options: MarkOptions
+    ) -> None:
+        super().__init__({"mark": type} | config | mark_options_to_camel(options))
 
 
 def mark_options_to_camel(options: MarkOptions) -> dict[str, Any]:
