@@ -2,13 +2,18 @@ from ._core import Component, Data, Param, Selection
 from ._input import radio, select, table
 from ._layout import hconcat, hspace, vconcat, vspace
 from ._plot import (
+    Brush,
     Channel,
+    Fixed,
+    Interactor,
     Legend,
     Mark,
     MarkOptions,
     PlotDefaults,
     PlotOptions,
     dot,
+    highlight,
+    interval_x,
     legend,
     plot,
     plot_defaults,
@@ -30,11 +35,17 @@ __all__ = [
     "PlotDefaults",
     "legend",
     "Legend",
+    "Fixed",
+    "Brush",
     # mark
     "Mark",
     "MarkOptions",
     "Channel",
     "dot",
+    # interactor
+    "Interactor",
+    "highlight",
+    "interval_x",
     # table
     "table",
     # layout
@@ -43,7 +54,8 @@ __all__ = [
     "hspace",
     "vspace",
     # transform
+    # Transform
     # "sql"
     # "agg"
-    # Transform
+    # "date_month_day"
 ]

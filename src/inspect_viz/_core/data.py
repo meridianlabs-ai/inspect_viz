@@ -52,8 +52,8 @@ class Data:
     def selection(self) -> Selection:
         return self._selection
 
-    def plot_from(self) -> dict[str, JsonValue]:
-        return {"from": self.table, "filterBy": f"${self.selection.id}"}
+    def plot_from(self, filter_by: Selection | None = None) -> dict[str, JsonValue]:
+        return {"from": self.table, "filterBy": filter_by or f"${self.selection.id}"}
 
     @property
     def columns(self) -> list[str]:

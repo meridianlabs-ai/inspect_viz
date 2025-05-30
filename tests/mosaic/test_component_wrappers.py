@@ -6,7 +6,19 @@ import pytest
 from inspect_viz._core.component import Component
 from pydantic import BaseModel
 
-from ._schema import Dot, HConcat, HSpace, Legend, Menu, Plot, Table, VConcat, VSpace
+from ._schema import (
+    Dot,
+    HConcat,
+    HSpace,
+    Highlight,
+    IntervalX,
+    Legend,
+    Menu,
+    Plot,
+    Table,
+    VConcat,
+    VSpace,
+)
 
 
 @pytest.fixture
@@ -49,6 +61,33 @@ def test_dot_wrapper(dot_mark: vz.Component) -> None:
 
 def test_plot_wrapper(dot_mark: vz.Component) -> None:
     check_component(vz.plot(dot_mark, grid=True, x_label="Foo", y_label="Bar"), Plot)
+
+
+def test_highlight_wrapper() -> None:
+    check_component(
+        vz.highlight(
+            by=vz.Selection("intersect"),
+            opacity=0.5,
+            fill_opacity=0.5,
+            stroke_opacity=0.5,
+            fill="red",
+            stroke="blue",
+        ),
+        Highlight,
+    )
+
+
+def test_interval_x_wrapper() -> None:
+    check_component(
+        vz.interval_x(
+            selection=vz.Selection("intersect"),
+            field="foo",
+            pixel_size=2,
+            peers=True,
+            brush=vz.Brush(fill="red", fill_opacity=0.6),
+        ),
+        IntervalX,
+    )
 
 
 def test_select_wrapper(penguins: vz.Data) -> None:

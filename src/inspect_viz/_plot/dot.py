@@ -2,8 +2,9 @@ from typing import Any
 
 from typing_extensions import Unpack
 
-from .._core import Component, Data
-from .._core.param import Param
+from inspect_viz.transform._transform import Transform
+
+from .._core import Component, Data, Param, Selection
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
@@ -15,6 +16,7 @@ def dot(
     y: Channel | Param,
     z: Channel | Param | None = None,
     r: Channel | float | Param | None = None,
+    filter_by: Selection | None = None,
     rotate: Channel | float | Param | None = None,
     symbol: Channel | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
@@ -31,6 +33,7 @@ def dot(
            in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
            to the *sqrt* type for proportional symbols. The radius defaults to 4.5 pixels when using the **symbol**
            channel, and otherwise 3 pixels. Dots with a nonpositive radius are not drawn.
+        filter_by: Selection to filter by (defaults to data source selection).
         rotate: The rotation angle of dots in degrees clockwise; either a channel or a constant. When a number, it is interpreted as a constant; otherwise it is interpreted as a channel. Defaults to 0°, pointing up.
         symbol: Categorical column to bind symbols to or CSS color string.
         frame_anchor: The frame anchor specifies defaults for **x** and **y** based on the plot’s frame; it may be
@@ -39,9 +42,9 @@ def dot(
         options: Additional `MarkOptions`.
     """
     config: dict[str, Any] = dict(
-        data=data.plot_from(),
-        x=dict(column=x),
-        y=dict(column=y),
+        data=data.plot_from(filter_by),
+        x=x if isinstance(x, Transform) else dict(column=x),
+        y=y if isinstance(y, Transform) else dict(column=y),
     )
     if z is not None:
         config["z"] = z

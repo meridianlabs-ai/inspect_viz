@@ -1,20 +1,27 @@
+from .brush import Brush
 from .channel import Channel
 from .defaults import PlotDefaults, plot_defaults
 from .dot import dot
+from .interactors import Interactor, highlight, interval_x
 from .legend import Legend, legend
 from .mark import Mark, MarkOptions
-from .options import PlotOptions
+from .options import Fixed, PlotOptions
 from .plot import plot
 
 __all__ = [
     "plot",
     "PlotOptions",
+    "Fixed",
     "plot_defaults",
     "PlotDefaults",
     "Mark",
     "MarkOptions",
     "Channel",
     "dot",
+    "Brush",
     "Legend",
     "legend",
+    "Interactor",
+    "interval_x",
+    "highlight",
 ]

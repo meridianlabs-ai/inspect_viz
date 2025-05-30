@@ -1,10 +1,11 @@
-from typing import Any, Literal, Unpack
+from typing import Any, Literal, Sequence, Unpack
 
 from shortuuid import uuid
 
 from .._core import Component
 from .._core.param import Param
 from .._layout.concat import hconcat, vconcat
+from .interactors import Interactor
 from .legend import Legend
 from .legend import legend as create_legend
 from .mark import Mark
@@ -12,7 +13,7 @@ from .options import Interval, PlotOptions, plot_options_to_camel
 
 
 def plot(
-    marks: Mark | list[Mark],
+    plot: Mark | Sequence[Mark | Interactor],
     x_label: str | Param | None = None,
     y_label: str | Param | None = None,
     grid: bool | str | Param | None = None,
@@ -27,7 +28,7 @@ def plot(
     """Plot.
 
     Args:
-        marks: Plot mark(s).
+        plot: Plot mark(s).
         x_label: A textual label to show on the axis or legend; if null, show no label.
           By default the scale label is inferred from channel definitions, possibly with
           an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
@@ -56,49 +57,49 @@ def plot(
         options: Additional `PlotOptions`.
     """
     # resolve to list
-    marks = marks if isinstance(marks, list) else [marks]
+    plot = plot if isinstance(plot, Sequence) else [plot]
 
     # create plot
-    components = [m.config for m in marks]
-    plot: dict[str, Any] = dict(plot=components)
+    components = [m.config for m in plot]
+    config: dict[str, Any] = dict(plot=components)
 
     if x_label is not None:
-        plot["xLabel"] = x_label
+        config["xLabel"] = x_label
 
     if y_label is not None:
-        plot["yLabel"] = y_label
+        config["yLabel"] = y_label
 
     if grid is not None:
-        plot["grid"] = grid
+        config["grid"] = grid
 
     if x_grid is not None:
-        plot["xGrid"] = x_grid
+        config["xGrid"] = x_grid
 
     if y_grid is not None:
-        plot["yGrid"] = x_grid
+        config["yGrid"] = x_grid
 
     if width is not None:
-        plot["width"] = width
+        config["width"] = width
 
     if height is not None:
-        plot["height"] = height
+        config["height"] = height
 
     if name is not None:
-        plot["name"] = name
+        config["name"] = name
 
     # merge other plot options
-    plot = plot | plot_options_to_camel(options)
+    config = config | plot_options_to_camel(options)
 
     # wrap with legend if specified
     if legend is not None:
         # create name for plot and resolve/bind legend to it
-        plot["name"] = f"plot_{uuid()}"
+        config["name"] = f"plot_{uuid()}"
         if isinstance(legend, str):
             legend = create_legend(legend, location="right")
-        legend.config["for"] = plot["name"]
+        legend.config["for"] = config["name"]
 
         # handle legend location
-        plot_component = Component(config=plot)
+        plot_component = Component(config=config)
         if legend.location in ["left", "right"]:
             if "width" not in legend.config:
                 legend.config["width"] = 80
@@ -111,4 +112,4 @@ def plot(
         else:
             return vconcat(legend, plot_component)
     else:
-        return Component(config=plot)
+        return Component(config=config)

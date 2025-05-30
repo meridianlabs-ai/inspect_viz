@@ -1,6 +1,6 @@
 from typing import Any
 
-from inspect_viz._core import Component, Data
+from .._core import Component, Data, Param, Selection
 
 
 def select(
@@ -9,8 +9,9 @@ def select(
     *,
     column: str | None = None,
     field: str | None = None,
-    param: str | None = None,
+    selection: Selection | None = None,
     filter_by: str | None = None,
+    param: Param | None = None,
     options: list[str] | dict[str, str] | None = None,
 ) -> Component:
     """Select input widget.
@@ -20,8 +21,9 @@ def select(
        data: The data source for input selections (used in conjunction with the `column` property). If `data` is not specified, you must provide explcit `options`.
        column: The name of a column from which to pull options. The unique column values are used as options. Used in conjunction with the `data` property.
        field: The data column name to use within generated selection clause predicates. Defaults to the `column` property.
-       param: A parameter to set with the currently selected menu option (if `param` is specified then `field` is not used).
+       selection: A selection to target with the selected `column` or `field` (defaults to the data source selection).
        filter_by: A selection to filter the data source indicated by the `data` property.
+       param: A parameter to set with the currently selected menu option (if `param` is specified then `field` is not used).
        options: A `list` or `dict` of options (provide a `dict` if you want values to map to alternate labels). If `options` is not specified you must pass a `data` argument.
     """
     menu: dict[str, Any] = {"input": "menu"}
@@ -41,7 +43,7 @@ def select(
     elif data is not None:
         # set data table and as_
         menu["from"] = data.table
-        menu["as"] = data.selection
+        menu["as"] = selection or data.selection
 
         # validate and set column
         if column is None:

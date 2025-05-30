@@ -31,8 +31,7 @@ async function initDuckdb() {
   URL.revokeObjectURL(worker_url);
   return db;
 }
-async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {}) {
-  const t0 = performance.now();
+async function waitForTable(conn, table, { interval = 250 } = {}) {
   while (true) {
     try {
       const res = await conn.query(
@@ -47,9 +46,6 @@ async function waitForTable(conn, table, { timeout = 1e4, interval = 250 } = {})
       console.log(
         `Table ${table} not yet available, trying again in ${interval}ms (error: ${err})`
       );
-    }
-    if (performance.now() - t0 > timeout) {
-      throw new Error(`Timed out waiting for table "${table}"`);
     }
     await new Promise((r) => setTimeout(r, interval));
   }
@@ -131,6 +127,7 @@ async function render({ model, el }) {
   const spec = JSON.parse(model.get("spec"));
   const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 };
   const plotDefaultsAst = parseSpec(plotDefaultsSpec);
+  console.log(spec);
   const ctx = await vizContext(plotDefaultsAst.plotDefaults);
   const tables = model.get("tables") || {};
   await syncTables(ctx, tables);

@@ -32,10 +32,8 @@ export async function initDuckdb() {
 export async function waitForTable(
     conn: AsyncDuckDBConnection,
     table: string,
-    { timeout = 10_000, interval = 250 } = {}
+    { interval = 250 } = {}
 ) {
-    const t0 = performance.now();
-
     while (true) {
         try {
             const res = await conn.query(
@@ -53,9 +51,6 @@ export async function waitForTable(
             );
         }
 
-        if (performance.now() - t0 > timeout) {
-            throw new Error(`Timed out waiting for table "${table}"`);
-        }
         await new Promise(r => setTimeout(r, interval));
     }
 }

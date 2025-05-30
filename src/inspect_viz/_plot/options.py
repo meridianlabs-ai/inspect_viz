@@ -170,6 +170,9 @@ LabelArrow = (
 )
 
 
+Fixed = "Fixed"
+
+
 class PlotOptions(TypedDict, total=False):
     """Plot attributes."""
 
