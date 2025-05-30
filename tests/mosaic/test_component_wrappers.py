@@ -6,7 +6,7 @@ import pytest
 from inspect_viz._core.component import Component
 from pydantic import BaseModel
 
-from ._schema import Dot, HConcat, HSpace, Menu, Plot, Table, VConcat, VSpace
+from ._schema import Dot, HConcat, HSpace, Legend, Menu, Plot, Table, VConcat, VSpace
 
 
 @pytest.fixture
@@ -65,6 +65,27 @@ def test_select_wrapper(penguins: vz.Data) -> None:
 
 def test_table_wrapper(penguins: vz.Data) -> None:
     check_component(vz.table(penguins), Table)
+
+
+def test_legend_wrapper(penguins: vz.Data) -> None:
+    check_component(
+        vz.legend(
+            "color",
+            label="foo",
+            columns=1,
+            selection=penguins.selection,
+            field="species",
+            width=100,
+            height=100,
+            tick_size=5,
+            margin_bottom=5,
+            margin_left=5,
+            margin_right=5,
+            margin_top=5,
+            for_plot="foo",
+        ),
+        Legend,
+    )
 
 
 def check_component(component: Component, type: Type[BaseModel]) -> None:

@@ -218,6 +218,8 @@ class MarkOptions(TypedDict, total=False):
 
 
 class Mark(Component):
+    """Plot mark (create marks using mark functions, e.g. `dot()`, `bar()`, etc.)."""
+
     def __init__(
         self, type: str, config: dict[str, JsonValue], options: MarkOptions
     ) -> None:
