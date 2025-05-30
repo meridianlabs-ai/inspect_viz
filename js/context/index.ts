@@ -2,11 +2,7 @@ import { AsyncDuckDBConnection } from 'https://cdn.jsdelivr.net/npm/@duckdb/duck
 
 import { wasmConnector } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import {
-    InstantiateContext,
-    PlotAttributeNode,
-    LiteralNode,
-} from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
+import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
 import { initDuckdb, waitForTable } from './duckdb';
 import { CUSTOM_INPUTS } from '../inputs';
@@ -14,15 +10,12 @@ import { CUSTOM_INPUTS } from '../inputs';
 class VizContext extends InstantiateContext {
     private readonly tables_ = new Set<string>();
 
-    constructor(private readonly conn_: AsyncDuckDBConnection) {
-        // bump up the default font size
-        const styleAttrib = new PlotAttributeNode('attribute');
-        styleAttrib.name = 'style';
-        styleAttrib.value = new LiteralNode({
-            fontSize: '12px',
-        });
+    constructor(
+        private readonly conn_: AsyncDuckDBConnection,
+        plotDefaults: any[]
+    ) {
         super({
-            plotDefaults: [styleAttrib],
+            plotDefaults,
         });
         this.api = { ...this.api, ...CUSTOM_INPUTS };
         this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
@@ -47,13 +40,13 @@ class VizContext extends InstantiateContext {
 // get the global context instance, ensuring we get the same
 // instance eval across different js bundles loaded into the page
 const VIZ_CONTEXT_KEY = Symbol.for('@@inspect-viz-context');
-async function vizContext(): Promise<VizContext> {
+async function vizContext(plotDefaults: any[]): Promise<VizContext> {
     const globalScope: any = typeof window !== 'undefined' ? window : globalThis;
     if (!globalScope[VIZ_CONTEXT_KEY]) {
         globalScope[VIZ_CONTEXT_KEY] = (async () => {
             const duckdb = await initDuckdb();
             const conn = await duckdb.connect();
-            return new VizContext(conn);
+            return new VizContext(conn, plotDefaults);
         })();
     }
     return globalScope[VIZ_CONTEXT_KEY] as Promise<VizContext>;

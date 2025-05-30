@@ -30,12 +30,10 @@ def plot(
         marks: Plot mark(s).
         x_label: A textual label to show on the axis or legend; if null, show no label.
           By default the scale label is inferred from channel definitions, possibly with
-          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value. For
-          axes and legends only.
+          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
         y_label: A textual label to show on the axis or legend; if null, show no label.
           By default the scale label is inferred from channel definitions, possibly with
-          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value. For
-          axes and legends only.
+          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
         grid: Whether to show a grid aligned with the scale's ticks. If true, show a grid
           with the currentColor stroke; if a string, show a grid with the specified
           stroke color.

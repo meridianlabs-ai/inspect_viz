@@ -6,11 +6,7 @@ import { throttle } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.
 
 // js/context/index.ts
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-import {
-  InstantiateContext,
-  PlotAttributeNode,
-  LiteralNode
-} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
+import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/context/duckdb.ts
 import {
@@ -97,14 +93,9 @@ var CUSTOM_INPUTS = {
 
 // js/context/index.ts
 var VizContext = class extends InstantiateContext {
-  constructor(conn_) {
-    const styleAttrib = new PlotAttributeNode("attribute");
-    styleAttrib.name = "style";
-    styleAttrib.value = new LiteralNode({
-      fontSize: "12px"
-    });
+  constructor(conn_, plotDefaults) {
     super({
-      plotDefaults: [styleAttrib]
+      plotDefaults
     });
     this.conn_ = conn_;
     this.tables_ = /* @__PURE__ */ new Set();
@@ -123,13 +114,13 @@ var VizContext = class extends InstantiateContext {
   }
 };
 var VIZ_CONTEXT_KEY = Symbol.for("@@inspect-viz-context");
-async function vizContext() {
+async function vizContext(plotDefaults) {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[VIZ_CONTEXT_KEY]) {
     globalScope[VIZ_CONTEXT_KEY] = (async () => {
       const duckdb = await initDuckdb();
       const conn = await duckdb.connect();
-      return new VizContext(conn);
+      return new VizContext(conn, plotDefaults);
     })();
   }
   return globalScope[VIZ_CONTEXT_KEY];
@@ -137,14 +128,16 @@ async function vizContext() {
 
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
+  const spec = JSON.parse(model.get("spec"));
+  const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 };
+  const plotDefaultsAst = parseSpec(plotDefaultsSpec);
+  const ctx = await vizContext(plotDefaultsAst.plotDefaults);
   const tables = model.get("tables") || {};
-  await syncTables(tables);
+  await syncTables(ctx, tables);
   const renderOptions = renderSetup(el);
-  const ctx = await vizContext();
   const inputs = new Set(
     ["menu", "search", "slider", "table"].concat(Object.keys(CUSTOM_INPUTS))
   );
-  const spec = JSON.parse(model.get("spec"));
   if (renderOptions.autoFillScrolling && isOutputSpec(spec)) {
     el.style.width = "100%";
     el.style.height = "400px";
@@ -165,8 +158,7 @@ async function render({ model, el }) {
     };
   }
 }
-async function syncTables(tables) {
-  const ctx = await vizContext();
+async function syncTables(ctx, tables) {
   for (const [tableName, base64Data] of Object.entries(tables)) {
     if (base64Data) {
       const binaryString = atob(base64Data);

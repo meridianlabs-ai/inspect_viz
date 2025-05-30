@@ -63,6 +63,8 @@ class Component(AnyWidget):
     def _repr_mimebundle_(
         self, **kwargs: Any
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
+        from .._plot.defaults import plot_defaults_as_camel
+
         # set current tables
         self.tables = all_tables()
 
@@ -70,6 +72,9 @@ class Component(AnyWidget):
         if not self.spec:
             # base spec
             spec = self._config.copy()
+
+            # add plot defaults
+            spec["plotDefaults"] = plot_defaults_as_camel()
 
             # add current params
             spec["params"] = all_params()

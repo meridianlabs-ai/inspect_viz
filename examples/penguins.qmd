@@ -10,6 +10,9 @@ execute:
 
 ```{python}
 import inspect_viz as vz
+
+vz.plot_defaults(grid=True)
+
 penguins = vz.Data("penguins.parquet")
 axes = ["body_mass", "flipper_length", "bill_depth", "bill_length"]
 
@@ -30,7 +33,6 @@ vz.select("Y", options=axes, param=y_axis)
 ```{python}
 vz.plot(
     vz.dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
-    grid=True,
     x_label="Body mass (g) →",
     y_label="↑ Flipper length (mm)",
     legend=vz.legend("symbol"),
@@ -42,7 +44,6 @@ vz.plot(
 ```{python}
 vz.plot(
     vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
-    grid=True,
     x_label="Body mass (g) →",
     y_label="↑ Flipper length (mm)",
     legend="symbol",

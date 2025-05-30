@@ -10,7 +10,7 @@ import {
 
 import { throttle } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm';
 
-import { vizContext } from '../context';
+import { VizContext, vizContext } from '../context';
 import { CUSTOM_INPUTS } from '../inputs';
 
 interface MosaicProps {
@@ -19,17 +19,23 @@ interface MosaicProps {
 }
 
 async function render({ model, el }: RenderProps<MosaicProps>) {
+    // get the spec and parse it for plot defaults
+    const spec: Spec = JSON.parse(model.get('spec'));
+    const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 } as Spec;
+    const plotDefaultsAst = parseSpec(plotDefaultsSpec);
+
+    // initialize context
+    const ctx = await vizContext(plotDefaultsAst.plotDefaults);
+
     // insert/wait for tables to be ready
     const tables: Record<string, string> = model.get('tables') || {};
-    await syncTables(tables);
+    await syncTables(ctx, tables);
 
     // render mosaic spec
     const renderOptions = renderSetup(el);
-    const ctx = await vizContext();
     const inputs = new Set(
         ['menu', 'search', 'slider', 'table'].concat(Object.keys(CUSTOM_INPUTS))
     );
-    const spec: Spec = JSON.parse(model.get('spec'));
     if (renderOptions.autoFillScrolling && isOutputSpec(spec)) {
         el.style.width = '100%';
         el.style.height = '400px';
@@ -57,8 +63,7 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
 }
 
 // insert/wait for tables to be ready
-async function syncTables(tables: Record<string, string>) {
-    const ctx = await vizContext();
+async function syncTables(ctx: VizContext, tables: Record<string, string>) {
     for (const [tableName, base64Data] of Object.entries(tables)) {
         if (base64Data) {
             // decode base64 to bytes
