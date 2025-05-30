@@ -11,16 +11,35 @@ class Legend(Component):
     def __init__(
         self,
         legend: Literal["color", "opacity", "symbol"],
-        columns: int,
+        location: Literal["bottom", "left", "right", "top"],
+        columns: Literal["auto"] | int | None,
         config: dict[str, JsonValue],
     ) -> None:
-        super().__init__({"legend": legend, "columns": columns} | config)
+        # base config
+        legend_config: dict[str, JsonValue] = {"legend": legend}
+
+        # handle columns
+        if columns == "auto":
+            columns = 1 if location in ["left", "right"] else None
+        if columns is not None:
+            legend_config["columns"] = columns
+
+        # forward super to config
+        super().__init__(legend_config | config)
+
+        # save location
+        self._location = location
+
+    @property
+    def location(self) -> Literal["bottom", "left", "right", "top"]:
+        return self._location
 
 
 def legend(
     legend: Literal["color", "opacity", "symbol"],
+    location: Literal["bottom", "left", "right", "top"] = "right",
+    columns: Literal["auto"] | int | None = "auto",
     label: str | None = None,
-    columns: int = 1,
     selection: Selection | None = None,
     field: str | None = None,
     width: float | None = None,
@@ -37,8 +56,10 @@ def legend(
     Args:
       legend: Legend type ()`"color"`, `"opacity"`, or `"symbol"`).
       label: The legend label.
+      location: The legend location (used for display only when passing a legend
+        to the`plot()` function). Also affects default value for `columns`.
       columns: The number of columns to use to layout a discrete legend
-        (defaults to 1)
+        (defaults to "auto", which uses 1 column for location "left" or "right")
       selection: The output selection. If specified, the legend is interactive,
         using a `toggle` interaction for discrete legends or an `intervalX`
         interaction for continuous legends.
@@ -52,8 +73,8 @@ def legend(
       margin_right: The right margin of the legend component, in pixels.
       margin_top: The top margin of the legend component, in pixels.
       for_plot: The name of the plot this legend applies to. A plot must include a
-        `name` attribute to be referenced. Note that this is not required when
-        passing a `Legend` to the `plot()` function.
+        `name` attribute to be referenced. Note that this is not use when
+        passing a legend to the `plot()` function.
     """
     config: dict[str, JsonValue] = {}
     if label is not None:
@@ -79,4 +100,4 @@ def legend(
     if for_plot is not None:
         config["for"] = for_plot
 
-    return Legend(legend, columns, config=config)
+    return Legend(legend, location, columns, config=config)

@@ -4,7 +4,7 @@ from shortuuid import uuid
 
 from .._core import Component
 from .._core.param import Param
-from .._layout.concat import hconcat
+from .._layout.concat import hconcat, vconcat
 from .legend import Legend
 from .legend import legend as create_legend
 from .mark import Mark
@@ -93,12 +93,24 @@ def plot(
 
     # wrap with legend if specified
     if legend is not None:
+        # create name for plot and resolve/bind legend to it
         plot["name"] = f"plot_{uuid()}"
         if isinstance(legend, str):
-            legend = create_legend(legend)
-        if "width" not in legend.config:
-            legend.config["width"] = 80
+            legend = create_legend(legend, location="right")
         legend.config["for"] = plot["name"]
-        return hconcat(Component(config=plot), legend)
+
+        # handle legend location
+        plot_component = Component(config=plot)
+        if legend.location in ["left", "right"]:
+            if "width" not in legend.config:
+                legend.config["width"] = 80
+            if legend.location == "left":
+                return hconcat(legend, plot_component)
+            else:
+                return hconcat(plot_component, legend)
+        elif legend.location == "bottom":
+            return vconcat(plot_component, legend)
+        else:
+            return vconcat(legend, plot_component)
     else:
         return Component(config=plot)

@@ -33,7 +33,7 @@ vz.plot(
     grid=True,
     x_label="Body mass (g) →",
     y_label="↑ Flipper length (mm)",
-    legend="symbol",
+    legend=vz.legend("symbol"),
 )
 ```
 

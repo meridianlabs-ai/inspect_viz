@@ -109,19 +109,23 @@ function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
             plot.width = containerEl.clientWidth;
             plot.height = containerEl.clientHeight;
         }
-    } else if ('hconcat' in spec) {
+    } else if ('hconcat' in spec && spec.hconcat.length === 2) {
         const hconcat = spec.hconcat;
-        if ('plot' in hconcat[0]) {
+        const plot =
+            'plot' in hconcat[0] ? hconcat[0] : 'plot' in hconcat[1] ? hconcat[1] : undefined;
+        if (plot) {
             // TODO: better dynamic sizing for legend
-            hconcat[0].width = containerEl.clientWidth - 80;
-            hconcat[0].height = containerEl.clientHeight;
+            plot.width = containerEl.clientWidth - 80;
+            plot.height = containerEl.clientHeight;
         }
-    } else if ('vconcat' in spec) {
+    } else if ('vconcat' in spec && spec.vconcat.length == 2) {
         const vconcat = spec.vconcat;
-        if ('plot' in vconcat[0]) {
+        const plot =
+            'plot' in vconcat[0] ? vconcat[0] : 'plot' in vconcat[1] ? vconcat[1] : undefined;
+        if (plot) {
             // TODO: Is the legend always 35 pixels high
-            vconcat[0].width = containerEl.clientWidth;
-            vconcat[0].height = containerEl.clientHeight - 35;
+            plot.width = containerEl.clientWidth;
+            plot.height = containerEl.clientHeight - 35;
         }
     }
     return spec;
@@ -132,9 +136,17 @@ function isOutputSpec(spec: Spec) {
         return true;
     } else if ('input' in spec && spec.input === 'table') {
         return true;
-    } else if ('hconcat' in spec && 'plot' in spec.hconcat[0]) {
+    } else if (
+        'hconcat' in spec &&
+        spec.hconcat.length === 2 &&
+        ('plot' in spec.hconcat[0] || 'plot' in spec.hconcat[1])
+    ) {
         return true;
-    } else if ('vconcat' in spec && 'plot' in spec.vconcat[0]) {
+    } else if (
+        'vconcat' in spec &&
+        spec.vconcat.length === 2 &&
+        ('plot' in spec.vconcat[0] || 'plot' in spec.vconcat[1])
+    ) {
         return true;
     } else {
         return false;
