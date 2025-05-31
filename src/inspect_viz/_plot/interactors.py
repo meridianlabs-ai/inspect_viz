@@ -1,5 +1,3 @@
-from typing import Any
-
 from pydantic import JsonValue
 
 from inspect_viz._util.marshall import dict_remove_none
@@ -82,3 +80,22 @@ def interval_x(
     }
 
     return Interactor("intervalX", config)
+
+
+def toggle_y(
+    selection: Selection,
+    peers: bool | None = None,
+) -> Interactor:
+    """Toggle interactor over the `"y"` encoding channel only.
+
+    Args:
+       selection: The output selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
+       peers: A flag indicating if peer (sibling) marks are excluded when
+         cross-filtering (default `true`). If set, peer marks will not be
+         filtered by this interactor's selection in cross-filtering setups.
+    """
+    config: dict[str, JsonValue] = {
+        "as": selection,
+        "peers": peers,
+    }
+    return Interactor("toggleY", config)

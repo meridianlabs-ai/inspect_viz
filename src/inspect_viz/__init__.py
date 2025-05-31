@@ -18,6 +18,7 @@ from ._plot import (
     legend,
     plot,
     plot_defaults,
+    toggle_y,
 )
 
 __all__ = [
@@ -48,6 +49,7 @@ __all__ = [
     "Interactor",
     "highlight",
     "interval_x",
+    "toggle_y",
     # table
     "table",
     # layout
