@@ -4,7 +4,7 @@ from pydantic import JsonValue
 
 from .._core.component import Component
 from .._core.param import Param
-from .._util.marshall import snake_to_camel
+from .._util.marshall import dict_remove_none, snake_to_camel
 from .channel import Channel, SortOrder
 
 
@@ -223,7 +223,9 @@ class Mark(Component):
     def __init__(
         self, type: str, config: dict[str, JsonValue], options: MarkOptions
     ) -> None:
-        super().__init__({"mark": type} | config | mark_options_to_camel(options))
+        super().__init__(
+            {"mark": type} | dict_remove_none(config) | mark_options_to_camel(options)
+        )
 
 
 def mark_options_to_camel(options: MarkOptions) -> dict[str, Any]:
