@@ -2,9 +2,7 @@ from typing import Any
 
 from typing_extensions import Unpack
 
-from inspect_viz.transform._transform import Transform
-
-from .._core import Component, Data, Param, Selection
+from .._core import Data, Param, Selection
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
@@ -21,7 +19,7 @@ def dot(
     symbol: Channel | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
-) -> Component:
+) -> Mark:
     """A dot mark that draws circles, or other symbols, as in a scatterplot.
 
     Args:
