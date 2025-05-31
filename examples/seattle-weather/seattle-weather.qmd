@@ -15,11 +15,11 @@ import inspect_viz as vz
 import inspect_viz.transform as tx
 
 # data
-weather = vz.Data("seattle-weather.parquet")
+seattle_weather = vz.Data("seattle-weather.parquet")
 
-# conditions domain/colors
-conditions = ["sun", "fog", "drizzle", "rain", "snow"]
-conditions_colors = ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
+# weather domain/colors
+weather = ["sun", "fog", "drizzle", "rain", "snow"]
+weather_colors = ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
 
 # scatterplot x-range selection
 range = vz.Selection("intersect")
@@ -32,7 +32,7 @@ click = vz.Selection("single")
 vz.plot(
     [
         vz.dot(
-            data=weather,
+            data=seattle_weather,
             filter_by=click,
             x=tx.date_month_day("date"),
             y="temp_max",
@@ -46,8 +46,8 @@ vz.plot(
     legend=vz.legend("color", selection=click, columns=1),
     xy_domain=vz.Fixed,
     x_tick_format="%b",
-    color_domain=conditions,
-    color_range=conditions_colors,
+    color_domain=weather,
+    color_range=weather_colors,
     r_domain=vz.Fixed,
     r_range=[2, 10],
     width=680,
@@ -56,5 +56,22 @@ vz.plot(
 ```
 
 ```{python}
-
+vz.plot(
+    [
+        vz.bar_x(
+            seattle_weather, x=tx.count(), y="weather", fill="#ccc", fill_opacity=0.2
+        ),
+        vz.bar_x(
+            seattle_weather, filter_by=range, x=tx.count(), y="weather", fill="weather"
+        ),
+        vz.toggle_y(selection=click),
+        vz.highlight(by=click)
+    ],
+    x_domain=vz.Fixed,
+    y_domain=weather,
+    y_label=None,
+    color_domain=weather,
+    color_range=weather_colors,
+    width=680
+)
 ```
