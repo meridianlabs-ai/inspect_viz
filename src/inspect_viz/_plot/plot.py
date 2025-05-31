@@ -63,11 +63,8 @@ def plot(
     components = [m.config for m in plot]
     config: dict[str, Any] = dict(plot=components)
 
-    if x_label is not None:
-        config["xLabel"] = x_label
-
-    if y_label is not None:
-        config["yLabel"] = y_label
+    config["xLabel"] = x_label
+    config["yLabel"] = y_label
 
     if grid is not None:
         config["grid"] = grid
