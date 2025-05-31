@@ -7,6 +7,7 @@ from inspect_viz._core.component import Component
 from pydantic import BaseModel
 
 from ._schema import (
+    BarX,
     Dot,
     HConcat,
     Highlight,
@@ -57,6 +58,32 @@ def test_hspace_wrapper() -> None:
 
 def test_dot_wrapper(dot_mark: vz.Component) -> None:
     check_component(dot_mark, Dot)
+
+
+def test_bar_x_wrapper(penguins: vz.Data) -> None:
+    check_component(
+        vz.bar_x(
+            penguins,
+            x="bill_depth",
+            x1="bill_depth",
+            x2="bill_depth",
+            y="bill_depth",
+            interval="minute",
+            filter_by=vz.Selection("intersect"),
+            offset="center",
+            order="appearance",
+            z="bill_depth",
+            inset=1,
+            inset_left=1,
+            inset_right=1,
+            inset_bottom=1,
+            inset_top=1,
+            rx=1,
+            ry=1,
+            reverse=True,
+        ),
+        BarX,
+    )
 
 
 def test_plot_wrapper(dot_mark: vz.Component) -> None:

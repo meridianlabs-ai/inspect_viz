@@ -11,6 +11,7 @@ from ._plot import (
     MarkOptions,
     PlotDefaults,
     PlotOptions,
+    bar_x,
     dot,
     highlight,
     interval_x,
@@ -42,6 +43,7 @@ __all__ = [
     "MarkOptions",
     "Channel",
     "dot",
+    "bar_x",
     # interactor
     "Interactor",
     "highlight",

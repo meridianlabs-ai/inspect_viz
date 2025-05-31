@@ -1,3 +1,4 @@
+from .bar import bar_x
 from .brush import Brush
 from .channel import Channel
 from .defaults import PlotDefaults, plot_defaults
@@ -18,6 +19,7 @@ __all__ = [
     "MarkOptions",
     "Channel",
     "dot",
+    "bar_x",
     "Brush",
     "Legend",
     "legend",
