@@ -1,18 +1,22 @@
 from datetime import datetime
-from typing import ClassVar
+from typing import ClassVar, Sequence, TypeAlias
 
 from shortuuid import uuid
 
 PARAM_PREFIX = "param_"
+
+ParamValue: TypeAlias = (
+    int | float | bool | str | datetime | Sequence[int | float | bool | str]
+)
 
 
 class Param(str):
     """Parameter that can be bound from inputs."""
 
     _id: str
-    _default: int | float | bool | str | datetime
+    _default: ParamValue
 
-    def __new__(cls, default: int | float | bool | str | datetime) -> "Param":
+    def __new__(cls, default: ParamValue) -> "Param":
         # assign a unique id
         id = f"{PARAM_PREFIX}{uuid()}"
 
@@ -33,7 +37,7 @@ class Param(str):
         return self._id
 
     @property
-    def default(self) -> int | float | bool | str | datetime:
+    def default(self) -> ParamValue:
         """Default value."""
         return self._default
 

@@ -87,13 +87,13 @@ def legend(
         config["width"] = width
     if height is not None:
         config["height"] = height
-    if margin_bottom is None:
+    if margin_bottom is not None:
         config["marginBottom"] = margin_bottom
-    if margin_left is None:
+    if margin_left is not None:
         config["marginLeft"] = margin_left
-    if margin_right is None:
+    if margin_right is not None:
         config["marginRight"] = margin_right
-    if margin_top is None:
+    if margin_top is not None:
         config["marginTop"] = margin_top
     if tick_size is not None:
         config["tickSize"] = tick_size

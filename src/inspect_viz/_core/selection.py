@@ -19,10 +19,10 @@ class Selection(str):
         *,
         cross: bool | None = None,
         empty: bool | None = None,
-        unique: str = uuid(),
+        unique: str | None = None,
     ) -> "Selection":
         # assign a unique id
-        id = f"{SELECTION_PREFIX}{unique}"
+        id = f"{SELECTION_PREFIX}{unique or uuid()}"
 
         # create the string instance
         instance = super().__new__(cls, f"${id}")

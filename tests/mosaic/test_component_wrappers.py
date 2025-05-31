@@ -9,8 +9,8 @@ from pydantic import BaseModel
 from ._schema import (
     Dot,
     HConcat,
-    HSpace,
     Highlight,
+    HSpace,
     IntervalX,
     Legend,
     Menu,

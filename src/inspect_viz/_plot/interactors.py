@@ -2,6 +2,8 @@ from typing import Any
 
 from pydantic import JsonValue
 
+from inspect_viz._util.marshall import dict_remove_none
+
 from .._core.component import Component
 from .._core.selection import Selection
 from .brush import Brush, brush_as_camel
@@ -11,10 +13,7 @@ class Interactor(Component):
     """Interactors imbue plots with interactive behavior, such as selecting or highlighting values, and panning or zooming the display."""
 
     def __init__(self, select: str, config: dict[str, JsonValue]) -> None:
-        camel_config: dict[str, Any] = {
-            key: value for key, value in config.items() if value is not None
-        }
-        super().__init__({"select": select} | camel_config)
+        super().__init__({"select": select} | dict_remove_none(config))
 
 
 def highlight(
@@ -43,7 +42,7 @@ def highlight(
         "by": by,
         "fill": fill,
         "fillOpacity": fill_opacity,
-        "opacity": opacity if opacity is not None else 0.2,
+        "opacity": opacity,
         "stroke": stroke,
         "strokeOpacity": stroke_opacity,
     }

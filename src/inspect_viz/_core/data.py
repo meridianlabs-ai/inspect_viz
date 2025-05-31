@@ -13,10 +13,6 @@ from shortuuid import uuid
 from .param import Param
 from .selection import Selection
 
-# data needs to be accumulated like params
-# all data needs to be sent with every widget that is printed (subject to collection)
-# Widget no longer takes data
-
 
 class Data:
     def __init__(self, data: IntoDataFrame | str | PathLike[str]) -> None:

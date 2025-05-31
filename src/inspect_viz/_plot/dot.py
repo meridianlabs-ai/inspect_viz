@@ -43,8 +43,8 @@ def dot(
     """
     config: dict[str, Any] = dict(
         data=data.plot_from(filter_by),
-        x=x if isinstance(x, Transform) else dict(column=x),
-        y=y if isinstance(y, Transform) else dict(column=y),
+        x=x,
+        y=y,
     )
     if z is not None:
         config["z"] = z

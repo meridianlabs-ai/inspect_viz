@@ -1,6 +1,6 @@
 from typing import Any, TypedDict
 
-from inspect_viz._util.casing import snake_to_camel
+from .._util.marshall import snake_to_camel
 
 
 class Brush(TypedDict, total=False):

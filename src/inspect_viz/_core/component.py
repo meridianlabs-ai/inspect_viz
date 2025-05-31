@@ -8,6 +8,7 @@ from pydantic import JsonValue
 from pydantic_core import to_json, to_jsonable_python
 
 from .._util.constants import WIDGETS_DIR
+from .._util.marshall import dict_remove_none
 from .data import Data
 from .param import Param as VizParam
 from .selection import Selection as VizSelection
@@ -104,7 +105,7 @@ def all_params() -> dict[str, JsonValue]:
     ParamDefinition: TypeAlias = ParamValue | Param | ParamDate | Selection
     Params: TypeAlias = dict[str, ParamDefinition]
     """
-    all_params: dict[str, JsonValue] = {}
+    all_params: dict[str, Any] = {}
 
     for param in VizParam.get_all():
         if isinstance(param.default, datetime):
@@ -113,8 +114,8 @@ def all_params() -> dict[str, JsonValue]:
             all_params[param.id] = dict(select="value", value=param.default)
 
     for selection in VizSelection.get_all():
-        all_params[selection.id] = dict(
-            select=selection.select, cross=selection.cross, empty=selection.empty
+        all_params[selection.id] = dict_remove_none(
+            dict(select=selection.select, cross=selection.cross, empty=selection.empty)
         )
 
     return cast(dict[str, JsonValue], to_jsonable_python(all_params, exclude_none=True))

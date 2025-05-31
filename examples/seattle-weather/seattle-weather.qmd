@@ -1,12 +1,10 @@
 ---
 title: "Seattle Weather"
+format: html
 execute: 
   echo: false
   daemon: false
 ---
-
-TODO: why aren't we seeing the grayed out counter selection
-TODO: implement bar chart
 
 An interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By dragging on the scatter plot, you can see the proportion of days in that range that have sun, fog, drizzle, rain, or snow.
 
@@ -40,6 +38,7 @@ vz.plot(
             y="temp_max",
             fill="weather",
             fill_opacity=0.7,
+            r="precipitation"
         ),
         vz.interval_x(selection=range, brush=vz.Brush(fill="none", stroke="#888")),
         vz.highlight(by=range, fill="#ccc", fill_opacity=0.2)
