@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from ._schema import (
     AggregateExpression,
+    Count,
     DateDay,
     DateMonth,
     DateMonthDay,
@@ -32,6 +33,23 @@ def test_date_month_wrapper() -> None:
     check_transform(tx.date_month("date_column"), DateMonth)
 
 
-def check_transform(transform: tx.Transform, type: Type[BaseModel]) -> None:
+def test_count_wrapper() -> None:
+    check_transform(
+        tx.count(
+            count=None,
+            distinct=True,
+            orderby="foo",
+            partitionby="foo",
+            rows=[None],
+            range=[None],
+        ),
+        Count,
+        exclude_none=False,
+    )
+
+
+def check_transform(
+    transform: tx.Transform, type: Type[BaseModel], exclude_none: bool = True
+) -> None:
     model = type.model_validate(transform)
-    assert model.model_dump(exclude_none=True, by_alias=True) == transform
+    assert model.model_dump(exclude_none=exclude_none, by_alias=True) == transform
