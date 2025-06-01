@@ -19,6 +19,7 @@ from ._schema import (
     NearestX,
     NearestY,
     Plot,
+    Region,
     Table,
     Toggle,
     ToggleColor,
@@ -189,6 +190,18 @@ def test_nearest_y_wrapper() -> None:
             max_radius=50,
         ),
         NearestY,
+    )
+
+
+def test_region_wrapper() -> None:
+    check_component(
+        vz.region(
+            selection=vz.Selection("intersect"),
+            channels=["x", "y"],
+            peers=True,
+            brush=vz.Brush(fill="red", fill_opacity=0.6),
+        ),
+        Region,
     )
 
 

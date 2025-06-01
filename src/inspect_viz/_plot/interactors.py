@@ -247,6 +247,34 @@ def nearest_y(
     return Interactor("nearestY", config)
 
 
+def region(
+    selection: Selection,
+    channels: list[str],
+    peers: bool | None = None,
+    brush: Brush | None = None,
+) -> Interactor:
+    """Select aspects of individual marks within a 2D range.
+
+    Args:
+       selection: The output selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
+       channels: The encoding channels over which to select values (e.g. "x", "y", "color", etc.). For a selected mark, selection clauses will cover the backing data fields for each channel.
+       peers: A flag indicating if peer (sibling) marks are excluded when
+         cross-filtering (default `true`). If set, peer marks will not be
+         filtered by this interactor's selection in cross-filtering setups.
+       brush: CSS styles for the brush (SVG `rect`) element.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "channels": channels,
+            "peers": peers,
+            "brush": brush_as_camel(brush) if brush is not None else None,
+        }
+    )
+
+    return Interactor("region", config)
+
+
 def toggle_y(
     selection: Selection,
     peers: bool | None = None,
