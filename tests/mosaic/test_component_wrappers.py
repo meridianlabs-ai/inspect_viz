@@ -19,6 +19,12 @@ from ._schema import (
     Menu,
     NearestX,
     NearestY,
+    Pan,
+    PanX,
+    PanY,
+    PanZoom,
+    PanZoomX,
+    PanZoomY,
     Plot,
     Region,
     Table,
@@ -264,6 +270,78 @@ def test_legend_wrapper(penguins: vz.Data) -> None:
             for_plot="foo",
         ),
         Legend,
+    )
+
+
+def test_pan_wrapper() -> None:
+    check_component(
+        vz.pan(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        Pan,
+    )
+
+
+def test_pan_x_wrapper() -> None:
+    check_component(
+        vz.pan_x(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        PanX,
+    )
+
+
+def test_pan_y_wrapper() -> None:
+    check_component(
+        vz.pan_y(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        PanY,
+    )
+
+
+def test_pan_zoom_wrapper() -> None:
+    check_component(
+        vz.pan_zoom(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        PanZoom,
+    )
+
+
+def test_pan_zoom_x_wrapper() -> None:
+    check_component(
+        vz.pan_zoom_x(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        PanZoomX,
+    )
+
+
+def test_pan_zoom_y_wrapper() -> None:
+    check_component(
+        vz.pan_zoom_y(
+            x=vz.Selection("intersect"),
+            y=vz.Selection("intersect"),
+            xfield="x_field",
+            yfield="y_field",
+        ),
+        PanZoomY,
     )
 
 

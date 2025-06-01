@@ -326,3 +326,153 @@ def toggle_y(
         }
     )
     return Interactor("toggleY", config)
+
+
+def pan(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan a plot along both the `x` and `y` scales.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("pan", config)
+
+
+def pan_x(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan a plot along the `x` scale only.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("panX", config)
+
+
+def pan_y(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan a plot along the `y` scale only.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("panY", config)
+
+
+def pan_zoom(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan and zoom a plot along both the `x` and `y` scales.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("panZoom", config)
+
+
+def pan_zoom_x(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan and zoom a plot along the `x` scale only.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("panZoomX", config)
+
+
+def pan_zoom_y(
+    x: Selection | None = None,
+    y: Selection | None = None,
+    xfield: str | None = None,
+    yfield: str | None = None,
+) -> Interactor:
+    """Pan and zoom a plot along the `y` scale only.
+
+    Args:
+       x: The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval [x1, x2].
+       y: The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval [y1, y2].
+       xfield: The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "x": x,
+            "y": y,
+            "xfield": xfield,
+            "yfield": yfield,
+        }
+    )
+    return Interactor("panZoomY", config)
