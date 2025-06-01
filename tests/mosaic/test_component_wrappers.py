@@ -13,6 +13,7 @@ from ._schema import (
     Highlight,
     HSpace,
     IntervalX,
+    IntervalXY,
     IntervalY,
     Legend,
     Menu,
@@ -122,6 +123,20 @@ def test_interval_x_wrapper() -> None:
             brush=vz.Brush(fill="red", fill_opacity=0.6),
         ),
         IntervalX,
+    )
+
+
+def test_interval_xy_wrapper() -> None:
+    check_component(
+        vz.interval_xy(
+            selection=vz.Selection("intersect"),
+            xfield="foo",
+            yfield="bar",
+            pixel_size=2,
+            peers=True,
+            brush=vz.Brush(fill="red", fill_opacity=0.6),
+        ),
+        IntervalXY,
     )
 
 

@@ -90,6 +90,38 @@ def interval_x(
     return Interactor("intervalX", config)
 
 
+def interval_xy(
+    selection: Selection,
+    xfield: str | None = None,
+    yfield: str | None = None,
+    pixel_size: float | None = None,
+    peers: bool | None = None,
+    brush: Brush | None = None,
+) -> Interactor:
+    """Select a continuous 2D interval selection over the `x` and `y` scale domains.
+
+    Args:
+       selection: The output selection. A clause of the form `(xfield BETWEEN x1 AND x2) AND (yfield BETWEEN y1 AND y2)` is added for the currently selected intervals.
+       xfield: The name of the field (database column) over which the `x`-component of the interval selection should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
+       yfield: The name of the field (database column) over which the `y`-component of the interval selection should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
+       pixel_size: The size of an interative pixel (default `1`). Larger pixel sizes reduce the brush resolution, which can reduce the size of pre-aggregated materialized views.
+       peers: A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor's selection in cross-filtering setups.
+       brush: CSS styles for the brush (SVG `rect`) element.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "xfield": xfield,
+            "yfield": yfield,
+            "pixelSize": pixel_size,
+            "peers": peers,
+            "brush": brush_as_camel(brush) if brush is not None else None,
+        }
+    )
+
+    return Interactor("intervalXY", config)
+
+
 def interval_y(
     selection: Selection,
     field: str | None = None,
