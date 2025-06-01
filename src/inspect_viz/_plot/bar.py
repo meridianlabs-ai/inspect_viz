@@ -3,6 +3,7 @@ from typing import Any, Literal, Sequence
 from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
+from .._util.marshall import dict_remove_none
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .options import Interval
@@ -76,23 +77,25 @@ def bar_x(
        ry: The rounded corner [*y*-radius][], either in pixels or as a percentage of the rect height. If **ry** is not specified, it defaults to **rx** if present, and otherwise draws square corners.
        options: Additional `MarkOptions`.
     """
-    config: dict[str, Any] = dict(
-        data=data.plot_from(filter_by),
-        x=x,
-        x1=x1,
-        x2=x2,
-        y=y,
-        interval=interval,
-        offset=offset,
-        order=order,
-        z=z,
-        inset=inset,
-        insetTop=inset_top,
-        insetRight=inset_right,
-        insetBottom=inset_bottom,
-        insetLeft=inset_left,
-        rx=rx,
-        ry=ry,
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=x,
+            x1=x1,
+            x2=x2,
+            y=y,
+            interval=interval,
+            offset=offset,
+            order=order,
+            z=z,
+            inset=inset,
+            insetTop=inset_top,
+            insetRight=inset_right,
+            insetBottom=inset_bottom,
+            insetLeft=inset_left,
+            rx=rx,
+            ry=ry,
+        )
     )
 
     return Mark("barX", config, options)

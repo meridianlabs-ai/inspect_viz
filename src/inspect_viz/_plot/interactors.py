@@ -11,7 +11,8 @@ class Interactor(Component):
     """Interactors imbue plots with interactive behavior, such as selecting or highlighting values, and panning or zooming the display."""
 
     def __init__(self, select: str, config: dict[str, JsonValue]) -> None:
-        super().__init__({"select": select} | dict_remove_none(config))
+        interactor: dict[str, JsonValue] = {"select": select}
+        super().__init__(interactor | config)
 
 
 def highlight(
@@ -36,14 +37,16 @@ def highlight(
 
 
     """
-    config: dict[str, JsonValue] = {
-        "by": by,
-        "fill": fill,
-        "fillOpacity": fill_opacity,
-        "opacity": opacity,
-        "stroke": stroke,
-        "strokeOpacity": stroke_opacity,
-    }
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "by": by,
+            "opacity": opacity,
+            "fill": fill,
+            "fillOpacity": fill_opacity,
+            "stroke": stroke,
+            "strokeOpacity": stroke_opacity,
+        }
+    )
 
     return Interactor("highlight", config)
 
@@ -71,13 +74,15 @@ def interval_x(
          filtered by this interactor's selection in cross-filtering setups.
        brush: CSS styles for the brush (SVG `rect`) element.
     """
-    config: dict[str, JsonValue] = {
-        "as": selection,
-        "field": field,
-        "pixelSize": pixel_size,
-        "peers": peers,
-        "brush": brush_as_camel(brush) if brush is not None else None,
-    }
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "field": field,
+            "pixelSize": pixel_size,
+            "peers": peers,
+            "brush": brush_as_camel(brush) if brush is not None else None,
+        }
+    )
 
     return Interactor("intervalX", config)
 
@@ -94,8 +99,10 @@ def toggle_y(
          cross-filtering (default `true`). If set, peer marks will not be
          filtered by this interactor's selection in cross-filtering setups.
     """
-    config: dict[str, JsonValue] = {
-        "as": selection,
-        "peers": peers,
-    }
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "peers": peers,
+        }
+    )
     return Interactor("toggleY", config)

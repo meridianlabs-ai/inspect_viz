@@ -3,6 +3,7 @@ from typing import Any
 from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
+from .._util.marshall import dict_remove_none
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
@@ -39,20 +40,17 @@ def dot(
            *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
         options: Additional `MarkOptions`.
     """
-    config: dict[str, Any] = dict(
-        data=data.plot_from(filter_by),
-        x=x,
-        y=y,
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=x,
+            y=y,
+            z=z,
+            r=r,
+            rotate=rotate,
+            symbol=symbol,
+            frameAnchor=frame_anchor,
+        )
     )
-    if z is not None:
-        config["z"] = z
-    if r is not None:
-        config["r"] = r
-    if rotate is not None:
-        config["rotate"] = r
-    if symbol is not None:
-        config["symbol"] = symbol
-    if frame_anchor is not None:
-        config["frameAnchor"] = frame_anchor
 
     return Mark("dot", config, options)
