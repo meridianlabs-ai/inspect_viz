@@ -4,6 +4,16 @@ from .._core.param import Param
 from ._transform import Transform
 
 
+def column(column: str | Param) -> Transform:
+    """Intpret a string or param-value as a column reference.
+
+    Args:
+       column: Column name or paramameter.
+    """
+    config: dict[str, JsonValue] = {"column": column}
+    return Transform(config)
+
+
 def date_month_day(expr: str | Param) -> Transform:
     """Map date/times to a month and day value, all within the same year for comparison.
 

@@ -2,10 +2,9 @@ from typing import Any, Literal, Sequence
 
 from typing_extensions import Unpack
 
-from inspect_viz.transform._transform import Transform
-
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
+from ..transform._column import column
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .options import Interval
@@ -82,7 +81,7 @@ def bar_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=x if isinstance(x, Transform) else dict(column=x),
+            x=column(x) if isinstance(x, str) else x,
             x1=x1,
             x2=x2,
             y=y,

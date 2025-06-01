@@ -2,10 +2,9 @@ from typing import Any
 
 from typing_extensions import Unpack
 
-from inspect_viz.transform._transform import Transform
-
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
+from ..transform._column import column
 from .channel import Channel
 from .mark import Mark, MarkOptions
 from .types import FrameAnchor, Symbol
@@ -45,8 +44,8 @@ def dot(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=x if isinstance(x, Transform) else dict(column=x),
-            y=y if isinstance(y, Transform) else dict(column=y),
+            x=column(x) if isinstance(x, str) else x,
+            y=column(y) if isinstance(y, str) else y,
             z=z,
             r=r,
             rotate=rotate,
