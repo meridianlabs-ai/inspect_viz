@@ -15,6 +15,7 @@ from ._plot import (
     dot,
     highlight,
     interval_x,
+    interval_y,
     legend,
     plot,
     plot_defaults,
@@ -49,6 +50,7 @@ __all__ = [
     "Interactor",
     "highlight",
     "interval_x",
+    "interval_y",
     "toggle_y",
     # table
     "table",
