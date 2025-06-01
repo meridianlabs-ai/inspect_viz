@@ -19,6 +19,7 @@ from ._schema import (
     Plot,
     Table,
     Toggle,
+    ToggleColor,
     ToggleX,
     ToggleY,
     VConcat,
@@ -152,6 +153,16 @@ def test_toggle_x_wrapper() -> None:
             peers=True,
         ),
         ToggleX,
+    )
+
+
+def test_toggle_color_wrapper() -> None:
+    check_component(
+        vz.toggle_color(
+            selection=vz.Selection("intersect"),
+            peers=True,
+        ),
+        ToggleColor,
     )
 
 

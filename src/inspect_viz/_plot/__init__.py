@@ -9,6 +9,7 @@ from .interactors import (
     interval_x,
     interval_y,
     toggle,
+    toggle_color,
     toggle_x,
     toggle_y,
 )
@@ -35,6 +36,7 @@ __all__ = [
     "interval_x",
     "interval_y",
     "toggle",
+    "toggle_color",
     "toggle_x",
     "toggle_y",
     "highlight",
