@@ -5,12 +5,24 @@ from pydantic import BaseModel
 
 from ._schema import (
     AggregateExpression,
+    Bin,
+    Column,
     Count,
     DateDay,
     DateMonth,
     DateMonthDay,
     SQLExpression,
 )
+
+
+def test_column_wrapper() -> None:
+    check_transform(tx.column("foo"), Column)
+
+
+def test_bin_wrapper() -> None:
+    check_transform(
+        tx.bin("foo", interval="hour", step=1, steps=1, nice=True, offset=1), Bin
+    )
 
 
 def test_sql_wrapper() -> None:
