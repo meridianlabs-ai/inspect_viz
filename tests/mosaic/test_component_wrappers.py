@@ -16,6 +16,8 @@ from ._schema import (
     IntervalY,
     Legend,
     Menu,
+    NearestX,
+    NearestY,
     Plot,
     Table,
     Toggle,
@@ -163,6 +165,30 @@ def test_toggle_color_wrapper() -> None:
             peers=True,
         ),
         ToggleColor,
+    )
+
+
+def test_nearest_x_wrapper() -> None:
+    check_component(
+        vz.nearest_x(
+            selection=vz.Selection("intersect"),
+            channels=["x", "color"],
+            fields=["field1", "field2"],
+            max_radius=50,
+        ),
+        NearestX,
+    )
+
+
+def test_nearest_y_wrapper() -> None:
+    check_component(
+        vz.nearest_y(
+            selection=vz.Selection("intersect"),
+            channels=["y", "color"],
+            fields=["field1", "field2"],
+            max_radius=50,
+        ),
+        NearestY,
     )
 
 
