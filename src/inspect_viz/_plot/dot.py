@@ -2,6 +2,8 @@ from typing import Any
 
 from typing_extensions import Unpack
 
+from inspect_viz.transform._transform import Transform
+
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from .channel import Channel
@@ -27,7 +29,7 @@ def dot(
         data: The data source for the mark.
         x: Horizontal position channel specifying the dot’s center.
         y: The vertical position channel specifying the dot’s center.
-        z: An ptional ordinal channel for grouping data into series.
+        z: An optional ordinal channel for grouping data into series.
         r: The radius of dots; either a channel or constant. When a number, it is interpreted as a constant radius
            in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
            to the *sqrt* type for proportional symbols. The radius defaults to 4.5 pixels when using the **symbol**
@@ -43,8 +45,8 @@ def dot(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=x,
-            y=y,
+            x=x if isinstance(x, Transform) else dict(column=x),
+            y=y if isinstance(y, Transform) else dict(column=y),
             z=z,
             r=r,
             rotate=rotate,
