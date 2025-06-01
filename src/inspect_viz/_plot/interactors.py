@@ -123,6 +123,53 @@ def interval_y(
     return Interactor("intervalY", config)
 
 
+def toggle(
+    selection: Selection,
+    channels: list[str],
+    peers: bool | None = None,
+) -> Interactor:
+    """Select individal values.
+
+    Args:
+       selection: The output selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
+       channels: The encoding channels over which to select values. For a selected mark, selection clauses will cover the backing data fields for each channel.
+       peers: A flag indicating if peer (sibling) marks are excluded when
+         cross-filtering (default `true`). If set, peer marks will not be
+         filtered by this interactor's selection in cross-filtering setups.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "channels": channels,
+            "peers": peers,
+        }
+    )
+
+    return Interactor("toggle", config)
+
+
+def toggle_x(
+    selection: Selection,
+    peers: bool | None = None,
+) -> Interactor:
+    """Select individal values in the `x` scale domain. Clicking or touching a mark toggles its selection status.
+
+    Args:
+       selection: The output selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
+       peers: A flag indicating if peer (sibling) marks are excluded when
+         cross-filtering (default `true`). If set, peer marks will not be
+         filtered by this interactor's selection in cross-filtering setups.
+    """
+    config: dict[str, JsonValue] = dict_remove_none(
+        {
+            "as": selection,
+            "peers": peers,
+        }
+    )
+
+    return Interactor("toggleX", config)
+
+
 def toggle_y(
     selection: Selection,
     peers: bool | None = None,

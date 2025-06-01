@@ -18,6 +18,8 @@ from ._schema import (
     Menu,
     Plot,
     Table,
+    Toggle,
+    ToggleX,
     ToggleY,
     VConcat,
     VSpace,
@@ -129,6 +131,27 @@ def test_interval_y_wrapper() -> None:
             brush=vz.Brush(fill="red", fill_opacity=0.6),
         ),
         IntervalY,
+    )
+
+
+def test_toggle_wrapper() -> None:
+    check_component(
+        vz.toggle(
+            selection=vz.Selection("intersect"),
+            channels=["x", "y"],
+            peers=True,
+        ),
+        Toggle,
+    )
+
+
+def test_toggle_x_wrapper() -> None:
+    check_component(
+        vz.toggle_x(
+            selection=vz.Selection("intersect"),
+            peers=True,
+        ),
+        ToggleX,
     )
 
 

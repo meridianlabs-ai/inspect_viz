@@ -3,7 +3,15 @@ from .brush import Brush
 from .channel import Channel
 from .defaults import PlotDefaults, plot_defaults
 from .dot import dot
-from .interactors import Interactor, highlight, interval_x, interval_y, toggle_y
+from .interactors import (
+    Interactor,
+    highlight,
+    interval_x,
+    interval_y,
+    toggle,
+    toggle_x,
+    toggle_y,
+)
 from .legend import Legend, legend
 from .mark import Mark, MarkOptions
 from .options import Fixed, PlotOptions
@@ -26,6 +34,8 @@ __all__ = [
     "Interactor",
     "interval_x",
     "interval_y",
+    "toggle",
+    "toggle_x",
     "toggle_y",
     "highlight",
 ]

@@ -19,6 +19,8 @@ from ._plot import (
     legend,
     plot,
     plot_defaults,
+    toggle,
+    toggle_x,
     toggle_y,
 )
 
@@ -51,6 +53,8 @@ __all__ = [
     "highlight",
     "interval_x",
     "interval_y",
+    "toggle",
+    "toggle_x",
     "toggle_y",
     # table
     "table",
