@@ -29,13 +29,16 @@ def highlight(
 
     Args:
        by: The input selection. Unselected marks are deemphasized.
-       opacity: The overall opacity of deemphasized marks. By default the opacity is set to 0.2.
-       fill_opacity: The fill opacity of deemphasized marks. By default the fill opacity is unchanged.
-       stroke_opacity: The stroke opacity of deemphasized marks. By default the stroke opacity is unchanged.
-       fill: The fill color of deemphasized marks. By default the fill is unchanged.
-       stroke: The stroke color of deemphasized marks. By default the stroke is unchanged.
-
-
+       opacity: The overall opacity of deemphasized marks. By default the
+         opacity is set to 0.2.
+       fill_opacity: The fill opacity of deemphasized marks. By default the
+         fill opacity is unchanged.
+       stroke_opacity: The stroke opacity of deemphasized marks. By default
+         the stroke opacity is unchanged.
+       fill: The fill color of deemphasized marks. By default the fill is
+         unchanged.
+       stroke: The stroke color of deemphasized marks. By default the stroke
+         is unchanged.
     """
     config: dict[str, JsonValue] = dict_remove_none(
         {
