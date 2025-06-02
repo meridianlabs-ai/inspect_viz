@@ -160,3 +160,95 @@ def dot_y(
     )
 
     return Mark("dotY", config, options)
+
+
+def circle(
+    data: Data,
+    x: Channel | Param,
+    y: Channel | Param,
+    z: Channel | Param | None = None,
+    r: Channel | float | Param | None = None,
+    filter_by: Selection | None = None,
+    rotate: Channel | float | Param | None = None,
+    frame_anchor: FrameAnchor | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A circle mark that draws circles as in a scatterplot.
+
+    Like dot, but with the symbol fixed to be a circle.
+
+    Args:
+        data: The data source for the mark.
+        x: Horizontal position channel specifying the circle's center.
+        y: The vertical position channel specifying the circle's center.
+        z: An optional ordinal channel for grouping data into series.
+        r: The radius of circles; either a channel or constant. When a number, it is interpreted as a constant radius
+           in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
+           to the *sqrt* type for proportional symbols. The radius defaults to 3 pixels. Circles with a nonpositive
+           radius are not drawn.
+        filter_by: Selection to filter by (defaults to data source selection).
+        rotate: The rotation angle of circles in degrees clockwise; either a channel or a constant. When a number, it is interpreted as a constant; otherwise it is interpreted as a channel. Defaults to 0°, pointing up.
+        frame_anchor: The frame anchor specifies defaults for **x** and **y** based on the plot's frame; it may be
+           one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*,
+           *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
+        options: Additional `MarkOptions`.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=column(x) if isinstance(x, str) else x,
+            y=column(y) if isinstance(y, str) else y,
+            z=column(z) if isinstance(z, str) else z,
+            r=r,
+            rotate=rotate,
+            frameAnchor=frame_anchor,
+        )
+    )
+
+    return Mark("circle", config, options)
+
+
+def hexagon(
+    data: Data,
+    x: Channel | Param,
+    y: Channel | Param,
+    z: Channel | Param | None = None,
+    r: Channel | float | Param | None = None,
+    filter_by: Selection | None = None,
+    rotate: Channel | float | Param | None = None,
+    frame_anchor: FrameAnchor | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A hexagon mark that draws hexagons as in a scatterplot.
+
+    Like dot, but with the symbol fixed to be a hexagon.
+
+    Args:
+        data: The data source for the mark.
+        x: Horizontal position channel specifying the hexagon's center.
+        y: The vertical position channel specifying the hexagon's center.
+        z: An optional ordinal channel for grouping data into series.
+        r: The radius of hexagons; either a channel or constant. When a number, it is interpreted as a constant radius
+           in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
+           to the *sqrt* type for proportional symbols. The radius defaults to 4.5 pixels. Hexagons with a nonpositive
+           radius are not drawn.
+        filter_by: Selection to filter by (defaults to data source selection).
+        rotate: The rotation angle of hexagons in degrees clockwise; either a channel or a constant. When a number, it is interpreted as a constant; otherwise it is interpreted as a channel. Defaults to 0°, pointing up.
+        frame_anchor: The frame anchor specifies defaults for **x** and **y** based on the plot's frame; it may be
+           one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*,
+           *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
+        options: Additional `MarkOptions`.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=column(x) if isinstance(x, str) else x,
+            y=column(y) if isinstance(y, str) else y,
+            z=column(z) if isinstance(z, str) else z,
+            r=r,
+            rotate=rotate,
+            frameAnchor=frame_anchor,
+        )
+    )
+
+    return Mark("hexagon", config, options)

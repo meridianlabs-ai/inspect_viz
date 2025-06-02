@@ -25,7 +25,18 @@ from inspect_viz.interactor import (
     toggle_y,
 )
 from inspect_viz.layout import hconcat, hspace, vconcat, vspace
-from inspect_viz.mark import area, area_x, area_y, bar_x, bar_y, dot, dot_x, dot_y
+from inspect_viz.mark import (
+    area,
+    area_x,
+    area_y,
+    bar_x,
+    bar_y,
+    circle,
+    dot,
+    dot_x,
+    dot_y,
+    hexagon,
+)
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
 
@@ -35,10 +46,12 @@ from ._schema import (
     AreaY,
     BarX,
     BarY,
+    Circle,
     Dot,
     DotX,
     DotY,
     HConcat,
+    Hexagon,
     Highlight,
     HSpace,
     IntervalX,
@@ -135,6 +148,38 @@ def test_dot_y_wrapper(penguins: Data) -> None:
             frame_anchor="top",
         ),
         DotY,
+    )
+
+
+def test_circle_wrapper(penguins: Data) -> None:
+    check_component(
+        circle(
+            penguins,
+            x="bill_depth",
+            y="flipper_length",
+            z="species",
+            r=4,
+            filter_by=Selection("intersect"),
+            rotate=30,
+            frame_anchor="bottom",
+        ),
+        Circle,
+    )
+
+
+def test_hexagon_wrapper(penguins: Data) -> None:
+    check_component(
+        hexagon(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            r=6,
+            filter_by=Selection("intersect"),
+            rotate=60,
+            frame_anchor="left",
+        ),
+        Hexagon,
     )
 
 
