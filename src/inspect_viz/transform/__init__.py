@@ -21,7 +21,14 @@ from ._aggregate import (
 from ._column import bin, column, date_day, date_month, date_month_day
 from ._sql import sql
 from ._transform import Transform
-from ._window import WindowOptions
+from ._window import (
+    WindowOptions,
+    cume_dist,
+    dense_rank,
+    percent_rank,
+    rank,
+    row_number,
+)
 
 __all__ = [
     "Transform",
@@ -49,5 +56,10 @@ __all__ = [
     "sum",
     "var_pop",
     "variance",
+    "cume_dist",
+    "dense_rank",
+    "percent_rank",
+    "rank",
+    "row_number",
     "WindowOptions",
 ]

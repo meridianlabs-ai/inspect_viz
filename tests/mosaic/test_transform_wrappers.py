@@ -11,17 +11,22 @@ from ._schema import (
     Bin,
     Column,
     Count,
+    CumeDist,
     DateDay,
     DateMonth,
     DateMonthDay,
+    DenseRank,
     First,
     Last,
     Max,
     Median,
     Min,
     Mode,
+    PercentRank,
     Product,
     Quantile,
+    Rank,
+    RowNumber,
     SQLExpression,
     Stddev,
     StddevPop,
@@ -188,9 +193,32 @@ def test_quantile_wrapper() -> None:
     )
 
 
+def test_row_number_wrapper() -> None:
+    check_transform(tx.row_number(**window_args()), RowNumber, exclude_none=False)
+
+
+def test_rank_wrapper() -> None:
+    check_transform(tx.rank(**window_args()), Rank, exclude_none=False)
+
+
+def test_dense_rank_wrapper() -> None:
+    check_transform(tx.dense_rank(**window_args()), DenseRank, exclude_none=False)
+
+
+def test_percent_rank_wrapper() -> None:
+    check_transform(tx.percent_rank(**window_args()), PercentRank, exclude_none=False)
+
+
+def test_cume_dist_wrapper() -> None:
+    check_transform(tx.cume_dist(**window_args()), CumeDist, exclude_none=False)
+
+
 def aggregate_args() -> dict[str, Any]:
+    return dict(distinct=True, **window_args())
+
+
+def window_args() -> dict[str, Any]:
     return dict(
-        distinct=True,
         orderby="foo",
         partitionby="foo",
         rows=[None],
