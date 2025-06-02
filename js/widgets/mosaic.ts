@@ -24,8 +24,6 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 } as Spec;
     const plotDefaultsAst = parseSpec(plotDefaultsSpec);
 
-    console.log(spec);
-
     // initialize context
     const ctx = await vizContext(plotDefaultsAst.plotDefaults);
 

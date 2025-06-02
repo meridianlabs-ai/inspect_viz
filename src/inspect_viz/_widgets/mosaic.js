@@ -127,7 +127,6 @@ async function render({ model, el }) {
   const spec = JSON.parse(model.get("spec"));
   const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 };
   const plotDefaultsAst = parseSpec(plotDefaultsSpec);
-  console.log(spec);
   const ctx = await vizContext(plotDefaultsAst.plotDefaults);
   const tables = model.get("tables") || {};
   await syncTables(ctx, tables);
