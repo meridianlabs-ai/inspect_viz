@@ -11,7 +11,7 @@ from ._area import Curve
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 
-MarkerName = Literal[
+Marker = Literal[
     "arrow",
     "arrow-reverse",
     "dot",
@@ -30,10 +30,10 @@ def line(
     y: Channel | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
-    marker: MarkerName | bool | str | None = None,
-    marker_start: MarkerName | bool | str | None = None,
-    marker_mid: MarkerName | bool | str | None = None,
-    marker_end: MarkerName | bool | str | None = None,
+    marker: Marker | bool | str | None = None,
+    marker_start: Marker | bool | str | None = None,
+    marker_mid: Marker | bool | str | None = None,
+    marker_end: Marker | bool | str | None = None,
     curve: Curve | Param | None = None,
     tension: float | str | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -48,7 +48,7 @@ def line(
         y: The required vertical position channel, typically bound to the *y* scale.
         z: An optional ordinal channel for grouping data into series.
         filter_by: Selection to filter by (defaults to data source selection).
-        marker: Shorthand to set the same default for markerStart, markerMid, and markerEnd.
+        marker: Shorthand to set the same default for marker_start, marker_mid, and marker_end.
         marker_start: The marker for the starting point of a line segment.
         marker_mid: The marker for any middle (interior) points of a line segment.
         marker_end: The marker for the ending point of a line segment.
@@ -80,10 +80,10 @@ def line_x(
     y: Channel | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
-    marker: MarkerName | bool | Param | None = None,
-    marker_start: MarkerName | bool | Param | None = None,
-    marker_mid: MarkerName | bool | Param | None = None,
-    marker_end: MarkerName | bool | Param | None = None,
+    marker: Marker | bool | Param | None = None,
+    marker_start: Marker | bool | Param | None = None,
+    marker_mid: Marker | bool | Param | None = None,
+    marker_end: Marker | bool | Param | None = None,
     curve: Curve | Param | None = None,
     tension: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -98,7 +98,7 @@ def line_x(
         y: The vertical position channel, typically bound to the *y* scale; defaults to the zero-based index of the data [0, 1, 2, …].
         z: An optional ordinal channel for grouping data into series.
         filter_by: Selection to filter by (defaults to data source selection).
-        marker: Shorthand to set the same default for markerStart, markerMid, and markerEnd.
+        marker: Shorthand to set the same default for marker_start, marker_mid, and marker_end.
         marker_start: The marker for the starting point of a line segment.
         marker_mid: The marker for any middle (interior) points of a line segment.
         marker_end: The marker for the ending point of a line segment.
@@ -130,10 +130,10 @@ def line_y(
     x: Channel | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
-    marker: MarkerName | bool | Param | None = None,
-    marker_start: MarkerName | bool | Param | None = None,
-    marker_mid: MarkerName | bool | Param | None = None,
-    marker_end: MarkerName | bool | Param | None = None,
+    marker: Marker | bool | Param | None = None,
+    marker_start: Marker | bool | Param | None = None,
+    marker_mid: Marker | bool | Param | None = None,
+    marker_end: Marker | bool | Param | None = None,
     curve: Curve | Param | None = None,
     tension: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -148,7 +148,7 @@ def line_y(
         x: The horizontal position channel, typically bound to the *x* scale; defaults to the zero-based index of the data [0, 1, 2, …].
         z: An optional ordinal channel for grouping data into series.
         filter_by: Selection to filter by (defaults to data source selection).
-        marker: Shorthand to set the same default for markerStart, markerMid, and markerEnd.
+        marker: Shorthand to set the same default for marker_start, marker_mid, and marker_end.
         marker_start: The marker for the starting point of a line segment.
         marker_mid: The marker for any middle (interior) points of a line segment.
         marker_end: The marker for the ending point of a line segment.
