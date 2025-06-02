@@ -1,10 +1,13 @@
-from typing import Type
+from typing import Any, Type
 
 import inspect_viz.transform as tx
 from pydantic import BaseModel
 
 from ._schema import (
     AggregateExpression,
+    Argmax,
+    Argmin,
+    Avg,
     Bin,
     Column,
     Count,
@@ -45,16 +48,30 @@ def test_date_month_wrapper() -> None:
     check_transform(tx.date_month("date_column"), DateMonth)
 
 
+def test_argmin_wrapper() -> None:
+    check_transform(
+        tx.argmin(col1="foo", col2="bar", **aggregate_args()),
+        Argmin,
+    )
+
+
+def test_argmax_wrapper() -> None:
+    check_transform(
+        tx.argmax(col1="foo", col2="bar", **aggregate_args()),
+        Argmax,
+    )
+
+
+def test_avg_wrapper() -> None:
+    check_transform(
+        tx.avg(col="foo", **aggregate_args()),
+        Avg,
+    )
+
+
 def test_count_wrapper() -> None:
     check_transform(
-        tx.count(
-            count=None,
-            distinct=True,
-            orderby="foo",
-            partitionby="foo",
-            rows=[None],
-            range=[None],
-        ),
+        tx.count(col=None, **aggregate_args()),
         Count,
         exclude_none=False,
     )
@@ -65,3 +82,13 @@ def check_transform(
 ) -> None:
     model = type.model_validate(transform)
     assert model.model_dump(exclude_none=exclude_none, by_alias=True) == transform
+
+
+def aggregate_args() -> dict[str, Any]:
+    return dict(
+        distinct=True,
+        orderby="foo",
+        partitionby="foo",
+        rows=[None],
+        range=[None],
+    )
