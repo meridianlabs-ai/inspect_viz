@@ -1,9 +1,32 @@
 from pathlib import Path
 from typing import Type
 
-import inspect_viz as vz
 import pytest
-from inspect_viz._core.component import Component
+from inspect_viz import Component, Data, Param, Selection
+from inspect_viz.input import select, table
+from inspect_viz.interactor import (
+    Brush,
+    highlight,
+    interval_x,
+    interval_xy,
+    interval_y,
+    nearest_x,
+    nearest_y,
+    pan,
+    pan_x,
+    pan_y,
+    pan_zoom,
+    pan_zoom_x,
+    pan_zoom_y,
+    region,
+    toggle,
+    toggle_color,
+    toggle_x,
+    toggle_y,
+)
+from inspect_viz.layout import hconcat, hspace, vconcat, vspace
+from inspect_viz.mark import bar_x, dot
+from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
 
 from ._schema import (
@@ -38,13 +61,13 @@ from ._schema import (
 
 
 @pytest.fixture
-def penguins() -> vz.Data:
-    return vz.Data(Path(__file__).parent.parent / "_data" / "penguins.parquet")
+def penguins() -> Data:
+    return Data(Path(__file__).parent.parent / "_data" / "penguins.parquet")
 
 
 @pytest.fixture
-def dot_mark(penguins: vz.Data) -> vz.Component:
-    return vz.dot(
+def dot_mark(penguins: Data) -> Component:
+    return dot(
         penguins,
         x="bill_depth",
         y="flipper_length",
@@ -55,36 +78,36 @@ def dot_mark(penguins: vz.Data) -> vz.Component:
     )
 
 
-def test_vconcat_wrapper(dot_mark: vz.Component) -> None:
-    check_component(vz.vconcat(dot_mark), VConcat)
+def test_vconcat_wrapper(dot_mark: Component) -> None:
+    check_component(vconcat(dot_mark), VConcat)
 
 
-def test_hconcat_wrapper(dot_mark: vz.Component) -> None:
-    check_component(vz.hconcat(dot_mark), HConcat)
+def test_hconcat_wrapper(dot_mark: Component) -> None:
+    check_component(hconcat(dot_mark), HConcat)
 
 
 def test_vspace_wrapper() -> None:
-    check_component(vz.vspace(10), VSpace)
+    check_component(vspace(10), VSpace)
 
 
 def test_hspace_wrapper() -> None:
-    check_component(vz.hspace(10), HSpace)
+    check_component(hspace(10), HSpace)
 
 
-def test_dot_wrapper(dot_mark: vz.Component) -> None:
+def test_dot_wrapper(dot_mark: Component) -> None:
     check_component(dot_mark, Dot)
 
 
-def test_bar_x_wrapper(penguins: vz.Data) -> None:
+def test_bar_x_wrapper(penguins: Data) -> None:
     check_component(
-        vz.bar_x(
+        bar_x(
             penguins,
             x="bill_depth",
             x1="bill_depth",
             x2="bill_depth",
             y="bill_depth",
             interval="minute",
-            filter_by=vz.Selection("intersect"),
+            filter_by=Selection("intersect"),
             offset="center",
             order="appearance",
             z="bill_depth",
@@ -101,14 +124,14 @@ def test_bar_x_wrapper(penguins: vz.Data) -> None:
     )
 
 
-def test_plot_wrapper(dot_mark: vz.Component) -> None:
-    check_component(vz.plot(dot_mark, grid=True, x_label="Foo", y_label="Bar"), Plot)
+def test_plot_wrapper(dot_mark: Component) -> None:
+    check_component(plot(dot_mark, grid=True, x_label="Foo", y_label="Bar"), Plot)
 
 
 def test_highlight_wrapper() -> None:
     check_component(
-        vz.highlight(
-            by=vz.Selection("intersect"),
+        highlight(
+            by=Selection("intersect"),
             opacity=0.5,
             fill_opacity=0.5,
             stroke_opacity=0.5,
@@ -121,12 +144,12 @@ def test_highlight_wrapper() -> None:
 
 def test_interval_x_wrapper() -> None:
     check_component(
-        vz.interval_x(
-            selection=vz.Selection("intersect"),
+        interval_x(
+            selection=Selection("intersect"),
             field="foo",
             pixel_size=2,
             peers=True,
-            brush=vz.Brush(fill="red", fill_opacity=0.6),
+            brush=Brush(fill="red", fill_opacity=0.6),  # noqa: F821
         ),
         IntervalX,
     )
@@ -134,13 +157,13 @@ def test_interval_x_wrapper() -> None:
 
 def test_interval_xy_wrapper() -> None:
     check_component(
-        vz.interval_xy(
-            selection=vz.Selection("intersect"),
+        interval_xy(
+            selection=Selection("intersect"),
             xfield="foo",
             yfield="bar",
             pixel_size=2,
             peers=True,
-            brush=vz.Brush(fill="red", fill_opacity=0.6),
+            brush=Brush(fill="red", fill_opacity=0.6),
         ),
         IntervalXY,
     )
@@ -148,12 +171,12 @@ def test_interval_xy_wrapper() -> None:
 
 def test_interval_y_wrapper() -> None:
     check_component(
-        vz.interval_y(
-            selection=vz.Selection("intersect"),
+        interval_y(
+            selection=Selection("intersect"),
             field="foo",
             pixel_size=2,
             peers=True,
-            brush=vz.Brush(fill="red", fill_opacity=0.6),
+            brush=Brush(fill="red", fill_opacity=0.6),
         ),
         IntervalY,
     )
@@ -161,8 +184,8 @@ def test_interval_y_wrapper() -> None:
 
 def test_toggle_wrapper() -> None:
     check_component(
-        vz.toggle(
-            selection=vz.Selection("intersect"),
+        toggle(
+            selection=Selection("intersect"),
             channels=["x", "y"],
             peers=True,
         ),
@@ -172,8 +195,8 @@ def test_toggle_wrapper() -> None:
 
 def test_toggle_x_wrapper() -> None:
     check_component(
-        vz.toggle_x(
-            selection=vz.Selection("intersect"),
+        toggle_x(
+            selection=Selection("intersect"),
             peers=True,
         ),
         ToggleX,
@@ -182,8 +205,8 @@ def test_toggle_x_wrapper() -> None:
 
 def test_toggle_color_wrapper() -> None:
     check_component(
-        vz.toggle_color(
-            selection=vz.Selection("intersect"),
+        toggle_color(
+            selection=Selection("intersect"),
             peers=True,
         ),
         ToggleColor,
@@ -192,8 +215,8 @@ def test_toggle_color_wrapper() -> None:
 
 def test_nearest_x_wrapper() -> None:
     check_component(
-        vz.nearest_x(
-            selection=vz.Selection("intersect"),
+        nearest_x(
+            selection=Selection("intersect"),
             channels=["x", "color"],
             fields=["field1", "field2"],
             max_radius=50,
@@ -204,8 +227,8 @@ def test_nearest_x_wrapper() -> None:
 
 def test_nearest_y_wrapper() -> None:
     check_component(
-        vz.nearest_y(
-            selection=vz.Selection("intersect"),
+        nearest_y(
+            selection=Selection("intersect"),
             channels=["y", "color"],
             fields=["field1", "field2"],
             max_radius=50,
@@ -216,11 +239,11 @@ def test_nearest_y_wrapper() -> None:
 
 def test_region_wrapper() -> None:
     check_component(
-        vz.region(
-            selection=vz.Selection("intersect"),
+        region(
+            selection=Selection("intersect"),
             channels=["x", "y"],
             peers=True,
-            brush=vz.Brush(fill="red", fill_opacity=0.6),
+            brush=Brush(fill="red", fill_opacity=0.6),
         ),
         Region,
     )
@@ -228,33 +251,33 @@ def test_region_wrapper() -> None:
 
 def test_toggle_y_wrapper() -> None:
     check_component(
-        vz.toggle_y(
-            selection=vz.Selection("intersect"),
+        toggle_y(
+            selection=Selection("intersect"),
             peers=True,
         ),
         ToggleY,
     )
 
 
-def test_select_wrapper(penguins: vz.Data) -> None:
-    check_component(vz.select("Species", penguins, column="species"), Menu)
+def test_select_wrapper(penguins: Data) -> None:
+    check_component(select("Species", penguins, column="species"), Menu)
     check_component(
-        vz.select(
+        select(
             "X",
             options=["body_mass", "flipper_length", "bill_depth", "bill_length"],
-            param=vz.Param("body_mass"),
+            param=Param("body_mass"),
         ),
         Menu,
     )
 
 
-def test_table_wrapper(penguins: vz.Data) -> None:
-    check_component(vz.table(penguins), Table)
+def test_table_wrapper(penguins: Data) -> None:
+    check_component(table(penguins), Table)  # noqa: F821
 
 
-def test_legend_wrapper(penguins: vz.Data) -> None:
+def test_legend_wrapper(penguins: Data) -> None:
     check_component(
-        vz.legend(
+        legend(
             "color",
             label="foo",
             columns=1,
@@ -275,9 +298,9 @@ def test_legend_wrapper(penguins: vz.Data) -> None:
 
 def test_pan_wrapper() -> None:
     check_component(
-        vz.pan(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),
@@ -287,9 +310,9 @@ def test_pan_wrapper() -> None:
 
 def test_pan_x_wrapper() -> None:
     check_component(
-        vz.pan_x(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan_x(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),
@@ -299,9 +322,9 @@ def test_pan_x_wrapper() -> None:
 
 def test_pan_y_wrapper() -> None:
     check_component(
-        vz.pan_y(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan_y(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),
@@ -311,9 +334,9 @@ def test_pan_y_wrapper() -> None:
 
 def test_pan_zoom_wrapper() -> None:
     check_component(
-        vz.pan_zoom(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan_zoom(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),
@@ -323,9 +346,9 @@ def test_pan_zoom_wrapper() -> None:
 
 def test_pan_zoom_x_wrapper() -> None:
     check_component(
-        vz.pan_zoom_x(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan_zoom_x(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),
@@ -335,9 +358,9 @@ def test_pan_zoom_x_wrapper() -> None:
 
 def test_pan_zoom_y_wrapper() -> None:
     check_component(
-        vz.pan_zoom_y(
-            x=vz.Selection("intersect"),
-            y=vz.Selection("intersect"),
+        pan_zoom_y(
+            x=Selection("intersect"),
+            y=Selection("intersect"),
             xfield="x_field",
             yfield="y_field",
         ),

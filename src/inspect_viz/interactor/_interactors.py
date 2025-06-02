@@ -1,10 +1,9 @@
 from pydantic import JsonValue
 
-from inspect_viz._util.marshall import dict_remove_none
-
 from .._core.component import Component
 from .._core.selection import Selection
-from .brush import Brush, brush_as_camel
+from .._util.marshall import dict_remove_none
+from ._brush import Brush, brush_as_camel
 
 
 class Interactor(Component):

@@ -9,41 +9,32 @@ execute:
 ---
 
 ```{python}
-import inspect_viz as vz
+from inspect_viz import Data, Param
+from inspect_viz.input import select, table
+from inspect_viz.mark import dot
+from inspect_viz.plot import plot
 
-vz.plot_defaults(grid=True)
-
-penguins = vz.Data("penguins.parquet")
+penguins = Data("penguins.parquet")
 axes = ["body_mass", "flipper_length", "bill_depth", "bill_length"]
 
-x_axis = vz.Param("body_mass")
-y_axis = vz.Param("flipper_length")
+x_axis = Param("body_mass")
+y_axis = Param("flipper_length")
 ```
 
 ## Row {.toolbar}
 
 ```{python}
-vz.select("Species", penguins, column="species")
-vz.select("X", options=axes, param=x_axis)
-vz.select("Y", options=axes, param=y_axis)
+select("Species", penguins, column="species")
+select("X", options=axes, param=x_axis)
+select("Y", options=axes, param=y_axis)
 ```
 
 ## Row
 
 ```{python}
-vz.plot(
-    vz.dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
-    x_label="Body mass (g) →",
-    y_label="↑ Flipper length (mm)",
-    legend=vz.legend("symbol"),
-)
-```
-
-## Row
-
-```{python}
-vz.plot(
-    vz.dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
+plot(
+    dot(penguins, x=x_axis, y=y_axis, stroke="species", symbol="species"),
+    grid=True,
     x_label="Body mass (g) →",
     y_label="↑ Flipper length (mm)",
     legend="symbol",
@@ -53,5 +44,17 @@ vz.plot(
 ## Row
 
 ```{python}
-vz.table(penguins)
+plot(
+    dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
+    grid=True,
+    x_label="Body mass (g) →",
+    y_label="↑ Flipper length (mm)",
+    legend="symbol",
+)
+```
+
+## Row
+
+```{python}
+table(penguins)
 ```

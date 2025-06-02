@@ -1,6 +1,7 @@
 from typing import Any, Literal, TypedDict
 
 from .._core.param import Param
+from .._core.types import Interval
 from .._util.marshall import snake_to_camel
 
 # Type aliases for literal types
@@ -135,26 +136,6 @@ Interpolate = Literal[
     "cubehelix",
 ]
 
-Interval = (
-    Literal[
-        "second",
-        "minute",
-        "hour",
-        "day",
-        "week",
-        "month",
-        "year",
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-    ]
-    | float
-    | int
-)
 
 LabelArrow = (
     Literal[

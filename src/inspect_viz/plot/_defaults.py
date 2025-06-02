@@ -3,8 +3,9 @@ from typing import Any
 from typing_extensions import Unpack
 
 from .._core.param import Param
+from .._core.types import Interval
 from .._util.marshall import snake_to_camel
-from .options import Interval, PlotOptions
+from ._options import PlotOptions
 
 
 class PlotDefaults(PlotOptions, total=False):

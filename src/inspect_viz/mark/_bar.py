@@ -3,11 +3,11 @@ from typing import Any, Literal, Sequence
 from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
+from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from .channel import Channel
-from .mark import Mark, MarkOptions
-from .options import Interval
+from ._channel import Channel
+from ._mark import Mark, MarkOptions
 
 
 def bar_x(

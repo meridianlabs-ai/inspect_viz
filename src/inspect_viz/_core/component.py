@@ -64,7 +64,7 @@ class Component(AnyWidget):
     def _repr_mimebundle_(
         self, **kwargs: Any
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
-        from .._plot.defaults import plot_defaults_as_camel
+        from ..plot._defaults import plot_defaults_as_camel
 
         # set current tables
         self.tables = all_tables()

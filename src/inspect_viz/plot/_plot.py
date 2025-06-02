@@ -4,12 +4,13 @@ from shortuuid import uuid
 
 from .._core import Component
 from .._core.param import Param
-from .._layout.concat import hconcat, vconcat
-from .interactors import Interactor
-from .legend import Legend
-from .legend import legend as create_legend
-from .mark import Mark
-from .options import Interval, PlotOptions, plot_options_to_camel
+from .._core.types import Interval
+from ..interactor._interactors import Interactor
+from ..layout._concat import hconcat, vconcat
+from ..mark._mark import Mark
+from ._legend import Legend
+from ._legend import legend as create_legend
+from ._options import PlotOptions, plot_options_to_camel
 
 
 def plot(

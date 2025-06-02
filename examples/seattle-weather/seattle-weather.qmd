@@ -8,47 +8,48 @@ execute:
 
 An interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By dragging on the scatter plot, you can see the proportion of days in that range that have sun, fog, drizzle, rain, or snow.
 
-Based on a [Vega-Lite/Altair example](https://vega.github.io/vega-lite/examples/interactive_seattle_weather.html) by Jake Vanderplas.
+Based on a [Vega-Lite/Altair example](https://vega.github.io/vega-lite/examples/interactive_seattle.html) by Jake Vanderplas.
 
 ```{python}
-import inspect_viz as vz
-import inspect_viz.transform as tx
+from inspect_viz import Data, Selection
+from inspect_viz.interactor import Brush, highlight, interval_x, toggle_y
+from inspect_viz.plot import Fixed, legend, plot
+from inspect_viz.mark import bar_x, dot
+from inspect_viz.transform import count, date_month_day
 
 # data
-seattle_weather = vz.Data("seattle-weather.parquet")
+seattle = Data("seattle-weather.parquet")
 
 # weather domain/colors
 weather = ["sun", "fog", "drizzle", "rain", "snow"]
 weather_colors = ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
 
-# scatterplot x-range selection
-range = vz.Selection("intersect")
-
-# bar chart / legend click selection
-click = vz.Selection("single")
+# selections (scatter x-range and bar/legend click)
+range = Selection("intersect")
+click = Selection("single")
 ```
 
 ```{python}
-vz.plot(
+plot(
     [
-        vz.dot(
-            data=seattle_weather,
+        dot(
+            data=seattle,
             filter_by=click,
-            x=tx.date_month_day("date"),
+            x=date_month_day("date"),
             y="temp_max",
             fill="weather",
             fill_opacity=0.7,
-            r="precipitation"
+            r="precipitation",
         ),
-        vz.interval_x(selection=range, brush=vz.Brush(fill="none", stroke="#888")),
-        vz.highlight(by=range, fill="#ccc", fill_opacity=0.2)
+        interval_x(selection=range, brush=Brush(fill="none", stroke="#888")),
+        highlight(by=range, fill="#ccc", fill_opacity=0.2),
     ],
-    legend=vz.legend("color", selection=click, columns=1),
-    xy_domain=vz.Fixed,
+    legend=legend("color", selection=click, columns=1),
+    xy_domain=Fixed,
     x_tick_format="%b",
     color_domain=weather,
     color_range=weather_colors,
-    r_domain=vz.Fixed,
+    r_domain=Fixed,
     r_range=[2, 10],
     width=680,
     height=300,
@@ -56,22 +57,18 @@ vz.plot(
 ```
 
 ```{python}
-vz.plot(
+plot(
     [
-        vz.bar_x(
-            seattle_weather, x=tx.count(), y="weather", fill="#ccc", fill_opacity=0.2
-        ),
-        vz.bar_x(
-            seattle_weather, filter_by=range, x=tx.count(), y="weather", fill="weather"
-        ),
-        vz.toggle_y(selection=click),
-        vz.highlight(by=click)
+        bar_x(seattle, x=count(), y="weather", fill="#ccc", fill_opacity=0.2),
+        bar_x(seattle, filter_by=range, x=count(), y="weather", fill="weather"),
+        toggle_y(selection=click),
+        highlight(by=click),
     ],
-    x_domain=vz.Fixed,
+    x_domain=Fixed,
     y_domain=weather,
     y_label=None,
     color_domain=weather,
     color_range=weather_colors,
-    width=680
+    width=680,
 )
 ```
