@@ -17,11 +17,17 @@ from ._schema import (
     DateMonthDay,
     DenseRank,
     First,
+    FirstValue,
+    Lag,
     Last,
+    LastValue,
+    Lead,
     Max,
     Median,
     Min,
     Mode,
+    NthValue,
+    NTile,
     PercentRank,
     Product,
     Quantile,
@@ -211,6 +217,46 @@ def test_percent_rank_wrapper() -> None:
 
 def test_cume_dist_wrapper() -> None:
     check_transform(tx.cume_dist(**window_args()), CumeDist, exclude_none=False)
+
+
+def test_n_tile_wrapper() -> None:
+    check_transform(
+        tx.n_tile(num_buckets=4, **window_args()), NTile, exclude_none=False
+    )
+
+
+def test_lag_wrapper() -> None:
+    check_transform(
+        tx.lag(col="foo", offset=2, default="bar", **window_args()),
+        Lag,
+        exclude_none=False,
+    )
+
+
+def test_lead_wrapper() -> None:
+    check_transform(
+        tx.lead(col="foo", offset=2, default="bar", **window_args()),
+        Lead,
+        exclude_none=False,
+    )
+
+
+def test_first_value_wrapper() -> None:
+    check_transform(
+        tx.first_value(col="foo", **window_args()), FirstValue, exclude_none=False
+    )
+
+
+def test_last_value_wrapper() -> None:
+    check_transform(
+        tx.last_value(col="foo", **window_args()), LastValue, exclude_none=False
+    )
+
+
+def test_nth_value_wrapper() -> None:
+    check_transform(
+        tx.nth_value(col="foo", offset=3, **window_args()), NthValue, exclude_none=False
+    )
 
 
 def aggregate_args() -> dict[str, Any]:
