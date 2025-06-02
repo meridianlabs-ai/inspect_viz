@@ -39,6 +39,9 @@ from inspect_viz.mark import (
     line,
     line_x,
     line_y,
+    text,
+    text_x,
+    text_y,
 )
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
@@ -76,6 +79,9 @@ from ._schema import (
     Plot,
     Region,
     Table,
+    Text,
+    TextX,
+    TextY,
     Toggle,
     ToggleColor,
     ToggleX,
@@ -596,6 +602,86 @@ def test_pan_zoom_y_wrapper() -> None:
             yfield="y_field",
         ),
         PanZoomY,
+    )
+
+
+def test_text_wrapper(penguins: Data) -> None:
+    check_component(
+        text(
+            penguins,
+            x="bill_depth",
+            y="flipper_length",
+            z="species",
+            text="species",
+            filter_by=Selection("intersect"),
+            frame_anchor="middle",
+            line_anchor="middle",
+            rotate=45,
+            text_anchor="middle",
+            line_height=1.2,
+            line_width=20,
+            text_overflow="ellipsis",
+            monospace=True,
+            font_family="Arial",
+            font_size=12,
+            font_variant="small-caps",
+            font_weight=700,
+        ),
+        Text,
+    )
+
+
+def test_text_x_wrapper(penguins: Data) -> None:
+    check_component(
+        text_x(
+            penguins,
+            x="bill_depth",
+            y="flipper_length",
+            z="species",
+            text="species",
+            interval="day",
+            filter_by=Selection("intersect"),
+            frame_anchor="top",
+            line_anchor="top",
+            rotate=90,
+            text_anchor="start",
+            line_height=1.5,
+            line_width=15,
+            text_overflow="clip",
+            monospace=False,
+            font_family="Helvetica",
+            font_size=14,
+            font_variant="normal",
+            font_weight=400,
+        ),
+        TextX,
+    )
+
+
+def test_text_y_wrapper(penguins: Data) -> None:
+    check_component(
+        text_y(
+            penguins,
+            y="body_mass",
+            x="bill_length",
+            z="species",
+            text="island",
+            interval="month",
+            filter_by=Selection("intersect"),
+            frame_anchor="left",
+            line_anchor="bottom",
+            rotate=180,
+            text_anchor="end",
+            line_height=1.0,
+            line_width=25,
+            text_overflow="clip",
+            monospace=True,
+            font_family="monospace",
+            font_size=10,
+            font_variant="tabular-nums",
+            font_weight=400,
+        ),
+        TextY,
     )
 
 
