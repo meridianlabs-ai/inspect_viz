@@ -41,8 +41,6 @@ plot(
 )
 ```
 
-## Row
-
 ```{python}
 plot(
     dot(penguins, x=x_axis, y=y_axis, fill="species", symbol="species"),
