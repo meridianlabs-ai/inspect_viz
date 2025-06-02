@@ -72,6 +72,216 @@ def count(
     return _to_transform(config, distinct, options)
 
 
+def first(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Return the first column value found in an aggregation group.
+
+    Args:
+      col: Column to get the first value from.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(first=col)
+    return _to_transform(config, distinct, options)
+
+
+def last(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Return the last column value found in an aggregation group.
+
+    Args:
+      col: Column to get the last value from.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(last=col)
+    return _to_transform(config, distinct, options)
+
+
+def max(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the maximum value of the given column.
+
+    Args:
+      col: Column to compute the maximum for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(max=col)
+    return _to_transform(config, distinct, options)
+
+
+def min(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the minimum value of the given column.
+
+    Args:
+      col: Column to compute the minimum for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(min=col)
+    return _to_transform(config, distinct, options)
+
+
+def median(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the median value of the given column.
+
+    Args:
+      col: Column to compute the median for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(median=col)
+    return _to_transform(config, distinct, options)
+
+
+def mode(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the mode value of the given column.
+
+    Args:
+      col: Column to compute the mode for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(mode=col)
+    return _to_transform(config, distinct, options)
+
+
+def product(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the product of the given column.
+
+    Args:
+      col: Column to compute the product for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(product=col)
+    return _to_transform(config, distinct, options)
+
+
+def stddev(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the standard deviation of the given column.
+
+    Args:
+      col: Column to compute the standard deviation for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(stddev=col)
+    return _to_transform(config, distinct, options)
+
+
+def sum(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the sum of the given column.
+
+    Args:
+      col: Column to compute the sum for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(sum=col)
+    return _to_transform(config, distinct, options)
+
+
+def variance(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the sample variance of the given column.
+
+    Args:
+      col: Column to compute the variance for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(variance=col)
+    return _to_transform(config, distinct, options)
+
+
+def stddev_pop(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the population standard deviation of the given column.
+
+    Args:
+      col: Column to compute the population standard deviation for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(stddevPop=col)
+    return _to_transform(config, distinct, options)
+
+
+def var_pop(
+    col: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the population variance of the given column.
+
+    Args:
+      col: Column to compute the population variance for.
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(varPop=col)
+    return _to_transform(config, distinct, options)
+
+
+def quantile(
+    col: TransformArg,
+    threshold: TransformArg,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
+) -> Transform:
+    """Compute the quantile value of the given column at the provided probability threshold.
+
+    Args:
+      col: Column to compute the quantile for.
+      threshold: Probability threshold (e.g., 0.5 for median).
+      distinct: Aggregate distinct.
+      **options: Window transform options.
+    """
+    config: dict[str, Any] = dict(quantile=[col, threshold])
+    return _to_transform(config, distinct, options)
+
+
 def _to_transform(
     config: dict[str, Any], distinct: bool | None, options: WindowOptions
 ) -> Transform:

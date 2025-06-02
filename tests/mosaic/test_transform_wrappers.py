@@ -14,7 +14,20 @@ from ._schema import (
     DateDay,
     DateMonth,
     DateMonthDay,
+    First,
+    Last,
+    Max,
+    Median,
+    Min,
+    Mode,
+    Product,
+    Quantile,
     SQLExpression,
+    Stddev,
+    StddevPop,
+    Sum,
+    Variance,
+    VarPop,
 )
 
 
@@ -82,6 +95,97 @@ def check_transform(
 ) -> None:
     model = type.model_validate(transform)
     assert model.model_dump(exclude_none=exclude_none, by_alias=True) == transform
+
+
+def test_first_wrapper() -> None:
+    check_transform(
+        tx.first(col="foo", **aggregate_args()),
+        First,
+    )
+
+
+def test_last_wrapper() -> None:
+    check_transform(
+        tx.last(col="foo", **aggregate_args()),
+        Last,
+    )
+
+
+def test_max_wrapper() -> None:
+    check_transform(
+        tx.max(col="foo", **aggregate_args()),
+        Max,
+    )
+
+
+def test_min_wrapper() -> None:
+    check_transform(
+        tx.min(col="foo", **aggregate_args()),
+        Min,
+    )
+
+
+def test_median_wrapper() -> None:
+    check_transform(
+        tx.median(col="foo", **aggregate_args()),
+        Median,
+    )
+
+
+def test_mode_wrapper() -> None:
+    check_transform(
+        tx.mode(col="foo", **aggregate_args()),
+        Mode,
+    )
+
+
+def test_product_wrapper() -> None:
+    check_transform(
+        tx.product(col="foo", **aggregate_args()),
+        Product,
+    )
+
+
+def test_stddev_wrapper() -> None:
+    check_transform(
+        tx.stddev(col="foo", **aggregate_args()),
+        Stddev,
+    )
+
+
+def test_sum_wrapper() -> None:
+    check_transform(
+        tx.sum(col="foo", **aggregate_args()),
+        Sum,
+    )
+
+
+def test_variance_wrapper() -> None:
+    check_transform(
+        tx.variance(col="foo", **aggregate_args()),
+        Variance,
+    )
+
+
+def test_stddev_pop_wrapper() -> None:
+    check_transform(
+        tx.stddev_pop(col="foo", **aggregate_args()),
+        StddevPop,
+    )
+
+
+def test_var_pop_wrapper() -> None:
+    check_transform(
+        tx.var_pop(col="foo", **aggregate_args()),
+        VarPop,
+    )
+
+
+def test_quantile_wrapper() -> None:
+    check_transform(
+        tx.quantile(col="foo", threshold=0.5, **aggregate_args()),
+        Quantile,
+    )
 
 
 def aggregate_args() -> dict[str, Any]:
