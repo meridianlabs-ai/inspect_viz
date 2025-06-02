@@ -36,6 +36,9 @@ from inspect_viz.mark import (
     dot_x,
     dot_y,
     hexagon,
+    line,
+    line_x,
+    line_y,
 )
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
@@ -58,6 +61,9 @@ from ._schema import (
     IntervalXY,
     IntervalY,
     Legend,
+    Line,
+    LineX,
+    LineY,
     Menu,
     NearestX,
     NearestY,
@@ -180,6 +186,63 @@ def test_hexagon_wrapper(penguins: Data) -> None:
             frame_anchor="left",
         ),
         Hexagon,
+    )
+
+
+def test_line_wrapper(penguins: Data) -> None:
+    check_component(
+        line(
+            penguins,
+            x="bill_depth",
+            y="flipper_length",
+            z="species",
+            filter_by=Selection("intersect"),
+            marker="circle",
+            marker_start="arrow",
+            marker_mid="dot",
+            marker_end="arrow-reverse",
+            curve="linear",
+            tension=0.5,
+        ),
+        Line,
+    )
+
+
+def test_line_x_wrapper(penguins: Data) -> None:
+    check_component(
+        line_x(
+            penguins,
+            x="bill_depth",
+            y="flipper_length",
+            z="species",
+            filter_by=Selection("intersect"),
+            marker="circle-fill",
+            marker_start="tick",
+            marker_mid="circle",
+            marker_end="tick-x",
+            curve="basis",
+            tension=0.8,
+        ),
+        LineX,
+    )
+
+
+def test_line_y_wrapper(penguins: Data) -> None:
+    check_component(
+        line_y(
+            penguins,
+            y="body_mass",
+            x="bill_length",
+            z="species",
+            filter_by=Selection("intersect"),
+            marker="circle-stroke",
+            marker_start="dot",
+            marker_mid="tick-y",
+            marker_end="circle-fill",
+            curve="cardinal",
+            tension=0.3,
+        ),
+        LineY,
     )
 
 
