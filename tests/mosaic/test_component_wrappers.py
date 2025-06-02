@@ -25,11 +25,14 @@ from inspect_viz.interactor import (
     toggle_y,
 )
 from inspect_viz.layout import hconcat, hspace, vconcat, vspace
-from inspect_viz.mark import bar_x, bar_y, dot
+from inspect_viz.mark import area, area_x, area_y, bar_x, bar_y, dot
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
 
 from ._schema import (
+    Area,
+    AreaX,
+    AreaY,
     BarX,
     BarY,
     Dot,
@@ -148,6 +151,63 @@ def test_bar_y_wrapper(penguins: Data) -> None:
             reverse=True,
         ),
         BarY,
+    )
+
+
+def test_area_wrapper(penguins: Data) -> None:
+    check_component(
+        area(
+            penguins,
+            x1="bill_depth",
+            y1="flipper_length",
+            x2="bill_length",
+            y2="body_mass",
+            z="species",
+            filter_by=Selection("intersect"),
+            offset="center",
+            order="appearance",
+            curve="basis",
+            reverse=True,
+        ),
+        Area,
+    )
+
+
+def test_area_x_wrapper(penguins: Data) -> None:
+    check_component(
+        area_x(
+            penguins,
+            x="bill_depth",
+            x1="bill_depth",
+            x2="bill_length",
+            y="flipper_length",
+            z="species",
+            filter_by=Selection("intersect"),
+            offset="center",
+            order="appearance",
+            curve="linear",
+            reverse=True,
+        ),
+        AreaX,
+    )
+
+
+def test_area_y_wrapper(penguins: Data) -> None:
+    check_component(
+        area_y(
+            penguins,
+            y="bill_depth",
+            y1="bill_depth",
+            y2="bill_length",
+            x="flipper_length",
+            z="species",
+            filter_by=Selection("intersect"),
+            offset="center",
+            order="appearance",
+            curve="monotone-y",
+            reverse=True,
+        ),
+        AreaY,
     )
 
 
