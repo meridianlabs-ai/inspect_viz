@@ -25,12 +25,13 @@ from inspect_viz.interactor import (
     toggle_y,
 )
 from inspect_viz.layout import hconcat, hspace, vconcat, vspace
-from inspect_viz.mark import bar_x, dot
+from inspect_viz.mark import bar_x, bar_y, dot
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
 
 from ._schema import (
     BarX,
+    BarY,
     Dot,
     HConcat,
     Highlight,
@@ -121,6 +122,32 @@ def test_bar_x_wrapper(penguins: Data) -> None:
             reverse=True,
         ),
         BarX,
+    )
+
+
+def test_bar_y_wrapper(penguins: Data) -> None:
+    check_component(
+        bar_y(
+            penguins,
+            y="bill_depth",
+            y1="bill_depth",
+            y2="bill_depth",
+            x="bill_depth",
+            interval="minute",
+            filter_by=Selection("intersect"),
+            offset="center",
+            order="appearance",
+            z="bill_depth",
+            inset=1,
+            inset_left=1,
+            inset_right=1,
+            inset_bottom=1,
+            inset_top=1,
+            rx=1,
+            ry=1,
+            reverse=True,
+        ),
+        BarY,
     )
 
 
