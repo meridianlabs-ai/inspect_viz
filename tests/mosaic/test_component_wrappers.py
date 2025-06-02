@@ -25,7 +25,7 @@ from inspect_viz.interactor import (
     toggle_y,
 )
 from inspect_viz.layout import hconcat, hspace, vconcat, vspace
-from inspect_viz.mark import area, area_x, area_y, bar_x, bar_y, dot
+from inspect_viz.mark import area, area_x, area_y, bar_x, bar_y, dot, dot_x, dot_y
 from inspect_viz.plot import legend, plot
 from pydantic import BaseModel
 
@@ -36,6 +36,8 @@ from ._schema import (
     BarX,
     BarY,
     Dot,
+    DotX,
+    DotY,
     HConcat,
     Highlight,
     HSpace,
@@ -100,6 +102,40 @@ def test_hspace_wrapper() -> None:
 
 def test_dot_wrapper(dot_mark: Component) -> None:
     check_component(dot_mark, Dot)
+
+
+def test_dot_x_wrapper(penguins: Data) -> None:
+    check_component(
+        dot_x(
+            penguins,
+            x="bill_depth",
+            z="species",
+            r=5,
+            interval="day",
+            filter_by=Selection("intersect"),
+            rotate=45,
+            symbol="circle",
+            frame_anchor="middle",
+        ),
+        DotX,
+    )
+
+
+def test_dot_y_wrapper(penguins: Data) -> None:
+    check_component(
+        dot_y(
+            penguins,
+            y="flipper_length",
+            z="species",
+            r=3,
+            interval="month",
+            filter_by=Selection("intersect"),
+            rotate=90,
+            symbol="square",
+            frame_anchor="top",
+        ),
+        DotY,
+    )
 
 
 def test_bar_x_wrapper(penguins: Data) -> None:

@@ -3,6 +3,7 @@ from typing import Any
 from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
+from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
 from ._channel import Channel
@@ -46,7 +47,7 @@ def dot(
             data=data.plot_from(filter_by),
             x=column(x) if isinstance(x, str) else x,
             y=column(y) if isinstance(y, str) else y,
-            z=z,
+            z=column(z) if isinstance(z, str) else z,
             r=r,
             rotate=rotate,
             symbol=symbol,
@@ -55,3 +56,107 @@ def dot(
     )
 
     return Mark("dot", config, options)
+
+
+def dot_x(
+    data: Data,
+    x: Channel | Param,
+    z: Channel | Param | None = None,
+    r: Channel | float | Param | None = None,
+    interval: Interval | None = None,
+    filter_by: Selection | None = None,
+    rotate: Channel | float | Param | None = None,
+    symbol: Channel | Param | Symbol | None = None,
+    frame_anchor: FrameAnchor | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A horizontal dot mark that draws circles, or other symbols.
+
+    Like dot, except that **y** defaults to the identity function, assuming that
+    *data* = [*y₀*, *y₁*, *y₂*, …].
+
+    If an **interval** is specified, such as *day*, **y** is transformed to the middle of the interval.
+
+    Args:
+        data: The data source for the mark.
+        x: The horizontal position channel specifying the dot's center.
+        z: An optional ordinal channel for grouping data into series.
+        r: The radius of dots; either a channel or constant. When a number, it is interpreted as a constant radius
+           in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
+           to the *sqrt* type for proportional symbols. The radius defaults to 4.5 pixels when using the **symbol**
+           channel, and otherwise 3 pixels. Dots with a nonpositive radius are not drawn.
+        interval: An interval (such as *day* or a number), to transform **y** values to the middle of the interval.
+        filter_by: Selection to filter by (defaults to data source selection).
+        rotate: The rotation angle of dots in degrees clockwise; either a channel or a constant. When a number, it is interpreted as a constant; otherwise it is interpreted as a channel. Defaults to 0°, pointing up.
+        symbol: Categorical column to bind symbols to or CSS color string.
+        frame_anchor: The frame anchor specifies defaults for **x** and **y** based on the plot's frame; it may be
+           one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*,
+           *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
+        options: Additional `MarkOptions`.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=column(x) if isinstance(x, str) else x,
+            z=column(z) if isinstance(z, str) else z,
+            r=r,
+            interval=interval,
+            rotate=rotate,
+            symbol=symbol,
+            frameAnchor=frame_anchor,
+        )
+    )
+
+    return Mark("dotX", config, options)
+
+
+def dot_y(
+    data: Data,
+    y: Channel | Param,
+    z: Channel | Param | None = None,
+    r: Channel | float | Param | None = None,
+    interval: Interval | None = None,
+    filter_by: Selection | None = None,
+    rotate: Channel | float | Param | None = None,
+    symbol: Channel | Param | Symbol | None = None,
+    frame_anchor: FrameAnchor | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A vertical dot mark that draws circles, or other symbols.
+
+    Like dot, except that **x** defaults to the identity function, assuming that
+    *data* = [*x₀*, *x₁*, *x₂*, …].
+
+    If an **interval** is specified, such as *day*, **x** is transformed to the middle of the interval.
+
+    Args:
+        data: The data source for the mark.
+        y: The vertical position channel specifying the dot's center.
+        z: An optional ordinal channel for grouping data into series.
+        r: The radius of dots; either a channel or constant. When a number, it is interpreted as a constant radius
+           in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
+           to the *sqrt* type for proportional symbols. The radius defaults to 4.5 pixels when using the **symbol**
+           channel, and otherwise 3 pixels. Dots with a nonpositive radius are not drawn.
+        interval: An interval (such as *day* or a number), to transform **x** values to the middle of the interval.
+        filter_by: Selection to filter by (defaults to data source selection).
+        rotate: The rotation angle of dots in degrees clockwise; either a channel or a constant. When a number, it is interpreted as a constant; otherwise it is interpreted as a channel. Defaults to 0°, pointing up.
+        symbol: Categorical column to bind symbols to or CSS color string.
+        frame_anchor: The frame anchor specifies defaults for **x** and **y** based on the plot's frame; it may be
+           one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*,
+           *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
+        options: Additional `MarkOptions`.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            y=column(y) if isinstance(y, str) else y,
+            z=column(z) if isinstance(z, str) else z,
+            r=r,
+            interval=interval,
+            rotate=rotate,
+            symbol=symbol,
+            frameAnchor=frame_anchor,
+        )
+    )
+
+    return Mark("dotY", config, options)
