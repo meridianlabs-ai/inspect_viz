@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Type
+from typing import Any, Type
 
 import pytest
 from inspect_viz import Component, Data, Param, Selection
@@ -137,10 +137,9 @@ def test_dot_x_wrapper(penguins: Data) -> None:
             z="species",
             r=5,
             interval="day",
-            filter_by=Selection("intersect"),
-            rotate=45,
             symbol="circle",
-            frame_anchor="middle",
+            **basic_selection_args(),
+            **{"rotate": 45, "frame_anchor": "middle"},
         ),
         DotX,
     )
@@ -154,10 +153,9 @@ def test_dot_y_wrapper(penguins: Data) -> None:
             z="species",
             r=3,
             interval="month",
-            filter_by=Selection("intersect"),
-            rotate=90,
             symbol="square",
-            frame_anchor="top",
+            **basic_selection_args(),
+            **{"rotate": 90, "frame_anchor": "top"},
         ),
         DotY,
     )
@@ -167,13 +165,10 @@ def test_circle_wrapper(penguins: Data) -> None:
     check_component(
         circle(
             penguins,
-            x="bill_depth",
-            y="flipper_length",
-            z="species",
             r=4,
-            filter_by=Selection("intersect"),
-            rotate=30,
-            frame_anchor="bottom",
+            **mark_position_args(),
+            **basic_selection_args(),
+            **{"rotate": 30, "frame_anchor": "bottom"},
         ),
         Circle,
     )
@@ -187,9 +182,8 @@ def test_hexagon_wrapper(penguins: Data) -> None:
             y="body_mass",
             z="species",
             r=6,
-            filter_by=Selection("intersect"),
-            rotate=60,
-            frame_anchor="left",
+            **basic_selection_args(),
+            **{"rotate": 60, "frame_anchor": "left"},
         ),
         Hexagon,
     )
@@ -199,16 +193,9 @@ def test_line_wrapper(penguins: Data) -> None:
     check_component(
         line(
             penguins,
-            x="bill_depth",
-            y="flipper_length",
-            z="species",
-            filter_by=Selection("intersect"),
-            marker="circle",
-            marker_start="arrow",
-            marker_mid="dot",
-            marker_end="arrow-reverse",
-            curve="linear",
-            tension=0.5,
+            **mark_position_args(),
+            **basic_selection_args(),
+            **line_marker_args(),
         ),
         Line,
     )
@@ -218,10 +205,8 @@ def test_line_x_wrapper(penguins: Data) -> None:
     check_component(
         line_x(
             penguins,
-            x="bill_depth",
-            y="flipper_length",
-            z="species",
-            filter_by=Selection("intersect"),
+            **mark_position_args(),
+            **basic_selection_args(),
             marker="circle-fill",
             marker_start="tick",
             marker_mid="circle",
@@ -240,7 +225,7 @@ def test_line_y_wrapper(penguins: Data) -> None:
             y="body_mass",
             x="bill_length",
             z="species",
-            filter_by=Selection("intersect"),
+            **basic_selection_args(),
             marker="circle-stroke",
             marker_start="dot",
             marker_mid="tick-y",
@@ -260,19 +245,9 @@ def test_bar_x_wrapper(penguins: Data) -> None:
             x1="bill_depth",
             x2="bill_depth",
             y="bill_depth",
-            interval="minute",
-            filter_by=Selection("intersect"),
-            offset="center",
-            order="appearance",
             z="bill_depth",
-            inset=1,
-            inset_left=1,
-            inset_right=1,
-            inset_bottom=1,
-            inset_top=1,
-            rx=1,
-            ry=1,
-            reverse=True,
+            **basic_selection_args(),
+            **bar_styling_args(),
         ),
         BarX,
     )
@@ -286,19 +261,9 @@ def test_bar_y_wrapper(penguins: Data) -> None:
             y1="bill_depth",
             y2="bill_depth",
             x="bill_depth",
-            interval="minute",
-            filter_by=Selection("intersect"),
-            offset="center",
-            order="appearance",
             z="bill_depth",
-            inset=1,
-            inset_left=1,
-            inset_right=1,
-            inset_bottom=1,
-            inset_top=1,
-            rx=1,
-            ry=1,
-            reverse=True,
+            **basic_selection_args(),
+            **bar_styling_args(),
         ),
         BarY,
     )
@@ -313,7 +278,7 @@ def test_area_wrapper(penguins: Data) -> None:
             x2="bill_length",
             y2="body_mass",
             z="species",
-            filter_by=Selection("intersect"),
+            **basic_selection_args(),
             offset="center",
             order="appearance",
             curve="basis",
@@ -332,7 +297,7 @@ def test_area_x_wrapper(penguins: Data) -> None:
             x2="bill_length",
             y="flipper_length",
             z="species",
-            filter_by=Selection("intersect"),
+            **basic_selection_args(),
             offset="center",
             order="appearance",
             curve="linear",
@@ -351,7 +316,7 @@ def test_area_y_wrapper(penguins: Data) -> None:
             y2="bill_length",
             x="flipper_length",
             z="species",
-            filter_by=Selection("intersect"),
+            **basic_selection_args(),
             offset="center",
             order="appearance",
             curve="monotone-y",
@@ -382,11 +347,8 @@ def test_highlight_wrapper() -> None:
 def test_interval_x_wrapper() -> None:
     check_component(
         interval_x(
-            selection=Selection("intersect"),
             field="foo",
-            pixel_size=2,
-            peers=True,
-            brush=Brush(fill="red", fill_opacity=0.6),  # noqa: F821
+            **interval_args(),
         ),
         IntervalX,
     )
@@ -395,12 +357,9 @@ def test_interval_x_wrapper() -> None:
 def test_interval_xy_wrapper() -> None:
     check_component(
         interval_xy(
-            selection=Selection("intersect"),
             xfield="foo",
             yfield="bar",
-            pixel_size=2,
-            peers=True,
-            brush=Brush(fill="red", fill_opacity=0.6),
+            **interval_args(),
         ),
         IntervalXY,
     )
@@ -409,11 +368,8 @@ def test_interval_xy_wrapper() -> None:
 def test_interval_y_wrapper() -> None:
     check_component(
         interval_y(
-            selection=Selection("intersect"),
             field="foo",
-            pixel_size=2,
-            peers=True,
-            brush=Brush(fill="red", fill_opacity=0.6),
+            **interval_args(),
         ),
         IntervalY,
     )
@@ -422,8 +378,8 @@ def test_interval_y_wrapper() -> None:
 def test_toggle_wrapper() -> None:
     check_component(
         toggle(
-            selection=Selection("intersect"),
             channels=["x", "y"],
+            **intersect_selection_args(),
             peers=True,
         ),
         Toggle,
@@ -433,7 +389,7 @@ def test_toggle_wrapper() -> None:
 def test_toggle_x_wrapper() -> None:
     check_component(
         toggle_x(
-            selection=Selection("intersect"),
+            **intersect_selection_args(),
             peers=True,
         ),
         ToggleX,
@@ -443,7 +399,7 @@ def test_toggle_x_wrapper() -> None:
 def test_toggle_color_wrapper() -> None:
     check_component(
         toggle_color(
-            selection=Selection("intersect"),
+            **intersect_selection_args(),
             peers=True,
         ),
         ToggleColor,
@@ -453,10 +409,10 @@ def test_toggle_color_wrapper() -> None:
 def test_nearest_x_wrapper() -> None:
     check_component(
         nearest_x(
-            selection=Selection("intersect"),
             channels=["x", "color"],
             fields=["field1", "field2"],
             max_radius=50,
+            **intersect_selection_args(),
         ),
         NearestX,
     )
@@ -465,10 +421,10 @@ def test_nearest_x_wrapper() -> None:
 def test_nearest_y_wrapper() -> None:
     check_component(
         nearest_y(
-            selection=Selection("intersect"),
             channels=["y", "color"],
             fields=["field1", "field2"],
             max_radius=50,
+            **intersect_selection_args(),
         ),
         NearestY,
     )
@@ -477,10 +433,10 @@ def test_nearest_y_wrapper() -> None:
 def test_region_wrapper() -> None:
     check_component(
         region(
-            selection=Selection("intersect"),
             channels=["x", "y"],
+            **intersect_selection_args(),
             peers=True,
-            brush=Brush(fill="red", fill_opacity=0.6),
+            **brush_args(),
         ),
         Region,
     )
@@ -489,7 +445,7 @@ def test_region_wrapper() -> None:
 def test_toggle_y_wrapper() -> None:
     check_component(
         toggle_y(
-            selection=Selection("intersect"),
+            **intersect_selection_args(),
             peers=True,
         ),
         ToggleY,
@@ -535,72 +491,42 @@ def test_legend_wrapper(penguins: Data) -> None:
 
 def test_pan_wrapper() -> None:
     check_component(
-        pan(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan(**pan_selection_args()),
         Pan,
     )
 
 
 def test_pan_x_wrapper() -> None:
     check_component(
-        pan_x(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan_x(**pan_selection_args()),
         PanX,
     )
 
 
 def test_pan_y_wrapper() -> None:
     check_component(
-        pan_y(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan_y(**pan_selection_args()),
         PanY,
     )
 
 
 def test_pan_zoom_wrapper() -> None:
     check_component(
-        pan_zoom(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan_zoom(**pan_selection_args()),
         PanZoom,
     )
 
 
 def test_pan_zoom_x_wrapper() -> None:
     check_component(
-        pan_zoom_x(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan_zoom_x(**pan_selection_args()),
         PanZoomX,
     )
 
 
 def test_pan_zoom_y_wrapper() -> None:
     check_component(
-        pan_zoom_y(
-            x=Selection("intersect"),
-            y=Selection("intersect"),
-            xfield="x_field",
-            yfield="y_field",
-        ),
+        pan_zoom_y(**pan_selection_args()),
         PanZoomY,
     )
 
@@ -609,23 +535,11 @@ def test_text_wrapper(penguins: Data) -> None:
     check_component(
         text(
             penguins,
-            x="bill_depth",
-            y="flipper_length",
-            z="species",
             text="species",
-            filter_by=Selection("intersect"),
-            frame_anchor="middle",
-            line_anchor="middle",
-            rotate=45,
-            text_anchor="middle",
-            line_height=1.2,
-            line_width=20,
-            text_overflow="ellipsis",
-            monospace=True,
-            font_family="Arial",
-            font_size=12,
-            font_variant="small-caps",
-            font_weight=700,
+            **mark_position_args(),
+            **basic_selection_args(),
+            **text_positioning_args(),
+            **text_font_args(),
         ),
         Text,
     )
@@ -635,12 +549,10 @@ def test_text_x_wrapper(penguins: Data) -> None:
     check_component(
         text_x(
             penguins,
-            x="bill_depth",
-            y="flipper_length",
-            z="species",
             text="species",
             interval="day",
-            filter_by=Selection("intersect"),
+            **mark_position_args(),
+            **basic_selection_args(),
             frame_anchor="top",
             line_anchor="top",
             rotate=90,
@@ -667,7 +579,7 @@ def test_text_y_wrapper(penguins: Data) -> None:
             z="species",
             text="island",
             interval="month",
-            filter_by=Selection("intersect"),
+            **basic_selection_args(),
             frame_anchor="left",
             line_anchor="bottom",
             rotate=180,
@@ -688,3 +600,96 @@ def test_text_y_wrapper(penguins: Data) -> None:
 def check_component(component: Component, type: Type[BaseModel]) -> None:
     model = type.model_validate(component.config)
     assert model.model_dump(exclude_none=True, by_alias=True) == component.config
+
+
+def basic_selection_args() -> dict[str, Selection]:
+    return {"filter_by": Selection("intersect")}
+
+
+def intersect_selection_args() -> dict[str, Selection]:
+    return {"selection": Selection("intersect")}
+
+
+def mark_position_args() -> dict[str, str]:
+    return {"x": "bill_depth", "y": "flipper_length", "z": "species"}
+
+
+def dot_mark_args() -> dict[str, Any]:
+    return {
+        **mark_position_args(),
+        **basic_selection_args(),
+        "r": 3,
+        "rotate": 45,
+        "frame_anchor": "middle",
+    }
+
+
+def line_marker_args() -> dict[str, str]:
+    return {
+        "marker": "circle",
+        "marker_start": "arrow",
+        "marker_mid": "dot",
+        "marker_end": "arrow-reverse",
+        "curve": "linear",
+        "tension": 0.5,
+    }
+
+
+def bar_styling_args() -> dict[str, Any]:
+    return {
+        "interval": "minute",
+        "offset": "center",
+        "order": "appearance",
+        "inset": 1,
+        "inset_left": 1,
+        "inset_right": 1,
+        "inset_bottom": 1,
+        "inset_top": 1,
+        "rx": 1,
+        "ry": 1,
+        "reverse": True,
+    }
+
+
+def pan_selection_args() -> dict[str, Selection]:
+    return {
+        "x": Selection("intersect"),
+        "y": Selection("intersect"),
+        "xfield": "x_field",
+        "yfield": "y_field",
+    }
+
+
+def brush_args() -> dict[str, Brush]:
+    return {"brush": Brush(fill="red", fill_opacity=0.6)}
+
+
+def interval_args() -> dict[str, Any]:
+    return {
+        **intersect_selection_args(),
+        "pixel_size": 2,
+        "peers": True,
+        **brush_args(),
+    }
+
+
+def text_font_args() -> dict[str, Any]:
+    return {
+        "line_height": 1.2,
+        "line_width": 20,
+        "text_overflow": "ellipsis",
+        "monospace": True,
+        "font_family": "Arial",
+        "font_size": 12,
+        "font_variant": "small-caps",
+        "font_weight": 700,
+    }
+
+
+def text_positioning_args() -> dict[str, Any]:
+    return {
+        "frame_anchor": "middle",
+        "line_anchor": "middle",
+        "rotate": 45,
+        "text_anchor": "middle",
+    }
