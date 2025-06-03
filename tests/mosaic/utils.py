@@ -70,7 +70,7 @@ def pan_selection_args() -> dict[str, Any]:
     }
 
 
-def brush_args() -> dict[str, Brush]:
+def brush_args() -> dict[str, Any]:
     return {"brush": Brush(fill="red", fill_opacity=0.6)}
 
 
@@ -97,9 +97,17 @@ def text_styles() -> TextStyles:
     )
 
 
+def text_styles_dict() -> dict[str, Any]:
+    return dict(text_styles())
+
+
 def text_positioning_args() -> dict[str, Any]:
     return {
         "frame_anchor": "middle",
         "line_anchor": "middle",
         "rotate": 45,
     }
+
+
+def rotate_and_frame_args() -> dict[str, Any]:
+    return {"rotate": 30, "frame_anchor": "bottom"}

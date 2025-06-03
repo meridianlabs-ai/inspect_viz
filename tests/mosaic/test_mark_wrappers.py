@@ -79,8 +79,10 @@ from .utils import (
     check_component,
     line_marker_args,
     mark_position_args,
+    rotate_and_frame_args,
     text_positioning_args,
     text_styles,
+    text_styles_dict,
 )
 
 
@@ -98,7 +100,7 @@ def test_dot_x_wrapper(penguins: Data) -> None:
             interval="day",
             symbol="circle",
             **basic_selection_args(),
-            **{"rotate": 45, "frame_anchor": "middle"},
+            **rotate_and_frame_args(),
         ),
         DotX,
     )
@@ -114,7 +116,7 @@ def test_dot_y_wrapper(penguins: Data) -> None:
             interval="month",
             symbol="square",
             **basic_selection_args(),
-            **{"rotate": 90, "frame_anchor": "top"},
+            **rotate_and_frame_args(),
         ),
         DotY,
     )
@@ -127,7 +129,7 @@ def test_circle_wrapper(penguins: Data) -> None:
             r=4,
             **mark_position_args(),
             **basic_selection_args(),
-            **{"rotate": 30, "frame_anchor": "bottom"},
+            **rotate_and_frame_args(),
         ),
         Circle,
     )
@@ -142,7 +144,7 @@ def test_hexagon_wrapper(penguins: Data) -> None:
             z="species",
             r=6,
             **basic_selection_args(),
-            **{"rotate": 60, "frame_anchor": "left"},
+            **rotate_and_frame_args(),
         ),
         Hexagon,
     )
@@ -293,7 +295,7 @@ def test_text_wrapper(penguins: Data) -> None:
             **mark_position_args(),
             **basic_selection_args(),
             **text_positioning_args(),
-            **dict(text_styles()),
+            **dict(text_styles_dict()),
         ),
         Text,
     )
@@ -310,7 +312,7 @@ def test_text_x_wrapper(penguins: Data) -> None:
             frame_anchor="top",
             line_anchor="top",
             rotate=90,
-            **dict(text_styles()),
+            **dict(text_styles_dict()),
         ),
         TextX,
     )
@@ -329,7 +331,7 @@ def test_text_y_wrapper(penguins: Data) -> None:
             frame_anchor="left",
             line_anchor="bottom",
             rotate=180,
-            **dict(text_styles()),
+            **dict(text_styles_dict()),
         ),
         TextY,
     )
