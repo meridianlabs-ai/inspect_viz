@@ -13,16 +13,20 @@ Based on a [Vega-Lite/Altair example](https://vega.github.io/vega-lite/examples/
 ```{python}
 from inspect_viz import Data, Selection
 from inspect_viz.interactor import Brush, highlight, interval_x, toggle_y
-from inspect_viz.plot import Fixed, legend, plot
+from inspect_viz.plot import legend, plot, plot_defaults
 from inspect_viz.mark import bar_x, dot
 from inspect_viz.transform import count, date_month_day
 
 # data
 seattle = Data("seattle-weather.parquet")
 
-# weather domain/colors
+# plot defaults
 weather = ["sun", "fog", "drizzle", "rain", "snow"]
-weather_colors = ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
+plot_defaults(
+    color_domain=weather,
+    color_range=["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"],
+    width=680
+)
 
 # selections (scatter x-range and bar/legend click)
 range = Selection("intersect")
@@ -45,14 +49,8 @@ plot(
         highlight(by=range, fill="#ccc", fill_opacity=0.2),
     ],
     legend=legend("color", selection=click, columns=1),
-    xy_domain=Fixed,
     x_tick_format="%b",
-    color_domain=weather,
-    color_range=weather_colors,
-    r_domain=Fixed,
-    r_range=[2, 10],
-    width=680,
-    height=300,
+    r_range=[2, 10]
 )
 ```
 
@@ -64,11 +62,7 @@ plot(
         toggle_y(selection=click),
         highlight(by=click),
     ],
-    x_domain=Fixed,
     y_domain=weather,
     y_label=None,
-    color_domain=weather,
-    color_range=weather_colors,
-    width=680,
 )
 ```

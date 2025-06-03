@@ -46,7 +46,7 @@ def plot_defaults(**defaults: Unpack[PlotDefaults]) -> None:
        defaults: Keyword args from `PlotDefaults`
     """
     global _plot_defaults
-    _plot_defaults = defaults
+    _plot_defaults = _builtin_plot_defaults | defaults
 
 
 def plot_defaults_as_camel() -> dict[str, Any]:
@@ -55,3 +55,12 @@ def plot_defaults_as_camel() -> dict[str, Any]:
 
 
 _plot_defaults = PlotDefaults()
+
+_builtin_plot_defaults = PlotDefaults(
+    x_domain="Fixed",
+    y_domain="Fixed",
+    xy_domain="Fixed",
+    r_domain="Fixed",
+    fx_domain="Fixed",
+    fy_domain="Fixed",
+)
