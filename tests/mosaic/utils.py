@@ -1,9 +1,10 @@
 from typing import Any, Type
 
-from inspect_viz import Selection
+from inspect_viz import Component, Selection
 from inspect_viz.interactor import Brush
 from pydantic import BaseModel
-from inspect_viz import Component
+
+from inspect_viz.mark._text import TextStyles
 
 
 def check_component(component: Component, type: Type[BaseModel]) -> None:
@@ -11,15 +12,15 @@ def check_component(component: Component, type: Type[BaseModel]) -> None:
     assert model.model_dump(exclude_none=True, by_alias=True) == component.config
 
 
-def basic_selection_args() -> dict[str, Selection]:
+def basic_selection_args() -> dict[str, Any]:
     return {"filter_by": Selection("intersect")}
 
 
-def intersect_selection_args() -> dict[str, Selection]:
+def intersect_selection_args() -> dict[str, Any]:
     return {"selection": Selection("intersect")}
 
 
-def mark_position_args() -> dict[str, str]:
+def mark_position_args() -> dict[str, Any]:
     return {"x": "bill_depth", "y": "flipper_length", "z": "species"}
 
 
@@ -82,17 +83,19 @@ def interval_args() -> dict[str, Any]:
     }
 
 
-def text_font_args() -> dict[str, Any]:
-    return {
-        "line_height": 1.2,
-        "line_width": 20,
-        "text_overflow": "ellipsis",
-        "monospace": True,
-        "font_family": "Arial",
-        "font_size": 12,
-        "font_variant": "small-caps",
-        "font_weight": 700,
-    }
+def text_styles_args() -> dict[str, Any]:
+    style = TextStyles(
+        text_anchor="middle",
+        line_height=1.2,
+        line_width=20,
+        text_overflow="ellipsis",
+        monospace=True,
+        font_family="Arial",
+        font_size=12,
+        font_variant="small-caps",
+        font_weight=700,
+    )
+    return dict(style)
 
 
 def text_positioning_args() -> dict[str, Any]:
@@ -100,5 +103,4 @@ def text_positioning_args() -> dict[str, Any]:
         "frame_anchor": "middle",
         "line_anchor": "middle",
         "rotate": 45,
-        "text_anchor": "middle",
     }

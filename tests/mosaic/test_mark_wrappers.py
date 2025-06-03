@@ -37,13 +37,13 @@ from ._schema import (
     TextY,
 )
 from .utils import (
-    basic_selection_args,
     bar_styling_args,
+    basic_selection_args,
     check_component,
     line_marker_args,
     mark_position_args,
-    text_font_args,
     text_positioning_args,
+    text_styles_args,
 )
 
 
@@ -256,7 +256,7 @@ def test_text_wrapper(penguins: Data) -> None:
             **mark_position_args(),
             **basic_selection_args(),
             **text_positioning_args(),
-            **text_font_args(),
+            **text_styles_args(),
         ),
         Text,
     )
@@ -273,15 +273,7 @@ def test_text_x_wrapper(penguins: Data) -> None:
             frame_anchor="top",
             line_anchor="top",
             rotate=90,
-            text_anchor="start",
-            line_height=1.5,
-            line_width=15,
-            text_overflow="clip",
-            monospace=False,
-            font_family="Helvetica",
-            font_size=14,
-            font_variant="normal",
-            font_weight=400,
+            **text_styles_args(),
         ),
         TextX,
     )
@@ -300,15 +292,7 @@ def test_text_y_wrapper(penguins: Data) -> None:
             frame_anchor="left",
             line_anchor="bottom",
             rotate=180,
-            text_anchor="end",
-            line_height=1.0,
-            line_width=25,
-            text_overflow="clip",
-            monospace=True,
-            font_family="monospace",
-            font_size=10,
-            font_variant="tabular-nums",
-            font_weight=400,
+            **text_styles_args(),
         ),
         TextY,
     )
