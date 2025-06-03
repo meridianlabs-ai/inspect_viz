@@ -15,6 +15,9 @@ from inspect_viz.mark import (
     line,
     line_x,
     line_y,
+    rect,
+    rect_x,
+    rect_y,
     text,
     text_x,
     text_y,
@@ -37,6 +40,9 @@ from ._schema import (
     Line,
     LineX,
     LineY,
+    Rect,
+    RectX,
+    RectY,
     Text,
     TextX,
     TextY,
@@ -353,4 +359,75 @@ def test_density_y_wrapper(penguins: Data) -> None:
             bandwidth=15,
         ),
         DensityY1,
+    )
+
+
+def test_rect_wrapper(penguins: Data) -> None:
+    check_component(
+        rect(
+            penguins,
+            x="bill_length",
+            x1="bill_depth",
+            x2="flipper_length",
+            y="body_mass",
+            y1="bill_length",
+            y2="flipper_length",
+            **basic_selection_args(),
+            interval="day",
+            inset=2,
+            inset_top=1,
+            inset_right=1,
+            inset_bottom=1,
+            inset_left=1,
+            rx=5,
+            ry=3,
+            offset="center",
+            order="sum",
+            reverse=True,
+            z="species",
+        ),
+        Rect,
+    )
+
+
+def test_rect_x_wrapper(penguins: Data) -> None:
+    check_component(
+        rect_x(
+            penguins,
+            x="bill_length",
+            x1="bill_depth",
+            x2="flipper_length",
+            y="island",
+            **basic_selection_args(),
+            interval="month",
+            inset=1,
+            rx=2,
+            ry=2,
+            offset="normalize",
+            order="appearance",
+            z="species",
+        ),
+        RectX,
+    )
+
+
+def test_rect_y_wrapper(penguins: Data) -> None:
+    check_component(
+        rect_y(
+            penguins,
+            x="species",
+            y="body_mass",
+            y1="bill_length",
+            y2="flipper_length",
+            **basic_selection_args(),
+            interval="week",
+            inset=0.5,
+            rx=1,
+            ry=1,
+            offset="wiggle",
+            order="inside-out",
+            reverse=False,
+            z="island",
+        ),
+        RectY,
     )
