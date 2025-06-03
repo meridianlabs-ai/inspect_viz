@@ -96,3 +96,116 @@ def density(
     )
 
     return Mark("density", config, options)
+
+
+def density_x(
+    data: Data,
+    y: Channel | Param | None = None,
+    z: Channel | Param | None = None,
+    filter_by: Selection | None = None,
+    type: Literal["areaX", "lineX", "dotX", "textX"] | Param = "areaX",
+    stack: bool | Param | None = None,
+    bandwidth: float | Param | None = None,
+    bins: float | Param | None = None,
+    normalize: bool | Literal["max", "sum", "none"] | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A densityX mark that visualizes smoothed point cloud densities along the **x** dimension.
+
+    The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaX mark.
+
+    Set the *type* property to use a different base mark type.
+
+    Args:
+        data: The data source for the mark.
+        y: The vertical position channel, typically bound to the *y* scale;
+            defaults to the zero-based index of the data [0, 1, 2, …].
+        z: An optional ordinal channel for grouping data into series.
+        filter_by: A selection to filter the data.
+        type: The basic mark type to use to render 1D density values. Defaults
+            to an areaX mark; lineX, dotX, and textX marks are also supported.
+        stack: Flag indicating if densities should be stacked. Defaults to `False`.
+        bandwidth: The kernel density bandwidth for smoothing, in pixels.
+        bins: The number of bins over which to discretize the data prior to
+            smoothing. Defaults to 1024.
+        normalize: Normalization method for density estimates. If `False` or
+            `'none'` (the default), the density estimates are smoothed weighted
+            counts. If `True` or `'sum'`, density estimates are divided by the
+            sum of the total point mass. If `'max'`, estimates are divided by
+            the maximum smoothed value.
+        **options: Additional mark options from MarkOptions.
+
+    Returns:
+        A density mark.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            y=column(y) if isinstance(y, str) else y,
+            z=column(z) if isinstance(z, str) else z,
+            type=type,
+            bandwidth=bandwidth,
+            bins=bins,
+            normalize=normalize,
+            stack=stack,
+        )
+    )
+
+    return Mark("densityX", config, options)
+
+
+def density_y(
+    data: Data,
+    x: Channel | Param | None = None,
+    z: Channel | Param | None = None,
+    filter_by: Selection | None = None,
+    type: Literal["areaY", "lineY", "dotY", "circle", "hexagon", "textY"]
+    | Param = "areaY",
+    stack: bool | Param | None = None,
+    bandwidth: float | Param | None = None,
+    bins: float | Param | None = None,
+    normalize: bool | Literal["max", "sum", "none"] | Param | None = None,
+    **options: Unpack[MarkOptions],
+) -> Mark:
+    """A densityX mark that visualizes smoothed point cloud densities along the **x** dimension.
+
+    The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaX mark.
+
+    Set the *type* property to use a different base mark type.
+
+    Args:
+        data: The data source for the mark.
+        x: The horizontal position channel, typically bound to the *x* scale;
+            defaults to the zero-based index of the data [0, 1, 2, …].
+        z: An optional ordinal channel for grouping data into series.
+        filter_by: A selection to filter the data.
+        type:  The basic mark type to use to render 1D density values. Defaults
+            to an areaY mark; lineY, dot, and text marks are also supported.
+        stack: Flag indicating if densities should be stacked. Defaults to `False`.
+        bandwidth: The kernel density bandwidth for smoothing, in pixels.
+        bins: The number of bins over which to discretize the data prior to
+            smoothing. Defaults to 1024.
+        normalize: Normalization method for density estimates. If `False` or
+            `'none'` (the default), the density estimates are smoothed weighted
+            counts. If `True` or `'sum'`, density estimates are divided by the
+            sum of the total point mass. If `'max'`, estimates are divided by
+            the maximum smoothed value.
+        **options: Additional mark options from MarkOptions.
+
+    Returns:
+        A density mark.
+    """
+    config: dict[str, Any] = dict_remove_none(
+        dict(
+            data=data.plot_from(filter_by),
+            x=column(x) if isinstance(x, str) else x,
+            z=column(z) if isinstance(z, str) else z,
+            type=type,
+            bandwidth=bandwidth,
+            bins=bins,
+            normalize=normalize,
+            stack=stack,
+        )
+    )
+
+    return Mark("densityY", config, options)

@@ -7,6 +7,8 @@ from inspect_viz.mark import (
     bar_y,
     circle,
     density,
+    density_x,
+    density_y,
     dot_x,
     dot_y,
     hexagon,
@@ -26,6 +28,8 @@ from ._schema import (
     BarY,
     Circle,
     Density,
+    DensityX1,
+    DensityY1,
     Dot,
     DotX,
     DotY,
@@ -321,4 +325,32 @@ def test_density_wrapper(penguins: Data) -> None:
             styles=text_styles(),
         ),
         Density,
+    )
+
+
+def test_density_x_wrapper(penguins: Data) -> None:
+    check_component(
+        density_x(
+            penguins,
+            y="bill_length",
+            z="species",
+            **basic_selection_args(),
+            type="areaX",
+            bandwidth=15,
+        ),
+        DensityX1,
+    )
+
+
+def test_density_y_wrapper(penguins: Data) -> None:
+    check_component(
+        density_y(
+            penguins,
+            x="bill_length",
+            z="species",
+            **basic_selection_args(),
+            type="areaY",
+            bandwidth=15,
+        ),
+        DensityY1,
     )
