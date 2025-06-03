@@ -21,6 +21,8 @@ from inspect_viz.mark import (
     rect,
     rect_x,
     rect_y,
+    rule_x,
+    rule_y,
     spike,
     text,
     text_x,
@@ -57,6 +59,8 @@ from ._schema import (
     Rect,
     RectX,
     RectY,
+    RuleX,
+    RuleY,
     Spike,
     Text,
     TextX,
@@ -669,4 +673,40 @@ def test_waffle_y_wrapper(penguins: Data) -> None:
             ry=2,
         ),
         WaffleY,
+    )
+
+
+def test_rule_x_wrapper(penguins: Data) -> None:
+    check_component(
+        rule_x(
+            penguins,
+            x="bill_length",
+            y="species",
+            **basic_selection_args(),
+            interval="day",
+            marker="tick",
+            marker_start="arrow",
+            marker_mid="dot",
+            marker_end="arrow-reverse",
+            inset=1,
+        ),
+        RuleX,
+    )
+
+
+def test_rule_y_wrapper(penguins: Data) -> None:
+    check_component(
+        rule_y(
+            penguins,
+            y="body_mass",
+            x="island",
+            **basic_selection_args(),
+            interval="month",
+            marker="circle",
+            marker_start="tick-x",
+            marker_mid="circle-fill",
+            marker_end="tick-y",
+            inset=2,
+        ),
+        RuleY,
     )
