@@ -30,6 +30,8 @@ from inspect_viz.mark import (
     vector,
     vector_x,
     vector_y,
+    waffle_x,
+    waffle_y,
 )
 
 from ._schema import (
@@ -64,6 +66,8 @@ from ._schema import (
     Vector,
     VectorX,
     VectorY,
+    WaffleX,
+    WaffleY,
 )
 from .utils import (
     bar_styling_args,
@@ -611,4 +615,58 @@ def test_tick_y_wrapper(penguins: Data) -> None:
             inset_right=0.5,
         ),
         TickY,
+    )
+
+
+def test_waffle_x_wrapper(penguins: Data) -> None:
+    check_component(
+        waffle_x(
+            penguins,
+            x="bill_length",
+            x1="bill_depth",
+            x2="flipper_length",
+            y="species",
+            z="island",
+            **basic_selection_args(),
+            multiple=10,
+            unit=5,
+            gap=2,
+            round=True,
+            interval="day",
+            offset="center",
+            order="sum",
+            inset=1,
+            inset_top=0.5,
+            inset_right=0.5,
+            inset_bottom=0.5,
+            inset_left=0.5,
+            rx=2,
+            ry=1,
+        ),
+        WaffleX,
+    )
+
+
+def test_waffle_y_wrapper(penguins: Data) -> None:
+    check_component(
+        waffle_y(
+            penguins,
+            y="body_mass",
+            y1="bill_length",
+            y2="flipper_length",
+            x="island",
+            z="species",
+            **basic_selection_args(),
+            multiple=5,
+            unit=2,
+            gap=1,
+            round=False,
+            interval="month",
+            offset="normalize",
+            order="appearance",
+            inset=2,
+            rx=1,
+            ry=2,
+        ),
+        WaffleY,
     )

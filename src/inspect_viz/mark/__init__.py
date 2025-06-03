@@ -10,6 +10,7 @@ from ._rect import rect, rect_x, rect_y
 from ._text import TextStyles, text, text_x, text_y
 from ._tick import tick_x, tick_y
 from ._vector import spike, vector, vector_x, vector_y
+from ._waffle import waffle_x, waffle_y
 
 __all__ = [
     "Mark",
@@ -47,4 +48,6 @@ __all__ = [
     "vector",
     "vector_x",
     "vector_y",
+    "waffle_x",
+    "waffle_y",
 ]
