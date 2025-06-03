@@ -25,6 +25,8 @@ from inspect_viz.mark import (
     text,
     text_x,
     text_y,
+    tick_x,
+    tick_y,
     vector,
     vector_x,
     vector_y,
@@ -57,6 +59,8 @@ from ._schema import (
     Text,
     TextX,
     TextY,
+    TickX,
+    TickY,
     Vector,
     VectorX,
     VectorY,
@@ -569,4 +573,42 @@ def test_spike_wrapper(penguins: Data) -> None:
             **basic_selection_args(),
         ),
         Spike,
+    )
+
+
+def test_tick_x_wrapper(penguins: Data) -> None:
+    check_component(
+        tick_x(
+            penguins,
+            x="bill_length",
+            y="species",
+            **basic_selection_args(),
+            marker="tick",
+            marker_start="arrow",
+            marker_mid="dot",
+            marker_end="arrow-reverse",
+            inset=2,
+            inset_top=1,
+            inset_bottom=1,
+        ),
+        TickX,
+    )
+
+
+def test_tick_y_wrapper(penguins: Data) -> None:
+    check_component(
+        tick_y(
+            penguins,
+            y="body_mass",
+            x="island",
+            **basic_selection_args(),
+            marker="circle",
+            marker_start="tick-x",
+            marker_mid="circle-fill",
+            marker_end="tick-y",
+            inset=1.5,
+            inset_left=0.5,
+            inset_right=0.5,
+        ),
+        TickY,
     )

@@ -28,3 +28,14 @@ FrameAnchor: TypeAlias = Literal[
     "bottom-left",
     "left",
 ]
+Marker = Literal[
+    "arrow",
+    "arrow-reverse",
+    "dot",
+    "circle",
+    "circle-fill",
+    "circle-stroke",
+    "tick",
+    "tick-x",
+    "tick-y",
+]

@@ -1,27 +1,14 @@
-from typing import Any, Literal
+from typing import Any
 
 from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-
-# Import Curve from _area.py since it's already defined there
 from ._area import Curve
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
-
-Marker = Literal[
-    "arrow",
-    "arrow-reverse",
-    "dot",
-    "circle",
-    "circle-fill",
-    "circle-stroke",
-    "tick",
-    "tick-x",
-    "tick-y",
-]
+from ._types import Marker
 
 
 def line(
@@ -30,12 +17,12 @@ def line(
     y: Channel | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
-    marker: Marker | bool | str | None = None,
-    marker_start: Marker | bool | str | None = None,
-    marker_mid: Marker | bool | str | None = None,
-    marker_end: Marker | bool | str | None = None,
+    marker: Marker | bool | Param | None = None,
+    marker_start: Marker | bool | Param | None = None,
+    marker_mid: Marker | bool | Param | None = None,
+    marker_end: Marker | bool | Param | None = None,
     curve: Curve | Param | None = None,
-    tension: float | str | Param | None = None,
+    tension: float | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
     """A line mark that connects control points.
