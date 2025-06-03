@@ -48,9 +48,10 @@ plot(
         interval_x(selection=range, brush=Brush(fill="none", stroke="#888")),
         highlight(by=range, fill="#ccc", fill_opacity=0.2),
     ],
-    legend=legend("color", selection=click, columns=1),
+    legend=legend("color", selection=click),
     x_tick_format="%b",
-    r_range=[2, 10]
+    r_range=[2, 10],
+    height=300
 )
 ```
 
