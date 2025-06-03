@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypedDict, cast
+from typing import Any, Literal, TypedDict
 
 from typing_extensions import Unpack
 
@@ -21,7 +21,7 @@ TextOverflow = Literal[
     "ellipsis-middle",
     "ellipsis-end",
 ]
-"""How to truncate (or wrap) lines of text longer than the given **line_width**; one of: 
+"""How to truncate (or wrap) lines of text longer than the given **line_width**; one of:
 
 - null (default) preserve overflowing characters (and wrap if needed);
 - *clip* or *clip-end* remove characters from the end;
