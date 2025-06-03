@@ -21,9 +21,13 @@ from inspect_viz.mark import (
     rect,
     rect_x,
     rect_y,
+    spike,
     text,
     text_x,
     text_y,
+    vector,
+    vector_x,
+    vector_y,
 )
 
 from ._schema import (
@@ -49,9 +53,13 @@ from ._schema import (
     Rect,
     RectX,
     RectY,
+    Spike,
     Text,
     TextX,
     TextY,
+    Vector,
+    VectorX,
+    VectorY,
 )
 from .utils import (
     bar_styling_args,
@@ -489,4 +497,76 @@ def test_cell_y_wrapper(penguins: Data) -> None:
             ry=1,
         ),
         CellY,
+    )
+
+
+def test_vector_wrapper(penguins: Data) -> None:
+    check_component(
+        vector(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            r=5,
+            length="flipper_length",
+            rotate=45,
+            shape="arrow",
+            anchor="middle",
+            frame_anchor="middle",
+            **basic_selection_args(),
+        ),
+        Vector,
+    )
+
+
+def test_vector_x_wrapper(penguins: Data) -> None:
+    check_component(
+        vector_x(
+            penguins,
+            x="bill_length",
+            y="species",
+            r="bill_depth",
+            length=10,
+            rotate=90,
+            shape="spike",
+            anchor="start",
+            frame_anchor="left",
+            **basic_selection_args(),
+        ),
+        VectorX,
+    )
+
+
+def test_vector_y_wrapper(penguins: Data) -> None:
+    check_component(
+        vector_y(
+            penguins,
+            x="island",
+            y="body_mass",
+            r=3,
+            length="bill_depth",
+            rotate=180,
+            shape="arrow",
+            anchor="end",
+            frame_anchor="top",
+            **basic_selection_args(),
+        ),
+        VectorY,
+    )
+
+
+def test_spike_wrapper(penguins: Data) -> None:
+    check_component(
+        spike(
+            penguins,
+            x="flipper_length",
+            y="bill_length",
+            r="body_mass",
+            length=8,
+            rotate=270,
+            shape="spike",
+            anchor="middle",
+            frame_anchor="bottom",
+            **basic_selection_args(),
+        ),
+        Spike,
     )

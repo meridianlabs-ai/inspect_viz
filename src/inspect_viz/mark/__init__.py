@@ -8,6 +8,7 @@ from ._line import line, line_x, line_y
 from ._mark import Mark, MarkOptions
 from ._rect import rect, rect_x, rect_y
 from ._text import TextStyles, text, text_x, text_y
+from ._vector import spike, vector, vector_x, vector_y
 
 __all__ = [
     "Mark",
@@ -36,7 +37,11 @@ __all__ = [
     "rect",
     "rect_x",
     "rect_y",
+    "spike",
     "text",
     "text_x",
     "text_y",
+    "vector",
+    "vector_x",
+    "vector_y",
 ]
