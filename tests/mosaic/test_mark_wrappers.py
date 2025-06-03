@@ -6,7 +6,7 @@ from inspect_viz.mark import (
     bar_x,
     bar_y,
     circle,
-    dot,
+    density,
     dot_x,
     dot_y,
     hexagon,
@@ -25,6 +25,7 @@ from ._schema import (
     BarX,
     BarY,
     Circle,
+    Density,
     Dot,
     DotX,
     DotY,
@@ -43,7 +44,7 @@ from .utils import (
     line_marker_args,
     mark_position_args,
     text_positioning_args,
-    text_styles_args,
+    text_styles,
 )
 
 
@@ -256,7 +257,7 @@ def test_text_wrapper(penguins: Data) -> None:
             **mark_position_args(),
             **basic_selection_args(),
             **text_positioning_args(),
-            **text_styles_args(),
+            **dict(text_styles()),
         ),
         Text,
     )
@@ -273,7 +274,7 @@ def test_text_x_wrapper(penguins: Data) -> None:
             frame_anchor="top",
             line_anchor="top",
             rotate=90,
-            **text_styles_args(),
+            **dict(text_styles()),
         ),
         TextX,
     )
@@ -292,7 +293,32 @@ def test_text_y_wrapper(penguins: Data) -> None:
             frame_anchor="left",
             line_anchor="bottom",
             rotate=180,
-            **text_styles_args(),
+            **dict(text_styles()),
         ),
         TextY,
+    )
+
+
+def test_density_wrapper(penguins: Data) -> None:
+    check_component(
+        density(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            type="circle",
+            width=50,
+            height=40,
+            pixel_size=2.5,
+            pad=1,
+            bandwidth=15,
+            interpolate="linear",
+            symbol="hexagon",
+            r=4,
+            rotate=30,
+            frame_anchor="middle",
+            styles=text_styles(),
+        ),
+        Density,
     )

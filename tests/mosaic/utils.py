@@ -83,8 +83,8 @@ def interval_args() -> dict[str, Any]:
     }
 
 
-def text_styles_args() -> dict[str, Any]:
-    style = TextStyles(
+def text_styles() -> TextStyles:
+    return TextStyles(
         text_anchor="middle",
         line_height=1.2,
         line_width=20,
@@ -95,7 +95,6 @@ def text_styles_args() -> dict[str, Any]:
         font_variant="small-caps",
         font_weight=700,
     )
-    return dict(style)
 
 
 def text_positioning_args() -> dict[str, Any]:
