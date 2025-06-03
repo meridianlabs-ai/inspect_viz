@@ -1,5 +1,6 @@
 from ._area import area, area_x, area_y
 from ._bar import bar_x, bar_y
+from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
@@ -18,6 +19,9 @@ __all__ = [
     "area_y",
     "bar_x",
     "bar_y",
+    "cell",
+    "cell_x",
+    "cell_y",
     "circle",
     "density",
     "density_x",

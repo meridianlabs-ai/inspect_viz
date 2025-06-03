@@ -5,6 +5,9 @@ from inspect_viz.mark import (
     area_y,
     bar_x,
     bar_y,
+    cell,
+    cell_x,
+    cell_y,
     circle,
     density,
     density_x,
@@ -29,6 +32,9 @@ from ._schema import (
     AreaY,
     BarX,
     BarY,
+    Cell,
+    CellX,
+    CellY,
     Circle,
     Density,
     DensityX1,
@@ -430,4 +436,57 @@ def test_rect_y_wrapper(penguins: Data) -> None:
             z="island",
         ),
         RectY,
+    )
+
+
+def test_cell_wrapper(penguins: Data) -> None:
+    check_component(
+        cell(
+            penguins,
+            x="species",
+            y="island",
+            **basic_selection_args(),
+            inset=1,
+            inset_top=0.5,
+            inset_right=0.5,
+            inset_bottom=0.5,
+            inset_left=0.5,
+            rx=2,
+            ry=2,
+            reverse=True,
+        ),
+        Cell,
+    )
+
+
+def test_cell_x_wrapper(penguins: Data) -> None:
+    check_component(
+        cell_x(
+            penguins,
+            x="species",
+            y="island",
+            **basic_selection_args(),
+            inset=2,
+            rx=3,
+            ry=1,
+            reverse=False,
+        ),
+        CellX,
+    )
+
+
+def test_cell_y_wrapper(penguins: Data) -> None:
+    check_component(
+        cell_y(
+            penguins,
+            x="island",
+            y="species",
+            **basic_selection_args(),
+            inset=1.5,
+            inset_top=1,
+            inset_bottom=1,
+            rx=1,
+            ry=1,
+        ),
+        CellY,
     )
