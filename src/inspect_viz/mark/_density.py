@@ -167,9 +167,9 @@ def density_y(
     normalize: bool | Literal["max", "sum", "none"] | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
-    """A densityX mark that visualizes smoothed point cloud densities along the **x** dimension.
+    """A densityY mark that visualizes smoothed point cloud densities along the **y** dimension.
 
-    The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaX mark.
+    The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaY mark.
 
     Set the *type* property to use a different base mark type.
 
@@ -179,8 +179,8 @@ def density_y(
             defaults to the zero-based index of the data [0, 1, 2, …].
         z: An optional ordinal channel for grouping data into series.
         filter_by: A selection to filter the data.
-        type:  The basic mark type to use to render 1D density values. Defaults
-            to an areaY mark; lineY, dot, and text marks are also supported.
+        type: The basic mark type to use to render 1D density values. Defaults
+            to an areaY mark; lineY, dotY, circle, hexagon, and textY marks are also supported.
         stack: Flag indicating if densities should be stacked. Defaults to `False`.
         bandwidth: The kernel density bandwidth for smoothing, in pixels.
         bins: The number of bins over which to discretize the data prior to
