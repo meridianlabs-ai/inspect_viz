@@ -19,6 +19,8 @@ from inspect_viz.mark import (
     density_y,
     dot_x,
     dot_y,
+    error_bar_x,
+    error_bar_y,
     grid_fx,
     grid_fy,
     grid_x,
@@ -66,6 +68,8 @@ from ._schema import (
     Dot,
     DotX,
     DotY,
+    ErrorBarX,
+    ErrorBarY,
     GridFx,
     GridFy,
     GridX,
@@ -956,4 +960,40 @@ def test_arrow_wrapper(penguins: Data) -> None:
             **basic_selection_args(),
         ),
         Arrow,
+    )
+
+
+def test_error_bar_x_wrapper(penguins: Data) -> None:
+    check_component(
+        error_bar_x(
+            penguins,
+            x="bill_length",
+            y="species",
+            ci=0.95,
+            z="island",
+            **basic_selection_args(),
+            marker="tick",
+            marker_start="circle",
+            marker_mid="dot",
+            marker_end="square",
+        ),
+        ErrorBarX,
+    )
+
+
+def test_error_bar_y_wrapper(penguins: Data) -> None:
+    check_component(
+        error_bar_y(
+            penguins,
+            y="body_mass",
+            x="island",
+            ci=0.90,
+            z="species",
+            **basic_selection_args(),
+            marker="circle",
+            marker_start="tick",
+            marker_mid="circle-fill",
+            marker_end="tick-x",
+        ),
+        ErrorBarY,
     )
