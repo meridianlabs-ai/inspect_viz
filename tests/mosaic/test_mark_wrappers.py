@@ -28,11 +28,14 @@ from inspect_viz.mark import (
     grid_fy,
     grid_x,
     grid_y,
+    heatmap,
     hexagon,
     hull,
     line,
     line_x,
     line_y,
+    raster,
+    raster_tile,
     rect,
     rect_x,
     rect_y,
@@ -84,11 +87,14 @@ from ._schema import (
     GridFy,
     GridX,
     GridY,
+    Heatmap,
     Hexagon,
     Hull,
     Line,
     LineX,
     LineY,
+    Raster,
+    RasterTile,
     Rect,
     RectX,
     RectY,
@@ -1139,4 +1145,65 @@ def test_voronoi_mesh_wrapper(penguins: Data) -> None:
             tension=0.4,
         ),
         VoronoiMesh,
+    )
+
+
+def test_raster_wrapper(penguins: Data) -> None:
+    check_component(
+        raster(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            **basic_selection_args(),
+            width=50,
+            height=40,
+            pixel_size=2.0,
+            pad=1.0,
+            interpolate="linear",
+            bandwidth=15.0,
+            image_filter="blur(2px)",
+            image_rendering="pixelated",
+        ),
+        Raster,
+    )
+
+
+def test_heatmap_wrapper(penguins: Data) -> None:
+    check_component(
+        heatmap(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            **basic_selection_args(),
+            width=60,
+            height=50,
+            pixel_size=1.5,
+            pad=0.0,
+            interpolate="nearest",
+            bandwidth=20.0,
+            image_filter="contrast(1.2)",
+            image_rendering="auto",
+        ),
+        Heatmap,
+    )
+
+
+def test_raster_tile_wrapper(penguins: Data) -> None:
+    check_component(
+        raster_tile(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            **basic_selection_args(),
+            origin=[0.0, 0.0],
+            width=40,
+            height=30,
+            pixel_size=3.0,
+            pad=1.0,
+            interpolate="barycentric",
+            bandwidth=10.0,
+            image_filter="saturate(1.5)",
+            image_rendering="pixelated",
+        ),
+        RasterTile,
     )

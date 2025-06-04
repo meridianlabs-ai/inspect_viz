@@ -12,6 +12,7 @@ from ._error_bar import error_bar_x, error_bar_y
 from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
 from ._mark import Mark, MarkOptions
+from ._raster import heatmap, raster, raster_tile
 from ._rect import rect, rect_x, rect_y
 from ._regression import regression_y
 from ._rule import rule_x, rule_y
@@ -54,11 +55,14 @@ __all__ = [
     "grid_fy",
     "grid_x",
     "grid_y",
+    "heatmap",
     "hexagon",
     "hull",
     "line",
     "line_x",
     "line_y",
+    "raster",
+    "raster_tile",
     "rect",
     "rect_x",
     "rect_y",
