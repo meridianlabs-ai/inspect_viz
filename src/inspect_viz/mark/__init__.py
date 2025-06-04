@@ -5,6 +5,7 @@ from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
+from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
 from ._mark import Mark, MarkOptions
 from ._rect import rect, rect_x, rect_y
@@ -38,6 +39,10 @@ __all__ = [
     "dot",
     "dot_x",
     "dot_y",
+    "grid_fx",
+    "grid_fy",
+    "grid_x",
+    "grid_y",
     "hexagon",
     "line",
     "line_x",

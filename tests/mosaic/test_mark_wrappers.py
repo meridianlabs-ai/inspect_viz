@@ -18,6 +18,10 @@ from inspect_viz.mark import (
     density_y,
     dot_x,
     dot_y,
+    grid_fx,
+    grid_fy,
+    grid_x,
+    grid_y,
     hexagon,
     line,
     line_x,
@@ -60,6 +64,10 @@ from ._schema import (
     Dot,
     DotX,
     DotY,
+    GridFx,
+    GridFy,
+    GridX,
+    GridY,
     Hexagon,
     Line,
     LineX,
@@ -839,4 +847,88 @@ def test_axis_fy_wrapper(penguins: Data) -> None:
             label_arrow="yes",
         ),
         AxisFy,
+    )
+
+
+def test_grid_x_wrapper(penguins: Data) -> None:
+    check_component(
+        grid_x(
+            x="bill_length",
+            y1="island",
+            y2="species",
+            interval="day",
+            anchor="bottom",
+            color="lightgray",
+            ticks=5,
+            tick_spacing=30,
+            stroke="gray",
+            stroke_width=1,
+            stroke_opacity=0.5,
+            stroke_dasharray="2,2",
+        ),
+        GridX,
+    )
+
+
+def test_grid_y_wrapper(penguins: Data) -> None:
+    check_component(
+        grid_y(
+            y="body_mass",
+            x1="bill_depth",
+            x2="flipper_length",
+            interval="week",
+            anchor="left",
+            color="lightblue",
+            ticks=[2000, 3000, 4000, 5000],
+            tick_spacing=40,
+            inset_left=5,
+            inset_right=10,
+            stroke="blue",
+            stroke_width=0.8,
+            stroke_opacity=0.7,
+            stroke_dasharray="3,1",
+        ),
+        GridY,
+    )
+
+
+def test_grid_fx_wrapper(penguins: Data) -> None:
+    check_component(
+        grid_fx(
+            x="bill_depth",
+            y1="body_mass",
+            y2="flipper_length",
+            interval="month",
+            anchor="top",
+            color="lightgreen",
+            ticks=8,
+            tick_spacing=25,
+            stroke="green",
+            stroke_width=1.2,
+            stroke_opacity=0.6,
+            stroke_dasharray="4,2",
+        ),
+        GridFx,
+    )
+
+
+def test_grid_fy_wrapper(penguins: Data) -> None:
+    check_component(
+        grid_fy(
+            y="flipper_length",
+            x1="bill_length",
+            x2="body_mass",
+            interval="year",
+            anchor="right",
+            color="lightyellow",
+            ticks=[190, 210, 230],
+            tick_spacing=50,
+            inset_left=2,
+            inset_right=8,
+            stroke="orange",
+            stroke_width=1.5,
+            stroke_opacity=0.8,
+            stroke_dasharray="5,3",
+        ),
+        GridFy,
     )
