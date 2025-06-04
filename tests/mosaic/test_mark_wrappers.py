@@ -3,6 +3,7 @@ from inspect_viz.mark import (
     area,
     area_x,
     area_y,
+    arrow,
     axis_fx,
     axis_fy,
     axis_x,
@@ -48,6 +49,7 @@ from ._schema import (
     Area,
     AreaX,
     AreaY,
+    Arrow,
     AxisFx,
     AxisFy,
     AxisX,
@@ -931,4 +933,27 @@ def test_grid_fy_wrapper(penguins: Data) -> None:
             stroke_dasharray="5,3",
         ),
         GridFy,
+    )
+
+
+def test_arrow_wrapper(penguins: Data) -> None:
+    check_component(
+        arrow(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            x1="bill_depth",
+            y1="flipper_length",
+            x2="bill_length",
+            y2="body_mass",
+            bend=30.0,
+            head_angle=45.0,
+            head_length=10.0,
+            inset=2.0,
+            inset_start=1.0,
+            inset_end=3.0,
+            sweep=1.0,
+            **basic_selection_args(),
+        ),
+        Arrow,
     )
