@@ -4,6 +4,7 @@ from ._axis import axis_fx, axis_fy, axis_x, axis_y
 from ._bar import bar_x, bar_y
 from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
+from ._contour import contour
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
@@ -37,6 +38,7 @@ __all__ = [
     "cell_x",
     "cell_y",
     "circle",
+    "contour",
     "density",
     "density_x",
     "density_y",

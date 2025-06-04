@@ -14,6 +14,7 @@ from inspect_viz.mark import (
     cell_x,
     cell_y,
     circle,
+    contour,
     density,
     density_x,
     density_y,
@@ -63,6 +64,7 @@ from ._schema import (
     CellX,
     CellY,
     Circle,
+    Contour,
     Density,
     DensityX1,
     DensityY1,
@@ -1013,4 +1015,23 @@ def test_regression_y_wrapper(penguins: Data) -> None:
             precision=4.0,
         ),
         RegressionY,
+    )
+
+
+def test_contour_wrapper(penguins: Data) -> None:
+    check_component(
+        contour(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            **basic_selection_args(),
+            thresholds=10,
+            bandwidth=15.0,
+            width=50,
+            height=40,
+            pixel_size=2.0,
+            pad=1.0,
+            interpolate="linear",
+        ),
+        Contour,
     )
