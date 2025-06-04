@@ -34,6 +34,7 @@ from inspect_viz.mark import (
     line,
     line_x,
     line_y,
+    link,
     raster,
     raster_tile,
     rect,
@@ -93,6 +94,7 @@ from ._schema import (
     Line,
     LineX,
     LineY,
+    Link,
     Raster,
     RasterTile,
     Rect,
@@ -1206,4 +1208,26 @@ def test_raster_tile_wrapper(penguins: Data) -> None:
             image_rendering="pixelated",
         ),
         RasterTile,
+    )
+
+
+def test_link_wrapper(penguins: Data) -> None:
+    check_component(
+        link(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            x1="bill_depth",
+            y1="flipper_length",
+            x2="bill_length",
+            y2="body_mass",
+            **basic_selection_args(),
+            marker="circle",
+            marker_start="arrow",
+            marker_mid="dot",
+            marker_end="arrow-reverse",
+            curve="linear",
+            tension=0.5,
+        ),
+        Link,
     )

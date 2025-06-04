@@ -11,6 +11,7 @@ from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
 from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
+from ._link import link
 from ._mark import Mark, MarkOptions
 from ._raster import heatmap, raster, raster_tile
 from ._rect import rect, rect_x, rect_y
@@ -61,6 +62,7 @@ __all__ = [
     "line",
     "line_x",
     "line_y",
+    "link",
     "raster",
     "raster_tile",
     "rect",
