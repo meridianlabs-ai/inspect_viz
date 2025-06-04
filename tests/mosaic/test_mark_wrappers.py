@@ -15,6 +15,8 @@ from inspect_viz.mark import (
     cell_y,
     circle,
     contour,
+    delaunay_link,
+    delaunay_mesh,
     density,
     density_x,
     density_y,
@@ -27,6 +29,7 @@ from inspect_viz.mark import (
     grid_x,
     grid_y,
     hexagon,
+    hull,
     line,
     line_x,
     line_y,
@@ -45,6 +48,8 @@ from inspect_viz.mark import (
     vector,
     vector_x,
     vector_y,
+    voronoi,
+    voronoi_mesh,
     waffle_x,
     waffle_y,
 )
@@ -65,6 +70,8 @@ from ._schema import (
     CellY,
     Circle,
     Contour,
+    DelaunayLink,
+    DelaunayMesh,
     Density,
     DensityX1,
     DensityY1,
@@ -78,6 +85,7 @@ from ._schema import (
     GridX,
     GridY,
     Hexagon,
+    Hull,
     Line,
     LineX,
     LineY,
@@ -96,6 +104,8 @@ from ._schema import (
     Vector,
     VectorX,
     VectorY,
+    Voronoi,
+    VoronoiMesh,
     WaffleX,
     WaffleY,
 )
@@ -1034,4 +1044,99 @@ def test_contour_wrapper(penguins: Data) -> None:
             interpolate="linear",
         ),
         Contour,
+    )
+
+
+def test_delaunay_link_wrapper(penguins: Data) -> None:
+    check_component(
+        delaunay_link(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            marker="circle",
+            marker_start="arrow",
+            marker_mid="dot",
+            marker_end="arrow-reverse",
+            curve="linear",
+            tension=0.5,
+        ),
+        DelaunayLink,
+    )
+
+
+def test_delaunay_mesh_wrapper(penguins: Data) -> None:
+    check_component(
+        delaunay_mesh(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            marker="tick",
+            marker_start="circle-fill",
+            marker_mid="circle-stroke",
+            marker_end="tick-x",
+            curve="basis",
+            tension=0.8,
+        ),
+        DelaunayMesh,
+    )
+
+
+def test_hull_wrapper(penguins: Data) -> None:
+    check_component(
+        hull(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            marker="dot",
+            marker_start="tick-y",
+            marker_mid="circle",
+            marker_end="tick",
+            curve="cardinal",
+            tension=0.3,
+        ),
+        Hull,
+    )
+
+
+def test_voronoi_wrapper(penguins: Data) -> None:
+    check_component(
+        voronoi(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            marker="circle-stroke",
+            marker_start="arrow-reverse",
+            marker_mid="tick-x",
+            marker_end="circle-fill",
+            curve="monotone-x",
+            tension=0.7,
+        ),
+        Voronoi,
+    )
+
+
+def test_voronoi_mesh_wrapper(penguins: Data) -> None:
+    check_component(
+        voronoi_mesh(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            marker="tick-y",
+            marker_start="dot",
+            marker_mid="arrow",
+            marker_end="circle",
+            curve="catmull-rom",
+            tension=0.4,
+        ),
+        VoronoiMesh,
     )

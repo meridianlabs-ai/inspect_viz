@@ -5,6 +5,7 @@ from ._bar import bar_x, bar_y
 from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
 from ._contour import contour
+from ._delaunay import delaunay_link, delaunay_mesh, hull, voronoi, voronoi_mesh
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
@@ -39,6 +40,8 @@ __all__ = [
     "cell_y",
     "circle",
     "contour",
+    "delaunay_link",
+    "delaunay_mesh",
     "density",
     "density_x",
     "density_y",
@@ -52,6 +55,7 @@ __all__ = [
     "grid_x",
     "grid_y",
     "hexagon",
+    "hull",
     "line",
     "line_x",
     "line_y",
@@ -70,6 +74,8 @@ __all__ = [
     "vector",
     "vector_x",
     "vector_y",
+    "voronoi",
+    "voronoi_mesh",
     "waffle_x",
     "waffle_y",
 ]
