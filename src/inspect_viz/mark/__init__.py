@@ -1,4 +1,5 @@
 from ._area import area, area_x, area_y
+from ._axis import axis_fx, axis_fy, axis_x, axis_y
 from ._bar import bar_x, bar_y
 from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
@@ -21,6 +22,10 @@ __all__ = [
     "area",
     "area_x",
     "area_y",
+    "axis_fx",
+    "axis_fy",
+    "axis_x",
+    "axis_y",
     "bar_x",
     "bar_y",
     "cell",
