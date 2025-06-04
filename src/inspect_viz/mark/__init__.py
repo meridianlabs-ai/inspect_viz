@@ -11,6 +11,7 @@ from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
 from ._mark import Mark, MarkOptions
 from ._rect import rect, rect_x, rect_y
+from ._regression import regression_y
 from ._rule import rule_x, rule_y
 from ._text import TextStyles, text, text_x, text_y
 from ._tick import tick_x, tick_y
@@ -55,6 +56,7 @@ __all__ = [
     "rect",
     "rect_x",
     "rect_y",
+    "regression_y",
     "rule_x",
     "rule_y",
     "spike",

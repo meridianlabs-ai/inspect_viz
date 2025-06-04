@@ -32,6 +32,7 @@ from inspect_viz.mark import (
     rect,
     rect_x,
     rect_y,
+    regression_y,
     rule_x,
     rule_y,
     spike,
@@ -81,6 +82,7 @@ from ._schema import (
     Rect,
     RectX,
     RectY,
+    RegressionY,
     RuleX,
     RuleY,
     Spike,
@@ -996,4 +998,19 @@ def test_error_bar_y_wrapper(penguins: Data) -> None:
             marker_end="tick-x",
         ),
         ErrorBarY,
+    )
+
+
+def test_regression_y_wrapper(penguins: Data) -> None:
+    check_component(
+        regression_y(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            ci=0.95,
+            precision=4.0,
+        ),
+        RegressionY,
     )
