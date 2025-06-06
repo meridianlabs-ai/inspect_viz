@@ -8,9 +8,7 @@ from ..transform import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
-from ._types import FrameAnchor, Symbol
-
-Interpolate = Literal["none", "linear", "nearest", "barycentric", "random-walk"]
+from ._types import FrameAnchor, Interpolate, Symbol
 
 DensityType = Literal["dot", "circle", "hexagon", "cell", "text"]
 

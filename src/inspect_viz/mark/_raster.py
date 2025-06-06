@@ -7,8 +7,7 @@ from .._util.marshall import dict_remove_none
 from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
-
-Interpolate = Literal["none", "linear", "nearest", "barycentric", "random-walk"]
+from ._types import Interpolate
 
 
 def raster(
@@ -22,7 +21,6 @@ def raster(
     pad: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     bandwidth: float | Param | None = None,
-    image_filter: str | Param | None = None,
     image_rendering: str | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:

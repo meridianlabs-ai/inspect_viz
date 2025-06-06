@@ -7,8 +7,7 @@ from .._util.marshall import dict_remove_none
 from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
-
-Interpolate = Literal["none", "linear", "nearest", "barycentric", "random-walk"]
+from ._types import Interpolate
 
 
 def contour(
