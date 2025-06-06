@@ -6,6 +6,7 @@ from ._cell import cell, cell_x, cell_y
 from ._channel import Channel
 from ._contour import contour
 from ._delaunay import delaunay_link, delaunay_mesh, hull, voronoi, voronoi_mesh
+from ._dense import dense_line
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
@@ -44,6 +45,7 @@ __all__ = [
     "contour",
     "delaunay_link",
     "delaunay_mesh",
+    "dense_line",
     "density",
     "density_x",
     "density_y",

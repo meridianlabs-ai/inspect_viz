@@ -17,6 +17,7 @@ from inspect_viz.mark import (
     contour,
     delaunay_link,
     delaunay_mesh,
+    dense_line,
     density,
     density_x,
     density_y,
@@ -76,6 +77,7 @@ from ._schema import (
     Contour,
     DelaunayLink,
     DelaunayMesh,
+    DenseLine,
     Density,
     DensityX1,
     DensityY1,
@@ -1230,4 +1232,24 @@ def test_link_wrapper(penguins: Data) -> None:
             tension=0.5,
         ),
         Link,
+    )
+
+
+def test_dense_line_wrapper(penguins: Data) -> None:
+    check_component(
+        dense_line(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            bandwidth=15.0,
+            normalize=True,
+            interpolate="linear",
+            width=50,
+            height=40,
+            pixel_size=2.0,
+            pad=1.0,
+        ),
+        DenseLine,
     )

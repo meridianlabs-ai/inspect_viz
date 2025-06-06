@@ -1,5 +1,8 @@
 from typing import Literal, TypeAlias
 
+Interpolate = Literal["none", "linear", "nearest", "barycentric", "random-walk"]
+
+
 Symbol: TypeAlias = Literal[
     "asterisk",
     "circle",
