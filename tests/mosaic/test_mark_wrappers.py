@@ -37,6 +37,7 @@ from inspect_viz.mark import (
     hexbin,
     hexgrid,
     hull,
+    image,
     line,
     line_x,
     line_y,
@@ -104,6 +105,7 @@ from ._schema import (
     Hexbin,
     Hexgrid,
     Hull,
+    Image,
     Line,
     LineX,
     LineY,
@@ -1334,4 +1336,25 @@ def test_hexgrid_wrapper() -> None:
             stroke_opacity=0.5,
         ),
         Hexgrid,
+    )
+
+
+def test_image_wrapper(penguins: Data) -> None:
+    check_component(
+        image(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            width=50,
+            height=40,
+            r=25.0,
+            rotate=45.0,
+            src="image_url",
+            preserve_aspect_ratio="xMidYMid meet",
+            cross_origin="anonymous",
+            frame_anchor="middle",
+            image_rendering="auto",
+            **basic_selection_args(),
+        ),
+        Image,
     )
