@@ -21,7 +21,6 @@ def raster(
     pad: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     bandwidth: float | Param | None = None,
-    image_filter: str | Param | None = None,
     image_rendering: str | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -51,8 +50,6 @@ def raster(
             - *barycentric* - apply barycentric interpolation over the Delaunay triangulation
             - *random-walk* - apply a random walk from each pixel
         bandwidth: The kernel density bandwidth for smoothing, in pixels.
-        image_filter: A CSS filter; a constant string used to adjust the rendering of
-            images, such as *blur(5px)*.
         image_rendering: The image-rendering attribute; defaults to *auto* (bilinear).
             May be set to *pixelated* to disable bilinear interpolation for a sharper image.
         **options: Additional mark options from MarkOptions.
@@ -71,7 +68,6 @@ def raster(
             pad=pad,
             interpolate=interpolate,
             bandwidth=bandwidth,
-            imageFilter=image_filter,
             imageRendering=image_rendering,
         )
     )
@@ -90,7 +86,6 @@ def heatmap(
     pad: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     bandwidth: float | Param | None = None,
-    image_filter: str | Param | None = None,
     image_rendering: str | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -120,8 +115,6 @@ def heatmap(
             - *barycentric* - apply barycentric interpolation over the Delaunay triangulation
             - *random-walk* - apply a random walk from each pixel
         bandwidth: The kernel density bandwidth for smoothing, in pixels; defaults to 20.
-        image_filter: A CSS filter; a constant string used to adjust the rendering of
-            images, such as *blur(5px)*.
         image_rendering: The image-rendering attribute; defaults to *auto* (bilinear).
             May be set to *pixelated* to disable bilinear interpolation for a sharper image.
         **options: Additional mark options from MarkOptions.
@@ -140,7 +133,6 @@ def heatmap(
             pad=pad,
             interpolate=interpolate,
             bandwidth=bandwidth,
-            imageFilter=image_filter,
             imageRendering=image_rendering,
         )
     )
@@ -160,7 +152,6 @@ def raster_tile(
     pad: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     bandwidth: float | Param | None = None,
-    image_filter: str | Param | None = None,
     image_rendering: str | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -192,8 +183,6 @@ def raster_tile(
             - *barycentric* - apply barycentric interpolation over the Delaunay triangulation
             - *random-walk* - apply a random walk from each pixel
         bandwidth: The kernel density bandwidth for smoothing, in pixels.
-        image_filter: A CSS filter; a constant string used to adjust the rendering of
-            images, such as *blur(5px)*.
         image_rendering: The image-rendering attribute; defaults to *auto* (bilinear).
             May be set to *pixelated* to disable bilinear interpolation for a sharper image.
         **options: Additional mark options from MarkOptions.
@@ -213,7 +202,6 @@ def raster_tile(
             pad=pad,
             interpolate=interpolate,
             bandwidth=bandwidth,
-            imageFilter=image_filter,
             imageRendering=image_rendering,
         )
     )
