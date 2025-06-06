@@ -14,6 +14,7 @@ from ._frame import frame
 from ._geo import geo, graticule, sphere
 from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._hexbin import hexbin
+from ._hexgrid import hexgrid
 from ._line import line, line_x, line_y
 from ._link import link
 from ._mark import Mark, MarkOptions
@@ -67,6 +68,7 @@ __all__ = [
     "heatmap",
     "hexagon",
     "hexbin",
+    "hexgrid",
     "hull",
     "line",
     "line_x",

@@ -35,6 +35,7 @@ from inspect_viz.mark import (
     heatmap,
     hexagon,
     hexbin,
+    hexgrid,
     hull,
     line,
     line_x,
@@ -101,6 +102,7 @@ from ._schema import (
     Heatmap,
     Hexagon,
     Hexbin,
+    Hexgrid,
     Hull,
     Line,
     LineX,
@@ -1320,4 +1322,16 @@ def test_hexbin_wrapper(penguins: Data) -> None:
             styles=text_styles(),
         ),
         Hexbin,
+    )
+
+
+def test_hexgrid_wrapper() -> None:
+    check_component(
+        hexgrid(
+            bin_width=25.0,
+            stroke="lightgray",
+            stroke_width=1,
+            stroke_opacity=0.5,
+        ),
+        Hexgrid,
     )
