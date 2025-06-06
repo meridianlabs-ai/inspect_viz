@@ -34,6 +34,7 @@ from inspect_viz.mark import (
     grid_y,
     heatmap,
     hexagon,
+    hexbin,
     hull,
     line,
     line_x,
@@ -99,6 +100,7 @@ from ._schema import (
     GridY,
     Heatmap,
     Hexagon,
+    Hexbin,
     Hull,
     Line,
     LineX,
@@ -1299,4 +1301,23 @@ def test_graticule_wrapper() -> None:
     check_component(
         graticule(),
         Graticule,
+    )
+
+
+def test_hexbin_wrapper(penguins: Data) -> None:
+    check_component(
+        hexbin(
+            penguins,
+            x="bill_length",
+            y="body_mass",
+            z="species",
+            **basic_selection_args(),
+            bin_width=25.0,
+            type="hexagon",
+            r=8.0,
+            rotate=30.0,
+            frame_anchor="middle",
+            styles=text_styles(),
+        ),
+        Hexbin,
     )
