@@ -10,6 +10,7 @@ from ._dense import dense_line
 from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
+from ._frame import frame
 from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
 from ._link import link
@@ -54,6 +55,7 @@ __all__ = [
     "dot_y",
     "error_bar_x",
     "error_bar_y",
+    "frame",
     "grid_fx",
     "grid_fy",
     "grid_x",

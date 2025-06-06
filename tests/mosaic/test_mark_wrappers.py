@@ -25,6 +25,7 @@ from inspect_viz.mark import (
     dot_y,
     error_bar_x,
     error_bar_y,
+    frame,
     grid_fx,
     grid_fy,
     grid_x,
@@ -86,6 +87,7 @@ from ._schema import (
     DotY,
     ErrorBarX,
     ErrorBarY,
+    Frame,
     GridFx,
     GridFy,
     GridX,
@@ -1252,4 +1254,20 @@ def test_dense_line_wrapper(penguins: Data) -> None:
             pad=1.0,
         ),
         DenseLine,
+    )
+
+
+def test_frame_wrapper() -> None:
+    check_component(
+        frame(
+            anchor="bottom",
+            inset=5.0,
+            inset_top=2.0,
+            inset_right=3.0,
+            inset_bottom=4.0,
+            inset_left=1.0,
+            rx=5,
+            ry=3,
+        ),
+        Frame,
     )

@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any
 
 from typing_extensions import Unpack
 
@@ -21,6 +21,7 @@ def raster(
     pad: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     bandwidth: float | Param | None = None,
+    image_filter: str | Param | None = None,
     image_rendering: str | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
