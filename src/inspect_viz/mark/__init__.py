@@ -11,6 +11,7 @@ from ._density import density, density_x, density_y
 from ._dot import circle, dot, dot_x, dot_y, hexagon
 from ._error_bar import error_bar_x, error_bar_y
 from ._frame import frame
+from ._geo import geo, graticule, sphere
 from ._grid import grid_fx, grid_fy, grid_x, grid_y
 from ._line import line, line_x, line_y
 from ._link import link
@@ -56,6 +57,8 @@ __all__ = [
     "error_bar_x",
     "error_bar_y",
     "frame",
+    "geo",
+    "graticule",
     "grid_fx",
     "grid_fy",
     "grid_x",
@@ -75,6 +78,7 @@ __all__ = [
     "regression_y",
     "rule_x",
     "rule_y",
+    "sphere",
     "spike",
     "text",
     "text_x",

@@ -26,6 +26,8 @@ from inspect_viz.mark import (
     error_bar_x,
     error_bar_y,
     frame,
+    geo,
+    graticule,
     grid_fx,
     grid_fy,
     grid_x,
@@ -45,6 +47,7 @@ from inspect_viz.mark import (
     regression_y,
     rule_x,
     rule_y,
+    sphere,
     spike,
     text,
     text_x,
@@ -88,6 +91,8 @@ from ._schema import (
     ErrorBarX,
     ErrorBarY,
     Frame,
+    Geo,
+    Graticule,
     GridFx,
     GridFy,
     GridX,
@@ -107,6 +112,7 @@ from ._schema import (
     RegressionY,
     RuleX,
     RuleY,
+    Sphere,
     Spike,
     Text,
     TextX,
@@ -1267,4 +1273,30 @@ def test_frame_wrapper() -> None:
             ry=3,
         ),
         Frame,
+    )
+
+
+def test_geo_wrapper(penguins: Data) -> None:
+    check_component(
+        geo(
+            penguins,
+            geometry="bill_length",
+            r=5.0,
+            **basic_selection_args(),
+        ),
+        Geo,
+    )
+
+
+def test_sphere_wrapper() -> None:
+    check_component(
+        sphere(),
+        Sphere,
+    )
+
+
+def test_graticule_wrapper() -> None:
+    check_component(
+        graticule(),
+        Graticule,
     )
