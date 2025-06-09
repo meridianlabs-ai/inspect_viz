@@ -4,9 +4,9 @@ from .._core import Component, Data, Param, Selection
 
 
 def select(
-    label: str | None = None,
     data: Data | None = None,
     *,
+    label: str | None = None,
     column: str | None = None,
     field: str | None = None,
     selection: Selection | None = None,
@@ -17,8 +17,8 @@ def select(
     """Select input widget.
 
     Args:
-       label: A text label for this input (optional).
        data: The data source for input selections (used in conjunction with the `column` property). If `data` is not specified, you must provide explcit `options`.
+       label: A text label for this input (optional).
        column: The name of a column from which to pull options. The unique column values are used as options. Used in conjunction with the `data` property.
        field: The data column name to use within generated selection clause predicates. Defaults to the `column` property.
        selection: A selection to target with the selected `column` or `field` (defaults to the data source selection).
