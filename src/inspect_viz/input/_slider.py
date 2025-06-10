@@ -36,7 +36,7 @@ def slider(
        step: The slider step, the amount to increment between consecutive values.
        width: The width of the slider in screen pixels.
     """
-    menu: dict[str, Any] = dict_remove_none(
+    config: dict[str, Any] = dict_remove_none(
         {
             "input": "slider",
             "value": value,
@@ -48,27 +48,27 @@ def slider(
     )
 
     if label is not None:
-        menu["label"] = f"{label}: "
+        config["label"] = f"{label}: "
 
     if data is not None:
         # set data table and as_
-        menu["from"] = data.table
-        menu["as"] = param or selection or data.selection
+        config["from"] = data.table
+        config["as"] = param or selection or data.selection
 
         # validate and set column
         if column is None:
             raise ValueError("You must pass a `column` value along with `data`")
-        menu["column"] = column
+        config["column"] = column
 
         # set field (optional, defaults to column)
         if field is not None:
-            menu["field"] = field
+            config["field"] = field
 
         # set filter_by
         if filter_by is not None:
-            menu["filterBy"] = filter_by
+            config["filterBy"] = filter_by
     else:
-        menu["as"] = param or selection
+        config["as"] = param or selection
 
     # return widget
-    return Component(config=menu)
+    return Component(config=config)
