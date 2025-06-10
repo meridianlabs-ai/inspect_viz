@@ -67,7 +67,7 @@ class TextStyles(TypedDict, total=False):
 
 
 def text(
-    data: Data,
+    data: Data | None,
     x: Channel | Param,
     y: Channel | Param,
     z: Channel | Param | None = None,
@@ -96,7 +96,7 @@ def text(
     """
     config: dict[str, Any] = dict_remove_none(
         dict(
-            data=data.plot_from(filter_by),
+            data=data.plot_from(filter_by) if data else None,
             x=column(x) if isinstance(x, str) else x,
             y=column(y) if isinstance(y, str) else y,
             z=column(z) if isinstance(z, str) else z,
@@ -112,7 +112,7 @@ def text(
 
 
 def text_x(
-    data: Data,
+    data: Data | None,
     x: Channel | Param,
     y: Channel | Param | None = None,
     z: Channel | Param | None = None,
@@ -147,7 +147,7 @@ def text_x(
     """
     config: dict[str, Any] = dict_remove_none(
         dict(
-            data=data.plot_from(filter_by),
+            data=data.plot_from(filter_by) if data else None,
             x=column(x) if isinstance(x, str) else x,
             y=column(y) if isinstance(y, str) else y,
             z=column(z) if isinstance(z, str) else z,
@@ -164,7 +164,7 @@ def text_x(
 
 
 def text_y(
-    data: Data,
+    data: Data | None,
     y: Channel | Param,
     x: Channel | Param | None = None,
     z: Channel | Param | None = None,
@@ -199,7 +199,7 @@ def text_y(
     """
     config: dict[str, Any] = dict_remove_none(
         dict(
-            data=data.plot_from(filter_by),
+            data=data.plot_from(filter_by) if data else None,
             y=column(y) if isinstance(y, str) else y,
             x=column(x) if isinstance(x, str) else x,
             z=column(z) if isinstance(z, str) else z,
