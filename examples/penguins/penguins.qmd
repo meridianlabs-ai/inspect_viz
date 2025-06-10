@@ -24,9 +24,9 @@ y_axis = Param("flipper_length")
 ## Row {.toolbar}
 
 ```{python}
-select("Species", penguins, column="species")
-select("X", options=axes, param=x_axis)
-select("Y", options=axes, param=y_axis)
+select(penguins, label="Species", column="species")
+select(label="X", options=axes, param=x_axis)
+select(label="Y", options=axes, param=y_axis)
 ```
 
 ## Row
