@@ -56,11 +56,4 @@ def plot_defaults_as_camel() -> dict[str, Any]:
 
 _plot_defaults = PlotDefaults()
 
-_builtin_plot_defaults = PlotDefaults(
-    x_domain="Fixed",
-    y_domain="Fixed",
-    xy_domain="Fixed",
-    r_domain="Fixed",
-    fx_domain="Fixed",
-    fy_domain="Fixed",
-)
+_builtin_plot_defaults = PlotDefaults()
