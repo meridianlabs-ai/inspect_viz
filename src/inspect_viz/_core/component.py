@@ -115,7 +115,12 @@ def all_params() -> dict[str, JsonValue]:
 
     for selection in VizSelection.get_all():
         all_params[selection.id] = dict_remove_none(
-            dict(select=selection.select, cross=selection.cross, empty=selection.empty)
+            dict(
+                select=selection.select,
+                cross=selection.cross,
+                empty=selection.empty,
+                include=selection.include,
+            )
         )
 
     return cast(dict[str, JsonValue], to_jsonable_python(all_params, exclude_none=True))

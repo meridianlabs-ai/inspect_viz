@@ -1,0 +1,56 @@
+---
+title: "Olympic Athletes"
+format: dashboard
+execute: 
+  echo: false
+  daemon: false
+---
+
+An interactive dashboard of athlete statistics. The menus and searchbox filter the display and are automatically populated by backing data columns.
+
+
+```{python}
+from inspect_viz import Data, Selection
+from inspect_viz.input import search, select, table
+from inspect_viz.interactor import Brush, interval_xy
+from inspect_viz.layout import hconcat
+from inspect_viz.mark import dot, regression_y
+from inspect_viz.plot import plot
+
+athletes = Data("athletes.parquet")
+
+category = Selection("intersect")
+query = Selection("intersect", include=category)
+hover = Selection("intersect", empty=True)
+```
+
+## Row {.toolbar}
+
+```{python}
+select(athletes, label="Sport", column="sport", selection=category)
+select(athletes, label="Sex", column="sex", selection=category)
+search(
+    athletes,
+    label="Name",
+    column="name",
+    filter_by=category,
+    selection=query,
+    type="contains",
+)
+```
+
+## Row
+
+```{python}
+plot([
+    dot(athletes, filter_by=query, x="weight", y="height", fill="sex", r=2, opacity=0.1),
+    regression_y(athletes, filter_by=query, x="weight", y="height", stroke="sex"),
+    interval_xy(selection=query, brush=Brush(fill_opacity=0, stroke="black"))
+])
+```
+
+## Row
+
+```{python}
+table(athletes)
+```

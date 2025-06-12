@@ -1,4 +1,4 @@
-from typing import ClassVar, Literal
+from typing import ClassVar, Literal, Union
 
 from shortuuid import uuid
 
@@ -12,6 +12,7 @@ class Selection(str):
     _select: Literal["crossfilter", "intersect", "single", "union"]
     _cross: bool | None
     _empty: bool | None
+    _include: Union["Selection", list["Selection"] | None]
 
     def __new__(
         cls,
@@ -20,6 +21,7 @@ class Selection(str):
         cross: bool | None = None,
         empty: bool | None = None,
         unique: str | None = None,
+        include: Union["Selection", list["Selection"] | None] = None,
     ) -> "Selection":
         # assign a unique id
         id = f"{SELECTION_PREFIX}{unique or uuid()}"
@@ -32,6 +34,7 @@ class Selection(str):
         instance._select = select
         instance._cross = cross
         instance._empty = empty
+        instance._include = include
 
         # track and return instance
         Selection._instances.append(instance)
@@ -68,6 +71,14 @@ class Selection(str):
         """
         return self._empty
 
+    @property
+    def include(self) -> Union["Selection", list["Selection"] | None]:
+        """Upstream selections whose clauses should be included as part of this selection.
+
+        Any clauses or activations published to the upstream selections will be relayed to this selection.
+        """
+        return self._include
+
     def __repr__(self) -> str:
         # start with selection
         repr = f"Selection(select={self.select}"
@@ -81,6 +92,12 @@ class Selection(str):
         # include empty if specified
         if self.empty is not None:
             repr = f"{repr},empty={self.empty}"
+
+        if self._include is not None:
+            include = (
+                self._include if isinstance(self._include, list) else [self._include]
+            )
+            repr = f"{repr},selection={','.join(include)}"
 
         # close out and return
         return f"{repr})"
