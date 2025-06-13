@@ -42,15 +42,44 @@ search(
 ## Row
 
 ```{python}
-plot([
-    dot(athletes, filter_by=query, x="weight", y="height", fill="sex", r=2, opacity=0.1),
-    regression_y(athletes, filter_by=query, x="weight", y="height", stroke="sex"),
-    interval_xy(selection=query, brush=Brush(fill_opacity=0, stroke="black"))
-])
+plot(
+    [
+        dot(
+            athletes,
+            filter_by=query,
+            x="weight",
+            y="height",
+            fill="sex",
+            r=2,
+            opacity=0.1,
+        ),
+        regression_y(athletes, filter_by=query, x="weight", y="height", stroke="sex"),
+        interval_xy(selection=query, brush=Brush(fill_opacity=0, stroke="black")),
+        dot(
+            athletes,
+            filter_by=hover,
+            x="weight",
+            y="height",
+            fill="sex",
+            stroke="currentColor",
+            stroke_width=1,
+            r=3
+        )
+    ],
+    width=670,
+    height=350
+)
 ```
 
 ## Row
 
 ```{python}
-table(athletes)
+table(
+    athletes, 
+    filter_by=query, 
+    selection=hover, 
+    columns=["name", "nationality", "sex", "height", "weight", "sport"],
+    width={"name": 180, "nationality": 100, "sex": 50, "height": 100, "weight": 100, "sport": 100},
+    max_width=670
+)
 ```
