@@ -353,24 +353,29 @@ function renderSetup(containerEl) {
   return { autoFill, autoFillScrolling };
 }
 function responsiveSpec(spec, containerEl) {
+  const kLegendWidth = 80;
+  const kLegendHeight = 35;
   spec = structuredClone(spec);
-  if ("plot" in spec) {
-    const plot = spec.plot[0];
-    plot.width = containerEl.clientWidth;
-    plot.height = containerEl.clientHeight;
-  } else if ("hconcat" in spec && spec.hconcat.length <= 2) {
+  if ("hconcat" in spec && spec.hconcat.length == 1) {
     const hconcat = spec.hconcat;
-    const plot = "plot" in hconcat[0] ? hconcat[0] : "plot" in hconcat[1] ? hconcat[1] : void 0;
+    const plot = "plot" in hconcat[0] ? hconcat[0] : null;
     if (plot) {
-      plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? 80 : 0);
+      plot.width = containerEl.clientWidth - (hconcat.length > 1 ? kLegendWidth : 0);
       plot.height = containerEl.clientHeight;
     }
-  } else if ("vconcat" in spec && spec.vconcat.length <= 2) {
+  } else if ("hconcat" in spec && spec.hconcat.length == 2) {
+    const hconcat = spec.hconcat;
+    const plot = "plot" in hconcat[0] && "legend" in hconcat[1] ? hconcat[0] : "plot" in hconcat[1] && "legend" in hconcat[0] ? hconcat[1] : void 0;
+    if (plot) {
+      plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? kLegendWidth : 0);
+      plot.height = containerEl.clientHeight;
+    }
+  } else if ("vconcat" in spec && spec.vconcat.length == 2) {
     const vconcat = spec.vconcat;
-    const plot = "plot" in vconcat[0] ? vconcat[0] : "plot" in vconcat[1] ? vconcat[1] : void 0;
+    const plot = "plot" in vconcat[0] && "legend" in vconcat[1] ? vconcat[0] : "plot" in vconcat[1] && "legend" in vconcat[0] ? vconcat[1] : void 0;
     if (plot) {
       plot.width = containerEl.clientWidth;
-      plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? 35 : 0);
+      plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? kLegendHeight : 0);
     }
   }
   return spec;
