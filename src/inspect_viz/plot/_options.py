@@ -277,7 +277,7 @@ class PlotOptions(TypedDict, total=False):
     intended for quantitative data. The plot's marks may also impose a scale
     type; for example, the barY mark requires that *x* is a *band* scale."""
 
-    x_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    x_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -473,7 +473,7 @@ class PlotOptions(TypedDict, total=False):
     a scale type; for example, the barY mark requires that *x* is a *band*
     scale."""
 
-    y_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    y_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -655,7 +655,7 @@ class PlotOptions(TypedDict, total=False):
     """A symlog scale's constant, expressing the magnitude of the linear region
     around the origin; defaults to 1. For *symlog* scales only."""
 
-    xy_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    xy_domain: Literal["fixed"] | list[str | float | bool] | Param
     """Set the *x* and *y* scale domains."""
 
     # facet attributes
@@ -688,7 +688,7 @@ class PlotOptions(TypedDict, total=False):
 
     # fx scale attributes
 
-    fx_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    fx_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For ordinal data (strings or booleans), it is an
     array (or iterable) of values is the desired order, defaulting to natural
@@ -832,7 +832,7 @@ class PlotOptions(TypedDict, total=False):
 
     # fy scale attributes
 
-    fy_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    fy_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For ordinal data (strings or booleans), it is an
     array (or iterable) of values is the desired order, defaulting to natural
@@ -984,7 +984,7 @@ class PlotOptions(TypedDict, total=False):
     defaults to *point* for position scales, *categorical* for color scales,
     and otherwise *ordinal*."""
 
-    color_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    color_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1101,7 +1101,7 @@ class PlotOptions(TypedDict, total=False):
     disabled. The opacity scale defaults to *linear*; this scales is intended
     for quantitative data."""
 
-    opacity_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    opacity_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1187,7 +1187,7 @@ class PlotOptions(TypedDict, total=False):
     say by applying a mathematical transformation. If null, the scale is
     disabled. Defaults to an *ordinal* scale type."""
 
-    symbol_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    symbol_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. As symbol scales are discrete, the domain is an array
     (or iterable) of values is the desired order, defaulting to natural
@@ -1213,7 +1213,7 @@ class PlotOptions(TypedDict, total=False):
     is disabled. The radius scale defaults to *sqrt*; this scale is intended
     for quantitative data."""
 
-    r_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    r_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1291,7 +1291,7 @@ class PlotOptions(TypedDict, total=False):
     disabled. The length scale defaults to *linear*, as this scale is intended
     for quantitative data."""
 
-    length_domain: Literal["Fixed"] | list[str | float | bool] | Param
+    length_domain: Literal["fixed"] | list[str | float | bool] | Param
     """The extent of the scale's inputs (abstract values). By default inferred
     from channel values. For continuous data (numbers and dates), it is
     typically [*min*, *max*]; it can be [*max*, *min*] to reverse the scale.
@@ -1430,5 +1430,11 @@ class PlotOptions(TypedDict, total=False):
     while a negative value insets away from the right edge (increasing it)."""
 
 
-def plot_options_to_camel(options: PlotOptions) -> dict[str, Any]:
-    return {snake_to_camel(key): value for key, value in options.items()}
+def plot_options_mosaic(options: PlotOptions) -> dict[str, Any]:
+    mosaic_options: dict[str, Any] = {}
+    for key, value in options.items():
+        if key.endswith("_domain") and value == "fixed":
+            value = "Fixed"
+        mosaic_options[snake_to_camel(key)] = value
+
+    return mosaic_options

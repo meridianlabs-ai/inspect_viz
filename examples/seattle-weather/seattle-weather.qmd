@@ -49,7 +49,9 @@ plot(
         highlight(by=range, fill="#ccc", fill_opacity=0.2),
     ],
     legend=legend("color", selection=click),
+    xy_domain="fixed",
     x_tick_format="%b",
+    r_domain="fixed",
     r_range=[2, 10],
     height=300
 )
@@ -63,6 +65,7 @@ plot(
         toggle_y(selection=click),
         highlight(by=click),
     ],
+    x_domain="fixed",
     y_domain=weather,
     y_label=None,
 )

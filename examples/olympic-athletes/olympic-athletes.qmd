@@ -8,7 +8,6 @@ execute:
 
 An interactive dashboard of athlete statistics. The menus and searchbox filter the display and are automatically populated by backing data columns.
 
-
 ```{python}
 from inspect_viz import Data, Selection
 from inspect_viz.input import search, select, table
@@ -66,6 +65,8 @@ plot(
             r=3
         )
     ],
+    xy_domain="fixed",
+    r_domain="fixed",
     width=670,
     height=350
 )

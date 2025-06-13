@@ -4,8 +4,7 @@ from typing_extensions import Unpack
 
 from .._core.param import Param
 from .._core.types import Interval
-from .._util.marshall import snake_to_camel
-from ._options import PlotOptions
+from ._options import PlotOptions, plot_options_mosaic
 
 
 class PlotDefaults(PlotOptions, total=False):
@@ -51,24 +50,9 @@ def plot_defaults(**defaults: Unpack[PlotDefaults]) -> None:
 
 def plot_defaults_as_camel() -> dict[str, Any]:
     global _plot_defaults
-    return {
-        snake_to_camel(key): value
-        for key, value in (_builtin_plot_defaults | _plot_defaults).items()
-    }
+    return plot_options_mosaic(_builtin_plot_defaults | _plot_defaults)
 
 
-_builtin_plot_defaults = PlotDefaults(
-    x_domain="Fixed",
-    y_domain="Fixed",
-    xy_domain="Fixed",
-    r_domain="Fixed",
-    fx_domain="Fixed",
-    fy_domain="Fixed",
-    color_domain="Fixed",
-    opacity_domain="Fixed",
-    symbol_domain="Fixed",
-    length_domain="Fixed",
-)
-
+_builtin_plot_defaults = PlotDefaults()
 
 _plot_defaults = PlotDefaults()

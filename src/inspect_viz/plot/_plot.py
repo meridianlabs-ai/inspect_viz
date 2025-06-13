@@ -12,7 +12,7 @@ from ..layout._concat import hconcat, vconcat
 from ..mark._mark import Mark
 from ._legend import Legend
 from ._legend import legend as create_legend
-from ._options import PlotOptions, plot_options_to_camel
+from ._options import PlotOptions, plot_options_mosaic
 
 
 def plot(
@@ -92,7 +92,7 @@ def plot(
         config["name"] = name
 
     # merge other plot options
-    config = config | plot_options_to_camel(options)
+    config = config | plot_options_mosaic(options)
 
     # wrap with legend if specified
     if legend is not None:
