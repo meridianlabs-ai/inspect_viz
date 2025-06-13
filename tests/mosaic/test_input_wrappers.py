@@ -1,4 +1,5 @@
 from inspect_viz import Data, Param
+from inspect_viz._core.selection import Selection
 from inspect_viz.input import search, select, table
 from inspect_viz.input._slider import slider
 
@@ -42,4 +43,16 @@ def test_slider_wrapper(penguins: Data) -> None:
 
 
 def test_table_wrapper(penguins: Data) -> None:
-    check_component(table(penguins), Table)
+    check_component(
+        table(
+            penguins,
+            filter_by=Selection("intersect"),
+            align={"foo": "left"},
+            columns=["foo", "bar"],
+            width={"foo": 10},
+            max_width=22,
+            height=200,
+            row_batch=10,
+        ),
+        Table,
+    )
