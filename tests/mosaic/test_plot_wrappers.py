@@ -6,7 +6,14 @@ from .utils import check_component
 
 
 def test_plot_wrapper(dot_mark: Component) -> None:
-    check_component(plot(dot_mark, grid=True, x_label="Foo", y_label="Bar"), Plot)
+    check_component(
+        Component(
+            config=plot(dot_mark, grid=True, x_label="Foo", y_label="Bar").config[  # type: ignore[arg-type]
+                "hconcat"  # type: ignore[index]
+            ][0]  # type: ignore[index]
+        ),
+        Plot,
+    )
 
 
 def test_legend_wrapper(penguins: Data) -> None:
