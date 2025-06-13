@@ -2,6 +2,8 @@ from typing import Any, Literal, Sequence, Unpack
 
 from shortuuid import uuid
 
+from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
+
 from .._core import Component
 from .._core.param import Param
 from .._core.types import Interval
@@ -15,8 +17,8 @@ from ._options import PlotOptions, plot_options_to_camel
 
 def plot(
     plot: Mark | Sequence[Mark | Interactor],
-    x_label: str | Param | None = None,
-    y_label: str | Param | None = None,
+    x_label: str | Param | None | NotGiven = NOT_GIVEN,
+    y_label: str | Param | None | NotGiven = NOT_GIVEN,
     grid: bool | str | Param | None = None,
     x_grid: bool | str | Interval | list[str | float] | Param | None = None,
     y_grid: bool | str | Interval | list[str | float] | Param | None = None,
@@ -32,10 +34,12 @@ def plot(
         plot: Plot mark(s).
         x_label: A textual label to show on the axis or legend; if null, show no label.
           By default the scale label is inferred from channel definitions, possibly with
-          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
+          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value. Pass
+          `None` for no x_label.
         y_label: A textual label to show on the axis or legend; if null, show no label.
           By default the scale label is inferred from channel definitions, possibly with
-          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value.
+          an arrow (↑, →, ↓, or ←) to indicate the direction of increasing value. Pass
+          `None` for no y_label.
         grid: Whether to show a grid aligned with the scale's ticks. If true, show a grid
           with the currentColor stroke; if a string, show a grid with the specified
           stroke color.
@@ -64,8 +68,10 @@ def plot(
     components = [m.config for m in plot]
     config: dict[str, Any] = dict(plot=components)
 
-    config["xLabel"] = x_label
-    config["yLabel"] = y_label
+    if not isinstance(x_label, NotGiven):
+        config["xLabel"] = x_label
+    if not isinstance(y_label, NotGiven):
+        config["yLabel"] = y_label
 
     if grid is not None:
         config["grid"] = grid
