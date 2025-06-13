@@ -55,11 +55,6 @@ class Data:
     def columns(self) -> list[str]:
         return self._ndf.columns
 
-    def validate_column(self, column: str | None) -> str | None:
-        if column is not None and column not in self.columns:
-            raise ValueError(f"The specified column '{column}' does not exist.")
-        return column
-
     def collect_data(self) -> bytes:
         if self._data:
             buffer = self._data
