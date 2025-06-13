@@ -8,6 +8,42 @@ import { throttle } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
+// js/inputs/input.ts
+import {
+  coordinator,
+  MosaicClient
+} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+function input(InputClass, ...params) {
+  const input2 = new InputClass(...params);
+  coordinator().connect(input2);
+  return input2.element;
+}
+var Input = class extends MosaicClient {
+  constructor(filterBy, element, className = "input") {
+    super(filterBy);
+    this.element = element || document.createElement("div");
+    if (className) this.element.setAttribute("class", className);
+    Object.defineProperty(this.element, "value", { value: this });
+  }
+  activate() {
+  }
+};
+
+// js/inputs/radio.ts
+var Radio = class extends Input {
+  constructor(options) {
+    super(options.filterBy, options.element);
+    const strongEl = window.document.createElement("strong");
+    strongEl.innerText = "STRONG";
+    this.element.appendChild(strongEl);
+  }
+};
+
+// js/inputs/index.ts
+var CUSTOM_INPUTS = {
+  radio: (options) => input(Radio, options)
+};
+
 // js/context/duckdb.ts
 import {
   getJsDelivrBundles,
@@ -51,40 +87,368 @@ async function waitForTable(conn, table, { interval = 250 } = {}) {
   }
 }
 
-// js/inputs/input.ts
-import {
-  coordinator,
-  MosaicClient
-} from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
-function input(InputClass, ...params) {
-  const input2 = new InputClass(...params);
-  coordinator().connect(input2);
-  return input2.element;
+// js/util/modal.ts
+var Modal = class _Modal {
+  static {
+    this.modalCSSInjected = false;
+  }
+  static show(options) {
+    const { title = "Error", friendlyMessage, technicalMessage } = options;
+    _Modal.ensureModalCSS();
+    const modal = _Modal.createModal(friendlyMessage, technicalMessage, title);
+    document.body.appendChild(modal);
+    modal.offsetHeight;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.classList.add("inspect-viz-modal-show");
+        _Modal.focusModal(modal);
+      });
+    });
+  }
+  static ensureModalCSS() {
+    if (_Modal.modalCSSInjected || document.getElementById("inspect-viz-modal-css")) {
+      return;
+    }
+    const style = document.createElement("style");
+    style.id = "inspect-viz-modal-css";
+    style.textContent = `
+            .inspect-viz-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                padding-top: 60px;
+                z-index: 10000;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s, visibility 0.3s;
+            }
+            
+            .inspect-viz-modal-show {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .inspect-viz-modal-content {
+                background: white;
+                border-radius: 8px;
+                padding: 24px;
+                min-width: 600px;
+                max-width: min(90vw, 1000px);
+                width: auto;
+                max-height: calc(100vh - 120px);
+                overflow-y: auto;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                position: relative;
+                transform: translateY(-20px);
+                transition: transform 0.3s ease-out;
+            }
+            
+            .inspect-viz-modal-show .inspect-viz-modal-content {
+                transform: translateY(0);
+            }
+            
+            .inspect-viz-modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .inspect-viz-modal-header h2 {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+            
+            .inspect-viz-modal-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #d32f2f;
+                margin: 0;
+                display: flex;
+                align-items: center;
+            }
+            
+            .inspect-viz-modal-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+                fill: currentColor;
+            }
+            
+            .inspect-viz-modal-close {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+                color: #666;
+            }
+            
+            .inspect-viz-modal-close:hover {
+                background: #f5f5f5;
+            }
+            
+            .inspect-viz-modal-close:focus {
+                outline: 2px solid #1976d2;
+                outline-offset: 2px;
+            }
+            
+            .inspect-viz-modal-body {
+                margin-bottom: 20px;
+            }
+            
+            .inspect-viz-modal-message {
+                font-size: 14px;
+                line-height: 1.5;
+                color: #333;
+                margin-bottom: 16px;
+            }
+            
+            .inspect-viz-modal-details {
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+            }
+            
+            .inspect-viz-modal-details summary {
+                padding: 8px 12px;
+                cursor: pointer;
+                font-size: 13px;
+                color: #666;
+                background: #f8f9fa;
+                border-radius: 4px 4px 0 0;
+            }
+            
+            .inspect-viz-modal-details summary:hover {
+                background: #e9ecef;
+            }
+            
+            .inspect-viz-modal-details[open] summary {
+                border-bottom: 1px solid #e0e0e0;
+                border-radius: 4px 4px 0 0;
+            }
+            
+            .inspect-viz-modal-details pre {
+                margin: 0;
+                padding: 12px;
+                font-size: 12px;
+                background: #f8f9fa;
+                border-radius: 0 0 4px 4px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                color: #666;
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+                white-space: pre-wrap;
+                word-break: break-all;
+                overflow-wrap: break-word;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .inspect-viz-modal-footer {
+                text-align: right;
+            }
+            
+            .inspect-viz-modal-button {
+                background: #1976d2;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                font-family: inherit;
+            }
+            
+            .inspect-viz-modal-button:hover {
+                background: #1565c0;
+            }
+            
+            .inspect-viz-modal-button:focus {
+                outline: 2px solid #1976d2;
+                outline-offset: 2px;
+            }
+            
+            @media (max-width: 768px) {
+                .inspect-viz-modal {
+                    padding-top: 20px;
+                }
+                
+                .inspect-viz-modal-content {
+                    margin: 0 20px;
+                    min-width: auto;
+                    width: auto;
+                    max-height: calc(100vh - 40px);
+                }
+            }
+            
+            @media (prefers-reduced-motion: reduce) {
+                .inspect-viz-modal {
+                    transition: none;
+                }
+            }
+        `;
+    document.head.appendChild(style);
+    _Modal.modalCSSInjected = true;
+  }
+  static createModal(friendlyMessage, technicalMessage, title) {
+    const modalHtml = `
+            <div class="inspect-viz-modal" role="dialog" aria-labelledby="inspect-viz-modal-title" aria-modal="true">
+                <div class="inspect-viz-modal-content">
+                    <div class="inspect-viz-modal-header">
+                        <h2 class="inspect-viz-modal-title" id="inspect-viz-modal-title">
+                            <svg class="inspect-viz-modal-icon" viewBox="0 0 24 24">
+                                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                            </svg>
+                            ${_Modal.escapeHtml(title)}
+                        </h2>
+                        <button class="inspect-viz-modal-close" aria-label="Close dialog">\xD7</button>
+                    </div>
+                    <div class="inspect-viz-modal-body">
+                        <div class="inspect-viz-modal-message">${_Modal.escapeHtml(friendlyMessage)}</div>
+                        <details class="inspect-viz-modal-details">
+                            <summary>Technical Details</summary>
+                            <pre>${_Modal.escapeHtml(technicalMessage)}</pre>
+                        </details>
+                    </div>
+                    <div class="inspect-viz-modal-footer">
+                        <button class="inspect-viz-modal-button">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    const div = document.createElement("div");
+    div.innerHTML = modalHtml;
+    const modal = div.firstElementChild;
+    const closeButton = modal.querySelector(".inspect-viz-modal-close");
+    const closeFooterButton = modal.querySelector(".inspect-viz-modal-button");
+    const backdrop = modal;
+    const closeModal = () => {
+      modal.classList.remove("inspect-viz-modal-show");
+      setTimeout(() => {
+        if (modal.parentNode) {
+          modal.parentNode.removeChild(modal);
+        }
+      }, 300);
+    };
+    closeButton?.addEventListener("click", closeModal);
+    closeFooterButton?.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) {
+        closeModal();
+      }
+    });
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+        document.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return modal;
+  }
+  static focusModal(modal) {
+    const closeButton = modal.querySelector(".inspect-viz-modal-close");
+    if (closeButton) {
+      closeButton.focus();
+    }
+  }
+  static escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+};
+
+// js/util/errors.ts
+function initializeErrorHandling() {
+  const errorHandler = new ErrorHandler();
+  window.addEventListener("error", (event) => {
+    const error = event.error;
+    if (error) {
+      const errorMessage = error.message || error.toString();
+      const isSQL = isSQLError(errorMessage);
+      errorHandler.handleError(errorMessage, isSQL);
+    }
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+    const error = event.reason;
+    let errorMessage = "";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    } else {
+      errorMessage = String(error);
+    }
+    const isSQL = isSQLError(errorMessage);
+    errorHandler.handleError(errorMessage, isSQL);
+    event.preventDefault();
+  });
 }
-var Input = class extends MosaicClient {
-  constructor(filterBy, element, className = "input") {
-    super(filterBy);
-    this.element = element || document.createElement("div");
-    if (className) this.element.setAttribute("class", className);
-    Object.defineProperty(this.element, "value", { value: this });
+function isSQLError(message) {
+  const sqlErrorIndicators = [
+    "Binder Error",
+    'column "',
+    'table "',
+    "syntax error",
+    "type mismatch",
+    "division by zero",
+    "conversion error",
+    "SQL",
+    "DuckDB"
+  ];
+  return sqlErrorIndicators.some(
+    (indicator) => message.toLowerCase().includes(indicator.toLowerCase())
+  );
+}
+var ErrorHandler = class {
+  constructor() {
+    this.lastErrorTime = 0;
+    this.ERROR_THROTTLE_MS = 2e3;
   }
-  activate() {
+  // Prevent spam
+  handleError(errorMessage, isSQLError2 = false) {
+    const now = Date.now();
+    if (now - this.lastErrorTime < this.ERROR_THROTTLE_MS) return;
+    this.lastErrorTime = now;
+    const friendlyError = isSQLError2 ? this.translateSqlError(errorMessage) : "An unexpected error occurred in the application.";
+    const errorTitle = isSQLError2 ? "Query Error" : "Application Error";
+    Modal.show({
+      title: errorTitle,
+      friendlyMessage: friendlyError,
+      technicalMessage: errorMessage
+    });
   }
-};
-
-// js/inputs/radio.ts
-var Radio = class extends Input {
-  constructor(options) {
-    super(options.filterBy, options.element);
-    const strongEl = window.document.createElement("strong");
-    strongEl.innerText = "STRONG";
-    this.element.appendChild(strongEl);
+  handleSQLError(errorMessage) {
+    this.handleError(errorMessage, true);
   }
-};
-
-// js/inputs/index.ts
-var CUSTOM_INPUTS = {
-  radio: (options) => input(Radio, options)
+  translateSqlError(sqlError) {
+    const errorPatterns = [
+      {
+        pattern: /referenced column "([^"]+)" not found/i,
+        message: (match) => `Column "${match[1]}" was not found in your data. Please check your column names.`
+      }
+    ];
+    for (const { pattern, message } of errorPatterns) {
+      const match = sqlError.match(pattern);
+      if (match) return message(match);
+    }
+    return "An error occurred while processing your data query.";
+  }
 };
 
 // js/context/index.ts
@@ -114,6 +478,7 @@ async function vizContext(plotDefaults) {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[VIZ_CONTEXT_KEY]) {
     globalScope[VIZ_CONTEXT_KEY] = (async () => {
+      initializeErrorHandling();
       const duckdb = await initDuckdb();
       const conn = await duckdb.connect();
       return new VizContext(conn, plotDefaults);

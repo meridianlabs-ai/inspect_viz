@@ -4,8 +4,9 @@ import { wasmConnector } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@
 
 import { InstantiateContext } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 
-import { initDuckdb, waitForTable } from './duckdb';
 import { CUSTOM_INPUTS } from '../inputs';
+import { initDuckdb, waitForTable } from './duckdb';
+import { initializeErrorHandling } from '../util/errors.js';
 
 class VizContext extends InstantiateContext {
     private readonly tables_ = new Set<string>();
@@ -44,6 +45,7 @@ async function vizContext(plotDefaults: any[]): Promise<VizContext> {
     const globalScope: any = typeof window !== 'undefined' ? window : globalThis;
     if (!globalScope[VIZ_CONTEXT_KEY]) {
         globalScope[VIZ_CONTEXT_KEY] = (async () => {
+            initializeErrorHandling();
             const duckdb = await initDuckdb();
             const conn = await duckdb.connect();
             return new VizContext(conn, plotDefaults);
