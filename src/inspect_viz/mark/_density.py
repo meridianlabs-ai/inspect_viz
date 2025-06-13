@@ -10,8 +10,6 @@ from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor, Interpolate, Symbol
 
-DensityType = Literal["dot", "circle", "hexagon", "cell", "text"]
-
 
 def density(
     data: Data,
@@ -19,7 +17,7 @@ def density(
     y: Channel | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
-    type: DensityType | Param | None = None,
+    type: Literal["dot", "circle", "hexagon", "cell", "text"] | Param | None = None,
     width: float | Param | None = None,
     height: float | Param | None = None,
     pixel_size: float | Param | None = None,

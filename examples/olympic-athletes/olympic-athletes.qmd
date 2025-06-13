@@ -12,7 +12,6 @@ An interactive dashboard of athlete statistics. The menus and searchbox filter t
 from inspect_viz import Data, Selection
 from inspect_viz.input import search, select, table
 from inspect_viz.interactor import Brush, interval_xy
-from inspect_viz.layout import hconcat
 from inspect_viz.mark import dot, regression_y
 from inspect_viz.plot import plot
 

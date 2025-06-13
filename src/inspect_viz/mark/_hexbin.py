@@ -10,8 +10,6 @@ from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor
 
-HexbinType = Literal["hexagon", "dot", "text"]
-
 
 def hexbin(
     data: Data,
@@ -20,7 +18,7 @@ def hexbin(
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     bin_width: float | Param | None = None,
-    type: HexbinType | Param | None = None,
+    type: Literal["hexagon", "dot", "text"] | Param | None = None,
     r: Channel | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,

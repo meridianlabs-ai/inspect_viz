@@ -1,11 +1,10 @@
-from typing import Any, Literal, TypedDict
+from typing import Any, Literal, TypeAlias, TypedDict
 
 from .._core.param import Param
 from .._core.types import Interval
 from .._util.marshall import snake_to_camel
 
-# Type aliases for literal types
-PositionScaleType = Literal[
+PositionScale: TypeAlias = Literal[
     "linear",
     "log",
     "pow",
@@ -21,16 +20,9 @@ PositionScaleType = Literal[
     "quantize",
     "identity",
 ]
+"""How a scale encodes abstract data, say by applying a mathematical transformation."""
 
-DiscreteScaleType = Literal[
-    "ordinal",
-    "categorical",
-    "threshold",
-    "quantile",
-    "quantize",
-]
-
-ProjectionName = Literal[
+Projection: TypeAlias = Literal[
     "albers",
     "albers-usa",
     "azimuthal-equal-area",
@@ -48,8 +40,12 @@ ProjectionName = Literal[
     "stereographic",
     "transverse-mercator",
 ]
+"""Built-in projection types.
 
-ContinuousScaleType = Literal[
+Named projections are scaled and translated to fit the **domain** to the plot's frame (minus insets).
+"""
+
+ContinuousScale: TypeAlias = Literal[
     "linear",
     "log",
     "pow",
@@ -59,8 +55,9 @@ ContinuousScaleType = Literal[
     "time",
     "identity",
 ]
+"""Continuous scaling transformations."""
 
-ColorScaleType = Literal[
+ColorScale: TypeAlias = Literal[
     "linear",
     "log",
     "pow",
@@ -82,8 +79,9 @@ ColorScaleType = Literal[
     "rainbow",
     "sinebow",
 ]
+"""Color scale tranformations."""
 
-ColorScheme = Literal[
+ColorScheme: TypeAlias = Literal[
     "accent",
     "blues",
     "brbg",
@@ -127,14 +125,16 @@ ColorScheme = Literal[
     "rainbow",
     "sinebow",
 ]
+"""Color schemes."""
 
-Interpolate = Literal[
+Interpolate: TypeAlias = Literal[
     "rgb",
     "hsl",
     "lab",
     "hcl",
     "cubehelix",
 ]
+"""How to interpolate color range values."""
 
 
 LabelArrow = (
@@ -149,6 +149,7 @@ LabelArrow = (
     | bool
     | None
 )
+"""Whether to apply a directional arrow to an axis scale label."""
 
 
 class PlotOptions(TypedDict, total=False):
@@ -265,7 +266,7 @@ class PlotOptions(TypedDict, total=False):
 
     # x scale attributes
 
-    x_scale: PositionScaleType | None | Param
+    x_scale: PositionScale | None | Param
     """The *x* scale type, affecting how the scale encodes abstract data, say by
     applying a mathematical transformation. If null, the scale is disabled.
 
@@ -463,7 +464,7 @@ class PlotOptions(TypedDict, total=False):
 
     # y scale attributes
 
-    y_scale: PositionScaleType | None | Param
+    y_scale: PositionScale | None | Param
     """The *y* scale type, affecting how the scale encodes abstract data, say by
     applying a mathematical transformation. If null, the scale is disabled.
 
@@ -975,7 +976,7 @@ class PlotOptions(TypedDict, total=False):
 
     # color scale attributes
 
-    color_scale: ColorScaleType | None | Param
+    color_scale: ColorScale | None | Param
     """The *color* scale type, affecting how the scale encodes abstract data, say
     by applying a mathematical transformation. If null, the scale is disabled.
 
@@ -1095,7 +1096,7 @@ class PlotOptions(TypedDict, total=False):
 
     # opacity scale attributes
 
-    opacity_scale: ContinuousScaleType | None | Param
+    opacity_scale: ContinuousScale | None | Param
     """The *opacity* scale type, affecting how the scale encodes abstract data,
     say by applying a mathematical transformation. If null, the scale is
     disabled. The opacity scale defaults to *linear*; this scales is intended
@@ -1182,7 +1183,17 @@ class PlotOptions(TypedDict, total=False):
 
     # symbol scale attributes
 
-    symbol_scale: DiscreteScaleType | None | Param
+    symbol_scale: (
+        Literal[
+            "ordinal",
+            "categorical",
+            "threshold",
+            "quantile",
+            "quantize",
+        ]
+        | None
+        | Param
+    )
     """The *symbol* scale type, affecting how the scale encodes abstract data,
     say by applying a mathematical transformation. If null, the scale is
     disabled. Defaults to an *ordinal* scale type."""
@@ -1207,7 +1218,7 @@ class PlotOptions(TypedDict, total=False):
 
     # r scale attributes
 
-    r_scale: ContinuousScaleType | None | Param
+    r_scale: ContinuousScale | None | Param
     """The *r* (radius) scale type, affecting how the scale encodes abstract
     data, say by applying a mathematical transformation. If null, the scale
     is disabled. The radius scale defaults to *sqrt*; this scale is intended
@@ -1285,7 +1296,7 @@ class PlotOptions(TypedDict, total=False):
 
     # length scale attributes
 
-    length_scale: ContinuousScaleType | None | Param
+    length_scale: ContinuousScale | None | Param
     """The *length* scale type, affecting how the scale encodes abstract data,
     say by applying a mathematical transformation. If null, the scale is
     disabled. The length scale defaults to *linear*, as this scale is intended
@@ -1362,7 +1373,7 @@ class PlotOptions(TypedDict, total=False):
 
     # projection attributes
 
-    projection_type: ProjectionName | None | Param
+    projection_type: Projection | None | Param
     """The desired projection; one of:
 
     - a named built-in projection such as *albers-usa*

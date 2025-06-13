@@ -10,9 +10,9 @@ from .._core.types import Interval
 from ..interactor._interactors import Interactor
 from ..layout._concat import hconcat, vconcat
 from ..mark._mark import Mark
+from ..options._options import PlotOptions, plot_options_mosaic
 from ._legend import Legend
 from ._legend import legend as create_legend
-from ._options import PlotOptions, plot_options_mosaic
 
 
 def plot(

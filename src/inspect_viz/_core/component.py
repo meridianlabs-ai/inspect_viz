@@ -64,7 +64,7 @@ class Component(AnyWidget):
     def _repr_mimebundle_(
         self, **kwargs: Any
     ) -> tuple[dict[str, Any], dict[str, Any]] | None:
-        from ..plot._defaults import plot_defaults_as_camel
+        from ..options._defaults import plot_defaults_as_camel
 
         # set current tables
         self.tables = all_tables()
@@ -98,13 +98,6 @@ def all_tables() -> dict[str, str | bytes]:
 
 
 def all_params() -> dict[str, JsonValue]:
-    """Using some mosaic types (see tests/mosaic) here is the shape of params:
-
-    ParamLiteral: TypeAlias = None | str | int | float | bool
-    ParamValue: TypeAlias = ParamLiteral | list[ParamLiteral | ParamRef]
-    ParamDefinition: TypeAlias = ParamValue | Param | ParamDate | Selection
-    Params: TypeAlias = dict[str, ParamDefinition]
-    """
     all_params: dict[str, Any] = {}
 
     for param in VizParam.get_all():

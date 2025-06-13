@@ -1,4 +1,4 @@
-from typing import Any, Literal, Sequence, TypeAlias
+from typing import Any, Literal, Sequence
 
 from typing_extensions import Unpack
 
@@ -7,29 +7,7 @@ from .._util.marshall import dict_remove_none
 from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
-
-Curve: TypeAlias = Literal[
-    "basis",
-    "basis-closed",
-    "basis-open",
-    "bundle",
-    "bump-x",
-    "bump-y",
-    "cardinal",
-    "cardinal-closed",
-    "cardinal-open",
-    "catmull-rom",
-    "catmull-rom-closed",
-    "catmull-rom-open",
-    "linear",
-    "linear-closed",
-    "monotone-x",
-    "monotone-y",
-    "natural",
-    "step",
-    "step-after",
-    "step-before",
-]
+from ._types import Curve
 
 
 def area(

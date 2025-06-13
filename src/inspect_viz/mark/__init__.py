@@ -23,8 +23,9 @@ from ._raster import heatmap, raster, raster_tile
 from ._rect import rect, rect_x, rect_y
 from ._regression import regression_y
 from ._rule import rule_x, rule_y
-from ._text import TextStyles, text, text_x, text_y
+from ._text import LineAnchor, TextOverflow, TextStyles, text, text_x, text_y
 from ._tick import tick_x, tick_y
+from ._types import Curve, FrameAnchor, Interpolate, Marker, Symbol
 from ._vector import spike, vector, vector_x, vector_y
 from ._waffle import waffle_x, waffle_y
 
@@ -33,6 +34,13 @@ __all__ = [
     "MarkOptions",
     "Channel",
     "TextStyles",
+    "TextOverflow",
+    "Curve",
+    "Symbol",
+    "FrameAnchor",
+    "LineAnchor",
+    "Marker",
+    "Interpolate",
     "area",
     "area_x",
     "area_y",

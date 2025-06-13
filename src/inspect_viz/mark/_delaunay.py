@@ -5,10 +5,9 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._area import Curve
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
-from ._types import Marker
+from ._types import Curve, Marker
 
 
 def delaunay_link(

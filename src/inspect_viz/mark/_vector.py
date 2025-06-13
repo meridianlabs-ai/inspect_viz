@@ -9,9 +9,6 @@ from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
 
-Shape = Literal["arrow", "spike"]
-Anchor = Literal["start", "middle", "end"]
-
 
 def vector(
     data: Data,
@@ -21,8 +18,8 @@ def vector(
     filter_by: Selection | None = None,
     length: Channel | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
-    shape: Shape | Param | None = None,
-    anchor: Anchor | Param | None = None,
+    shape: Literal["arrow", "spike"] | Param | None = None,
+    anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -72,8 +69,8 @@ def vector_x(
     filter_by: Selection | None = None,
     length: Channel | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
-    shape: Shape | Param | None = None,
-    anchor: Anchor | Param | None = None,
+    shape: Literal["arrow", "spike"] | Param | None = None,
+    anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -123,8 +120,8 @@ def vector_y(
     filter_by: Selection | None = None,
     length: Channel | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
-    shape: Shape | Param | None = None,
-    anchor: Anchor | Param | None = None,
+    shape: Literal["arrow", "spike"] | Param | None = None,
+    anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -173,8 +170,8 @@ def spike(
     r: Channel | float | Param | None = None,
     length: Channel | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
-    shape: Shape | Param | None = None,
-    anchor: Anchor | Param | None = None,
+    shape: Literal["arrow", "spike"] | Param | None = None,
+    anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     filter_by: Selection | None = None,
     **options: Unpack[MarkOptions],

@@ -6,11 +6,9 @@ from .._core import Param
 from .._util.marshall import dict_remove_none
 from ._mark import Mark, MarkOptions
 
-FrameAnchor = Literal["top", "right", "bottom", "left"]
-
 
 def frame(
-    anchor: FrameAnchor | Param | None = None,
+    anchor: Literal["top", "right", "bottom", "left"] | Param | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,
     inset_right: float | Param | None = None,

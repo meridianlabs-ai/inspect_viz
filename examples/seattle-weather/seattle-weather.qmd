@@ -13,8 +13,9 @@ Based on a [Vega-Lite/Altair example](https://vega.github.io/vega-lite/examples/
 ```{python}
 from inspect_viz import Data, Selection
 from inspect_viz.interactor import Brush, highlight, interval_x, toggle_y
-from inspect_viz.plot import legend, plot, plot_defaults
+from inspect_viz.plot import legend, plot
 from inspect_viz.mark import bar_x, dot
+from inspect_viz.options import plot_defaults
 from inspect_viz.transform import count, date_month_day
 
 # data

@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypedDict
+from typing import Any, Literal, TypeAlias, TypedDict
 
 from typing_extensions import Unpack
 
@@ -10,9 +10,7 @@ from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
 
-TextAnchor = Literal["start", "middle", "end"]
-
-TextOverflow = Literal[
+TextOverflow: TypeAlias = Literal[
     "clip",
     "ellipsis",
     "clip-start",
@@ -33,12 +31,13 @@ TextOverflow = Literal[
 If no **title** was specified, if text requires truncation, a title containing the non-truncated text will be implicitly added."""
 
 LineAnchor = Literal["top", "bottom", "middle"]
+"""The line anchor controls how text is aligned (typically vertically) relative to its anchor point."""
 
 
 class TextStyles(TypedDict, total=False):
     """Text styling options."""
 
-    text_anchor: TextAnchor | Param
+    text_anchor: Literal["start", "middle", "end"] | Param
     """The text anchor controls how text is aligned (typically horizontally) relative to its anchor point; it is one of *start*, *end*, or *middle*. If the frame anchor is *left*, *top-left*, or *bottom-left*, the default text anchor is *start*; if the frame anchor is *right*, *top-right*, or *bottom-right*, the default is *end*; otherwise it is *middle*."""
 
     line_height: float | Param
