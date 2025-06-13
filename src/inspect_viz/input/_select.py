@@ -1,5 +1,7 @@
 from typing import Any
 
+from inspect_viz.mark._util import column_validated
+
 from .._core import Component, Data, Param, Selection
 
 
@@ -48,11 +50,11 @@ def select(
         # validate and set column
         if column is None:
             raise ValueError("You must pass a `column` value along with `data`")
-        menu["column"] = column
+        menu["column"] = column_validated(data, column)
 
         # set field (optional, defaults to column)
         if field is not None:
-            menu["field"] = field
+            menu["field"] = column_validated(data, field)
 
         # set filter_by
         if filter_by is not None:

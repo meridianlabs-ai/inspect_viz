@@ -3,6 +3,7 @@ from typing import Literal
 from pydantic import JsonValue
 
 from inspect_viz._util.marshall import dict_remove_none
+from inspect_viz.mark._util import column_validated
 
 from .._core import Component, Data
 from .._core.selection import Selection
@@ -37,10 +38,16 @@ def table(
             "input": "table",
             "from": data.table,
             "filterBy": filter_by or data.selection,
-            "columns": columns,
+            "columns": [column_validated(data, c) for c in columns]
+            if columns
+            else None,
             "as": selection,
-            "align": align,
-            "width": width,
+            "align": {column_validated(data, k): v for k, v in align.items()}
+            if isinstance(align, dict)
+            else align,
+            "width": {column_validated(data, k): v for k, v in width.items()}
+            if isinstance(width, dict)
+            else width,
             "maxWidth": max_width,
             "height": height,
             "rowBatch": row_batch,

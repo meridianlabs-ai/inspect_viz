@@ -13,3 +13,10 @@ def column_param(
         return column(param)
     else:
         return param
+
+
+def column_validated(data: Data | None, column: str) -> str:
+    if data is not None:
+        if column not in data.columns:
+            raise ValueError(f"Column '{column}' was not found in the data source.")
+    return column

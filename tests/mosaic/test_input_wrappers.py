@@ -47,9 +47,9 @@ def test_table_wrapper(penguins: Data) -> None:
         table(
             penguins,
             filter_by=Selection("intersect"),
-            align={"foo": "left"},
-            columns=["foo", "bar"],
-            width={"foo": 10},
+            align={"bill_length": "left"},
+            columns=["bill_length", "bill_depth"],
+            width={"bill_length": 10},
             max_width=22,
             height=200,
             row_batch=10,

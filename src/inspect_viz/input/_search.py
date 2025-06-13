@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
 from inspect_viz._core.param import Param
+from inspect_viz.mark._util import column_validated
 
 from .._core import Component, Data, Selection
 
@@ -47,11 +48,11 @@ def search(
     # validate and set column
     if column is None:
         raise ValueError("You must pass a `column` value along with `data`")
-    config["column"] = column
+    config["column"] = column_validated(data, column)
 
     # set field (optional, defaults to column)
     if field is not None:
-        config["field"] = field
+        config["field"] = column_validated(data, field)
 
     # set filter_by
     if filter_by is not None:
