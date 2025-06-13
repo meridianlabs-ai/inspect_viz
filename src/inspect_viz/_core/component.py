@@ -1,5 +1,6 @@
 import base64
 from datetime import datetime
+from pathlib import Path
 from typing import Any, cast
 
 import traitlets
@@ -44,6 +45,8 @@ class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
 class Component(AnyWidget):
     """Viz component (input, plot, table, etc.)."""
 
+    _css_initialized = False
+
     def __init__(self, config: dict[str, JsonValue]) -> None:
         """Create a visualization component.
 
@@ -53,6 +56,11 @@ class Component(AnyWidget):
         Returns:
             Visualization component.
         """
+        if not Component._css_initialized:
+            Component._css_initialized = True
+        else:
+            self._css = ""
+
         super().__init__()
         self._config = config
 
@@ -86,6 +94,7 @@ class Component(AnyWidget):
         return super()._repr_mimebundle_(**kwargs)
 
     _esm = WIDGETS_DIR / "mosaic.js"
+    _css: Path | str = WIDGETS_DIR / "mosaic.css"
     tables = TablesData({}).tag(sync=True)
     spec = traitlets.CUnicode("").tag(sync=True)
 
