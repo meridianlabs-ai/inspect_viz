@@ -4,11 +4,11 @@ from .._core.data import Data
 from .._core.param import Param
 from .._core.selection import Selection
 from .._util.marshall import dict_remove_none
-from ..transform import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor, Interpolate, Symbol
+from ._util import column_param
 
 
 def density(
@@ -73,9 +73,9 @@ def density(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             type=type,
             width=width,
             height=height,
@@ -84,7 +84,7 @@ def density(
             bandwidth=bandwidth,
             interpolate=interpolate,
             symbol=symbol,
-            r=column(r) if isinstance(r, str) else r,
+            r=column_param(data, r),
             rotate=rotate,
             frameAnchor=frame_anchor,
         )
@@ -137,8 +137,8 @@ def density_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            y=column_param(data, y),
+            z=column_param(data, z),
             type=type,
             bandwidth=bandwidth,
             bins=bins,
@@ -194,8 +194,8 @@ def density_y(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            z=column_param(data, z),
             type=type,
             bandwidth=bandwidth,
             bins=bins,

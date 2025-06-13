@@ -4,10 +4,10 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import Interpolate
+from ._util import column_param
 
 
 def raster(
@@ -60,8 +60,8 @@ def raster(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
+            x=column_param(data, x),
+            y=column_param(data, y),
             width=width,
             height=height,
             pixelSize=pixel_size,
@@ -125,8 +125,8 @@ def heatmap(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
+            x=column_param(data, x),
+            y=column_param(data, y),
             width=width,
             height=height,
             pixelSize=pixel_size,
@@ -193,8 +193,8 @@ def raster_tile(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
+            x=column_param(data, x),
+            y=column_param(data, y),
             origin=origin,
             width=width,
             height=height,

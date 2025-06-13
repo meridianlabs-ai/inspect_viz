@@ -4,10 +4,10 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import Curve, Marker
+from ._util import column_param
 
 
 def delaunay_link(
@@ -51,9 +51,9 @@ def delaunay_link(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,
@@ -107,9 +107,9 @@ def delaunay_mesh(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,
@@ -163,9 +163,9 @@ def hull(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,
@@ -218,9 +218,9 @@ def voronoi(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,
@@ -273,9 +273,9 @@ def voronoi_mesh(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,

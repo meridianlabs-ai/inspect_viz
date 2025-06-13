@@ -4,9 +4,9 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
+from ._util import column_param
 
 
 def arrow(
@@ -53,12 +53,12 @@ def arrow(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            x1=column(x1) if isinstance(x1, str) else x1,
-            y1=column(y1) if isinstance(y1, str) else y1,
-            x2=column(x2) if isinstance(x2, str) else x2,
-            y2=column(y2) if isinstance(y2, str) else y2,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            x1=column_param(data, x1),
+            y1=column_param(data, y1),
+            x2=column_param(data, x2),
+            y2=column_param(data, y2),
             bend=bend,
             headAngle=head_angle,
             headLength=head_length,

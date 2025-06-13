@@ -5,9 +5,9 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
+from ._util import column_param
 
 
 def bar_x(
@@ -81,14 +81,14 @@ def bar_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            x1=column(x1) if isinstance(x1, str) else x1,
-            x2=column(x2) if isinstance(x2, str) else x2,
-            y=column(y) if isinstance(y, str) else y,
+            x=column_param(data, x),
+            x1=column_param(data, x1),
+            x2=column_param(data, x2),
+            y=column_param(data, y),
             interval=interval,
             offset=offset,
             order=order,
-            z=column(z) if isinstance(z, str) else z,
+            z=column_param(data, z),
             inset=inset,
             insetTop=inset_top,
             insetRight=inset_right,
@@ -173,10 +173,10 @@ def bar_y(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            y=column(y) if isinstance(y, str) else y,
-            y1=column(y1) if isinstance(y1, str) else y1,
-            y2=column(y2) if isinstance(y2, str) else y2,
-            x=column(x) if isinstance(x, str) else x,
+            y=column_param(data, y),
+            y1=column_param(data, y1),
+            y2=column_param(data, y2),
+            x=column_param(data, x),
             interval=interval,
             offset=offset,
             order=order,

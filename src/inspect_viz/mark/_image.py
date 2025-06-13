@@ -8,6 +8,7 @@ from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
+from ._util import column_param
 
 
 def image(
@@ -70,11 +71,11 @@ def image(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            width=column(width) if isinstance(width, str) else width,
-            height=column(height) if isinstance(height, str) else height,
-            r=column(r) if isinstance(r, str) else r,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            width=column_param(data, width),
+            height=column_param(data, height),
+            r=column_param(data, r),
             rotate=rotate,
             src=column(src) if isinstance(src, str) else src,
             preserveAspectRatio=preserve_aspect_ratio,

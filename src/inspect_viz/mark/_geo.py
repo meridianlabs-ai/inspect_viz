@@ -4,9 +4,9 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
+from ._util import column_param
 
 
 def geo(
@@ -40,8 +40,8 @@ def geo(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            geometry=column(geometry) if isinstance(geometry, str) else geometry,
-            r=column(r) if isinstance(r, str) else r,
+            geometry=column_param(data, geometry),
+            r=column_param(data, r),
         )
     )
 

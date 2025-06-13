@@ -9,6 +9,7 @@ from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
+from ._util import column_param
 
 TextOverflow: TypeAlias = Literal[
     "clip",
@@ -96,10 +97,10 @@ def text(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by) if data else None,
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
-            text=column(text) if isinstance(text, str) else text,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
+            text=column_param(data, text),
             frameAnchor=frame_anchor,
             lineAnchor=line_anchor,
             rotate=rotate,
@@ -147,10 +148,10 @@ def text_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by) if data else None,
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
-            text=column(text) if isinstance(text, str) else text,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
+            text=column_param(data, text),
             interval=interval,
             frameAnchor=frame_anchor,
             lineAnchor=line_anchor,

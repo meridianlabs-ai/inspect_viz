@@ -4,11 +4,11 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor
+from ._util import column_param
 
 
 def hexbin(
@@ -59,12 +59,12 @@ def hexbin(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
-            z=column(z) if isinstance(z, str) else z,
+            x=column_param(data, x),
+            y=column_param(data, y),
+            z=column_param(data, z),
             binWidth=bin_width,
             type=type,
-            r=column(r) if isinstance(r, str) else r,
+            r=column_param(data, r),
             rotate=rotate,
             frameAnchor=frame_anchor,
         )

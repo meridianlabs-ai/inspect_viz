@@ -8,6 +8,7 @@ from ..transform._column import column
 from ._channel import Channel
 from ._mark import Mark, MarkOptions
 from ._types import Marker
+from ._util import column_param
 
 
 def tick_x(
@@ -49,8 +50,8 @@ def tick_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data.plot_from(filter_by),
-            x=column(x) if isinstance(x, str) else x,
-            y=column(y) if isinstance(y, str) else y,
+            x=column_param(data, x),
+            y=column_param(data, y),
             marker=marker,
             markerStart=marker_start,
             markerMid=marker_mid,
