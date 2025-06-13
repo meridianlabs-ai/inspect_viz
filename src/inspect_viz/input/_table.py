@@ -38,7 +38,7 @@ def table(
             "from": data.table,
             "filterBy": filter_by or data.selection,
             "columns": columns,
-            "selection": selection,
+            "as": selection,
             "align": align,
             "width": width,
             "maxWidth": max_width,
