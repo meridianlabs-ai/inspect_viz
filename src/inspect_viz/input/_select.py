@@ -17,12 +17,12 @@ def select(
     """Select input widget.
 
     Args:
-       data: The data source for input selections (used in conjunction with the `column` property). If `data` is not specified, you must provide explcit `options`.
+       data: The data source for input selections (used in conjunction with the `column` parameter). If `data` is not specified, you must provide explcit `options`.
        label: A text label for this input (optional).
-       column: The name of a column from which to pull options. The unique column values are used as options. Used in conjunction with the `data` property.
-       field: The data column name to use within generated selection clause predicates. Defaults to the `column` property.
+       column: The name of a column from which to pull options. The unique column values are used as options. Used in conjunction with the `data` parameter.
+       field: The data column name to use within generated selection clause predicates. Defaults to the `column` parameter.
        selection: A selection to target with the selected `column` or `field` (defaults to the data source selection).
-       filter_by: A selection to filter the data source indicated by the `data` property.
+       filter_by: A selection to filter the data source indicated by the `data` parameter.
        param: A parameter to set with the currently selected menu option (if `param` is specified then `field` is not used).
        options: A `list` or `dict` of options (provide a `dict` if you want values to map to alternate labels). If `options` is not specified you must pass a `data` argument.
     """
