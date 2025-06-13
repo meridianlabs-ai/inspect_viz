@@ -1,12 +1,10 @@
 ---
 title: "Olympic Athletes"
+subtitle: "An interactive dashboard of athlete statistics."
 format: dashboard
 execute: 
-  echo: false
   daemon: false
 ---
-
-An interactive dashboard of athlete statistics. The menus and searchbox filter the display and are automatically populated by backing data columns.
 
 ```{python}
 from inspect_viz import Data, Selection
