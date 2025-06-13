@@ -20,15 +20,15 @@ random_walk = Data("random-walk.parquet")
 bias = Param(0)
 ```
 
+
 ```{python}
 slider(label="Bias", param=bias, min=0, max=1000, step=1)
 ```
 
+
 ```{python}
 plot(
-    area_y(random_walk, x="t", y=sql(f"v + {bias}"), fill="steelblue"),
-    width=680,
-    height=200
+    area_y(random_walk, x="t", y=sql(f"v + {bias}"), fill="steelblue")
 )
 ```
 

@@ -116,4 +116,4 @@ def plot(
         else:
             return vconcat(legend, plot_component)
     else:
-        return Component(config=config)
+        return hconcat(Component(config=config))

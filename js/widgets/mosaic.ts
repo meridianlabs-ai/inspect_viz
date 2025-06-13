@@ -109,28 +109,26 @@ function renderSetup(containerEl: HTMLElement): RenderOptions {
 function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
     spec = structuredClone(spec);
     if ('plot' in spec) {
-        const plot = spec.plot[0];
-        if ('width' in plot && 'height' in plot) {
-            plot.width = containerEl.clientWidth;
-            plot.height = containerEl.clientHeight;
-        }
-    } else if ('hconcat' in spec && spec.hconcat.length === 2) {
+        const plot = spec.plot[0] as unknown as Record<string, unknown>;
+        plot.width = containerEl.clientWidth;
+        plot.height = containerEl.clientHeight;
+    } else if ('hconcat' in spec && spec.hconcat.length <= 2) {
         const hconcat = spec.hconcat;
         const plot =
             'plot' in hconcat[0] ? hconcat[0] : 'plot' in hconcat[1] ? hconcat[1] : undefined;
         if (plot) {
             // TODO: better dynamic sizing for legend
-            plot.width = containerEl.clientWidth - 80;
+            plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? 80 : 0);
             plot.height = containerEl.clientHeight;
         }
-    } else if ('vconcat' in spec && spec.vconcat.length == 2) {
+    } else if ('vconcat' in spec && spec.vconcat.length <= 2) {
         const vconcat = spec.vconcat;
         const plot =
             'plot' in vconcat[0] ? vconcat[0] : 'plot' in vconcat[1] ? vconcat[1] : undefined;
         if (plot) {
             // TODO: Is the legend always 35 pixels high
             plot.width = containerEl.clientWidth;
-            plot.height = containerEl.clientHeight - 35;
+            plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? 35 : 0);
         }
     }
     return spec;

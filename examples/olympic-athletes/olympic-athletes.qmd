@@ -65,9 +65,7 @@ plot(
         )
     ],
     xy_domain="fixed",
-    r_domain="fixed",
-    width=670,
-    height=350
+    r_domain="fixed"
 )
 ```
 
