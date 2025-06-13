@@ -91,6 +91,15 @@ async function waitForTable(conn, table, { interval = 250 } = {}) {
 var Modal = class _Modal {
   static show(options) {
     const { title = "Error", friendlyMessage, technicalMessage } = options;
+    if (_Modal.isVSCodeEnvironment()) {
+      console.group(`\u{1F6A8} ${title}`);
+      console.error(friendlyMessage);
+      console.groupCollapsed("Technical Details");
+      console.error(technicalMessage);
+      console.groupEnd();
+      console.groupEnd();
+      return;
+    }
     const modal = _Modal.createModal(friendlyMessage, technicalMessage, title);
     document.body.appendChild(modal);
     modal.offsetHeight;
@@ -167,6 +176,10 @@ var Modal = class _Modal {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
+  }
+  static isVSCodeEnvironment() {
+    return !!(document.querySelector("div[data-vscode-context]") || document.body.classList.contains("vscode-body") || window.location.href.includes("vscode-webview") || navigator.userAgent.includes("VSCode") || // Check for VS Code-specific global variables
+    window.acquireVsCodeApi);
   }
 };
 

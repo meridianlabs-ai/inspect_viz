@@ -10,6 +10,17 @@ export class Modal {
     static show(options: ModalOptions): void {
         const { title = 'Error', friendlyMessage, technicalMessage } = options;
 
+        // Check if we're in VS Code - if so, use console logging instead
+        if (Modal.isVSCodeEnvironment()) {
+            console.group(`🚨 ${title}`);
+            console.error(friendlyMessage);
+            console.groupCollapsed('Technical Details');
+            console.error(technicalMessage);
+            console.groupEnd();
+            console.groupEnd();
+            return;
+        }
+
         const modal = Modal.createModal(friendlyMessage, technicalMessage, title);
         document.body.appendChild(modal);
 
@@ -108,5 +119,17 @@ export class Modal {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    private static isVSCodeEnvironment(): boolean {
+        // Check multiple indicators for VS Code environment
+        return !!(
+            document.querySelector('div[data-vscode-context]') ||
+            document.body.classList.contains('vscode-body') ||
+            window.location.href.includes('vscode-webview') ||
+            navigator.userAgent.includes('VSCode') ||
+            // Check for VS Code-specific global variables
+            (window as any).acquireVsCodeApi
+        );
     }
 }
