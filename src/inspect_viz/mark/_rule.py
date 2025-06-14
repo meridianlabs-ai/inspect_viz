@@ -6,16 +6,17 @@ from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import Marker
 from ._util import column_param
 
 
 def rule_x(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelIntervalSpec | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueIntervalSpec | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
     marker: Marker | bool | Param | None = None,
@@ -65,8 +66,8 @@ def rule_x(
 
 def rule_y(
     data: Data,
-    y: ChannelSpec | Param,
-    x: ChannelIntervalSpec | Param | None = None,
+    y: ChannelValueSpec | Param,
+    x: ChannelValueIntervalSpec | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
     marker: Marker | bool | Param | None = None,

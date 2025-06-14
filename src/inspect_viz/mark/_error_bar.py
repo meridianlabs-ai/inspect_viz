@@ -4,18 +4,19 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import Marker
 from ._util import column_param
 
 
 def error_bar_x(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param | None = None,
     ci: float | Param | None = None,
-    z: Channel | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
     marker_start: Marker | bool | Param | None = None,
@@ -60,10 +61,10 @@ def error_bar_x(
 
 def error_bar_y(
     data: Data,
-    y: ChannelSpec | Param,
-    x: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param,
+    x: ChannelValueSpec | Param | None = None,
     ci: float | Param | None = None,
-    z: Channel | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
     marker_start: Marker | bool | Param | None = None,

@@ -4,7 +4,42 @@ from inspect_viz._core.types import Interval
 
 from ..transform._transform import Transform
 
-Channel: TypeAlias = (
+ChannelName: TypeAlias = Literal[
+    "ariaLabel",
+    "fill",
+    "fillOpacity",
+    "fontSize",
+    "fx",
+    "fy",
+    "geometry",
+    "height",
+    "href",
+    "length",
+    "opacity",
+    "path",
+    "r",
+    "rotate",
+    "src",
+    "stroke",
+    "strokeOpacity",
+    "strokeWidth",
+    "symbol",
+    "text",
+    "title",
+    "weight",
+    "width",
+    "x",
+    "x1",
+    "x2",
+    "y",
+    "y1",
+    "y2",
+    "z",
+]
+"""Known channel names."""
+
+
+ChannelValue: TypeAlias = (
     str | Transform | Sequence[int | float | bool] | int | float | bool | None
 )
 """Data channel for visualization.
@@ -18,10 +53,10 @@ Data channels can be either:
 """
 
 
-class ChannelWithScale(TypedDict):
+class ChannelValueWithScale(TypedDict):
     """Channel with label and scale to override the scale that would normally be associated with the channel."""
 
-    value: Channel
+    value: ChannelValue
     label: Optional[str]
     scale: Optional[
         (
@@ -42,7 +77,7 @@ class ChannelWithScale(TypedDict):
     ]
 
 
-ChannelSpec: TypeAlias = Channel | ChannelWithScale
+ChannelValueSpec: TypeAlias = ChannelValue | ChannelValueWithScale
 """Data channel spec for visualization.
 
 Data channel specs can be either:
@@ -55,24 +90,24 @@ Data channel specs can be either:
 """
 
 
-class ChannelWithInterval(TypedDict):
+class ChannelValueWithInterval(TypedDict):
     """Channel with associated interval."""
 
-    value: Channel
+    value: ChannelValue
     interval: Interval
 
 
-ChannelIntervalSpec: TypeAlias = ChannelSpec | ChannelWithInterval
+ChannelValueIntervalSpec: TypeAlias = ChannelValueSpec | ChannelValueWithInterval
 """In some contexts, when specifying a mark channel’s value, you can provide a
 {value, interval} object to specify an associated interval."""
 
 
 class ChannelWithOrder(TypedDict, total=False):
-    value: Channel
+    value: ChannelValue
     order: Literal["ascending", "descending"]
 
 
-SortOrder: TypeAlias = Channel | ChannelWithOrder
+SortOrder: TypeAlias = ChannelValue | ChannelWithOrder
 """Sort order for a plot mark's index.
 
   - a channel value definition for sorting given values (ascending)

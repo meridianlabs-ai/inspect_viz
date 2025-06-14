@@ -5,18 +5,19 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ._channel import ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def waffle_x(
     data: Data,
-    x: ChannelIntervalSpec | Param,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelIntervalSpec | Param | None = None,
-    z: ChannelSpec | Param | None = None,
+    x: ChannelValueIntervalSpec | Param,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueIntervalSpec | Param | None = None,
+    z: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     multiple: float | Param | None = None,
     unit: float | Param | None = None,
@@ -101,11 +102,11 @@ def waffle_x(
 
 def waffle_y(
     data: Data,
-    y: ChannelSpec | Param,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    x: ChannelSpec | Param | None = None,
-    z: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    z: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     multiple: float | Param | None = None,
     unit: float | Param | None = None,

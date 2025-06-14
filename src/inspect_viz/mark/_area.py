@@ -4,19 +4,20 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import Curve
 from ._util import column_param
 
 
 def area(
     data: Data,
-    x1: ChannelSpec | Param,
-    y1: ChannelSpec | Param,
-    x2: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x1: ChannelValueSpec | Param,
+    y1: ChannelValueSpec | Param,
+    x2: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
     order: Literal["value", "x", "y", "z", "sum", "appearance", "inside-out"]
@@ -73,11 +74,11 @@ def area(
 
 def area_x(
     data: Data,
-    x: ChannelSpec | Param,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x: ChannelValueSpec | Param,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
     order: Literal["value", "x", "y", "z", "sum", "appearance", "inside-out"]
@@ -134,11 +135,11 @@ def area_x(
 
 def area_y(
     data: Data,
-    y: ChannelSpec | Param,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    x: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    y: ChannelValueSpec | Param,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
     order: Literal["value", "x", "y", "z", "sum", "appearance", "inside-out"]

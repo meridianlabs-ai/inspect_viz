@@ -4,18 +4,19 @@ from .._core.data import Data
 from .._core.param import Param
 from .._core.selection import Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
-from ._text import TextStyles, text_styles_config
-from ._types import FrameAnchor, Interpolate, Symbol
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
+from ._text import text_styles_config
+from ._types import FrameAnchor, Interpolate, Symbol, TextStyles
 from ._util import column_param
 
 
 def density(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
-    z: Channel | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["dot", "circle", "hexagon", "cell", "text"] | Param | None = None,
     width: float | Param | None = None,
@@ -25,8 +26,8 @@ def density(
     bandwidth: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     symbol: Symbol | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     styles: TextStyles | None = None,
     **options: Unpack[MarkOptions],
@@ -96,8 +97,8 @@ def density(
 
 def density_x(
     data: Data,
-    y: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["areaX", "lineX", "dotX", "textX"] | Param = "areaX",
     stack: bool | Param | None = None,
@@ -152,8 +153,8 @@ def density_x(
 
 def density_y(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["areaY", "lineY", "dotY", "circle", "hexagon", "textY"]
     | Param = "areaY",

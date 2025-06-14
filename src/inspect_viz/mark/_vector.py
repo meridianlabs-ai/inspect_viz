@@ -4,20 +4,21 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import FrameAnchor
 from ._util import column_param
 
 
 def vector(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    length: ChannelSpec | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
+    length: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
     shape: Literal["arrow", "spike"] | Param | None = None,
     anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
@@ -63,12 +64,12 @@ def vector(
 
 def vector_x(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    length: ChannelSpec | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
+    length: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
     shape: Literal["arrow", "spike"] | Param | None = None,
     anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
@@ -114,12 +115,12 @@ def vector_x(
 
 def vector_y(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    length: ChannelSpec | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
+    length: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
     shape: Literal["arrow", "spike"] | Param | None = None,
     anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
@@ -165,11 +166,11 @@ def vector_y(
 
 def spike(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
-    length: ChannelSpec | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
+    length: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
     shape: Literal["arrow", "spike"] | Param | None = None,
     anchor: Literal["start", "middle", "end"] | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,

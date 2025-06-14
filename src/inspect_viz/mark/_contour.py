@@ -4,16 +4,17 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import Interpolate
 from ._util import column_param
 
 
 def contour(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
     filter_by: Selection | None = None,
     thresholds: float | list[float] | Param | None = None,
     bandwidth: float | Param | None = None,

@@ -5,22 +5,23 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import FrameAnchor
 from ._util import column_param
 
 
 def image(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
-    width: Channel | float | Param | None = None,
-    height: Channel | float | Param | None = None,
-    r: Channel | float | Param | None = None,
-    rotate: Channel | float | Param | None = None,
-    src: Channel | str | Param | None = None,
+    width: ChannelValue | float | Param | None = None,
+    height: ChannelValue | float | Param | None = None,
+    r: ChannelValue | float | Param | None = None,
+    rotate: ChannelValue | float | Param | None = None,
+    src: ChannelValue | str | Param | None = None,
     preserve_aspect_ratio: str | Param | None = None,
     cross_origin: str | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,

@@ -65,6 +65,7 @@ from inspect_viz.mark import (
     waffle_x,
     waffle_y,
 )
+from inspect_viz.mark._options import TipOptions
 
 from ._schema import (
     Area,
@@ -399,6 +400,7 @@ def test_text_y_wrapper(penguins: Data) -> None:
             frame_anchor="left",
             line_anchor="bottom",
             rotate=180,
+            tip=TipOptions(frame_anchor="bottom-right"),
             **dict(text_styles_dict()),
         ),
         TextY,

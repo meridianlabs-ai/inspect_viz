@@ -4,23 +4,24 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
-from ._text import TextStyles, text_styles_config
-from ._types import FrameAnchor
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
+from ._text import text_styles_config
+from ._types import FrameAnchor, TextStyles
 from ._util import column_param
 
 
 def hexbin(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
-    z: Channel | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     bin_width: float | Param | None = None,
     type: Literal["hexagon", "dot", "text"] | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
-    rotate: ChannelSpec | float | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
+    rotate: ChannelValueSpec | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     styles: TextStyles | None = None,
     **options: Unpack[MarkOptions],

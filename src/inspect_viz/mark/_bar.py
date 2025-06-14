@@ -5,17 +5,18 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def bar_x(
     data: Data,
-    x: ChannelIntervalSpec | Param,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelIntervalSpec | Param | None = None,
+    x: ChannelValueIntervalSpec | Param,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueIntervalSpec | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
@@ -24,7 +25,7 @@ def bar_x(
     | Sequence[float | bool]
     | Param
     | None = None,
-    z: Channel | Param | None = None,
+    z: ChannelValue | Param | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,
     inset_right: float | Param | None = None,
@@ -104,10 +105,10 @@ def bar_x(
 
 def bar_y(
     data: Data,
-    y: ChannelSpec | Param,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    x: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
@@ -116,7 +117,7 @@ def bar_y(
     | Sequence[float | bool]
     | Param
     | None = None,
-    z: Channel | Param | None = None,
+    z: ChannelValue | Param | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,
     inset_right: float | Param | None = None,

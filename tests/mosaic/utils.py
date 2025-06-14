@@ -2,7 +2,7 @@ from typing import Any, Type
 
 from inspect_viz import Component, Selection
 from inspect_viz.interactor import Brush
-from inspect_viz.mark._text import TextStyles
+from inspect_viz.mark._types import TextStyles
 from pydantic import BaseModel
 
 

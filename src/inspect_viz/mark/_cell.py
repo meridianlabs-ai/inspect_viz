@@ -4,15 +4,16 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def cell(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,
@@ -65,8 +66,8 @@ def cell(
 
 def cell_x(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,
@@ -118,8 +119,8 @@ def cell_x(
 
 def cell_y(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     inset: float | Param | None = None,
     inset_top: float | Param | None = None,

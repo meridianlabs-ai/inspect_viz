@@ -4,19 +4,20 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def arrow(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    x1: ChannelSpec | Param | None = None,
-    y1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     bend: float | bool | Param | None = None,
     head_angle: float | Param | None = None,

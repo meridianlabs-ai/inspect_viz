@@ -4,15 +4,16 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def geo(
     data: Data,
-    geometry: Channel | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    geometry: ChannelValue | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:

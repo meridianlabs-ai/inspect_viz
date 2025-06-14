@@ -5,16 +5,17 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import Marker
 from ._util import column_param
 
 
 def tick_x(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
     marker_start: Marker | bool | Param | None = None,
@@ -67,8 +68,8 @@ def tick_x(
 
 def tick_y(
     data: Data,
-    y: ChannelSpec | Param,
-    x: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param,
+    x: ChannelValueSpec | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
     marker_start: Marker | bool | Param | None = None,

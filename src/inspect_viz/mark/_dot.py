@@ -5,21 +5,22 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._types import FrameAnchor, Symbol
 from ._util import column_param
 
 
 def dot(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
-    z: Channel | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
+    z: ChannelValue | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    rotate: Channel | float | Param | None = None,
-    symbol: ChannelSpec | Param | Symbol | None = None,
+    rotate: ChannelValue | float | Param | None = None,
+    symbol: ChannelValueSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -60,14 +61,14 @@ def dot(
 
 def dot_x(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelIntervalSpec | None = None,
-    z: Channel | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueIntervalSpec | None = None,
+    z: ChannelValue | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
-    rotate: Channel | float | Param | None = None,
-    symbol: ChannelSpec | Param | Symbol | None = None,
+    rotate: ChannelValue | float | Param | None = None,
+    symbol: ChannelValueSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -115,14 +116,14 @@ def dot_x(
 
 def dot_y(
     data: Data,
-    y: ChannelSpec | Param,
-    x: ChannelIntervalSpec | None = None,
-    z: Channel | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    y: ChannelValueSpec | Param,
+    x: ChannelValueIntervalSpec | None = None,
+    z: ChannelValue | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
-    rotate: Channel | float | Param | None = None,
-    symbol: ChannelSpec | Param | Symbol | None = None,
+    rotate: ChannelValue | float | Param | None = None,
+    symbol: ChannelValueSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -170,12 +171,12 @@ def dot_y(
 
 def circle(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
-    z: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
+    z: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    rotate: ChannelSpec | float | Param | None = None,
+    rotate: ChannelValueSpec | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -216,12 +217,12 @@ def circle(
 
 def hexagon(
     data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
-    z: ChannelSpec | Param | None = None,
-    r: ChannelSpec | float | Param | None = None,
+    x: ChannelValueSpec | Param,
+    y: ChannelValueSpec | Param,
+    z: ChannelValueSpec | Param | None = None,
+    r: ChannelValueSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    rotate: ChannelSpec | float | Param | None = None,
+    rotate: ChannelValueSpec | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:

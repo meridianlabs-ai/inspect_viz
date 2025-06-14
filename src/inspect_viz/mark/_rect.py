@@ -6,20 +6,21 @@ from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValue, ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 from ._util import column_param
 
 
 def rect(
     data: Data,
-    x: ChannelIntervalSpec | Param | None = None,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelIntervalSpec | Param | None = None,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x: ChannelValueIntervalSpec | Param | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueIntervalSpec | Param | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
     inset: float | Param | None = None,
@@ -102,13 +103,13 @@ def rect(
 
 def rect_x(
     data: Data,
-    x: ChannelSpec | Param | None = None,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelIntervalSpec | Param | None = None,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueIntervalSpec | Param | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
     inset: float | Param | None = None,
@@ -190,13 +191,13 @@ def rect_x(
 
 def rect_y(
     data: Data,
-    x: ChannelIntervalSpec | Param | None = None,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
-    y: ChannelSpec | Param | None = None,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
-    z: Channel | Param | None = None,
+    x: ChannelValueIntervalSpec | Param | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
+    z: ChannelValue | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
     inset: float | Param | None = None,

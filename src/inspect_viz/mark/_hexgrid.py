@@ -4,7 +4,8 @@ from typing_extensions import Unpack
 
 from .._core import Param
 from .._util.marshall import dict_remove_none
-from ._mark import Mark, MarkOptions
+from ._mark import Mark
+from ._options import MarkOptions
 
 
 def hexgrid(

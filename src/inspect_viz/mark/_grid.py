@@ -6,18 +6,19 @@ from .._core import Param
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import ChannelIntervalSpec, ChannelSpec
-from ._mark import Mark, MarkOptions
+from ._channel import ChannelValueIntervalSpec, ChannelValueSpec
+from ._mark import Mark
+from ._options import MarkOptions
 
 
 def grid_x(
-    x: ChannelSpec | Param | None = None,
-    y: ChannelIntervalSpec | None = None,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y: ChannelValueIntervalSpec | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: ChannelSpec | str | Param | None = None,
+    color: ChannelValueSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -57,13 +58,13 @@ def grid_x(
 
 
 def grid_y(
-    y: ChannelSpec | Param | None = None,
-    x: ChannelIntervalSpec | None = None,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    x: ChannelValueIntervalSpec | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: ChannelSpec | str | Param | None = None,
+    color: ChannelValueSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     inset_left: float | Param | None = None,
@@ -109,12 +110,12 @@ def grid_y(
 
 
 def grid_fx(
-    x: ChannelSpec | Param | None = None,
-    y1: ChannelSpec | Param | None = None,
-    y2: ChannelSpec | Param | None = None,
+    x: ChannelValueSpec | Param | None = None,
+    y1: ChannelValueSpec | Param | None = None,
+    y2: ChannelValueSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: ChannelSpec | str | Param | None = None,
+    color: ChannelValueSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -152,12 +153,12 @@ def grid_fx(
 
 
 def grid_fy(
-    y: ChannelSpec | Param | None = None,
-    x1: ChannelSpec | Param | None = None,
-    x2: ChannelSpec | Param | None = None,
+    y: ChannelValueSpec | Param | None = None,
+    x1: ChannelValueSpec | Param | None = None,
+    x2: ChannelValueSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: ChannelSpec | str | Param | None = None,
+    color: ChannelValueSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     inset_left: float | Param | None = None,
