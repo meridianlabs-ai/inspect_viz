@@ -5,7 +5,7 @@ from pydantic import JsonValue
 from .._core.component import Component
 from .._core.param import Param
 from .._util.marshall import snake_to_camel
-from ._channel import Channel, SortOrder
+from ._channel import Channel, ChannelSpec, SortOrder
 
 
 class MarkOptions(TypedDict, total=False):
@@ -114,7 +114,7 @@ class MarkOptions(TypedDict, total=False):
     aria_hidden: str | Param
     """ARIA hidden (<https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden>)."""
 
-    aria_label: str | Param
+    aria_label: Channel
     """ARIA label (<https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label/>)."""
 
     pointer_events: str | Param
@@ -159,13 +159,13 @@ class MarkOptions(TypedDict, total=False):
     dy: float | Param
     """The vertical offset in pixels; a constant option. On low-density screens, an additional 0.5px offset may be applied for crisp edges."""
 
-    fill: Channel | Param
+    fill: ChannelSpec | Param
     """A constant CSS color string, or a channel typically bound to the *color* scale. If all channel values are valid CSS colors, by default the channel will not be bound to the *color* scale, interpreting the colors literally."""
 
-    fill_opacity: Channel | Param
+    fill_opacity: ChannelSpec | Param
     """A constant number between 0 and 1, or a channel typically bound to the *opacity* scale. If all channel values are numbers in [0, 1], by default the channel will not be bound to the *opacity* scale, interpreting the opacities literally."""
 
-    stroke: Channel | Param
+    stroke: ChannelSpec | Param
     """A constant CSS color string, or a channel typically bound to the *color* scale. If all channel values are valid CSS colors, by default the channel will not be bound to the *color* scale, interpreting the colors literally.
     """
 
@@ -187,13 +187,13 @@ class MarkOptions(TypedDict, total=False):
     stroke_miterlimit: float | Param
     """A constant number specifying how to limit the length of *miter* joins on stroked paths."""
 
-    stroke_opacity: Channel
+    stroke_opacity: ChannelSpec
     """A constant between 0 and 1, or a channel typically bound to the *opacity* scale. If all channel values are numbers in [0, 1], by default the channel will not be bound to the *opacity* scale, interpreting the opacities literally."""
 
-    stroke_width: Channel
+    stroke_width: ChannelSpec
     """A constant number in pixels, or a channel."""
 
-    opacity: Channel
+    opacity: ChannelSpec
     """A constant between 0 and 1, or a channel typically bound to the *opacity* scale. If all channel values are numbers in [0, 1], by default the channel will not be bound to the *opacity* scale, interpreting the opacities literally. For faster rendering, prefer the **stroke_opacity** or **fill_opacity** option.
     """
 

@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import Curve
 from ._util import column_param
@@ -12,10 +12,10 @@ from ._util import column_param
 
 def area(
     data: Data,
-    x1: Channel | Param,
-    y1: Channel | Param,
-    x2: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x1: ChannelSpec | Param,
+    y1: ChannelSpec | Param,
+    x2: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
@@ -73,10 +73,10 @@ def area(
 
 def area_x(
     data: Data,
-    x: Channel | Param,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y: Channel | Param | None = None,
+    x: ChannelSpec | Param,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
@@ -134,10 +134,10 @@ def area_x(
 
 def area_y(
     data: Data,
-    y: Channel | Param,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
-    x: Channel | Param | None = None,
+    y: ChannelSpec | Param,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
+    x: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,

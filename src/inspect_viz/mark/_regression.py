@@ -4,15 +4,15 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._util import column_param
 
 
 def regression_y(
     data: Data,
-    x: Channel | Param | None = None,
-    y: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     ci: float | Param | None = None,

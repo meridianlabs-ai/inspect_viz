@@ -6,19 +6,19 @@ from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel
+from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._util import column_param
 
 
 def rect(
     data: Data,
-    x: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelIntervalSpec | Param | None = None,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y: ChannelIntervalSpec | Param | None = None,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
@@ -102,12 +102,12 @@ def rect(
 
 def rect_x(
     data: Data,
-    x: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y: ChannelIntervalSpec | Param | None = None,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,
@@ -190,12 +190,12 @@ def rect_x(
 
 def rect_y(
     data: Data,
-    x: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelIntervalSpec | Param | None = None,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     interval: Interval | None = None,

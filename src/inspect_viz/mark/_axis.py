@@ -6,25 +6,25 @@ from .._core import Param
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel
+from ._channel import ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor
 
 
 def axis_x(
-    x: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
-    text: Channel | Param | None = None,
+    text: ChannelSpec | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: str | Param | None = None,
-    rotate: Channel | float | Param | None = None,
-    text_stroke: Channel | Param | None = None,
-    text_stroke_opacity: Channel | float | Param | None = None,
-    text_stroke_width: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
+    text_stroke: ChannelSpec | Param | None = None,
+    text_stroke_opacity: ChannelSpec | float | Param | None = None,
+    text_stroke_width: ChannelSpec | float | Param | None = None,
     styles: TextStyles | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     tick_size: float | Param | None = None,
@@ -98,18 +98,18 @@ def axis_x(
 
 
 def axis_y(
-    y: Channel | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
-    text: Channel | Param | None = None,
+    text: ChannelSpec | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: str | Param | None = None,
-    rotate: Channel | float | Param | None = None,
-    text_stroke: Channel | Param | None = None,
-    text_stroke_opacity: Channel | float | Param | None = None,
-    text_stroke_width: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
+    text_stroke: ChannelSpec | Param | None = None,
+    text_stroke_opacity: ChannelSpec | float | Param | None = None,
+    text_stroke_width: ChannelSpec | float | Param | None = None,
     styles: TextStyles | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     tick_size: float | Param | None = None,
@@ -183,18 +183,18 @@ def axis_y(
 
 
 def axis_fx(
-    x: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
-    text: Channel | Param | None = None,
+    text: ChannelSpec | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: str | Param | None = None,
-    rotate: Channel | float | Param | None = None,
-    text_stroke: Channel | Param | None = None,
-    text_stroke_opacity: Channel | float | Param | None = None,
-    text_stroke_width: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
+    text_stroke: ChannelSpec | Param | None = None,
+    text_stroke_opacity: ChannelSpec | float | Param | None = None,
+    text_stroke_width: ChannelSpec | float | Param | None = None,
     styles: TextStyles | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     tick_size: float | Param | None = None,
@@ -268,18 +268,18 @@ def axis_fx(
 
 
 def axis_fy(
-    y: Channel | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
-    text: Channel | Param | None = None,
+    text: ChannelSpec | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: str | Param | None = None,
-    rotate: Channel | float | Param | None = None,
-    text_stroke: Channel | Param | None = None,
-    text_stroke_opacity: Channel | float | Param | None = None,
-    text_stroke_width: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
+    text_stroke: ChannelSpec | Param | None = None,
+    text_stroke_opacity: ChannelSpec | float | Param | None = None,
+    text_stroke_width: ChannelSpec | float | Param | None = None,
     styles: TextStyles | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     tick_size: float | Param | None = None,

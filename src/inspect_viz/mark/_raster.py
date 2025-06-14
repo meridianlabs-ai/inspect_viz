@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import Interpolate
 from ._util import column_param
@@ -12,8 +12,8 @@ from ._util import column_param
 
 def raster(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     filter_by: Selection | None = None,
     width: float | Param | None = None,
     height: float | Param | None = None,
@@ -77,8 +77,8 @@ def raster(
 
 def heatmap(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     filter_by: Selection | None = None,
     width: float | Param | None = None,
     height: float | Param | None = None,
@@ -142,8 +142,8 @@ def heatmap(
 
 def raster_tile(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     filter_by: Selection | None = None,
     origin: list[float] | Param | None = None,
     width: float | Param | None = None,

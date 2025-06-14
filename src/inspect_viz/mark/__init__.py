@@ -3,7 +3,13 @@ from ._arrow import arrow
 from ._axis import axis_fx, axis_fy, axis_x, axis_y
 from ._bar import bar_x, bar_y
 from ._cell import cell, cell_x, cell_y
-from ._channel import Channel
+from ._channel import (
+    Channel,
+    ChannelIntervalSpec,
+    ChannelSpec,
+    ChannelWithInterval,
+    ChannelWithScale,
+)
 from ._contour import contour
 from ._delaunay import delaunay_link, delaunay_mesh, hull, voronoi, voronoi_mesh
 from ._dense import dense_line
@@ -33,6 +39,10 @@ __all__ = [
     "Mark",
     "MarkOptions",
     "Channel",
+    "ChannelIntervalSpec",
+    "ChannelSpec",
+    "ChannelWithInterval",
+    "ChannelWithScale",
     "TextStyles",
     "TextOverflow",
     "Curve",

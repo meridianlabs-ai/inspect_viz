@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import Curve, Marker
 from ._util import column_param
@@ -12,12 +12,12 @@ from ._util import column_param
 
 def link(
     data: Data,
-    x: Channel | Param | None = None,
-    y: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
+    x1: ChannelSpec | Param | None = None,
+    y1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
     marker_start: Marker | bool | Param | None = None,

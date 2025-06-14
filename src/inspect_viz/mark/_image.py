@@ -5,7 +5,7 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
 from ._util import column_param
@@ -13,8 +13,8 @@ from ._util import column_param
 
 def image(
     data: Data,
-    x: Channel | Param | None = None,
-    y: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     filter_by: Selection | None = None,
     width: Channel | float | Param | None = None,
     height: Channel | float | Param | None = None,

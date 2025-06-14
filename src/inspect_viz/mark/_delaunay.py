@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import Curve, Marker
 from ._util import column_param
@@ -12,8 +12,8 @@ from ._util import column_param
 
 def delaunay_link(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -68,8 +68,8 @@ def delaunay_link(
 
 def delaunay_mesh(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -124,8 +124,8 @@ def delaunay_mesh(
 
 def hull(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -180,8 +180,8 @@ def hull(
 
 def voronoi(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -235,8 +235,8 @@ def voronoi(
 
 def voronoi_mesh(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,

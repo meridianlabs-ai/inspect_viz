@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._util import column_param
 
@@ -12,7 +12,7 @@ from ._util import column_param
 def geo(
     data: Data,
     geometry: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     filter_by: Selection | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:

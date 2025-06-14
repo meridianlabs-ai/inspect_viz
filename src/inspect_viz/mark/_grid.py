@@ -6,17 +6,18 @@ from .._core import Param
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
 from ..transform._column import column
-from ._channel import Channel
+from ._channel import ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark, MarkOptions
 
 
 def grid_x(
-    x: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    y: ChannelIntervalSpec | None = None,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -28,6 +29,7 @@ def grid_x(
 
     Args:
         x: The horizontal position channel, typically bound to the *x* scale.
+        y: Shorthand for specifying both the primary and secondary vertical position of the tick as the bounds of the containing interval; can only be used in conjunction with the **interval** option.
         y1: The primary (starting, often bottom) vertical position of the grid line.
         y2: The secondary (ending, often top) vertical position of the grid line.
         interval: How to convert a continuous value into an interval.
@@ -40,6 +42,7 @@ def grid_x(
     config: dict[str, Any] = dict_remove_none(
         dict(
             x=column(x) if isinstance(x, str) else x,
+            y=column(y) if isinstance(y, str) else y,
             y1=column(y1) if isinstance(y1, str) else y1,
             y2=column(y2) if isinstance(y2, str) else y2,
             interval=interval,
@@ -54,12 +57,13 @@ def grid_x(
 
 
 def grid_y(
-    y: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
+    y: ChannelSpec | Param | None = None,
+    x: ChannelIntervalSpec | None = None,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     inset_left: float | Param | None = None,
@@ -73,6 +77,7 @@ def grid_y(
 
     Args:
         y: The vertical position channel, typically bound to the *y* scale.
+        x: Shorthand for specifying both the primary and secondary horizontal position of the tick as the bounds of the containing interval; can only be used in conjunction with the **interval** option.
         x1: The primary (starting, often left) horizontal position of the grid line.
         x2: The secondary (ending, often right) horizontal position of the grid line.
         interval: How to convert a continuous value into an interval.
@@ -87,6 +92,7 @@ def grid_y(
     config: dict[str, Any] = dict_remove_none(
         dict(
             y=column(y) if isinstance(y, str) else y,
+            x=column(x) if isinstance(x, str) else x,
             x1=column(x1) if isinstance(x1, str) else x1,
             x2=column(x2) if isinstance(x2, str) else x2,
             interval=interval,
@@ -103,12 +109,12 @@ def grid_y(
 
 
 def grid_fx(
-    x: Channel | Param | None = None,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     **options: Unpack[MarkOptions],
@@ -146,12 +152,12 @@ def grid_fx(
 
 
 def grid_fy(
-    y: Channel | Param | None = None,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
+    y: ChannelSpec | Param | None = None,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
     anchor: str | Param | None = None,
-    color: Channel | str | Param | None = None,
+    color: ChannelSpec | str | Param | None = None,
     ticks: int | Sequence[Any] | Param | None = None,
     tick_spacing: float | Param | None = None,
     inset_left: float | Param | None = None,

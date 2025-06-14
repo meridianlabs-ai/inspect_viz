@@ -5,17 +5,17 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._util import column_param
 
 
 def bar_x(
     data: Data,
-    x: Channel | Param,
-    x1: Channel | Param | None = None,
-    x2: Channel | Param | None = None,
-    y: Channel | Param | None = None,
+    x: ChannelIntervalSpec | Param,
+    x1: ChannelSpec | Param | None = None,
+    x2: ChannelSpec | Param | None = None,
+    y: ChannelIntervalSpec | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,
@@ -104,10 +104,10 @@ def bar_x(
 
 def bar_y(
     data: Data,
-    y: Channel | Param,
-    y1: Channel | Param | None = None,
-    y2: Channel | Param | None = None,
-    x: Channel | Param | None = None,
+    y: ChannelSpec | Param,
+    y1: ChannelSpec | Param | None = None,
+    y2: ChannelSpec | Param | None = None,
+    x: ChannelSpec | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     offset: Literal["center", "normalize", "wiggle"] | Param | None = None,

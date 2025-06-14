@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 from .._core import Data, Param, Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import Curve, Marker
 from ._util import column_param
@@ -12,8 +12,8 @@ from ._util import column_param
 
 def line(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -62,8 +62,8 @@ def line(
 
 def line_x(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param | None = None,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -112,8 +112,8 @@ def line_x(
 
 def line_y(
     data: Data,
-    y: Channel | Param,
-    x: Channel | Param | None = None,
+    y: ChannelSpec | Param,
+    x: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,

@@ -5,7 +5,7 @@ from typing_extensions import Unpack
 from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor, Symbol
 from ._util import column_param
@@ -13,13 +13,13 @@ from ._util import column_param
 
 def dot(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     filter_by: Selection | None = None,
     rotate: Channel | float | Param | None = None,
-    symbol: Channel | Param | Symbol | None = None,
+    symbol: ChannelSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -60,13 +60,14 @@ def dot(
 
 def dot_x(
     data: Data,
-    x: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelIntervalSpec | None = None,
     z: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     rotate: Channel | float | Param | None = None,
-    symbol: Channel | Param | Symbol | None = None,
+    symbol: ChannelSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -80,6 +81,7 @@ def dot_x(
     Args:
         data: The data source for the mark.
         x: The horizontal position channel specifying the dot's center.
+        y: The vertical position of the dot’s center,typically bound to the *y* scale.
         z: An optional ordinal channel for grouping data into series.
         r: The radius of dots; either a channel or constant. When a number, it is interpreted as a constant radius
            in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
@@ -98,6 +100,7 @@ def dot_x(
         dict(
             data=data.plot_from(filter_by),
             x=column_param(data, x),
+            y=column_param(data, y),
             z=column_param(data, z),
             r=r,
             interval=interval,
@@ -112,13 +115,14 @@ def dot_x(
 
 def dot_y(
     data: Data,
-    y: Channel | Param,
+    y: ChannelSpec | Param,
+    x: ChannelIntervalSpec | None = None,
     z: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     interval: Interval | None = None,
     filter_by: Selection | None = None,
     rotate: Channel | float | Param | None = None,
-    symbol: Channel | Param | Symbol | None = None,
+    symbol: ChannelSpec | Param | Symbol | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -132,6 +136,7 @@ def dot_y(
     Args:
         data: The data source for the mark.
         y: The vertical position channel specifying the dot's center.
+        x: The horizontal position of the dot’s center, typically bound to the *x* scale.
         z: An optional ordinal channel for grouping data into series.
         r: The radius of dots; either a channel or constant. When a number, it is interpreted as a constant radius
            in pixels. Otherwise it is interpreted as a channel, typically bound to the *r* channel, which defaults
@@ -150,6 +155,7 @@ def dot_y(
         dict(
             data=data.plot_from(filter_by),
             y=column_param(data, y),
+            x=column_param(data, x),
             z=column_param(data, z),
             r=r,
             interval=interval,
@@ -164,12 +170,12 @@ def dot_y(
 
 def circle(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
-    z: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
+    z: ChannelSpec | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    rotate: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:
@@ -210,12 +216,12 @@ def circle(
 
 def hexagon(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
-    z: Channel | Param | None = None,
-    r: Channel | float | Param | None = None,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
+    z: ChannelSpec | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     filter_by: Selection | None = None,
-    rotate: Channel | float | Param | None = None,
+    rotate: ChannelSpec | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     **options: Unpack[MarkOptions],
 ) -> Mark:

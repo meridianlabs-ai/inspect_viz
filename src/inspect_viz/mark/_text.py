@@ -6,7 +6,7 @@ from .._core import Data, Param, Selection
 from .._core.types import Interval
 from .._util.marshall import dict_remove_none, dict_to_camel
 from ..transform._column import column
-from ._channel import Channel
+from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._types import FrameAnchor
 from ._util import column_param
@@ -68,8 +68,8 @@ class TextStyles(TypedDict, total=False):
 
 def text(
     data: Data | None,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     text: Channel | Param | None = None,
     filter_by: Selection | None = None,
@@ -113,11 +113,11 @@ def text(
 
 def text_x(
     data: Data | None,
-    x: Channel | Param,
-    y: Channel | Param | None = None,
+    x: ChannelSpec | Param,
+    y: ChannelIntervalSpec | Param | None = None,
     z: Channel | Param | None = None,
     text: Channel | Param | None = None,
-    interval: Interval | None = None,
+    interval: Interval | Param | None = None,
     filter_by: Selection | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: LineAnchor | Param | None = None,
@@ -165,11 +165,11 @@ def text_x(
 
 def text_y(
     data: Data | None,
-    y: Channel | Param,
-    x: Channel | Param | None = None,
+    y: ChannelSpec | Param,
+    x: ChannelIntervalSpec | Param | None = None,
     z: Channel | Param | None = None,
     text: Channel | Param | None = None,
-    interval: Interval | None = None,
+    interval: Interval | Param | None = None,
     filter_by: Selection | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     line_anchor: LineAnchor | Param | None = None,

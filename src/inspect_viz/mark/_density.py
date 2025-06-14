@@ -4,7 +4,7 @@ from .._core.data import Data
 from .._core.param import Param
 from .._core.selection import Selection
 from .._util.marshall import dict_remove_none
-from ._channel import Channel
+from ._channel import Channel, ChannelSpec
 from ._mark import Mark, MarkOptions
 from ._text import TextStyles, text_styles_config
 from ._types import FrameAnchor, Interpolate, Symbol
@@ -13,8 +13,8 @@ from ._util import column_param
 
 def density(
     data: Data,
-    x: Channel | Param,
-    y: Channel | Param,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["dot", "circle", "hexagon", "cell", "text"] | Param | None = None,
@@ -25,7 +25,7 @@ def density(
     bandwidth: float | Param | None = None,
     interpolate: Interpolate | Param | None = None,
     symbol: Symbol | Param | None = None,
-    r: Channel | float | Param | None = None,
+    r: ChannelSpec | float | Param | None = None,
     rotate: Channel | float | Param | None = None,
     frame_anchor: FrameAnchor | Param | None = None,
     styles: TextStyles | None = None,
@@ -96,7 +96,7 @@ def density(
 
 def density_x(
     data: Data,
-    y: Channel | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["areaX", "lineX", "dotX", "textX"] | Param = "areaX",
@@ -152,7 +152,7 @@ def density_x(
 
 def density_y(
     data: Data,
-    x: Channel | Param | None = None,
+    x: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     type: Literal["areaY", "lineY", "dotY", "circle", "hexagon", "textY"]
