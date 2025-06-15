@@ -13,7 +13,7 @@ def select(
     target: Param | Selection | None = None,
     field: str | None = None,
     label: str | None = None,
-    filter_by: str | None = None,
+    filter_by: Selection | None = None,
 ) -> Component:
     """Select input.
 
