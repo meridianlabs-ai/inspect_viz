@@ -3,10 +3,10 @@ from typing import Literal
 from pydantic import JsonValue
 
 from inspect_viz._util.marshall import dict_remove_none
-from inspect_viz.mark._util import column_validated
 
 from .._core import Component, Data
 from .._core.selection import Selection
+from ._params import column_validated
 
 
 def table(

@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 from inspect_viz._core.param import Param
-from inspect_viz.mark._util import column_validated
 
 from .._core import Component, Data, Selection
+from ._params import column_validated
 
 
 def search(

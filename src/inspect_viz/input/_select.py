@@ -1,8 +1,7 @@
 from typing import Any
 
 from .._core import Component, Data, Param, Selection
-from .._util.marshall import dict_remove_none
-from ..mark._util import column_validated
+from ._params import data_params, label_param, options_params
 
 
 def select(
@@ -35,42 +34,13 @@ def select(
        label: A text label for the input. If unspecified, the column name (if provided) will be used by default.
        filter_by: A selection to filter the data source indicated by the `data` parameter.
     """
-    config: dict[str, Any] = dict_remove_none({"input": "menu"})
+    config: dict[str, Any] = {"input": "menu"}
 
-    if label is not None:
-        config["label"] = f"{label}: "
+    config = (
+        config
+        | label_param(label)
+        | options_params(options, target)
+        | data_params(data, column, target, field, filter_by)
+    )
 
-    if options is not None:
-        if isinstance(options, list):
-            config["options"] = options
-        else:
-            config["options"] = [dict(label=k, value=v) for k, v in options.items()]
-        if target is None:
-            raise ValueError("You must pass a target `Param` along with `options`")
-        config["as"] = target
-
-    elif data is not None:
-        config["from"] = data.table
-
-        if target is not None:
-            if not isinstance(target, Selection):
-                raise ValueError("The passed `target` must be of type `Selection`")
-            config["as"] = target
-        else:
-            config["as"] = data.selection
-
-        # validate and set column
-        if column is None:
-            raise ValueError("You must pass a `column` value along with `data`")
-        config["column"] = column_validated(data, column)
-
-        # set field (optional, defaults to column)
-        if field is not None:
-            config["field"] = column_validated(data, field)
-
-        # set filter_by
-        if filter_by is not None:
-            config["filterBy"] = filter_by
-
-    # return widget
     return Component(config=config)

@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 from inspect_viz._util.marshall import dict_remove_none
-from inspect_viz.mark._util import column_validated
 
 from .._core import Component, Data, Param, Selection
+from ._params import column_validated
 
 
 def slider(
