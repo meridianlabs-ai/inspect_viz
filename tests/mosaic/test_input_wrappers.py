@@ -13,7 +13,7 @@ def test_select_wrapper(penguins: Data) -> None:
         select(
             label="X",
             options=["body_mass", "flipper_length", "bill_depth", "bill_length"],
-            param=Param("body_mass"),
+            target=Param("body_mass"),
         ),
         Menu,
     )

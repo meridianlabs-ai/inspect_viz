@@ -25,8 +25,8 @@ y_axis = Param("flipper_length")
 
 ```{python}
 select(penguins, label="Species", column="species")
-select(label="X", options=axes, param=x_axis)
-select(label="Y", options=axes, param=y_axis)
+select(label="X", options=axes, target=x_axis)
+select(label="Y", options=axes, target=y_axis)
 ```
 
 ## Row

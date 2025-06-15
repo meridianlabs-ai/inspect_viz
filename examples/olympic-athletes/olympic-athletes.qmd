@@ -23,8 +23,8 @@ hover = Selection("intersect", empty=True)
 ## Row {.toolbar}
 
 ```{python}
-select(athletes, label="Sport", column="sport", selection=category)
-select(athletes, label="Sex", column="sex", selection=category)
+select(athletes, label="Sport", column="sport", target=category)
+select(athletes, label="Sex", column="sex", target=category)
 search(
     athletes,
     label="Name",
