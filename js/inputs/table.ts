@@ -79,19 +79,20 @@ export interface TableOptions extends InputOptions {
     from: string;
     columns?: Array<string | Column>;
     width?: number;
-    maxWidth?: number;
     height?: number;
-    pagination?: boolean;
-    paginationAutoPageSize?: boolean;
-    paginationPageSize?: number;
-    paginationPageSizeSelector?: number[] | boolean;
+    maxWidth?: number;
+    pagination?: {
+        autoPageSize?: boolean;
+        pageSize?: number;
+        pageSizeSelector?: number[] | boolean;
+    };
     sorting?: boolean;
     filtering?: boolean;
     filterLocation?: 'header' | 'secondary';
-    headerHeight?: number | 'auto';
     rowHeight?: number;
+    headerHeight?: number | 'auto';
     select?: 'hover' | 'single' | 'multiple' | 'none';
-    selectAll?: 'all' | 'filtered' | 'currentPage';
+    selectAllScope?: 'all' | 'filtered' | 'currentPage';
 }
 
 interface ColSortModel {
@@ -270,9 +271,9 @@ export class Table extends Input {
             // always pass filter to allow server-side filtering
             alwaysPassFilter: () => true,
             pagination: !!options.pagination,
-            paginationAutoPageSize: !!options.paginationAutoPageSize,
-            paginationPageSizeSelector: options.paginationPageSizeSelector,
-            paginationPageSize: options.paginationPageSize,
+            paginationAutoPageSize: !!options.pagination?.autoPageSize,
+            paginationPageSizeSelector: options.pagination?.pageSizeSelector,
+            paginationPageSize: options.pagination?.pageSize,
             animateRows: true,
             headerHeight: headerHeightPixels,
             rowHeight: options.rowHeight,
@@ -441,7 +442,7 @@ const headerClasses = (align?: 'left' | 'right' | 'center' | 'justify'): string[
 
 const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, any> | undefined => {
     const explicitSelect = options.select === 'single' || options.select === 'multiple';
-    const selectAll = options.selectAll || 'all';
+    const selectAll = options.selectAllScope || 'all';
     return !explicitSelect
         ? undefined
         : options.select === 'single'

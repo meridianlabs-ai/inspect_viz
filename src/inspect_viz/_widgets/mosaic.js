@@ -764,9 +764,9 @@ var Table = class extends Input {
       // always pass filter to allow server-side filtering
       alwaysPassFilter: () => true,
       pagination: !!options.pagination,
-      paginationAutoPageSize: !!options.paginationAutoPageSize,
-      paginationPageSizeSelector: options.paginationPageSizeSelector,
-      paginationPageSize: options.paginationPageSize,
+      paginationAutoPageSize: !!options.pagination?.autoPageSize,
+      paginationPageSizeSelector: options.pagination?.pageSizeSelector,
+      paginationPageSize: options.pagination?.pageSize,
       animateRows: true,
       headerHeight: headerHeightPixels,
       rowHeight: options.rowHeight,
@@ -886,7 +886,7 @@ var headerClasses = (align) => {
 };
 var resolveRowSelection = (options) => {
   const explicitSelect = options.select === "single" || options.select === "multiple";
-  const selectAll = options.selectAll || "all";
+  const selectAll = options.selectAllScope || "all";
   return !explicitSelect ? void 0 : options.select === "single" ? {
     mode: "singleRow"
   } : { mode: "multiRow", selectAll };

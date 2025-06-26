@@ -30,8 +30,6 @@ class Column(BaseModel):
             "center", and "justify". By default, left aligned.
         headerAutoHeight: Whether the column header cell height is automatically adjusted based on content.
         headerWrapText: Whether the column header text is wrapped to fit within the header cell.
-
-
     """
 
     name: str
@@ -42,14 +40,29 @@ class Column(BaseModel):
     flex: float | None = None
     minWidth: float | None = None
     maxWidth: float | None = None
+    autoHeight: bool | None = None
     sortable: bool | None = None
     filterable: bool | None = None
     resizable: bool | None = None
-    autoHeight: bool | None = None
     wrapText: bool | None = None
     headerAlign: Literal["left", "right", "center", "justify"] | None = None
     headerAutoHeight: bool | None = None
     headerWrapText: bool | None = None
+
+
+class Pagination(BaseModel):
+    """Pagination configuration for table display.
+
+    Args:
+        enabled: Whether pagination is enabled.
+        pageSize: Number of rows to load per page.
+        pageSizeSelector: Determines if the page size selector is shown in the pagination panel or not. Set to a list of values to show the page size selector with custom list of possible page sizes. Set to true to show the page size selector with the default page sizes [20, 50, 100]. Set to false to hide the page size selector.
+        autoPageSize: If true, the number of rows to load per page is automatically adjusted by the grid so each page shows enough rows to just fill the area designated for the grid. If false, paginationPageSize is used.
+    """
+
+    pageSize: int | None = None
+    pageSizeSelector: list[int] | bool | None = None
+    autoPageSize: bool | None = None
 
 
 def table(
@@ -63,14 +76,11 @@ def table(
     sorting: bool | None = None,
     filtering: bool | None = None,
     filter_location: Literal["header", "secondary"] | None = None,
-    pagination: bool | None = None,
-    paginationPageSize: int | None = None,
-    paginationPageSizeSelector: list[int] | bool | None = None,
-    paginationAutoPageSize: bool | None = None,
+    pagination: bool | Pagination | None = None,
     headerHeight: float | None = None,
     rowHeight: float | None = None,
     select: Literal["hover", "single", "multiple", "none"] | None = None,
-    selectAll: Literal["all", "filtered", "currentPage"] | None = None,
+    selectAllScope: Literal["all", "filtered", "currentPage"] | None = None,
 ) -> Component:
     """Tabular display of data.
 
@@ -80,18 +90,15 @@ def table(
        columns: A list of column names to include in the table grid. If unspecified, all table columns are included.
        target: The output selection. A selection clause of the form column IN (rows) will be added to the selection for each currently selected table row.
        select: The type of selection to use for the table. Valid values are "hover", "single", "multiple", and "none". Defaults to "hover".
-       selectAll: If select 'multiple' is enabled, controls the behavior of the select all option in the header. Valid values are 'all', 'filtered' or 'currentPage'.
+       selectAllScope: If select 'multiple' is enabled, controls the scope of the select all option in the header. Valid values are 'all', 'filtered' or 'currentPage'.
        column_options: A dictionary of column configuration options. The keys are column names and the values are dictionaries with column options.
        width: The total width of the table widget, in pixels.
        max_width: The maximum width of the table widget, in pixels.
        height: The height of the table widget, in pixels.
-       sorting: Set whether sorting is enabled.
-       filtering: Set whether filtering is enabled.
+       sorting: Set whether sorting columns is enabled.
+       filtering: Set whether filtering of column values is enabled.
        filter_location: Set the location of the filter input. Valid values are "header" or "secondary". If set to "header", the filter input is shown in the table header. If set to "secondary", the filter input is shown in a row beneath the header.
-       pagination: Set whether pagination is enabled.
-       paginationPageSize: How many rows to load per page. If paginationAutoPageSize is specified, this property is ignored.
-       paginationPageSizeSelector: Determines if the page size selector is shown in the pagination panel or not. Set to an list of values to show the page size selector with custom list of possible page sizes. Set to true to show the page size selector with the default page sizes [20, 50, 100]. Set to false to hide the page size selector.
-       paginationAutoPageSize: Set to true so that the number of rows to load per page is automatically adjusted by the grid so each page shows enough rows to just fill the area designated for the grid. If false, paginationPageSize is used.
+       pagination: Enable pagination. If set to True, default pagination settings are used. If set to a Pagination object, custom pagination settings are used.
        headerHeight: The height of the table header, in pixels.
        rowHeight: The height of each table row, in pixels.
 
@@ -109,14 +116,11 @@ def table(
             "sorting": sorting,
             "filtering": filtering,
             "filterLocation": filter_location,
-            "pagination": pagination,
-            "paginationPageSize": paginationPageSize,
-            "paginationPageSizeSelector": paginationPageSizeSelector,
-            "paginationAutoPageSize": paginationAutoPageSize,
+            "pagination": resolve_pagination(pagination),
             "headerHeight": headerHeight,
             "rowHeight": rowHeight,
             "select": select,
-            "selectAll": selectAll,
+            "selectAllScope": selectAllScope,
         }
     )
 
@@ -129,3 +133,15 @@ def validate_column(data: Data | None, column: str | Column) -> str | Column:
         if column_name not in data.columns:
             raise ValueError(f"Column '{column}' was not found in the data source.")
     return column
+
+
+def resolve_pagination(
+    pagination: bool | Pagination | None = None,
+) -> Pagination | None:
+    """Resolve pagination configuration."""
+    if isinstance(pagination, Pagination):
+        return pagination
+    if pagination is True:
+        return Pagination()
+    else:
+        return None
