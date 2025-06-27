@@ -1,3 +1,7 @@
+.inspect-viz-table {
+    height: 380px;
+}            
+
 .header-center .ag-header-cell-label {
     justify-content: center;
 }

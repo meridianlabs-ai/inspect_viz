@@ -80,3 +80,7 @@
 .card-body .mosaic-widget .ag-root-wrapper {
     border: none;
 }
+
+.card-body .mosaic-widget .inspect-viz-table {
+    height: 100%;
+}
