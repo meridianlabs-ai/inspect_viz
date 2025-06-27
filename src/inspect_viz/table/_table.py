@@ -56,6 +56,45 @@ class Column(BaseModel):
     header_auto_height: bool | None = None
     header_wrap_text: bool | None = None
 
+    def __init__(
+        self,
+        column: str,
+        *,
+        label: str | None = None,
+        align: Literal["left", "right", "center", "justify"] | None = None,
+        format: str | None = None,
+        width: float | None = None,
+        flex: float | None = None,
+        min_width: float | None = None,
+        max_width: float | None = None,
+        auto_height: bool | None = None,
+        sortable: bool | None = None,
+        filterable: bool | None = None,
+        resizable: bool | None = None,
+        wrap_text: bool | None = None,
+        header_align: Literal["left", "right", "center", "justify"] | None = None,
+        header_auto_height: bool | None = None,
+        header_wrap_text: bool | None = None,
+    ):
+        super().__init__(
+            column=column,
+            label=label,
+            align=align,
+            format=format,
+            width=width,
+            flex=flex,
+            min_width=min_width,
+            max_width=max_width,
+            auto_height=auto_height,
+            sortable=sortable,
+            filterable=filterable,
+            resizable=resizable,
+            wrap_text=wrap_text,
+            header_align=header_align,
+            header_auto_height=header_auto_height,
+            header_wrap_text=header_wrap_text,
+        )
+
 
 class Pagination(BaseModel):
     """Pagination configuration for table display.
@@ -79,6 +118,7 @@ class Pagination(BaseModel):
 
 def table(
     data: Data,
+    *,
     filter_by: Selection | None = None,
     columns: list[str | Column] | None = None,
     target: Selection | None = None,
