@@ -773,6 +773,9 @@ var Table = class extends Input {
       columnDefs: [],
       rowData: [],
       rowSelection: explicitSelection,
+      suppressCellFocus: true,
+      suppressRowClickSelection: false,
+      enableCellTextSelection: true,
       onFilterChanged: () => {
         this.filterModel_ = this.grid_?.getFilterModel() || {};
         this.requestQuery();
@@ -885,11 +888,26 @@ var headerClasses = (align) => {
   return [`header-${align}`];
 };
 var resolveRowSelection = (options) => {
-  const explicitSelect = options.select === "single" || options.select === "multiple";
-  const selectAll = options.selectAllScope || "all";
-  return !explicitSelect ? void 0 : options.select === "single" ? {
-    mode: "singleRow"
-  } : { mode: "multiRow", selectAll };
+  const explicitSelect = options.select !== "hover" && options.select !== void 0 && options.select !== "none";
+  if (!explicitSelect) {
+    return void 0;
+  }
+  if (options.select?.startsWith("single_")) {
+    return {
+      mode: "singleRow",
+      checkboxes: options.select === "single_checkbox",
+      enableClickSelection: options.select === "single_row"
+    };
+  } else if (options.select?.startsWith("multiple_")) {
+    const selectAll = options.selectAllScope || "all";
+    return {
+      mode: "multiRow",
+      selectAll,
+      checkboxes: options.select === "multiple_checkbox"
+    };
+  } else {
+    throw new Error("Invalid select option: " + options.select);
+  }
 };
 var filterForColumnType = (type) => {
   switch (type) {

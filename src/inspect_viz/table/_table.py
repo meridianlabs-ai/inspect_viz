@@ -79,7 +79,15 @@ def table(
     pagination: bool | Pagination | None = None,
     headerHeight: float | None = None,
     rowHeight: float | None = None,
-    select: Literal["hover", "single", "multiple", "none"] | None = None,
+    select: Literal[
+        "hover",
+        "single_row",
+        "multiple_row",
+        "single_checkbox",
+        "multiple_checkbox",
+        "none",
+    ]
+    | None = None,
     selectAllScope: Literal["all", "filtered", "currentPage"] | None = None,
 ) -> Component:
     """Tabular display of data.
@@ -89,7 +97,7 @@ def table(
        filter_by: Selection to filter by (defaults to data source selection).
        columns: A list of column names to include in the table grid. If unspecified, all table columns are included.
        target: The output selection. A selection clause of the form column IN (rows) will be added to the selection for each currently selected table row.
-       select: The type of selection to use for the table. Valid values are "hover", "single", "multiple", and "none". Defaults to "hover".
+       select: The type of selection to use for the table. Valid values are "hover", "single_checkbox", "multiple_checkbox", "single_row", "multiple_row", and "none". Defaults to "hover".
        selectAllScope: If select 'multiple' is enabled, controls the scope of the select all option in the header. Valid values are 'all', 'filtered' or 'currentPage'.
        column_options: A dictionary of column configuration options. The keys are column names and the values are dictionaries with column options.
        width: The total width of the table widget, in pixels.

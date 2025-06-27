@@ -91,7 +91,13 @@ export interface TableOptions extends InputOptions {
     filterLocation?: 'header' | 'secondary';
     rowHeight?: number;
     headerHeight?: number | 'auto';
-    select?: 'hover' | 'single' | 'multiple' | 'none';
+    select?:
+        | 'hover'
+        | 'single_row'
+        | 'multiple_row'
+        | 'single_checkbox'
+        | 'multiple_checkbox'
+        | 'none';
     selectAllScope?: 'all' | 'filtered' | 'currentPage';
 }
 
@@ -280,6 +286,9 @@ export class Table extends Input {
             columnDefs: [],
             rowData: [],
             rowSelection: explicitSelection,
+            suppressCellFocus: true,
+            suppressRowClickSelection: false,
+            enableCellTextSelection: true,
             onFilterChanged: () => {
                 // Capture the filter model for server-side use
                 this.filterModel_ = this.grid_?.getFilterModel() || {};
@@ -441,15 +450,28 @@ const headerClasses = (align?: 'left' | 'right' | 'center' | 'justify'): string[
 };
 
 const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, any> | undefined => {
-    const explicitSelect = options.select === 'single' || options.select === 'multiple';
-    const selectAll = options.selectAllScope || 'all';
-    return !explicitSelect
-        ? undefined
-        : options.select === 'single'
-          ? {
-                mode: 'singleRow',
-            }
-          : { mode: 'multiRow', selectAll };
+    const explicitSelect =
+        options.select !== 'hover' && options.select !== undefined && options.select !== 'none';
+    if (!explicitSelect) {
+        return undefined;
+    }
+
+    if (options.select?.startsWith('single_')) {
+        return {
+            mode: 'singleRow',
+            checkboxes: options.select === 'single_checkbox',
+            enableClickSelection: options.select === 'single_row',
+        };
+    } else if (options.select?.startsWith('multiple_')) {
+        const selectAll = options.selectAllScope || 'all';
+        return {
+            mode: 'multiRow',
+            selectAll,
+            checkboxes: options.select === 'multiple_checkbox',
+        };
+    } else {
+        throw new Error('Invalid select option: ' + options.select);
+    }
 };
 
 const filterForColumnType = (type: string): string => {
