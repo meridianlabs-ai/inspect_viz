@@ -151,7 +151,7 @@ def table(
             will be added to the selection for each currently selected table row.
         select: The type of selection to use for the table. Valid values are "hover",
             "single_checkbox", "multiple_checkbox", "single_row", "multiple_row", and
-            "none". Defaults to "hover".
+            "none". Defaults to "single_row".
         column_options: A dictionary of column configuration options. The keys are
             column names and the values are dictionaries with column options.
         width: The total width of the table widget, in pixels.

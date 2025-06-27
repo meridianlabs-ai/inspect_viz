@@ -271,7 +271,7 @@ export class Table extends Input {
         console.log({ options });
         const headerHeightPixels =
             typeof options.header_height === 'string' ? undefined : options.header_height;
-        const hoverSelect = options.select === 'hover' || options.select === undefined;
+        const hoverSelect = options.select === 'hover';
         const explicitSelection = resolveRowSelection(options);
 
         // initialize grid options
@@ -451,19 +451,18 @@ const headerClasses = (align?: 'left' | 'right' | 'center' | 'justify'): string[
 };
 
 const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, any> | undefined => {
-    const explicitSelect =
-        options.select !== 'hover' && options.select !== undefined && options.select !== 'none';
-    if (!explicitSelect) {
+    if (options.select === 'hover') {
         return undefined;
     }
 
-    if (options.select?.startsWith('single_')) {
+    const selectType = options.select || 'single_row';
+    if (selectType.startsWith('single_')) {
         return {
             mode: 'singleRow',
             checkboxes: options.select === 'single_checkbox',
             enableClickSelection: options.select === 'single_row',
         };
-    } else if (options.select?.startsWith('multiple_')) {
+    } else if (selectType.startsWith('multiple_')) {
         return {
             mode: 'multiRow',
             selectAll: 'filtered',

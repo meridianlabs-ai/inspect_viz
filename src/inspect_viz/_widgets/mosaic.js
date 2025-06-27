@@ -761,7 +761,7 @@ var Table = class extends Input {
   createGridOptions(options) {
     console.log({ options });
     const headerHeightPixels = typeof options.header_height === "string" ? void 0 : options.header_height;
-    const hoverSelect = options.select === "hover" || options.select === void 0;
+    const hoverSelect = options.select === "hover";
     const explicitSelection = resolveRowSelection(options);
     return {
       // always pass filter to allow server-side filtering
@@ -892,17 +892,17 @@ var headerClasses = (align) => {
   return [`header-${align}`];
 };
 var resolveRowSelection = (options) => {
-  const explicitSelect = options.select !== "hover" && options.select !== void 0 && options.select !== "none";
-  if (!explicitSelect) {
+  if (options.select === "hover") {
     return void 0;
   }
-  if (options.select?.startsWith("single_")) {
+  const selectType = options.select || "single_row";
+  if (selectType.startsWith("single_")) {
     return {
       mode: "singleRow",
       checkboxes: options.select === "single_checkbox",
       enableClickSelection: options.select === "single_row"
     };
-  } else if (options.select?.startsWith("multiple_")) {
+  } else if (selectType.startsWith("multiple_")) {
     return {
       mode: "multiRow",
       selectAll: "filtered",
