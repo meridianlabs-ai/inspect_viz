@@ -639,7 +639,7 @@ import {
 import * as d3Format from "https://cdn.jsdelivr.net/npm/d3-format@3.1.0/+esm";
 var Table = class extends Input {
   constructor(options_) {
-    super(options_.filterBy);
+    super(options_.filter_by);
     this.options_ = options_;
     ModuleRegistry.registerModules([AllCommunityModule]);
     this.id_ = generateId();
@@ -659,8 +659,8 @@ var Table = class extends Input {
     } else {
       this.element.style.width = "100%";
     }
-    if (this.options_.maxWidth) {
-      this.element.style.maxWidth = `${this.options_.maxWidth}px`;
+    if (this.options_.max_width) {
+      this.element.style.maxWidth = `${this.options_.max_width}px`;
     }
     if (this.options_.height) {
       this.element.style.height = `${this.height_}px`;
@@ -758,19 +758,20 @@ var Table = class extends Input {
     this.grid_.setGridOption("rowData", rowData);
   });
   createGridOptions(options) {
-    const headerHeightPixels = typeof options.headerHeight === "string" ? void 0 : options.headerHeight;
+    console.log({ options });
+    const headerHeightPixels = typeof options.header_height === "string" ? void 0 : options.header_height;
     const hoverSelect = options.select === "hover" || options.select === void 0;
     const explicitSelection = resolveRowSelection(options);
     return {
       // always pass filter to allow server-side filtering
       alwaysPassFilter: () => true,
       pagination: !!options.pagination,
-      paginationAutoPageSize: !!options.pagination?.autoPageSize,
-      paginationPageSizeSelector: options.pagination?.pageSizeSelector,
-      paginationPageSize: options.pagination?.pageSize,
+      paginationAutoPageSize: !!options.pagination?.auto_page_size,
+      paginationPageSizeSelector: options.pagination?.page_size_selector,
+      paginationPageSize: options.pagination?.page_size,
       animateRows: true,
       headerHeight: headerHeightPixels,
-      rowHeight: options.rowHeight,
+      rowHeight: options.row_height,
       columnDefs: [],
       rowData: [],
       rowSelection: explicitSelection,
@@ -815,17 +816,17 @@ var Table = class extends Input {
   createColumnDef(column2, type) {
     const columnOptions = this.columnOptions_[column2] || {};
     const align = columnOptions.align || (type === "number" ? "right" : "left");
-    const headerAlignment = columnOptions.headerAlign;
+    const headerAlignment = columnOptions.header_align;
     const formatter = formatterForType(type, columnOptions.format);
     const sortable = this.options_.sorting !== false && columnOptions.sortable !== false;
     const filterable = this.options_.filtering !== false && columnOptions.filterable !== false;
     const resizable = columnOptions.resizable !== false;
-    const minWidth = columnOptions.minWidth;
-    const maxWidth = columnOptions.maxWidth;
-    const autoHeight = columnOptions.autoHeight;
-    const autoHeaderHeight = this.options_.headerHeight === "auto" && columnOptions.headerAutoHeight !== false;
-    const wrapText = columnOptions.wrapText;
-    const wrapHeaderText = columnOptions.headerWrapText;
+    const minWidth = columnOptions.min_width;
+    const maxWidth = columnOptions.max_width;
+    const autoHeight = columnOptions.auto_height;
+    const autoHeaderHeight = this.options_.header_height === "auto" && columnOptions.header_auto_height !== false;
+    const wrapText = columnOptions.wrap_text;
+    const wrapHeaderText = columnOptions.header_wrap_text;
     const flex = columnOptions.flex;
     const colDef = {
       field: column2,
@@ -900,10 +901,11 @@ var resolveRowSelection = (options) => {
       enableClickSelection: options.select === "single_row"
     };
   } else if (options.select?.startsWith("multiple_")) {
-    const selectAll = options.selectAllScope || "all";
+    const selectAll = options.select_all_scope || "all";
+    const selectAllVal = selectAll === "page" ? "currentPage" : selectAll;
     return {
       mode: "multiRow",
-      selectAll,
+      selectAll: selectAllVal,
       checkboxes: options.select === "multiple_checkbox"
     };
   } else {

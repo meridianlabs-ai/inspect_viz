@@ -66,31 +66,31 @@ export interface Column {
     width?: number;
     flex?: number;
     resizable?: boolean;
-    minWidth?: number;
-    maxWidth?: number;
-    autoHeight?: boolean;
-    wrapText?: boolean;
-    headerAutoHeight?: boolean;
-    headerAlign?: 'left' | 'right' | 'center' | 'justify';
-    headerWrapText?: boolean;
+    min_width?: number;
+    max_width?: number;
+    auto_height?: boolean;
+    wrap_text?: boolean;
+    header_auto_height?: boolean;
+    header_align?: 'left' | 'right' | 'center' | 'justify';
+    header_wrap_text?: boolean;
 }
 
 export interface TableOptions extends InputOptions {
+    filter_by: any;
     from: string;
     columns?: Array<string | Column>;
     width?: number;
     height?: number;
-    maxWidth?: number;
+    max_width?: number;
     pagination?: {
-        autoPageSize?: boolean;
-        pageSize?: number;
-        pageSizeSelector?: number[] | boolean;
+        auto_page_size?: boolean;
+        page_size?: number;
+        page_size_selector?: number[] | boolean;
     };
     sorting?: boolean;
     filtering?: boolean | 'header' | 'row';
-    filterLocation?: 'header' | 'secondary';
-    rowHeight?: number;
-    headerHeight?: number | 'auto';
+    row_height?: number;
+    header_height?: number | 'auto';
     select?:
         | 'hover'
         | 'single_row'
@@ -98,7 +98,7 @@ export interface TableOptions extends InputOptions {
         | 'single_checkbox'
         | 'multiple_checkbox'
         | 'none';
-    selectAllScope?: 'all' | 'filtered' | 'currentPage';
+    select_all_scope?: 'all' | 'filtered' | 'page';
 }
 
 interface ColSortModel {
@@ -127,7 +127,7 @@ export class Table extends Input {
     };
 
     constructor(protected readonly options_: TableOptions) {
-        super(options_.filterBy);
+        super(options_.filter_by);
 
         // register ag-grid modules
         ModuleRegistry.registerModules([AllCommunityModule]);
@@ -156,8 +156,8 @@ export class Table extends Input {
         } else {
             this.element.style.width = '100%';
         }
-        if (this.options_.maxWidth) {
-            this.element.style.maxWidth = `${this.options_.maxWidth}px`;
+        if (this.options_.max_width) {
+            this.element.style.maxWidth = `${this.options_.max_width}px`;
         }
         if (this.options_.height) {
             this.element.style.height = `${this.height_}px`;
@@ -269,8 +269,9 @@ export class Table extends Input {
     });
 
     private createGridOptions(options: TableOptions): GridOptions {
+        console.log({ options });
         const headerHeightPixels =
-            typeof options.headerHeight === 'string' ? undefined : options.headerHeight;
+            typeof options.header_height === 'string' ? undefined : options.header_height;
         const hoverSelect = options.select === 'hover' || options.select === undefined;
         const explicitSelection = resolveRowSelection(options);
 
@@ -279,12 +280,12 @@ export class Table extends Input {
             // always pass filter to allow server-side filtering
             alwaysPassFilter: () => true,
             pagination: !!options.pagination,
-            paginationAutoPageSize: !!options.pagination?.autoPageSize,
-            paginationPageSizeSelector: options.pagination?.pageSizeSelector,
-            paginationPageSize: options.pagination?.pageSize,
+            paginationAutoPageSize: !!options.pagination?.auto_page_size,
+            paginationPageSizeSelector: options.pagination?.page_size_selector,
+            paginationPageSize: options.pagination?.page_size,
             animateRows: true,
             headerHeight: headerHeightPixels,
-            rowHeight: options.rowHeight,
+            rowHeight: options.row_height,
             columnDefs: [],
             rowData: [],
             rowSelection: explicitSelection,
@@ -350,7 +351,7 @@ export class Table extends Input {
 
         // Align, numbers right aligned by default
         const align = columnOptions.align || (type === 'number' ? 'right' : 'left');
-        const headerAlignment = columnOptions.headerAlign;
+        const headerAlignment = columnOptions.header_align;
 
         // Format string
         const formatter = formatterForType(type, columnOptions.format);
@@ -363,17 +364,17 @@ export class Table extends Input {
         const resizable = columnOptions.resizable !== false;
 
         // Min and max width
-        const minWidth = columnOptions.minWidth;
-        const maxWidth = columnOptions.maxWidth;
+        const minWidth = columnOptions.min_width;
+        const maxWidth = columnOptions.max_width;
 
         // auto height
-        const autoHeight = columnOptions.autoHeight;
+        const autoHeight = columnOptions.auto_height;
         const autoHeaderHeight =
-            this.options_.headerHeight === 'auto' && columnOptions.headerAutoHeight !== false;
+            this.options_.header_height === 'auto' && columnOptions.header_auto_height !== false;
 
         // wrap text
-        const wrapText = columnOptions.wrapText;
-        const wrapHeaderText = columnOptions.headerWrapText;
+        const wrapText = columnOptions.wrap_text;
+        const wrapHeaderText = columnOptions.header_wrap_text;
 
         // flex
         const flex = columnOptions.flex;
@@ -463,10 +464,11 @@ const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, an
             enableClickSelection: options.select === 'single_row',
         };
     } else if (options.select?.startsWith('multiple_')) {
-        const selectAll = options.selectAllScope || 'all';
+        const selectAll = options.select_all_scope || 'all';
+        const selectAllVal = selectAll === 'page' ? 'currentPage' : selectAll;
         return {
             mode: 'multiRow',
-            selectAll,
+            selectAll: selectAllVal,
             checkboxes: options.select === 'multiple_checkbox',
         };
     } else {
