@@ -100,7 +100,8 @@ class Pagination(BaseModel):
     """Pagination configuration for table display.
 
     Args:
-        page_size: Number of rows to load per page.
+        page_size: Number of rows to load per page, or "auto" to fit the number of
+            rows in a page to the available space. Defaults to "auto".
         page_size_selector: Determines if the page size selector is shown in the
             pagination panel or not. Set to a list of values to show the page size
             selector with custom list of possible page sizes. Set to true to show the
@@ -108,12 +109,22 @@ class Pagination(BaseModel):
             to hide the page size selector.
         auto_page_size: If true, the number of rows to load per page is automatically
             adjusted by the grid so each page shows enough rows to just fill the area
-            designated for the grid. If false, paginationPageSize is used.
+            designated for the grid. If false, page_size is used.
     """
 
-    page_size: int | None = None
+    page_size: int | Literal["auto"] | None = None
     page_size_selector: list[int] | bool | None = None
-    auto_page_size: bool | None = None
+
+    def __init__(
+        self,
+        page_size: int | Literal["auto"] | None = None,
+        *,
+        page_size_selector: list[int] | bool | None = None,
+    ):
+        super().__init__(
+            page_size=page_size,
+            page_size_selector=page_size_selector,
+        )
 
 
 def table(

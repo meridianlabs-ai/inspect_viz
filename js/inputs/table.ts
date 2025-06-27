@@ -83,8 +83,7 @@ export interface TableOptions extends InputOptions {
     height?: number;
     max_width?: number;
     pagination?: {
-        auto_page_size?: boolean;
-        page_size?: number;
+        page_size?: number | 'auto';
         page_size_selector?: number[] | boolean;
     };
     sorting?: boolean;
@@ -268,7 +267,6 @@ export class Table extends Input {
     });
 
     private createGridOptions(options: TableOptions): GridOptions {
-        console.log({ options });
         const headerHeightPixels =
             typeof options.header_height === 'string' ? undefined : options.header_height;
         const hoverSelect = options.select === 'hover';
@@ -279,9 +277,14 @@ export class Table extends Input {
             // always pass filter to allow server-side filtering
             alwaysPassFilter: () => true,
             pagination: !!options.pagination,
-            paginationAutoPageSize: !!options.pagination?.auto_page_size,
+            paginationAutoPageSize:
+                options.pagination?.page_size === 'auto' ||
+                options.pagination?.page_size === undefined,
             paginationPageSizeSelector: options.pagination?.page_size_selector,
-            paginationPageSize: options.pagination?.page_size,
+            paginationPageSize:
+                typeof options.pagination?.page_size === 'number'
+                    ? options.pagination.page_size
+                    : undefined,
             animateRows: true,
             headerHeight: headerHeightPixels,
             rowHeight: options.row_height,

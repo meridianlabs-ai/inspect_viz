@@ -759,7 +759,6 @@ var Table = class extends Input {
     this.grid_.setGridOption("rowData", rowData);
   });
   createGridOptions(options) {
-    console.log({ options });
     const headerHeightPixels = typeof options.header_height === "string" ? void 0 : options.header_height;
     const hoverSelect = options.select === "hover";
     const explicitSelection = resolveRowSelection(options);
@@ -767,9 +766,9 @@ var Table = class extends Input {
       // always pass filter to allow server-side filtering
       alwaysPassFilter: () => true,
       pagination: !!options.pagination,
-      paginationAutoPageSize: !!options.pagination?.auto_page_size,
+      paginationAutoPageSize: options.pagination?.page_size === "auto" || options.pagination?.page_size === void 0,
       paginationPageSizeSelector: options.pagination?.page_size_selector,
-      paginationPageSize: options.pagination?.page_size,
+      paginationPageSize: typeof options.pagination?.page_size === "number" ? options.pagination.page_size : void 0,
       animateRows: true,
       headerHeight: headerHeightPixels,
       rowHeight: options.row_height,
