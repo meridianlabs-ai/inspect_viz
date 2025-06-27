@@ -96,6 +96,77 @@ class Column(BaseModel):
         )
 
 
+def column(
+    column: str,
+    *,
+    label: str | None = None,
+    align: Literal["left", "right", "center", "justify"] | None = None,
+    format: str | None = None,
+    width: float | None = None,
+    min_width: float | None = None,
+    max_width: float | None = None,
+    flex: float | None = None,
+    auto_height: bool | None = None,
+    sortable: bool | None = None,
+    filterable: bool | None = None,
+    resizable: bool | None = None,
+    wrap_text: bool | None = None,
+    header_align: Literal["left", "right", "center", "justify"] | None = None,
+    header_auto_height: bool | None = None,
+    header_wrap_text: bool | None = None,
+) -> Column:
+    """Create a column configuration for table display.
+
+    Args:
+        column: The column name as it appears in the data source. This is required.
+        label: The text label for the column header. If not specified, the column name is used.
+        align: Text alignment for the column. Valid values are "left", "right",
+            "center", and "justify". By default, numbers are right-aligned and other
+            values are left-aligned.
+        format: Format string for column values. Use d3-format for numeric columns or
+            d3-time-format for datetime columns.
+        width: Column width in pixels.
+        min_width: Minimum column width in pixels.
+        max_width: Maximum column width in pixels.
+        flex: The flex value of the table widget, used to determine how much space it
+            should take relative to other widgets in a layout. If specified, width is
+            ignored.
+        auto_height: Whether the column cell height is automatically adjusted based on
+            content.
+        sortable: Whether sorting is enabled for this column.
+        filterable: Whether filtering is enabled for this column.
+        resizable: Whether the column width can be adjusted by the user.
+        wrap_text: Whether the column text is wrapped to fit within the cell.
+        header_align: Text alignment for the column header. Valid values are "left",
+            "right", "center", and "justify". By default, left aligned.
+        header_auto_height: Whether the column header cell height is automatically
+            adjusted based on content.
+        header_wrap_text: Whether the column header text is wrapped to fit within the
+            header cell.
+
+    Returns:
+        Column: A configured Column object.
+    """
+    return Column(
+        column=column,
+        label=label,
+        align=align,
+        format=format,
+        width=width,
+        min_width=min_width,
+        max_width=max_width,
+        flex=flex,
+        auto_height=auto_height,
+        sortable=sortable,
+        filterable=filterable,
+        resizable=resizable,
+        wrap_text=wrap_text,
+        header_align=header_align,
+        header_auto_height=header_auto_height,
+        header_wrap_text=header_wrap_text,
+    )
+
+
 class Pagination(BaseModel):
     """Pagination configuration for table display.
 
