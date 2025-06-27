@@ -17,19 +17,19 @@ class Column(BaseModel):
         align: Text alignment for the column. Valid values are "left", "right",
             "center", and "justify". By default, numbers are right-aligned and other
             values are left-aligned.
+        format: Format string for column values. Use d3-format for numeric columns or
+            d3-time-format for datetime columns.
         width: Column width in pixels.
+        min_width: Minimum column width in pixels.
+        max_width: Maximum column width in pixels.
         flex: The flex value of the table widget, used to determine how much space it
             should take relative to other widgets in a layout. If specified, width is
             ignored.
+        auto_height: Whether the column cell height is automatically adjusted based on
+            content.
         sortable: Whether sorting is enabled for this column.
         filterable: Whether filtering is enabled for this column.
         resizable: Whether the column width can be adjusted by the user.
-        min_width: Minimum column width in pixels.
-        max_width: Maximum column width in pixels.
-        format: Format string for column values. Use d3-format for numeric columns or
-            d3-time-format for datetime columns.
-        auto_height: Whether the column cell height is automatically adjusted based on
-            content.
         wrap_text: Whether the column text is wrapped to fit within the cell.
         header_align: Text alignment for the column header. Valid values are "left",
             "right", "center", and "justify". By default, left aligned.
@@ -64,9 +64,9 @@ class Column(BaseModel):
         align: Literal["left", "right", "center", "justify"] | None = None,
         format: str | None = None,
         width: float | None = None,
-        flex: float | None = None,
         min_width: float | None = None,
         max_width: float | None = None,
+        flex: float | None = None,
         auto_height: bool | None = None,
         sortable: bool | None = None,
         filterable: bool | None = None,
@@ -107,9 +107,6 @@ class Pagination(BaseModel):
             selector with custom list of possible page sizes. Set to true to show the
             page size selector with the default page sizes [20, 50, 100]. Set to false
             to hide the page size selector.
-        auto_page_size: If true, the number of rows to load per page is automatically
-            adjusted by the grid so each page shows enough rows to just fill the area
-            designated for the grid. If false, page_size is used.
     """
 
     page_size: int | Literal["auto"] | None = None
@@ -130,17 +127,9 @@ class Pagination(BaseModel):
 def table(
     data: Data,
     *,
-    filter_by: Selection | None = None,
     columns: list[str | Column] | None = None,
+    filter_by: Selection | None = None,
     target: Selection | None = None,
-    width: float | None = None,
-    max_width: float | None = None,
-    height: float | None = None,
-    sorting: bool | None = None,
-    filtering: bool | Literal["header", "row"] | None = None,
-    pagination: bool | Pagination | None = None,
-    header_height: float | None = None,
-    row_height: float | None = None,
     select: Literal[
         "hover",
         "single_row",
@@ -150,24 +139,32 @@ def table(
         "none",
     ]
     | None = None,
+    width: float | None = None,
+    max_width: float | None = None,
+    height: float | None = None,
+    header_height: float | None = None,
+    row_height: float | None = None,
+    sorting: bool | None = None,
+    filtering: bool | Literal["header", "row"] | None = None,
+    pagination: bool | Pagination | None = None,
 ) -> Component:
     """Tabular display of data.
 
     Args:
         data: The data source for the table.
-        filter_by: Selection to filter by (defaults to data source selection).
         columns: A list of column names to include in the table grid. If unspecified,
             all table columns are included.
+        filter_by: Selection to filter by (defaults to data source selection).
         target: The output selection. A selection clause of the form column IN (rows)
             will be added to the selection for each currently selected table row.
         select: The type of selection to use for the table. Valid values are "hover",
             "single_checkbox", "multiple_checkbox", "single_row", "multiple_row", and
             "none". Defaults to "single_row".
-        column_options: A dictionary of column configuration options. The keys are
-            column names and the values are dictionaries with column options.
         width: The total width of the table widget, in pixels.
         max_width: The maximum width of the table widget, in pixels.
         height: The height of the table widget, in pixels (defaults to 380).
+        header_height: The height of the table header, in pixels.
+        row_height: The height of each table row, in pixels.
         sorting: Set whether sorting columns is enabled.
         filtering: Enable filtering. If set to 'header' a filter button is shown in
             the table header. If set to 'row', a filter is shown in a row beneath the
@@ -175,8 +172,6 @@ def table(
         pagination: Enable pagination. If set to True, default pagination settings
             are used. If set to a Pagination object, custom pagination settings are
             used.
-        header_height: The height of the table header, in pixels.
-        row_height: The height of each table row, in pixels.
     """
     config: dict[str, JsonValue] = dict_remove_none(
         {
