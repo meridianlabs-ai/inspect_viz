@@ -87,7 +87,7 @@ export interface TableOptions extends InputOptions {
         pageSizeSelector?: number[] | boolean;
     };
     sorting?: boolean;
-    filtering?: boolean;
+    filtering?: boolean | 'header' | 'row';
     filterLocation?: 'header' | 'secondary';
     rowHeight?: number;
     headerHeight?: number | 'auto';
@@ -287,7 +287,6 @@ export class Table extends Input {
             rowData: [],
             rowSelection: explicitSelection,
             suppressCellFocus: true,
-            suppressRowClickSelection: false,
             enableCellTextSelection: true,
             onFilterChanged: () => {
                 // Capture the filter model for server-side use
@@ -378,8 +377,6 @@ export class Table extends Input {
         const flex = columnOptions.flex;
 
         // Position the filter below the header
-        const floatingFilter = this.options_.filterLocation === 'secondary';
-
         const colDef: ColDef = {
             field: column,
             headerName: columnOptions.label || column,
@@ -399,7 +396,7 @@ export class Table extends Input {
             autoHeaderHeight,
             wrapText,
             wrapHeaderText,
-            floatingFilter,
+            floatingFilter: this.options_.filtering === 'row',
             suppressMovable: true, // Disable column moving
             valueFormatter: params => {
                 // Format the value if a format is provided

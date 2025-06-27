@@ -774,7 +774,6 @@ var Table = class extends Input {
       rowData: [],
       rowSelection: explicitSelection,
       suppressCellFocus: true,
-      suppressRowClickSelection: false,
       enableCellTextSelection: true,
       onFilterChanged: () => {
         this.filterModel_ = this.grid_?.getFilterModel() || {};
@@ -827,7 +826,6 @@ var Table = class extends Input {
     const wrapText = columnOptions.wrapText;
     const wrapHeaderText = columnOptions.headerWrapText;
     const flex = columnOptions.flex;
-    const floatingFilter = this.options_.filterLocation === "secondary";
     const colDef = {
       field: column2,
       headerName: columnOptions.label || column2,
@@ -846,7 +844,7 @@ var Table = class extends Input {
       autoHeaderHeight,
       wrapText,
       wrapHeaderText,
-      floatingFilter,
+      floatingFilter: this.options_.filtering === "row",
       suppressMovable: true,
       // Disable column moving
       valueFormatter: (params) => {

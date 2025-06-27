@@ -74,8 +74,7 @@ def table(
     max_width: float | None = None,
     height: float | None = None,
     sorting: bool | None = None,
-    filtering: bool | None = None,
-    filter_location: Literal["header", "secondary"] | None = None,
+    filtering: bool | Literal["header", "row"] | None = None,
     pagination: bool | Pagination | None = None,
     headerHeight: float | None = None,
     rowHeight: float | None = None,
@@ -104,8 +103,7 @@ def table(
        max_width: The maximum width of the table widget, in pixels.
        height: The height of the table widget, in pixels.
        sorting: Set whether sorting columns is enabled.
-       filtering: Set whether filtering of column values is enabled.
-       filter_location: Set the location of the filter input. Valid values are "header" or "secondary". If set to "header", the filter input is shown in the table header. If set to "secondary", the filter input is shown in a row beneath the header.
+       filtering: Enable filtering. If set to 'header' a filter button is shown in the table header. If set to 'row', a filter is shown in a row beneath the header.
        pagination: Enable pagination. If set to True, default pagination settings are used. If set to a Pagination object, custom pagination settings are used.
        headerHeight: The height of the table header, in pixels.
        rowHeight: The height of each table row, in pixels.
@@ -123,7 +121,6 @@ def table(
             "height": height,
             "sorting": sorting,
             "filtering": filtering,
-            "filterLocation": filter_location,
             "pagination": resolve_pagination(pagination),
             "headerHeight": headerHeight,
             "rowHeight": rowHeight,
