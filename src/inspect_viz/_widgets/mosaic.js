@@ -647,7 +647,7 @@ var Table = class extends Input {
     this.columns_ = resolveColumns(this.options_.columns || ["*"]);
     this.columnOptions_ = this.columns_.reduce(
       (acc, col) => {
-        acc[col.name] = col;
+        acc[col.column] = col;
         return acc;
       },
       {}
@@ -702,7 +702,7 @@ var Table = class extends Input {
   // and do related setup
   async prepare() {
     const table = this.options_.from;
-    const fields = this.columns_.map((column2) => ({ column: column2.name, table }));
+    const fields = this.columns_.map((column2) => ({ column: column2.column, table }));
     this.schema_ = await queryFieldInfo(this.coordinator, fields);
     const columnDefs = this.schema_.map(
       ({ column: column2, type }) => this.createColumnDef(column2, type)
@@ -778,6 +778,7 @@ var Table = class extends Input {
       rowSelection: explicitSelection,
       suppressCellFocus: true,
       enableCellTextSelection: true,
+      theme: themeBalham.withParams({}),
       onFilterChanged: () => {
         this.filterModel_ = this.grid_?.getFilterModel() || {};
         this.requestQuery();
@@ -876,7 +877,7 @@ var Table = class extends Input {
 var resolveColumns = (columns) => {
   return columns.map((col) => {
     if (typeof col === "string") {
-      return { name: col };
+      return { column: col };
     } else if (typeof col === "object" && col !== null) {
       return col;
     } else {
@@ -902,11 +903,9 @@ var resolveRowSelection = (options) => {
       enableClickSelection: options.select === "single_row"
     };
   } else if (options.select?.startsWith("multiple_")) {
-    const selectAll = options.select_all_scope || "all";
-    const selectAllVal = selectAll === "page" ? "currentPage" : selectAll;
     return {
       mode: "multiRow",
-      selectAll: selectAllVal,
+      selectAll: "filtered",
       checkboxes: options.select === "multiple_checkbox"
     };
   } else {

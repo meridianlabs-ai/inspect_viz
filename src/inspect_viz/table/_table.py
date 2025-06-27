@@ -12,7 +12,7 @@ class Column(BaseModel):
     """Column configuration options for table display.
 
     Args:
-        name: The column name as it appears in the data source. This is required.
+        column: The column name as it appears in the data source. This is required.
         label: The text label for the column header. If not specified, the column name is used.
         align: Text alignment for the column. Valid values are "left", "right",
             "center", and "justify". By default, numbers are right-aligned and other
@@ -39,7 +39,7 @@ class Column(BaseModel):
             header cell.
     """
 
-    name: str
+    column: str
     label: str | None = None
     align: Literal["left", "right", "center", "justify"] | None = None
     format: str | None = None
@@ -99,12 +99,10 @@ def table(
         "none",
     ]
     | None = None,
-    select_all_scope: Literal["all", "filtered", "currentPage"] | None = None,
 ) -> Component:
     """Tabular display of data.
 
     Args:
-
         data: The data source for the table.
         filter_by: Selection to filter by (defaults to data source selection).
         columns: A list of column names to include in the table grid. If unspecified,
@@ -114,9 +112,6 @@ def table(
         select: The type of selection to use for the table. Valid values are "hover",
             "single_checkbox", "multiple_checkbox", "single_row", "multiple_row", and
             "none". Defaults to "hover".
-        select_all_scope: If select 'multiple' is enabled, controls the scope of the
-            select all option in the header. Valid values are 'all', 'filtered' or
-            'currentPage'.
         column_options: A dictionary of column configuration options. The keys are
             column names and the values are dictionaries with column options.
         width: The total width of the table widget, in pixels.
@@ -148,7 +143,6 @@ def table(
             "header_height": header_height,
             "row_height": row_height,
             "select": select,
-            "select_all_scope": select_all_scope,
         }
     )
 
@@ -156,7 +150,7 @@ def table(
 
 
 def validate_column(data: Data | None, column: str | Column) -> str | Column:
-    column_name = column.name if isinstance(column, Column) else column
+    column_name = column.column if isinstance(column, Column) else column
     if data is not None:
         if column_name not in data.columns:
             raise ValueError(f"Column '{column}' was not found in the data source.")

@@ -57,7 +57,7 @@ import { generateId } from '../util/id';
 import { JSType } from '@uwdata/mosaic-core';
 
 export interface Column {
-    name: string;
+    column: string;
     label?: string;
     align?: 'left' | 'right' | 'center' | 'justify';
     format?: string;
@@ -98,7 +98,6 @@ export interface TableOptions extends InputOptions {
         | 'single_checkbox'
         | 'multiple_checkbox'
         | 'none';
-    select_all_scope?: 'all' | 'filtered' | 'page';
 }
 
 interface ColSortModel {
@@ -139,7 +138,7 @@ export class Table extends Input {
         this.columns_ = resolveColumns(this.options_.columns || ['*']);
         this.columnOptions_ = this.columns_.reduce(
             (acc, col) => {
-                acc[col.name] = col;
+                acc[col.column] = col;
                 return acc;
             },
             {} as Record<string, Column>
@@ -190,7 +189,7 @@ export class Table extends Input {
     async prepare() {
         // query for column schema information
         const table = this.options_.from;
-        const fields = this.columns_.map(column => ({ column: column.name, table }));
+        const fields = this.columns_.map(column => ({ column: column.column, table }));
         this.schema_ = await queryFieldInfo(this.coordinator!, fields);
 
         // create column definitions for ag-grid
@@ -291,6 +290,7 @@ export class Table extends Input {
             rowSelection: explicitSelection,
             suppressCellFocus: true,
             enableCellTextSelection: true,
+            theme: themeBalham.withParams({}),
             onFilterChanged: () => {
                 // Capture the filter model for server-side use
                 this.filterModel_ = this.grid_?.getFilterModel() || {};
@@ -434,7 +434,7 @@ export class Table extends Input {
 const resolveColumns = (columns: Array<string | Column>): Column[] => {
     return columns.map(col => {
         if (typeof col === 'string') {
-            return { name: col };
+            return { column: col };
         } else if (typeof col === 'object' && col !== null) {
             return col as Column;
         } else {
@@ -464,11 +464,9 @@ const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, an
             enableClickSelection: options.select === 'single_row',
         };
     } else if (options.select?.startsWith('multiple_')) {
-        const selectAll = options.select_all_scope || 'all';
-        const selectAllVal = selectAll === 'page' ? 'currentPage' : selectAll;
         return {
             mode: 'multiRow',
-            selectAll: selectAllVal,
+            selectAll: 'filtered',
             checkboxes: options.select === 'multiple_checkbox',
         };
     } else {
