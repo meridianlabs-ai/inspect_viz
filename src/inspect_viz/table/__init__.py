@@ -1,3 +1,3 @@
-from ._table import Column, Pagination, column, table
+from ._table import Column, Pagination, TableStyle, column, table
 
-__all__ = ["table", "column", "Column", "Pagination"]
+__all__ = ["table", "column", "Column", "Pagination", "TableStyle"]

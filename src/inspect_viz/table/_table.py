@@ -195,6 +195,51 @@ class Pagination(BaseModel):
         )
 
 
+class TableStyle(BaseModel):
+    """Style configuration for table display.
+
+    Args:
+        background_color: Background color for the table.
+        foreground_color: Foreground color for the table.
+        accent_color: Accent color for the table, used for highlights and
+            other emphasis.
+        text_color: Text color for the table.
+        header_text_color: Text color for the table header.
+        cell_text_color: Text color for the table cells.
+
+        font_family: Font family for the table text.
+        header_font_family: Font family for the table header text.
+        cell_font_family: Font family for the table cell text.
+
+        spacing: Spacing configuration for the table. Padding and margins throughout the table are automatically calculated based on this value.
+
+        border_color: Border color for the table.
+        border_width: Border width for the table.
+        border_radius: Border radius for the table.
+
+        selected_row_background_color: Background color for selected rows.
+    """
+
+    background_color: str | None = None
+    foreground_color: str | None = None
+    accent_color: str | None = None
+    text_color: str | None = None
+    header_text_color: str | None = None
+    cell_text_color: str | None = None
+
+    font_family: str | None = None
+    header_font_family: str | None = None
+    cell_font_family: str | None = None
+
+    spacing: float | str | None = None
+
+    border_color: str | None = None
+    border_width: float | str | None = None
+    border_radius: float | str | None = None
+
+    selected_row_background_color: str | None = None
+
+
 def table(
     data: Data,
     *,
@@ -218,6 +263,7 @@ def table(
     sorting: bool | None = None,
     filtering: bool | Literal["header", "row"] | None = None,
     pagination: bool | Pagination | None = None,
+    style: TableStyle | None = None,
 ) -> Component:
     """Tabular display of data.
 
@@ -243,6 +289,7 @@ def table(
         pagination: Enable pagination. If set to True, default pagination settings
             are used. If set to a Pagination object, custom pagination settings are
             used.
+        style: The style configuration for the table display.
     """
     config: dict[str, JsonValue] = dict_remove_none(
         {
@@ -260,6 +307,7 @@ def table(
             "header_height": header_height,
             "row_height": row_height,
             "select": select,
+            "style": style,
         }
     )
 

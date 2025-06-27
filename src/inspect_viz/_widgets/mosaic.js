@@ -706,8 +706,20 @@ var Table = class extends Input {
     );
     this.gridOptions_.columnDefs = columnDefs;
     const myTheme = themeBalham.withParams({
-      spacing: 4,
-      accentColor: "blue"
+      backgroundColor: this.options_.style?.background_color,
+      foregroundColor: this.options_.style?.foreground_color,
+      accentColor: this.options_.style?.accent_color || "#007bff",
+      textColor: this.options_.style?.text_color,
+      headerTextColor: this.options_.style?.header_text_color,
+      cellTextColor: this.options_.style?.cell_text_color,
+      fontFamily: this.options_.style?.font_family,
+      headerFontFamily: this.options_.style?.header_font_family,
+      cellFontFamily: this.options_.style?.cell_font_family,
+      spacing: this.options_.style?.spacing || 4,
+      borderColor: this.options_.style?.border_color,
+      borderRadius: this.options_.style?.border_radius,
+      selectedRowBackgroundColor: this.options_.style?.selected_row_background_color
+      // borderWidth: this.options_.style?.border_width,
     });
     this.gridOptions_.theme = myTheme;
     this.grid_ = createGrid(this.gridContainer_, this.gridOptions_);

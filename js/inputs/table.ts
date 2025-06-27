@@ -75,6 +75,27 @@ export interface Column {
     header_wrap_text?: boolean;
 }
 
+export interface TableStyle {
+    background_color?: string;
+    foreground_color?: string;
+    accent_color?: string;
+    text_color?: string;
+    header_text_color?: string;
+    cell_text_color?: string;
+
+    font_family?: string;
+    header_font_family?: string;
+    cell_font_family?: string;
+
+    spacing?: number | string;
+
+    border_color?: string;
+    border_width?: number | string;
+    border_radius?: number | string;
+
+    selected_row_background_color?: string;
+}
+
 export interface TableOptions extends InputOptions {
     filter_by: any;
     from: string;
@@ -97,6 +118,7 @@ export interface TableOptions extends InputOptions {
         | 'single_checkbox'
         | 'multiple_checkbox'
         | 'none';
+    style?: TableStyle;
 }
 
 interface ColSortModel {
@@ -195,11 +217,30 @@ export class Table extends Input {
         this.gridOptions_.columnDefs = columnDefs;
 
         // Set the custom grid theme
+        console.log('HI');
         const myTheme = themeBalham.withParams({
-            spacing: 4,
-            accentColor: 'blue',
+            backgroundColor: this.options_.style?.background_color,
+            foregroundColor: this.options_.style?.foreground_color,
+            accentColor: this.options_.style?.accent_color || '#007bff',
+            textColor: this.options_.style?.text_color,
+            headerTextColor: this.options_.style?.header_text_color,
+            cellTextColor: this.options_.style?.cell_text_color,
+
+            fontFamily: this.options_.style?.font_family,
+            headerFontFamily: this.options_.style?.header_font_family,
+            cellFontFamily: this.options_.style?.cell_font_family,
+
+            spacing: this.options_.style?.spacing || 4,
+
+            borderColor: this.options_.style?.border_color,
+            borderRadius: this.options_.style?.border_radius,
+
+            selectedRowBackgroundColor: this.options_.style?.selected_row_background_color,
+
+            // borderWidth: this.options_.style?.border_width,
         });
         this.gridOptions_.theme = myTheme;
+        console.log({ myTheme, opts: this.options_.style });
 
         // create the grid
         this.grid_ = createGrid(this.gridContainer_, this.gridOptions_);
