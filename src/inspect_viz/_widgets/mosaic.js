@@ -847,6 +847,8 @@ var Table = class extends Input {
       wrapText,
       wrapHeaderText,
       floatingFilter,
+      suppressMovable: true,
+      // Disable column moving
       valueFormatter: (params) => {
         const value = params.value;
         if (formatter && value !== null && value !== void 0) {

@@ -400,6 +400,7 @@ export class Table extends Input {
             wrapText,
             wrapHeaderText,
             floatingFilter,
+            suppressMovable: true, // Disable column moving
             valueFormatter: params => {
                 // Format the value if a format is provided
                 const value = params.value;
