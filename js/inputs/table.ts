@@ -51,7 +51,7 @@ import {
 } from 'https://cdn.jsdelivr.net/npm/ag-grid-community@33.3.2/+esm';
 
 import * as d3Format from 'https://cdn.jsdelivr.net/npm/d3-format@3.1.0/+esm';
-// import * as d3TimeFormat from 'https://cdn.jsdelivr.net/npm/d3-time-format@4.1.0/+esm';
+import * as d3TimeFormat from 'https://cdn.jsdelivr.net/npm/d3-time-format@4.1.0/+esm';
 import { Input, InputOptions } from './input';
 import { generateId } from '../util/id';
 import { JSType } from '@uwdata/mosaic-core';
@@ -504,11 +504,13 @@ const formatterForType = (type: string, formatStr?: string) => {
             return d3Format.format(formatStr || ',.2~f');
         case 'decimal':
             return d3Format.format(formatStr || ',.4~f');
-        // case 'date':
-        //     return d3TimeFormat.format(formatStr || '%Y-%m-%d'); // ISO date format (2024-03-15)
-        // case 'datetime':
-        // case 'timestamp':
-        //     return d3TimeFormat.format(formatStr || '%Y-%m-%d %H:%M:%S'); // ISO datetime format
+        case 'date':
+            // ISO date format (2024-03-15)
+            return d3TimeFormat.timeFormat(formatStr || '%Y-%m-%d');
+        case 'datetime':
+        case 'timestamp':
+            // ISO datetime format
+            return d3TimeFormat.timeFormat(formatStr || '%Y-%m-%d %H:%M:%S');
         case 'boolean':
         case 'string':
         default:
