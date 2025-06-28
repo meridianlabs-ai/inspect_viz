@@ -182,6 +182,32 @@ export class Table extends Input {
             this.element.style.height = `${this.height_}px`;
         }
 
+        if (this.options_.style) {
+            // note that since these are CSS variables that we define
+            // for adapting to Quarto themes, we need to use CSS
+            // vars to override the variables
+            if (this.options_.style?.background_color) {
+                this.element.style.setProperty(
+                    '--ag-background-color',
+                    this.options_.style.background_color
+                );
+            }
+
+            if (this.options_.style?.foreground_color) {
+                this.element.style.setProperty(
+                    '--ag-foreground-color',
+                    this.options_.style.foreground_color
+                );
+            }
+
+            if (this.options_.style?.accent_color) {
+                this.element.style.setProperty(
+                    '--ag-foreground-color',
+                    this.options_.style.accent_color
+                );
+            }
+        }
+
         // create grid container
         this.gridContainer_ = document.createElement('div');
         this.gridContainer_.id = this.id_;
@@ -215,32 +241,6 @@ export class Table extends Input {
             this.createColumnDef(column, type)
         );
         this.gridOptions_.columnDefs = columnDefs;
-
-        // Set the custom grid theme
-        console.log('HI');
-        const myTheme = themeBalham.withParams({
-            backgroundColor: this.options_.style?.background_color,
-            foregroundColor: this.options_.style?.foreground_color,
-            accentColor: this.options_.style?.accent_color || '#007bff',
-            textColor: this.options_.style?.text_color,
-            headerTextColor: this.options_.style?.header_text_color,
-            cellTextColor: this.options_.style?.cell_text_color,
-
-            fontFamily: this.options_.style?.font_family,
-            headerFontFamily: this.options_.style?.header_font_family,
-            cellFontFamily: this.options_.style?.cell_font_family,
-
-            spacing: this.options_.style?.spacing || 4,
-
-            borderColor: this.options_.style?.border_color,
-            borderRadius: this.options_.style?.border_radius,
-
-            selectedRowBackgroundColor: this.options_.style?.selected_row_background_color,
-
-            // borderWidth: this.options_.style?.border_width,
-        });
-        this.gridOptions_.theme = myTheme;
-        console.log({ myTheme, opts: this.options_.style });
 
         // create the grid
         this.grid_ = createGrid(this.gridContainer_, this.gridOptions_);
@@ -310,6 +310,29 @@ export class Table extends Input {
         const hoverSelect = options.select === 'hover';
         const explicitSelection = resolveRowSelection(options);
 
+        // Theme
+        const gridTheme = themeBalham.withParams({
+            textColor: this.options_.style?.text_color,
+            headerTextColor:
+                this.options_.style?.header_text_color || this.options_.style?.text_color,
+            cellTextColor: this.options_.style?.cell_text_color,
+
+            fontFamily: this.options_.style?.font_family,
+            headerFontFamily:
+                this.options_.style?.header_font_family || this.options_.style?.font_family,
+            cellFontFamily:
+                this.options_.style?.cell_font_family || this.options_.style?.font_family,
+
+            spacing: this.options_.style?.spacing || 4,
+
+            borderColor: this.options_.style?.border_color,
+            borderRadius: this.options_.style?.border_radius,
+
+            selectedRowBackgroundColor: this.options_.style?.selected_row_background_color,
+
+            //borderWidth: this.options_.style?.border_width,
+        });
+
         // initialize grid options
         return {
             // always pass filter to allow server-side filtering
@@ -331,7 +354,7 @@ export class Table extends Input {
             rowSelection: explicitSelection,
             suppressCellFocus: true,
             enableCellTextSelection: true,
-            theme: themeBalham.withParams({}),
+            theme: gridTheme,
             onFilterChanged: () => {
                 // Capture the filter model for server-side use
                 this.filterModel_ = this.grid_?.getFilterModel() || {};
