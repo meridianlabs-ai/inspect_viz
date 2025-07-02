@@ -3,6 +3,8 @@ from typing import Literal, Sequence
 from pydantic import BaseModel, JsonValue
 
 from inspect_viz._util.marshall import dict_remove_none
+from inspect_viz.mark._channel import Channel
+from inspect_viz.transform._transform import Transform
 
 from .._core import Component, Data
 from .._core.selection import Selection
@@ -39,7 +41,7 @@ class Column(BaseModel):
             header cell.
     """
 
-    column: str
+    column: Channel
     label: str | None = None
     align: Literal["left", "right", "center", "justify"] | None = None
     format: str | None = None
@@ -58,7 +60,7 @@ class Column(BaseModel):
 
     def __init__(
         self,
-        column: str,
+        column: Channel,
         *,
         label: str | None = None,
         align: Literal["left", "right", "center", "justify"] | None = None,
@@ -97,7 +99,7 @@ class Column(BaseModel):
 
 
 def column(
-    column: str,
+    column: Channel,
     *,
     label: str | None = None,
     align: Literal["left", "right", "center", "justify"] | None = None,
@@ -314,10 +316,21 @@ def table(
 
 
 def validate_column(data: Data | None, column: str | Column) -> str | Column:
-    column_name = column.column if isinstance(column, Column) else column
-    if data is not None:
-        if column_name not in data.columns:
-            raise ValueError(f"Column '{column}' was not found in the data source.")
+    if data is None:
+        return column
+
+    column_name: str | None = None
+    if isinstance(column, Column):
+        if isinstance(column.column, str):
+            column_name = column.column
+        elif isinstance(column.column, Transform):
+            column_name = next(iter(column.column.values()))
+    else:
+        column_name = column
+
+    if column_name is not None and column_name not in data.columns:
+        raise ValueError(f"Column '{column_name}' was not found in the data source.")
+
     return column
 
 

@@ -640,7 +640,8 @@ import {
   suffix,
   Query as Query3,
   sql,
-  column
+  column,
+  avg
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm";
 import {
   createGrid,
@@ -659,14 +660,13 @@ var Table = class extends Input {
     this.columns_ = resolveColumns(this.options_.columns || ["*"]);
     this.columnOptions_ = this.columns_.reduce(
       (acc, col) => {
-        acc[col.column] = col;
+        acc[col.column_name] = col;
         return acc;
       },
       {}
     );
     this.height_ = this.options_.height;
     this.currentRow_ = -1;
-    this.schema_ = [];
     this.element.classList.add("inspect-viz-table");
     if (typeof this.options_.width === "number") {
       this.element.style.width = `${this.options_.width}px`;
@@ -707,11 +707,11 @@ var Table = class extends Input {
   id_;
   columns_;
   columnOptions_;
+  columnTypes_ = {};
   height_;
   gridContainer_;
   grid_ = null;
   gridOptions_;
-  schema_;
   currentRow_;
   sortModel_ = [];
   filterModel_ = {};
@@ -721,7 +721,8 @@ var Table = class extends Input {
   };
   // contribute a selection clause back to the target selection
   clause(rows = []) {
-    const fields = this.schema_.map((s) => s.column);
+    const nonLiteralColumns = this.columns_.filter((col) => col.type !== "literal");
+    const fields = nonLiteralColumns.map((column2) => column2.column_id);
     const values = rows.map((row) => {
       return fields.map((f) => this.data_.columns[f][row]);
     });
@@ -731,26 +732,72 @@ var Table = class extends Input {
   // and do related setup
   async prepare() {
     const table = this.options_.from;
-    const fields = this.columns_.map((column2) => ({ column: column2.column, table }));
-    this.schema_ = await queryFieldInfo(this.coordinator, fields);
-    const columnDefs = this.schema_.map(
-      ({ column: column2, type }) => this.createColumnDef(column2, type)
-    );
+    const nonLiteralCols = this.columns_.filter((col) => col.type !== "literal");
+    const fields = nonLiteralCols.map((column2) => ({ column: column2.column_id, table }));
+    const schema = await queryFieldInfo(this.coordinator, fields);
+    schema.forEach(({ column: column2, type }) => {
+      const col = nonLiteralCols.find((c) => c.column_id === column2);
+      if (col) {
+        this.columnTypes_[col?.column_name] = type;
+      }
+    });
+    const literalCols = this.columns_.filter((col) => col.type === "literal");
+    literalCols.forEach((c) => {
+      const colVal = c.column;
+      if (Array.isArray(colVal)) {
+        const firstVal = colVal[0];
+        const typeStr = typeof firstVal === "boolean" ? "boolean" : typeof firstVal === "number" ? "number" : void 0;
+        if (typeStr) {
+          this.columnTypes_[c.column_name] = typeStr;
+        }
+      } else if (typeof colVal === "boolean") {
+        this.columnTypes_[c.column_name] = "boolean";
+      } else if (typeof colVal === "number") {
+        this.columnTypes_[c.column_name] = "number";
+      }
+    });
+    const columnDefs = this.columns_.map((column2) => {
+      const t = this.columnTypes_[column2.column_name];
+      return this.createColumnDef(column2.column_name, t);
+    });
     this.gridOptions_.columnDefs = columnDefs;
     this.grid_ = createGrid(this.gridContainer_, this.gridOptions_);
   }
   // mosaic calls this every time it needs to show data to find
   // out what query we want to run
   query(filter = []) {
+    const selectItems = {};
+    const groupBy = [];
+    let has_aggregate = false;
+    const nonLiteralCols = this.columns_.filter((col) => col.type !== "literal");
+    for (const column2 of nonLiteralCols) {
+      if (column2.type === "aggregate") {
+        const item = aggregateExpression(column2);
+        selectItems[item[0]] = item[1];
+        has_aggregate = true;
+      } else {
+        selectItems[column2.column_id] = column2.column_id;
+        groupBy.push(column2.column_id);
+      }
+    }
     let query = Query3.from(this.options_.from).select(
-      this.schema_.length ? this.schema_.map((s) => s.column) : "*"
+      Object.keys(selectItems).length ? selectItems : "*"
     );
+    if (has_aggregate && groupBy.length > 0) {
+      query.groupby(groupBy);
+    }
     query = query.where(...filter);
-    Object.keys(this.filterModel_).forEach((colId) => {
-      const filter2 = this.filterModel_[colId];
-      const expression = filterExpression(colId, filter2, query);
+    Object.keys(this.filterModel_).forEach((columnName) => {
+      const col = this.columns_.find((c) => c.column_name === columnName);
+      const useHaving = col?.type === "aggregate";
+      const filter2 = this.filterModel_[columnName];
+      const expression = filterExpression(columnName, filter2, query);
       if (expression) {
-        query = query.where(expression);
+        if (useHaving) {
+          query.having(expression);
+        } else {
+          query = query.where(expression);
+        }
       }
     });
     if (this.sortModel_.length > 0) {
@@ -775,8 +822,15 @@ var Table = class extends Input {
     const rowData = [];
     for (let i = 0; i < this.data_.numRows; i++) {
       const row = {};
-      this.schema_.forEach(({ column: column2 }) => {
-        row[column2] = this.data_.columns[column2][i];
+      this.columns_.forEach(({ column_name, column: column2 }) => {
+        if (Array.isArray(column2)) {
+          const index = i % column2.length;
+          row[column_name] = column2[index];
+        } else if (typeof column2 === "boolean" || typeof column2 === "number") {
+          row[column_name] = column2;
+        } else {
+          row[column_name] = this.data_.columns[column_name][i];
+        }
       });
       rowData.push(row);
     }
@@ -797,7 +851,6 @@ var Table = class extends Input {
       borderColor: this.options_.style?.border_color,
       borderRadius: this.options_.style?.border_radius,
       selectedRowBackgroundColor: this.options_.style?.selected_row_background_color
-      //borderWidth: this.options_.style?.border_width,
     });
     return {
       // always pass filter to allow server-side filtering
@@ -911,11 +964,61 @@ var Table = class extends Input {
   }
 };
 var resolveColumns = (columns) => {
+  let columnCount = 1;
+  const incrementedColumnName = () => {
+    return `col_${columnCount++}`;
+  };
   return columns.map((col) => {
     if (typeof col === "string") {
-      return { column: col };
+      return {
+        column_name: col,
+        column_id: col,
+        column: col,
+        type: "column"
+      };
     } else if (typeof col === "object" && col !== null) {
-      return col;
+      if (typeof col.column === "string") {
+        return {
+          ...col,
+          column_name: col.column,
+          column_id: col.column,
+          type: "column"
+        };
+      } else if (typeof col.column === "number") {
+        return {
+          column_name: incrementedColumnName(),
+          column: col.column,
+          type: "literal"
+        };
+      } else if (typeof col.column === "boolean") {
+        return {
+          column_name: incrementedColumnName(),
+          column: col.column,
+          type: "literal"
+        };
+      } else if (Array.isArray(col.column)) {
+        if (col.column.length === 0) {
+          throw new Error("Empty array column is not supported");
+        }
+        return {
+          column_name: incrementedColumnName(),
+          column: col.column,
+          type: "literal"
+        };
+      } else if (typeof col.column === "object") {
+        const agg = Object.keys(col.column)[0];
+        const targetColumn = col.column[agg];
+        return {
+          ...col,
+          column_name: `${agg}_${targetColumn}`,
+          column_id: targetColumn,
+          agg_expr: agg,
+          agg_expr_args: [targetColumn],
+          type: "aggregate"
+        };
+      } else {
+        throw new Error("Unsupported column type: " + typeof col.column);
+      }
     } else {
       throw new Error(`Invalid column definition: ${col}`);
     }
@@ -1050,6 +1153,9 @@ var simpleExpression = (colId, type, filter, filterTo = void 0, textColumn = fal
       console.warn(`Unsupported filter type: ${type}`);
   }
   return void 0;
+};
+var aggregateExpression = (c) => {
+  return [c.column_name, avg(c.agg_expr_args[0])];
 };
 var isCombinedSimpleModel = (filter) => {
   return typeof filter === "object" && filter !== null && "operator" in filter && "conditions" in filter && (filter.operator === "AND" || filter.operator === "OR") && typeof filter.conditions === "object";
