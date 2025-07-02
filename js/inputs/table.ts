@@ -30,6 +30,40 @@ import {
     sql,
     column,
     avg,
+    count,
+    sum,
+    argmax,
+    mad,
+    max,
+    min,
+    product,
+    geomean,
+    median,
+    mode,
+    variance,
+    stddev,
+    skewness,
+    kurtosis,
+    entropy,
+    varPop,
+    stddevPop,
+    first,
+    last,
+    stringAgg,
+    arrayAgg,
+    argmin,
+    quantile,
+    corr,
+    covarPop,
+    regrIntercept,
+    regrSlope,
+    regrCount,
+    regrR2,
+    regrSXX,
+    regrSYY,
+    regrSXY,
+    regrAvgX,
+    regrAvgY,
 } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-sql@0.16.2/+esm';
 
 import {
@@ -56,11 +90,6 @@ import { Input, InputOptions } from './input';
 import { generateId } from '../util/id';
 import { JSType } from '@uwdata/mosaic-core';
 import { AggregateNode, ExprValue } from '@uwdata/mosaic-sql';
-
-// TODO: table options not working for literals (probably column naming issue)
-// TODO: implement all aggregate function types
-// TODO: deal with filtering for literals (probably need to make them unfilterable / unsortable or allow the grid itself to do the sorting and filtering) could fall back to old hacky way of shutting down filtering for columns and just leave filtering enabled for the literal columns
-// TODO: deal with sorting of literals
 
 type Transform = Record<string, any>;
 
@@ -174,7 +203,7 @@ interface ColSortModel {
 export class Table extends Input {
     private readonly id_: string;
     private readonly columns_: ResolvedColumn[];
-    private readonly columnOptions_: Record<string, Column>;
+    private readonly columnsByName_: Record<string, ResolvedColumn>;
     private readonly columnTypes_: Record<string, JSType> = {};
     private readonly height_: number | undefined;
 
@@ -202,13 +231,15 @@ export class Table extends Input {
 
         // defaults
         this.columns_ = resolveColumns(this.options_.columns || ['*']);
-        this.columnOptions_ = this.columns_.reduce(
+
+        this.columnsByName_ = this.columns_.reduce(
             (acc, col) => {
                 acc[col.column_name] = col;
                 return acc;
             },
-            {} as Record<string, Column>
+            {} as Record<string, ResolvedColumn>
         );
+
         this.height_ = this.options_.height;
 
         // state
@@ -265,9 +296,7 @@ export class Table extends Input {
 
     // contribute a selection clause back to the target selection
     clause(rows: number[] = []) {
-        // TODO: handle literals and aggregates
-        const nonLiteralColumns = this.columns_.filter(col => col.type !== 'literal');
-        const fields = nonLiteralColumns.map(column => column.column_id);
+        const fields = this.getDatabaseColumns().map(column => column.column_id);
 
         const values = rows.map(row => {
             return fields.map(f => this.data_.columns[f][row]);
@@ -280,21 +309,26 @@ export class Table extends Input {
     async prepare() {
         // query for column schema information
         const table = this.options_.from;
-        const nonLiteralCols = this.columns_.filter(col => col.type !== 'literal');
-        const fields = nonLiteralCols.map(column => ({ column: column.column_id!, table }));
+        const fields = this.getDatabaseColumns().map(column => ({
+            column: column.column_id!,
+            table,
+        }));
 
-        // Query the schema and resolve the column types
+        // For each non-literal column, we need to resolve the type
+        // Do this by using the schema query to get column types and use the
+        // column type as the type (even for aggregate columns  )
         const schema = await queryFieldInfo(this.coordinator!, fields);
-        schema.forEach(({ column, type }) => {
-            const col = nonLiteralCols.find(c => c.column_id === column);
-            if (col) {
-                this.columnTypes_[col?.column_name] = type as JSType;
-            }
-        });
+        this.columns_
+            .filter(c => c.type !== 'literal')
+            .forEach(column => {
+                const item = schema.find(s => s.column === column.column_id);
+                if (item) {
+                    this.columnTypes_[column.column_name] = item.type as JSType;
+                }
+            });
 
         // For literals, we need to determine their types based on the values provided.
-        const literalCols = this.columns_.filter(col => col.type === 'literal');
-        literalCols.forEach(c => {
+        this.getLiteralColumns().forEach(c => {
             const colVal = c.column;
             if (Array.isArray(colVal)) {
                 // Peek at the first element to determine the type
@@ -336,13 +370,12 @@ export class Table extends Input {
         // Go through each column and determine the select item
         // for the column. Some columns may not have items because
         // they are providing a literal or list of literals.
-        const nonLiteralCols = this.columns_.filter(col => col.type !== 'literal');
-        for (const column of nonLiteralCols) {
+        for (const column of this.getDatabaseColumns()) {
             if (column.type === 'aggregate') {
                 const item = aggregateExpression(column);
                 selectItems[item[0]] = item[1];
                 has_aggregate = true;
-            } else {
+            } else if (column.type === 'column') {
                 selectItems[column.column_id] = column.column_id;
                 groupBy.push(column.column_id);
             }
@@ -363,16 +396,17 @@ export class Table extends Input {
 
         // apply the filter model
         Object.keys(this.filterModel_).forEach(columnName => {
-            const col = this.columns_.find(c => c.column_name === columnName);
-
-            const useHaving = col?.type === 'aggregate';
-            const filter = this.filterModel_[columnName] as SupportedFilter;
-            const expression = filterExpression(columnName, filter, query);
-            if (expression) {
-                if (useHaving) {
-                    query.having(expression);
-                } else {
-                    query = query.where(expression);
+            const col = this.columnsByName_[columnName];
+            if (col.type !== 'literal') {
+                const useHaving = col?.type === 'aggregate';
+                const filter = this.filterModel_[columnName] as SupportedFilter;
+                const expression = filterExpression(columnName, filter, query);
+                if (expression) {
+                    if (useHaving) {
+                        query.having(expression);
+                    } else {
+                        query = query.where(expression);
+                    }
                 }
             }
         });
@@ -380,7 +414,10 @@ export class Table extends Input {
         // Apply sorting
         if (this.sortModel_.length > 0) {
             this.sortModel_.forEach(sort => {
-                query = query.orderby(sort.sort === 'asc' ? asc(sort.colId) : desc(sort.colId));
+                const col = this.columnsByName_[sort.colId];
+                if (col.type !== 'literal') {
+                    query = query.orderby(sort.sort === 'asc' ? asc(sort.colId) : desc(sort.colId));
+                }
             });
         }
 
@@ -453,7 +490,6 @@ export class Table extends Input {
         // initialize grid options
         return {
             // always pass filter to allow server-side filtering
-            alwaysPassFilter: () => true,
             pagination: !!options.pagination,
             paginationAutoPageSize:
                 options.pagination?.page_size === 'auto' ||
@@ -463,7 +499,7 @@ export class Table extends Input {
                 typeof options.pagination?.page_size === 'number'
                     ? options.pagination.page_size
                     : undefined,
-            animateRows: true,
+            animateRows: false,
             headerHeight: headerHeightPixels,
             rowHeight: options.row_height,
             columnDefs: [],
@@ -524,51 +560,67 @@ export class Table extends Input {
                     this.options_.as.update(this.clause());
                 }
             },
+            onGridReady: () => {
+                // When the grid is ready, we can update it with the initial data
+                this.patchGrid();
+            },
         };
     }
-    private createColumnDef(column: string, type: JSType): ColDef {
-        const columnOptions = this.columnOptions_[column] || {};
+
+    private getLiteralColumns(): ResolvedLiteralColumn[] {
+        return this.columns_.filter(c => c.type === 'literal');
+    }
+
+    private getDatabaseColumns(): Array<ResolvedSimpleColumn | ResolvedAggregateColumn> {
+        return this.columns_.filter(c => c.type === 'column' || c.type === 'aggregate');
+    }
+
+    private createColumnDef(column_name: string, type: JSType): ColDef {
+        const column = this.columnsByName_[column_name] || {};
 
         // Align, numbers right aligned by default
-        const align = columnOptions.align || (type === 'number' ? 'right' : 'left');
-        const headerAlignment = columnOptions.header_align;
+        const align = column.align || (type === 'number' ? 'right' : 'left');
+        const headerAlignment = column.header_align;
 
         // Format string
-        const formatter = formatterForType(type, columnOptions.format);
+        const formatter = formatterForType(type, column.format);
 
         // Sorting / filtering
-        const sortable = this.options_.sorting !== false && columnOptions.sortable !== false;
-        const filterable = this.options_.filtering !== false && columnOptions.filterable !== false;
+        const sortable = this.options_.sorting !== false && column.sortable !== false;
+        const filterable = this.options_.filtering !== false && column.filterable !== false;
 
         // Sizing
-        const resizable = columnOptions.resizable !== false;
+        const resizable = column.resizable !== false;
 
         // Min and max width
-        const minWidth = columnOptions.min_width;
-        const maxWidth = columnOptions.max_width;
+        const minWidth = column.min_width;
+        const maxWidth = column.max_width;
 
         // auto height
-        const autoHeight = columnOptions.auto_height;
+        const autoHeight = column.auto_height;
         const autoHeaderHeight =
-            this.options_.header_height === 'auto' && columnOptions.header_auto_height !== false;
+            this.options_.header_height === 'auto' && column.header_auto_height !== false;
 
         // wrap text
-        const wrapText = columnOptions.wrap_text;
-        const wrapHeaderText = columnOptions.header_wrap_text;
+        const wrapText = column.wrap_text;
+        const wrapHeaderText = column.header_wrap_text;
 
         // flex
-        const flex = columnOptions.flex;
+        const flex = column.flex;
+
+        // Disables client side sorting (used for non-literal columns
+        // where the database can handle the sorting)
+        const disableClientSort = (_valueA: unknown, _valueB: unknown) => {
+            return 0;
+        };
 
         // Position the filter below the header
         const colDef: ColDef = {
-            field: column,
-            headerName: columnOptions.label || column,
+            field: column_name,
+            headerName: column.label || column_name,
             headerClass: headerClasses(headerAlignment),
             cellStyle: { textAlign: align },
-            comparator: (_valueA, _valueB) => {
-                // Sorting is handled by the database, so never client sort
-                return 0;
-            },
+            comparator: column.type !== 'literal' ? disableClientSort : undefined,
             filter: !filterable ? false : filterForColumnType(type),
             flex,
             sortable,
@@ -580,7 +632,8 @@ export class Table extends Input {
             wrapText,
             wrapHeaderText,
             floatingFilter: this.options_.filtering === 'row',
-            suppressMovable: true, // Disable column moving
+            // Disable column moving
+            suppressMovable: true,
             valueFormatter: params => {
                 // Format the value if a format is provided
                 const value = params.value;
@@ -593,7 +646,7 @@ export class Table extends Input {
 
         // Set columns widths, if explicitly provided
         // otherwise use flex to make all columns equal
-        const width = columnOptions.width;
+        const width = column.width;
         if (width) {
             colDef.width = width;
         } else if (flex === undefined || flex === null) {
@@ -601,6 +654,34 @@ export class Table extends Input {
         }
 
         return colDef;
+    }
+
+    private patchGrid() {
+        if (!this.grid_) {
+            return;
+        }
+
+        const columns = this.grid_.getColumns();
+        if (columns) {
+            columns.forEach(async column => {
+                const colId = column.getColId();
+                const filterInstance = await this.grid_!.getColumnFilterInstance(colId);
+                const col = this.columnsByName_[colId];
+
+                // This is a workaround to disable client side filtering so we can implement
+                // filtering using the query method instead.
+                //
+                // Since literal columns aren't filtered in the database, we instead
+                // use client side filtering for these
+                if (
+                    filterInstance &&
+                    typeof filterInstance.doesFilterPass === 'function' &&
+                    col.type !== 'literal'
+                ) {
+                    filterInstance.doesFilterPass = () => true;
+                }
+            });
+        }
     }
 
     // all mosaic inputs implement this, not exactly sure what it does
@@ -641,6 +722,7 @@ const resolveColumns = (columns: Array<string | Column>): ResolvedColumn[] => {
                 // It has no column_id since it isn't in the database - we generate
                 // a display alias for it
                 return {
+                    ...col,
                     column_name: incrementedColumnName(),
                     column: col.column,
                     type: 'literal',
@@ -650,6 +732,7 @@ const resolveColumns = (columns: Array<string | Column>): ResolvedColumn[] => {
                 // It has no column_id since it isn't in the database - we generate
                 // a display alias for it
                 return {
+                    ...col,
                     column_name: incrementedColumnName(),
                     column: col.column,
                     type: 'literal',
@@ -660,6 +743,7 @@ const resolveColumns = (columns: Array<string | Column>): ResolvedColumn[] => {
                     throw new Error('Empty array column is not supported');
                 }
                 return {
+                    ...col,
                     column_name: incrementedColumnName(),
                     column: col.column,
                     type: 'literal',
@@ -866,7 +950,100 @@ export const simpleExpression = (
 const aggregateExpression = (
     c: ResolvedAggregateColumn
 ): [alias: string, aggregate: AggregateNode] => {
-    return [c.column_name, avg(c.agg_expr_args[0] as ExprValue)];
+    const aggExpr = c.agg_expr;
+
+    const firstArg = () => {
+        if (c.agg_expr_args.length > 0) {
+            return c.agg_expr_args[0];
+        }
+        throw new Error(`Aggregate expression ${aggExpr} requires at least one argument`);
+    };
+
+    const secondArg = () => {
+        if (c.agg_expr_args.length > 1) {
+            return c.agg_expr_args[1];
+        }
+        throw new Error(`Aggregate expression ${aggExpr} requires at least two arguments`);
+    };
+
+    const r = (val: AggregateNode): [alias: string, aggregate: AggregateNode] => {
+        return [c.column_name, val];
+    };
+
+    switch (aggExpr) {
+        case 'count':
+            return r(count(firstArg()));
+        case 'sum':
+            return r(sum(firstArg()));
+        case 'avg':
+            return r(avg(firstArg()));
+        case 'argmax':
+            return r(argmax(firstArg(), secondArg()));
+        case 'mad':
+            return r(mad(firstArg()));
+        case 'max':
+            return r(max(firstArg()));
+        case 'min':
+            return r(min(firstArg()));
+        case 'product':
+            return r(product(firstArg()));
+        case 'geomean':
+            return r(geomean(firstArg()));
+        case 'median':
+            return r(median(firstArg()));
+        case 'mode':
+            return r(mode(firstArg()));
+        case 'variance':
+            return r(variance(firstArg()));
+        case 'stddev':
+            return r(stddev(firstArg()));
+        case 'skewness':
+            return r(skewness(firstArg()));
+        case 'kurtosis':
+            return r(kurtosis(firstArg()));
+        case 'entropy':
+            return r(entropy(firstArg()));
+        case 'varPop':
+            return r(varPop(firstArg()));
+        case 'stddevPop':
+            return r(stddevPop(firstArg()));
+        case 'first':
+            return r(first(firstArg()));
+        case 'last':
+            return r(last(firstArg()));
+        case 'stringAgg':
+            return r(stringAgg(firstArg()));
+        case 'arrayAgg':
+            return r(arrayAgg(firstArg()));
+        case 'argmin':
+            return r(argmin(firstArg(), secondArg()));
+        case 'quantile':
+            return r(quantile(firstArg(), secondArg()));
+        case 'corr':
+            return r(corr(firstArg(), secondArg()));
+        case 'covarPop':
+            return r(covarPop(firstArg(), secondArg()));
+        case 'regrIntercept':
+            return r(regrIntercept(firstArg(), secondArg()));
+        case 'regrSlope':
+            return r(regrSlope(firstArg(), secondArg()));
+        case 'regrCount':
+            return r(regrCount(firstArg(), secondArg()));
+        case 'regrR2':
+            return r(regrR2(firstArg(), secondArg()));
+        case 'regrSXX':
+            return r(regrSXX(firstArg(), secondArg()));
+        case 'regrSYY':
+            return r(regrSYY(firstArg(), secondArg()));
+        case 'regrSXY':
+            return r(regrSXY(firstArg(), secondArg()));
+        case 'regrAvgX':
+            return r(regrAvgX(firstArg(), secondArg()));
+        case 'regrAvgY':
+            return r(regrAvgY(firstArg(), secondArg()));
+        default:
+            throw new Error(`Unsupported aggregate expression: ${aggExpr}`);
+    }
 };
 
 const isCombinedSimpleModel = (
