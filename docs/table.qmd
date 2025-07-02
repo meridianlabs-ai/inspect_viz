@@ -147,21 +147,21 @@ table(penguins, columns=[
 
 Default formats for values are as follows:
 
-+--------------+-----------------------+
-| type         | format                |
-+==============+=======================+
-| `integer`    | `','`                 |
-+--------------+-----------------------+
-| `number`\    | `',.2~f'`             |
-| `float`      |                       |
-+--------------+-----------------------+
-| `decimal`    | `',.4~f'`             |
-+--------------+-----------------------+
-| `date`       | `'%Y-%m-%d'`          |
-+--------------+-----------------------+
-| `datetime`\  | `'%Y-%m-%d %H:%M:%S'` |
-| `timestamp`  |                       |
-+--------------+-----------------------+
++---------------+-----------------------+
+| type          | format                |
++===============+=======================+
+| `integer`     | `','`                 |
++---------------+-----------------------+
+| `number`\     | `',.2~f'`             |
+| `float`       |                       |
++---------------+-----------------------+
+| `decimal`     | `',.4~f'`             |
++---------------+-----------------------+
+| `date`        | `'%Y-%m-%d'`          |
++---------------+-----------------------+
+| `datetime`\   | `'%Y-%m-%d %H:%M:%S'` |
+| `timestamp`   |                       |
++---------------+-----------------------+
 
 ### Text Wrapping
 
@@ -243,9 +243,9 @@ table(penguins, columns=[
 
 #### Filter Location
 
-You can control where in the table filters appear by passing other `header` or `row` as the value for filter. `header` places in the filter as buttons in the header row next to the header text. `row` creates` a separate row with inline filter UI for filtering columns. For example:
+You can control where in the table filters appear by passing other `header` or `row` as the value for filter. `header` places in the filter as buttons in the header row next to the header text. `row` creates\` a separate row with inline filter UI for filtering columns. For example:
 
-```python
+``` python
 table(penguins, filtering='row')
 ```
 
@@ -295,6 +295,38 @@ table(penguins,
       pagination=Pagination(page_size=20, page_size_selector=[20,40,60]))
 ```
 
+## Grouping
+
+When displaying tabular data, it can be useful to group the data by specific fields. For example, to display a table with the average attributes of male and female penguins based upon their species, you can using grouping function for some columns:
+
+```{python}
+from inspect_viz.transform import avg, count
+table(penguins, 
+      height=120,
+      columns=[
+        column("species"), 
+        column(avg("body_mass")),
+        column(avg("flipper_length"))])
+```
+
+When providing transforms to apply to columns (e.g. `avg`, `sum`), columns without aggregating transforms will be treated as columns to group by. So in the above example, the table is grouped by `species` displaying the rest of the values using their aggregate values.
+
+## Literal Data
+
+You can also pass literal values (an `int | float | bool`) as a column by passing one or more values as the `column` itself. For example:
+
+```{python}
+table(penguins, 
+      columns=[
+        column([1,2,3,4,5,6,7,8,9], label="sample_bucket"),
+        column("species"), 
+        column("body_mass"),
+        column("flipper_length")])
+        
+```
+
+If a single value is passed, that value will be repeated for every row in the dataset. If a list of values is passed, each row will increment through the list and include the value from the row index. If the list is shorter than the dataset, values will be repeated by repeatedly iterating through the list.
+
 ## Selection
 
 By default, the table will display the selection provided by the data source. If you'd like, you can provide an alternative selection by using `filter_by`.
@@ -312,13 +344,19 @@ table(penguins,
 
 You can use the `select` option to control how selection works within the table. By default, `select` is set to `single_row` which will allow selection of one row at a time by clicking the row. Other options are listed below:
 
-| Option | Action |
-|----|----|
-| `hover` | The selection will be updated when the user's mouse hovers over a row. |
-| `single_row` | The selection will be updated when a single row is selected. The selected row will be highlighted. |
-| `multiple_row` | The selection will be updated when one or more rows are selected. The selected rows will be highlighted. |
-| `single_row_checkbox` | The selection will be updated when a single row is selected using a checkbox. |
-| `multiple_row_checkbox` | The selection will be updated when one or more rows is selected using a checkbox. |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
+| Option                           | Action                                                                                                   |
++==================================+==========================================================================================================+
+| `hover`                          | The selection will be updated when the user's mouse hovers over a row.                                   |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
+| `single_row`                     | The selection will be updated when a single row is selected. The selected row will be highlighted.       |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
+| `multiple_row`                   | The selection will be updated when one or more rows are selected. The selected rows will be highlighted. |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
+| `single_row_checkbox`            | The selection will be updated when a single row is selected using a checkbox.                            |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
+| `multiple_row_checkbox`          | The selection will be updated when one or more rows is selected using a checkbox.                        |
++----------------------------------+----------------------------------------------------------------------------------------------------------+
 
 ## Appearance
 
@@ -344,32 +382,45 @@ table(penguins,
 
 Using the three following basic color options will provide new colors for the table (with the overall colors of the table derived from these three themes). Each of these colors accepts a `css` color value (for example a hex color string or a named value like `red`).
 
-| Option | Target |
-|----|----|
-| `background_color` | The background color use for cells. |
-| `foreground_color` | The foreground color used for values within cells. |
-| `accent_color` | Accent color used for things like selection and highlights. |
++----------------------------------+-------------------------------------------------------------+
+| Option                           | Target                                                      |
++==================================+=============================================================+
+| `background_color`               | The background color use for cells.                         |
++----------------------------------+-------------------------------------------------------------+
+| `foreground_color`               | The foreground color used for values within cells.          |
++----------------------------------+-------------------------------------------------------------+
+| `accent_color`                   | Accent color used for things like selection and highlights. |
++----------------------------------+-------------------------------------------------------------+
 
 ### More Color Options
 
 In addition to the previous basic options, you can do further customization of the colors by passing a `css` color value to the following:
 
-| Option | Target |
-|----|----|
-| `text_color` | The text color for UI elements presented within the table. |
-| `header_text_color` | The color for text in the header row. |
-| `cell_text_color` | The color for text in cell within the body of the table. |
-| `selected_row_background_color` | The background color of selected rows. |
++----------------------------------+------------------------------------------------------------+
+| Option                           | Target                                                     |
++==================================+============================================================+
+| `text_color`                     | The text color for UI elements presented within the table. |
++----------------------------------+------------------------------------------------------------+
+| `header_text_color`              | The color for text in the header row.                      |
++----------------------------------+------------------------------------------------------------+
+| `cell_text_color`                | The color for text in cell within the body of the table.   |
++----------------------------------+------------------------------------------------------------+
+| `selected_row_background_color`  | The background color of selected rows.                     |
++----------------------------------+------------------------------------------------------------+
 
 ### Fonts
 
 You can control the fonts used by the table by passing a `css` `font-family` value in the following options:
 
++----------------------+------------------------------------------------------+
 | Option               | Target                                               |
-|----------------------|------------------------------------------------------|
++======================+======================================================+
 | `font_family`        | The default font for all text within the table.      |
++----------------------+------------------------------------------------------+
 | `header_font_family` | The font used for text within the header row.        |
++----------------------+------------------------------------------------------+
 | `cell_font_family`   | The font used for text within the body of the table. |
++----------------------+------------------------------------------------------+
 
 ### Border
 
