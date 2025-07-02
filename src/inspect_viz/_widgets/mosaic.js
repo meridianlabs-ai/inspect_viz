@@ -691,17 +691,9 @@ var Table = class extends Input {
     this.options_ = options_;
     ModuleRegistry.registerModules([AllCommunityModule]);
     this.id_ = generateId();
-    this.columns_ = resolveColumns(this.options_.columns || ["*"]);
-    this.columnsByName_ = this.columns_.reduce(
-      (acc, col) => {
-        acc[col.column_name] = col;
-        return acc;
-      },
-      {}
-    );
-    this.height_ = this.options_.height;
     this.currentRow_ = -1;
     this.element.classList.add("inspect-viz-table");
+    this.height_ = this.options_.height;
     if (typeof this.options_.width === "number") {
       this.element.style.width = `${this.options_.width}px`;
     }
@@ -739,8 +731,8 @@ var Table = class extends Input {
     this.gridOptions_ = this.createGridOptions(this.options_);
   }
   id_;
-  columns_;
-  columnsByName_;
+  columns_ = null;
+  columnsByName_ = null;
   columnTypes_ = {};
   height_;
   gridContainer_;
@@ -765,11 +757,16 @@ var Table = class extends Input {
   // and do related setup
   async prepare() {
     const table = this.options_.from;
-    const fields = this.getDatabaseColumns().map((column2) => ({
-      column: column2.column_id,
-      table
-    }));
-    const schema = await queryFieldInfo(this.coordinator, fields);
+    const schema = await queryFieldInfo(this.coordinator, [{ column: "*", table }]);
+    const userColumns = this.options_.columns ? this.options_.columns : schema.map((f) => f.column);
+    this.columns_ = resolveColumns(userColumns);
+    this.columnsByName_ = this.columns_.reduce(
+      (acc, col) => {
+        acc[col.column_name] = col;
+        return acc;
+      },
+      {}
+    );
     this.columns_.filter((c) => c.type !== "literal").forEach((column2) => {
       const item = schema.find((s) => s.column === column2.column_id);
       if (item) {
@@ -821,6 +818,9 @@ var Table = class extends Input {
     }
     query = query.where(...filter);
     Object.keys(this.filterModel_).forEach((columnName) => {
+      if (!this.columnsByName_) {
+        throw new Error("Columns not resolved yet. Please call prepare() first.");
+      }
       const col = this.columnsByName_[columnName];
       if (col.type !== "literal") {
         const useHaving = col?.type === "aggregate";
@@ -837,6 +837,9 @@ var Table = class extends Input {
     });
     if (this.sortModel_.length > 0) {
       this.sortModel_.forEach((sort) => {
+        if (!this.columnsByName_) {
+          throw new Error("Columns not resolved yet. Please call prepare() first.");
+        }
         const col = this.columnsByName_[sort.colId];
         if (col.type !== "literal") {
           query = query.orderby(sort.sort === "asc" ? asc(sort.colId) : desc(sort.colId));
@@ -856,7 +859,12 @@ var Table = class extends Input {
     return this;
   }
   updateGrid = throttle(async () => {
-    if (!this.grid_) return;
+    if (!this.grid_) {
+      return;
+    }
+    if (!this.columns_) {
+      throw new Error("Columns not resolved yet. Please call prepare() first.");
+    }
     const rowData = [];
     for (let i = 0; i < this.data_.numRows; i++) {
       const row = {};
@@ -945,12 +953,21 @@ var Table = class extends Input {
     };
   }
   getLiteralColumns() {
+    if (!this.columns_) {
+      throw new Error("Columns not resolved yet. Please call prepare() first.");
+    }
     return this.columns_.filter((c) => c.type === "literal");
   }
   getDatabaseColumns() {
+    if (!this.columns_) {
+      throw new Error("Columns not resolved yet. Please call prepare() first.");
+    }
     return this.columns_.filter((c) => c.type === "column" || c.type === "aggregate");
   }
   createColumnDef(column_name, type) {
+    if (!this.columnsByName_) {
+      throw new Error("Columns not resolved yet. Please call prepare() first.");
+    }
     const column2 = this.columnsByName_[column_name] || {};
     const align = column2.align || (type === "number" ? "right" : "left");
     const headerAlignment = column2.header_align;
@@ -1010,6 +1027,9 @@ var Table = class extends Input {
     const columns = this.grid_.getColumns();
     if (columns) {
       columns.forEach(async (column2) => {
+        if (!this.columnsByName_) {
+          throw new Error("Columns not resolved yet. Please call prepare() first.");
+        }
         const colId = column2.getColId();
         const filterInstance = await this.grid_.getColumnFilterInstance(colId);
         const col = this.columnsByName_[colId];

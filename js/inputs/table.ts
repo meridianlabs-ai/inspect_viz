@@ -1,5 +1,6 @@
 import {
     clausePoints,
+    FieldInfo,
     isSelection,
     queryFieldInfo,
     throttle,
@@ -202,9 +203,9 @@ interface ColSortModel {
 
 export class Table extends Input {
     private readonly id_: string;
-    private readonly columns_: ResolvedColumn[];
-    private readonly columnsByName_: Record<string, ResolvedColumn>;
-    private readonly columnTypes_: Record<string, JSType> = {};
+    private columns_: ResolvedColumn[] | null = null;
+    private columnsByName_: Record<string, ResolvedColumn> | null = null;
+    private columnTypes_: Record<string, JSType> = {};
     private readonly height_: number | undefined;
 
     private readonly gridContainer_: HTMLDivElement;
@@ -229,24 +230,14 @@ export class Table extends Input {
         // id
         this.id_ = generateId();
 
-        // defaults
-        this.columns_ = resolveColumns(this.options_.columns || ['*']);
-
-        this.columnsByName_ = this.columns_.reduce(
-            (acc, col) => {
-                acc[col.column_name] = col;
-                return acc;
-            },
-            {} as Record<string, ResolvedColumn>
-        );
-
-        this.height_ = this.options_.height;
-
         // state
         this.currentRow_ = -1;
 
-        // height and width
+        // class decoration
         this.element.classList.add('inspect-viz-table');
+
+        // height and width
+        this.height_ = this.options_.height;
         if (typeof this.options_.width === 'number') {
             this.element.style.width = `${this.options_.width}px`;
         }
@@ -307,17 +298,27 @@ export class Table extends Input {
     // mosaic calls this and initialization to let us fetch the schema
     // and do related setup
     async prepare() {
-        // query for column schema information
+        // query available columns from the database
         const table = this.options_.from;
-        const fields = this.getDatabaseColumns().map(column => ({
-            column: column.column_id!,
-            table,
-        }));
+        const schema = await queryFieldInfo(this.coordinator!, [{ column: '*', table }]);
+
+        // Resolve the columns using either the user provided columns or all
+        // the fields in the schema
+        const userColumns = this.options_.columns
+            ? this.options_.columns
+            : schema.map(f => f.column);
+        this.columns_ = resolveColumns(userColumns);
+        this.columnsByName_ = this.columns_.reduce(
+            (acc, col) => {
+                acc[col.column_name] = col;
+                return acc;
+            },
+            {} as Record<string, ResolvedColumn>
+        );
 
         // For each non-literal column, we need to resolve the type
         // Do this by using the schema query to get column types and use the
         // column type as the type (even for aggregate columns  )
-        const schema = await queryFieldInfo(this.coordinator!, fields);
         this.columns_
             .filter(c => c.type !== 'literal')
             .forEach(column => {
@@ -396,6 +397,10 @@ export class Table extends Input {
 
         // apply the filter model
         Object.keys(this.filterModel_).forEach(columnName => {
+            if (!this.columnsByName_) {
+                throw new Error('Columns not resolved yet. Please call prepare() first.');
+            }
+
             const col = this.columnsByName_[columnName];
             if (col.type !== 'literal') {
                 const useHaving = col?.type === 'aggregate';
@@ -414,6 +419,10 @@ export class Table extends Input {
         // Apply sorting
         if (this.sortModel_.length > 0) {
             this.sortModel_.forEach(sort => {
+                if (!this.columnsByName_) {
+                    throw new Error('Columns not resolved yet. Please call prepare() first.');
+                }
+
                 const col = this.columnsByName_[sort.colId];
                 if (col.type !== 'literal') {
                     query = query.orderby(sort.sort === 'asc' ? asc(sort.colId) : desc(sort.colId));
@@ -437,7 +446,13 @@ export class Table extends Input {
     }
 
     private updateGrid = throttle(async () => {
-        if (!this.grid_) return;
+        if (!this.grid_) {
+            return;
+        }
+
+        if (!this.columns_) {
+            throw new Error('Columns not resolved yet. Please call prepare() first.');
+        }
 
         // convert column-based data to row-based data for ag-grid
         const rowData: any[] = [];
@@ -568,14 +583,26 @@ export class Table extends Input {
     }
 
     private getLiteralColumns(): ResolvedLiteralColumn[] {
+        if (!this.columns_) {
+            throw new Error('Columns not resolved yet. Please call prepare() first.');
+        }
+
         return this.columns_.filter(c => c.type === 'literal');
     }
 
     private getDatabaseColumns(): Array<ResolvedSimpleColumn | ResolvedAggregateColumn> {
+        if (!this.columns_) {
+            throw new Error('Columns not resolved yet. Please call prepare() first.');
+        }
+
         return this.columns_.filter(c => c.type === 'column' || c.type === 'aggregate');
     }
 
     private createColumnDef(column_name: string, type: JSType): ColDef {
+        if (!this.columnsByName_) {
+            throw new Error('Columns not resolved yet. Please call prepare() first.');
+        }
+
         const column = this.columnsByName_[column_name] || {};
 
         // Align, numbers right aligned by default
@@ -664,6 +691,10 @@ export class Table extends Input {
         const columns = this.grid_.getColumns();
         if (columns) {
             columns.forEach(async column => {
+                if (!this.columnsByName_) {
+                    throw new Error('Columns not resolved yet. Please call prepare() first.');
+                }
+
                 const colId = column.getColId();
                 const filterInstance = await this.grid_!.getColumnFilterInstance(colId);
                 const col = this.columnsByName_[colId];
