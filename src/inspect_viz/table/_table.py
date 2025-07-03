@@ -1,4 +1,4 @@
-from typing import Literal, Sequence
+from typing import Literal, Sequence, cast
 
 from pydantic import BaseModel, JsonValue
 
@@ -323,8 +323,8 @@ def validate_column(data: Data | None, column: str | Column) -> str | Column:
     if isinstance(column, Column):
         if isinstance(column.column, str):
             column_name = column.column
-        elif isinstance(column.column, Transform):
-            column_name = next(iter(column.column.values()))
+        elif isinstance(column.column, dict):
+            column_name = cast(str, next(iter(column.column.values())))
     else:
         column_name = column
 
