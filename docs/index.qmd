@@ -66,7 +66,7 @@ While pre-built views are useful, you also may want to create your own custom pl
 
 ### Dot Plot
 
-Here is an example of a simple dot plot using the [Palmer Penquins](https://huggingface.co/datasets/SIH/palmer-penguins) dataset:
+Here is an example of a simple dot plot using the [Palmer Penguins](https://huggingface.co/datasets/SIH/palmer-penguins) dataset:
 
 
 ```{python}
