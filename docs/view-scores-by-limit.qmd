@@ -1,0 +1,39 @@
+---
+title: "Scores by token limit"
+reference: "inspect_viz.view.beta"
+filters:
+   - at: pre-ast
+     type: json
+     path: reference/filter/filter.py
+   - at: pre-ast
+     path: reference/filter/post.lua
+datafile: "cybench_token_usage.parquet"
+---
+
+## Overview
+
+The `scores_by_task()` function renders a bar plot for comparing eval scores.
+
+```{python}
+from inspect_viz import Data
+from inspect_viz.view.beta import scores_by_limit
+
+evals = Data.from_file("cybench_token_usage.parquet")
+scores_by_limit(
+  evals,
+  x="token_limit",
+  y="success_rate",
+  fx="difficulty",
+  color_by="model"
+  )
+```
+
+
+## Data Preparation TODO
+
+
+## Function Reference {reference="scores_by_limit"}
+
+## Implementation
+
+The [Scores by Task](examples/inspect/scores-by-task/index.qmd) example demonstrates how this view was implemented using lower level plotting components.
