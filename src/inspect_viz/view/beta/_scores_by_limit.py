@@ -1,15 +1,12 @@
 from typing import Unpack
 
-import numpy as np
-import pandas as pd
-
 from inspect_viz import Component, Data, Selection
 from inspect_viz._core.param import Param
 from inspect_viz._util.channels import resolve_log_viewer_channel
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz._util.stats import z_score
-from inspect_viz.interactor import highlight, nearest_x, nearest_y, region, toggle
-from inspect_viz.mark import area_y, bar_y, dot, line, line_x, rule_x
+from inspect_viz.interactor import highlight, nearest_x
+from inspect_viz.mark import area_y, line
 from inspect_viz.plot import legend, plot
 from inspect_viz.plot._attributes import PlotAttributes
 from inspect_viz.transform import sql
@@ -47,7 +44,6 @@ def scores_by_limit(
        height: The outer height of the plot in pixels, including margins. The default is width / 1.618 (the [golden ratio](https://en.wikipedia.org/wiki/Golden_ratio))
        **attributes: Additional `PlotAttributes`. By default, the `y_inset_top` and `margin_bottom` are set to 10 pixels and `x_ticks` is set to `[]`.
     """
-
     # establish channels
     channels: dict[str, str] = {}
     if fx == "difficulty":
@@ -82,7 +78,7 @@ def scores_by_limit(
                 fill_opacity=0.3,
                 fx=fx,
                 channels=channels,
-            )
+            )  # type: ignore[call-arg]
         )
 
     components.extend(
