@@ -7,12 +7,12 @@ filters:
      path: reference/filter/filter.py
    - at: pre-ast
      path: reference/filter/post.lua
-datafile: "cybench_token_usage.parquet"
+datafile: "cybench_token_limit.parquet"
 ---
 
 ## Overview
 
-The `scores_by_task()` function renders a bar plot for comparing eval scores.
+The `scores_by_limit()` function renders a line plot for evaluating model performance at different levels of budget, whether that be number of tokens, messages or cost.
 
 ```{python}
 from inspect_viz import Data
@@ -28,12 +28,8 @@ scores_by_limit(
   )
 ```
 
-
-## Data Preparation TODO
-
-
 ## Function Reference {reference="scores_by_limit"}
 
 ## Implementation
 
-The [Scores by Task](examples/inspect/scores-by-task/index.qmd) example demonstrates how this view was implemented using lower level plotting components.
+The [Scores by limit](examples/inspect/scores-by-limit/index.qmd) example demonstrates how this view was implemented using lower level plotting components.

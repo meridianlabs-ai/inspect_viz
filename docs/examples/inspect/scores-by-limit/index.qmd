@@ -1,0 +1,259 @@
+---
+title: "Tool Calls"
+subtitle: "Dataset: [cybench_token_usage.parquet](cybench_token_usage.parquet)"
+---
+
+
+This example illustrates the code behind the [`scores_by_limit()`](../../../view-scores-by-limit.qmd) pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.
+
+The plot shows how model **success rate** changes as the **compute budget** increases (e.g., token limit, messages, cost, or time). It helps answer “*Will performance keep improving if I spend more?*”. The shaded band displays the confidence interval derived from the standard error.
+
+```{python}
+#| filename: Code
+
+from inspect_viz import Data, Selection
+from inspect_viz.mark import area_y, line
+from inspect_viz.plot import plot, legend
+from inspect_viz.transform import sql
+from inspect_viz.interactor import highlight, nearest_x
+from inspect_viz._util.stats import z_score
+
+# read data (see 'Data Preparation' below)
+data = Data.from_file("cybench_token_usage.parquet")  # <1>
+
+# choose fields
+x = "token_limit"        # <2>
+y = "success_rate"
+y_stderr = "standard_error"
+fx = "difficulty"        # <3>
+color_by = "model"    # <4>
+ci = 0.95                # <5>
+
+# consistent channels for tooltips / log viewer
+channels = {             # <6>
+    "Token Limit": x,
+    "Success Rate": y,
+    "Model": color_by,
+    "Difficulty": fx
+}
+
+# convert CI to a z-multiplier
+z_alpha = z_score(ci)    # <5>
+
+# enable interactive highlighting of a chosen model
+model = Selection.single()  # <7>
+
+components = [
+    # success-rate lines by model (optionally faceted by difficulty)
+    line(                                # <8>
+        data, x=x, y=y, stroke=color_by, fx=fx, tip=True, channels=channels
+    ),
+
+    # confidence band from mean ± z * stderr
+    area_y(                              # <9>
+        data,
+        x=x,
+        y=y,
+        y1=sql(f"{y} - ({z_alpha} * {y_stderr})"),
+        y2=sql(f"{y} + ({z_alpha} * {y_stderr})"),
+        color=color_by,
+        fill=color_by,
+        fill_opacity=0.3,
+        fx=fx,
+        channels=channels,
+    ),
+
+    # interactions: snap by nearest x and highlight selection
+    nearest_x(target=model, channels=["color"]),  # <10>
+    highlight(by=model, opacity=0.2, fill_opacity=0.1),  # <10>
+]
+
+plot(
+    components,
+    x_label=x,                 # <11>
+    y_label="Success rate",    # <11>
+    fx_label=None,
+    legend=legend("color", location="bottom"),
+    x_scale="log",             # <12>
+    # layout tweaks
+    y_inset_top=10,            # <13>
+    margin_bottom=10,          # <13>
+    # dimensions
+    width=700,                 # <14> (height defaults to width / 1.618)
+)
+```
+
+1. **Load data** from a Parquet file into an `inspect_viz.Data` table.
+2. **Map axes**: `token_limit` on the x‑axis (budget) and `success_rate` on the y‑axis.
+3. **Facet** by `difficulty` to compare curves across task difficulty levels.
+4. **Color** series by `model_id` so each model has its own line and legend entry.
+5. **Confidence interval**: choose a value like `0.80`, `0.90`, or `0.95`; it’s converted to a z‑score for the shaded band.
+6. **Channels** provide readable names for tooltips and the log viewer.
+7. **Selection** enables interactive hovering/clicking to emphasize a single model.
+8. **`line()` mark** draws success‑rate curves with tooltips.
+9. **`area_y()`** adds a CI band using `mean ± z * stderr` if `standard_error` is present.
+10. **Interactions**: `nearest_x()` snaps the selection to the closest x, and `highlight()` dims the rest.
+11. **Labels**: x uses the field name; y is set explicitly (pass `None` to hide).
+12. **Log scale** for the budget axis to better separate small and large limits.
+13. **Layout**: small top inset avoids clipping; extra bottom margin leaves room for the legend.
+14. **Size**: default width is 700px; height defaults to the golden ratio (`width / 1.618`).
+
+---
+
+## Data preparation
+
+**Summary:** The dataset `cybench_token_usage.parquet` was created from raw evaluation logs by (1) extracting per‑sample metadata (including the first solve time), (2) computing a token‑usage, (3) binarising scores, (4) deriving an easy/hard difficulty split, and (5) aggregating success rate as a function of a token‑limit threshold.
+
+```{python}
+#| filename: Data Preparation
+#| eval: false
+import json
+import pandas as pd
+
+from inspect_ai.analysis.beta import (
+    EvalInfo,
+    EvalModel,
+    EvalTask,
+    SampleColumn,
+    SampleSummary,
+    samples_df,
+)
+from inspect_ai.log import EvalSample
+from inspect_ai.scorer import value_to_float
+from inspect_viz import Data
+from pydantic import JsonValue
+
+# extract the first solve time so we can use it as a facet
+def challenge_metadata(sample: EvalSample) -> JsonValue:
+    """Extract the challenge metadata"""
+    return sample.metadata.get("challenge_metadata", {}).get("first_solve_time", 0)
+
+FirstSolveTime = SampleColumn("difficulty", path=challenge_metadata, full=True)
+
+# Load the samples, note that we are not parallelising for speed. We need to
+# access the metadata field which is not available in the sample summary, so the
+# full sample is required (note the `full=True` argument in the SampleColumn).
+df = samples_df(
+    "path-to-logs",
+    columns=SampleSummary + EvalInfo + EvalTask + EvalModel + [FirstSolveTime],
+    parallel=True,
+    quiet=False,
+)
+
+df.dropna(subset=["model", "model_usage", "score_includes", "sample_id"], inplace=True)
+
+# Extract the total tokens used for each rollout. Here we are equally weighting
+# input, output and cache tokens.
+df["total_tokens"] = df.apply(
+    lambda x: json.loads(x["model_usage"]).get(x["model"], {}).get("total_tokens", {})
+    if pd.notnull(x["model_usage"]) else None,
+    axis=1,
+)
+
+# Find centre and split into easy and hard tasks.
+median_first_solve = df["difficulty"].median()
+df["difficulty"] = df["difficulty"].apply(
+    lambda x: "easy" if x < median_first_solve else "hard" if pd.notnull(x) else None
+)
+
+# C/I -> 1/0
+to_float = value_to_float()
+
+df["score_includes"] = df["score_includes"].apply(
+    lambda x: to_float(x) if pd.notnull(x) else None
+)
+
+# Now calculate the success rate as a function of the token limit
+def prepare_termination_data(
+    df,
+    token_usage_col="token_usage",
+    success_col="success",
+    model_id_col="model_id",
+    task_id_col="task_id",
+    difficulty_col="difficulty",
+):
+    """Progressively increase the token limit and see if the model has successfully completed the task within that limit.
+
+    If the model spent more tokens than the limit, it is considered a failure.
+    If the model spent fewer tokens than the limit but did not succeed then the task is considered to have been terminated by some other condition.
+    If both success and the used tokens is lower than the limit then the task is considered successful.
+    """
+    limits = np.logspace(
+        np.log10(df[token_usage_col].min()), np.log10(df[token_usage_col].max()), 100
+    )
+
+    data_dict: dict[str, list[str | float | int]] = {
+        "token_limit": [],
+        "model": [],
+        "success_rate": [],
+        "standard_error": [],
+        "other_termination_rate": [],
+        "difficulty": [],
+        "count": [],
+    }
+
+    group_by_cols = (
+        [model_id_col, task_id_col, difficulty_col]
+        if difficulty_col
+        else [model_id_col, task_id_col]
+    )
+
+    for current_limit in limits:
+        df_limit = df.copy()
+        df_limit["other_termination_condition"] = (
+            df_limit[token_usage_col] < current_limit
+        ) & (df_limit[success_col] == 0)
+        df_limit.loc[df_limit[token_usage_col] > current_limit, success_col] = 0
+
+        by_task = df_limit.groupby(
+            [model_id_col, task_id_col, difficulty_col]
+            if difficulty_col
+            else [model_id_col, task_id_col]
+        ).agg(
+            success_rate=(success_col, "mean"),
+            other_termination_rate=("other_termination_condition", "mean"),
+        )
+
+        by_model = (
+            by_task.groupby(
+                [model_id_col, difficulty_col] if difficulty_col else [model_id_col]
+            )
+            .agg(
+                success_rate=("success_rate", "mean"),
+                standard_error=("success_rate", "sem"),
+                other_termination_rate=("other_termination_rate", "mean"),
+                count=("success_rate", "count"),
+            )
+            .reset_index()
+        )
+
+        for _, row in by_model.iterrows():
+            data_dict["token_limit"].append(current_limit)
+            data_dict["model"].append(row[model_id_col])
+            data_dict["success_rate"].append(row["success_rate"])
+            data_dict["standard_error"].append(row["standard_error"])
+            data_dict["other_termination_rate"].append(row["other_termination_rate"])
+            data_dict["difficulty"].append(
+                row[difficulty_col] if difficulty_col else None
+            )
+            data_dict["count"].append(row["count"])
+
+    return pd.DataFrame(data_dict)
+
+
+df = prepare_termination_data(
+    df,
+    token_usage_col="total_tokens",
+    success_col="score_includes",
+    model_id_col="model",
+    task_id_col="sample_id",
+    difficulty_col="difficulty",
+)
+
+# to parquet for use by the plotting code above
+df.to_parquet("cybench_token_usage.parquet", index=False)
+```
+
+
+
+---

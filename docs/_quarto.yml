@@ -101,6 +101,8 @@ website:
               - href: examples/inspect/scores-timeline/index.qmd
               - href: examples/inspect/scores-heatmap/index.qmd
               - href: examples/inspect/tool-calls/index.qmd
+              - href: examples/inspect/scores-by-limit/index.qmd
+                text: "Scores by Limit"
           - section: General
             contents:
               - href: examples/general/penguins/index.qmd
