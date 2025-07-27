@@ -88,6 +88,19 @@ def scores_by_limit(
         ]
     )
 
+    if other_termination_rate:
+        components.append(
+            line(
+                data,
+                x=x,
+                y=other_termination_rate,
+                stroke=color_by,
+                stroke_dasharray="5,5",
+                fx=fx,
+                channels=channels,
+            )
+        )
+
     # resolve defaults
     defaults: PlotAttributes = {
         "x_scale": "log",

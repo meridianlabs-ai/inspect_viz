@@ -12,7 +12,7 @@ datafile: "cybench_token_limit.parquet"
 
 ## Overview
 
-The `scores_by_limit()` function renders a line plot for evaluating how a model's **success rate** changes as the **compute budget** increases (e.g., token limit, messages, cost, or time). It helps answer “*Will performance keep improving if I spend more?*”. The shaded band displays the confidence interval derived from the standard error.
+The `scores_by_limit()` function renders a line plot for evaluating how a model's **success rate** changes as the **compute budget** increases (e.g., token limit, messages, cost, or time). It helps answer “*Will performance keep improving if I spend more?*”. The shaded band displays the confidence interval derived from the standard error. The dashed line indicates the proportion of tasks which terminated for an unintended reason.
 
 ```{python}
 from inspect_viz import Data
