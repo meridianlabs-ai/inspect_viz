@@ -1,5 +1,5 @@
 ---
-title: "Scores by token limit"
+title: "Scores by limit"
 reference: "inspect_viz.view.beta"
 filters:
    - at: pre-ast
@@ -12,7 +12,7 @@ datafile: "cybench_token_limit.parquet"
 
 ## Overview
 
-The `scores_by_limit()` function renders a line plot for evaluating model performance at different levels of budget, whether that be number of tokens, messages or cost.
+The `scores_by_limit()` function renders a line plot for evaluating how a model's **success rate** changes as the **compute budget** increases (e.g., token limit, messages, cost, or time). It helps answer “*Will performance keep improving if I spend more?*”. The shaded band displays the confidence interval derived from the standard error.
 
 ```{python}
 from inspect_viz import Data
