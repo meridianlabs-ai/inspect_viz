@@ -1,7 +1,7 @@
 ---
 title: "Tool Calls"
 reference: "inspect_viz.view.beta"
-filters: 
+filters:
    - at: pre-ast
      type: json
      path: reference/filter/filter.py
@@ -69,4 +69,3 @@ Note that the trimming of columns is particularly important because Inspect Viz 
 ## Implementation
 
 The [Tool Calls](examples/inspect/tool-calls/index.qmd) example demonstrates how this view was implemented using lower level plotting components.
-
