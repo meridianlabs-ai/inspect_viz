@@ -3,6 +3,7 @@ from typing_extensions import Literal
 
 from .._core.component import Component
 from .._core.selection import Selection
+from ..mark._types import FrameAnchor
 
 
 class Legend(Component):
@@ -50,6 +51,12 @@ def legend(
     margin_right: float | None = None,
     margin_top: float | None = None,
     for_plot: str | None = None,
+    frame_anchor: FrameAnchor | None = None,
+    inset: float | None = None,
+    inset_x: float | None = None,
+    inset_y: float | None = None,
+    border: str | bool = True,
+    background: str | bool = True,
 ) -> Legend:
     """Create a legend.
 
@@ -75,6 +82,10 @@ def legend(
       for_plot: The name of the plot this legend applies to. A plot must include a
         `name` attribute to be referenced. Note that this is not use when
         passing a legend to the `plot()` function.
+      frame_anchor: Where to position the relative the plot frame.
+      inset: The inset of the legend from the plot frame, in pixels. If no inset is specified, the legend will be positioned outside the plot frame.
+      inset_x: The horizontal inset of the legend from the plot frame, in pixels.
+      inset_y: The vertical inset of the legend from the plot frame, in pixels.
     """
     config: dict[str, JsonValue] = {}
     if label is not None:
@@ -99,5 +110,13 @@ def legend(
         config["tickSize"] = tick_size
     if for_plot is not None:
         config["for"] = for_plot
+
+    # Forward options
+    config["_frame_anchor"] = frame_anchor
+    config["_inset"] = inset
+    config["_inset_x"] = inset_x
+    config["_inset_y"] = inset_y
+    config["_border"] = border
+    config["_background"] = background
 
     return Legend(legend, location, columns, config=config)

@@ -18,6 +18,7 @@ import { TableOptions } from '../inputs/table';
 import { replaceTooltipImpl as installPlotTooltips } from '../plot/tooltips';
 import { installTextCollisionHandler } from '../plot/text-collision';
 import { applyTickFormatting } from '../plot/ticks';
+import { installLegendHandler } from '../plot/legend';
 
 interface MosaicProps {
     tables: Record<string, string>;
@@ -72,6 +73,9 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
             // For plots, install the text collision handler which
             // will adjust text labels to avoid collisions
             installTextCollisionHandler(specEl);
+
+            // install legend handlers
+            installLegendHandler(specEl);
 
             await displayUnhandledErrors(ctx, el);
         } catch (e: unknown) {

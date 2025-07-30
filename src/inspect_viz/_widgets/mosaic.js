@@ -1778,6 +1778,10 @@ var readMarks = (plotEl) => {
   const marks = value ? value.marks || [] : [];
   return marks;
 };
+var readOptions = (el) => {
+  const value = el.value;
+  return value ? value.options || {} : {};
+};
 
 // js/plot/tooltips.ts
 var HIDDEN_USER_CHANNEL = "_user_channels";
@@ -2339,6 +2343,89 @@ var isD3TimeFormat = (format2) => {
   return /%[aAbBcdefHIjLmMpqQsSuUVwWxXyYzZ%]/.test(format2);
 };
 
+// js/plot/legend.ts
+var installLegendHandler = (specEl) => {
+  const legends = specEl.querySelectorAll("div.legend");
+  for (const legend of legends) {
+    const legendEl = legend;
+    const legendOptions = readOptions(legendEl);
+    const anchor = legendOptions["_frame_anchor"];
+    const inset = resolveInset(
+      legendOptions["_inset"],
+      legendOptions["_inset_x"],
+      legendOptions["_inset_y"]
+    );
+    const background = legendOptions["_background"];
+    const border = legendOptions["_border"];
+    resolveFrameAnchorStyles(
+      { anchor, inset, background, border },
+      legendEl,
+      legendEl.parentElement
+    );
+  }
+};
+var resolveInset = (inset, insetX, insetY) => {
+  console.log({ inset, insetX, insetY });
+  if (inset == null && insetX == null && insetY == null) {
+    return void 0;
+  }
+  if (inset !== null && insetX === null && insetY === null) {
+    return [Math.abs(inset), Math.abs(inset)];
+  }
+  return [Math.abs(insetX || 0), Math.abs(insetY || 0)];
+};
+var resolveFrameAnchorStyles = (options, legendEl, parentEl) => {
+  if (options.anchor) {
+    const anchor = options.anchor;
+    parentEl.style.position = "relative";
+    if (options.background !== false) {
+      legendEl.style.background = options.background === true ? "white" : options.background || "white";
+    }
+    if (options.border !== false) {
+      const borderColor = options.border === true ? "#DDDDDD" : options.border || "#DDDDDD";
+      legendEl.style.border = `1px solid ${borderColor}`;
+    }
+    legendEl.style.padding = "0.3em";
+    legendEl.style.position = "absolute";
+    if (anchor === "left" || anchor === "top-left" || anchor === "bottom-left") {
+      legendEl.style.left = "0";
+      if (anchor === "left" && options.inset === void 0) {
+        parentEl.style.paddingLeft = "100px";
+      }
+    }
+    if (anchor === "right" || anchor === "top-right" || anchor === "bottom-right") {
+      legendEl.style.right = "0";
+      if (anchor === "right" && options.inset === void 0) {
+        parentEl.style.paddingRight = "100px";
+      }
+    }
+    if (anchor === "top" || anchor === "top-left" || anchor === "top-right") {
+      legendEl.style.top = "0";
+      if (anchor === "top" && options.inset === void 0) {
+        legendEl.style.left = "50%";
+        legendEl.style.transform = "translateX(-50%)";
+      }
+      if (options.inset === void 0) {
+        parentEl.style.paddingTop = "100px";
+      }
+    }
+    if (anchor === "bottom" || anchor === "bottom-left" || anchor === "bottom-right") {
+      legendEl.style.bottom = "0";
+      if (anchor === "bottom" && options.inset === void 0) {
+        legendEl.style.left = "50%";
+        legendEl.style.transform = "translateX(-50%)";
+      }
+      if (options.inset === void 0) {
+        parentEl.style.paddingBottom = "100px";
+      }
+    }
+  }
+  if (options.inset) {
+    const inset = options.inset;
+    legendEl.style.margin = `${inset[1]}px ${inset[0]}px`;
+  }
+};
+
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
   const spec = JSON.parse(model.get("spec"));
@@ -2371,6 +2458,7 @@ async function render({ model, el }) {
       el.appendChild(specEl);
       replaceTooltipImpl(specEl);
       installTextCollisionHandler(specEl);
+      installLegendHandler(specEl);
       await displayUnhandledErrors(ctx, el);
     } catch (e) {
       console.error(e);

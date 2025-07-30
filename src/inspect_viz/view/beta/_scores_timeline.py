@@ -205,7 +205,11 @@ def scores_timeline(
 
     # resolve legend
     if num_organizations > 1:
-        plot_legend = legend("color", target=data.selection)
+        plot_legend = legend(
+            "color",
+            target=data.selection,
+            frame_anchor="bottom-left",
+        )
     else:
         plot_legend = None
 

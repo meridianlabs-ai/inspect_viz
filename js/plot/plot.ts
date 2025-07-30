@@ -9,3 +9,20 @@ export const readMarks = (plotEl: HTMLElement): MarkData[] => {
     const marks = value ? value.marks || [] : [];
     return marks;
 };
+
+export const readOptions = (el: HTMLElement): Record<string, any> => {
+    // Read the value from the element
+    const value = (el as any).value;
+    return value ? value.options || {} : {};
+};
+
+export const readPlotEl = (el: HTMLElement): HTMLElement | undefined => {
+    // Read the value from the element
+    const value = (el as any).value;
+    const plot = value?.plot;
+    if (plot) {
+        console.log({ parent: plot.element });
+        return plot.element as HTMLElement;
+    }
+    return undefined;
+};
