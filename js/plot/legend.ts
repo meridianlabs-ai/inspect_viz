@@ -1,4 +1,13 @@
-import { readOptions } from './plot';
+import { readOptions, readPlotEl } from './plot';
+
+interface LegendOptions {
+    inset: number | null;
+    insetX: number | null;
+    insetY: number | null;
+    frameAnchor: FrameAnchor | null;
+    background: string | boolean | null;
+    border: string | boolean | null;
+}
 
 type FrameAnchor =
     | 'middle'
@@ -12,116 +21,243 @@ type FrameAnchor =
     | 'left';
 
 // TODO: If the the legend is interactive, update the mouse cursor to pointed on hover
+// TODO: Position multiple legends appropriately
+// TODO: Scale the legend as the plot scales
 
 export const installLegendHandler = (specEl: HTMLElement) => {
     const legends = specEl.querySelectorAll('div.legend');
-    for (const legend of legends) {
+    for (const legend of Array.from(legends)) {
+        // Find the element
         const legendEl = legend as HTMLElement;
-        const legendOptions = readOptions(legendEl);
 
-        const anchor = legendOptions['_frame_anchor'] as FrameAnchor | undefined;
-        const inset = resolveInset(
-            legendOptions['_inset'],
-            legendOptions['_inset_x'],
-            legendOptions['_inset_y']
-        );
-        const background = legendOptions['_background'] as string | boolean | undefined;
-        const border = legendOptions['_border'] as string | boolean | undefined;
+        // read the legend options
+        const options = readLegendOptions(legendEl);
 
         // Resolve the frame anchor into element styles on the
         // element and its parent
-        resolveFrameAnchorStyles(
-            { anchor, inset, background, border },
-            legendEl,
-            legendEl.parentElement!
-        );
+        applyLegendStyles(options, legendEl, legendEl.parentElement!);
     }
 };
 
-const resolveInset = (
-    inset: number | null,
-    insetX: number | null,
-    insetY: number | null
-): [number, number] | undefined => {
-    console.log({ inset, insetX, insetY });
-    if (inset == null && insetX == null && insetY == null) {
-        return undefined;
-    }
-
-    if (inset !== null && insetX === null && insetY === null) {
-        return [Math.abs(inset), Math.abs(inset)];
-    }
-
-    return [Math.abs(insetX || 0), Math.abs(insetY || 0)];
-};
-
-const resolveFrameAnchorStyles = (
-    options: {
-        anchor?: FrameAnchor;
-        inset?: [number, number];
-        background?: string | boolean;
-        border?: string | boolean;
-    },
+const applyLegendStyles = (
+    options: LegendOptions,
     legendEl: HTMLElement,
     parentEl: HTMLElement
 ): void => {
-    if (options.anchor) {
-        const anchor = options.anchor;
-        parentEl.style.position = 'relative';
+    if (!options.frameAnchor) return;
 
-        // Resolve the background color
-        if (options.background !== false) {
-            legendEl.style.background =
-                options.background === true ? 'white' : options.background || 'white';
-        }
+    // Global configuration
+    parentEl.style.position = 'relative';
+    legendEl.style.padding = '0.3em';
+    legendEl.style.position = 'absolute';
 
-        // Resolve the border style
-        if (options.border !== false) {
-            const borderColor = options.border === true ? '#DDDDDD' : options.border || '#DDDDDD';
-            legendEl.style.border = `1px solid ${borderColor}`;
-        }
+    // Background and border
+    applyBackground(legendEl, options.background);
+    applyBorder(legendEl, options.border);
 
-        legendEl.style.padding = '0.3em';
-        legendEl.style.position = 'absolute';
+    // Scale the legand as the plot changes size
+    const plotEl = readPlotEl(legendEl);
+    responsiveScaleLegend(options, legendEl, plotEl);
 
-        if (anchor === 'left' || anchor === 'top-left' || anchor === 'bottom-left') {
-            legendEl.style.left = '0';
-            if (anchor === 'left' && options.inset === undefined) {
-                parentEl.style.paddingLeft = '100px';
-            }
-        }
-        if (anchor === 'right' || anchor === 'top-right' || anchor === 'bottom-right') {
-            legendEl.style.right = '0';
-            if (anchor === 'right' && options.inset === undefined) {
-                parentEl.style.paddingRight = '100px';
-            }
-        }
+    // Compute the size of the legend and apply padding
+    applyParentPadding(options, legendEl, parentEl);
+};
 
-        if (anchor === 'top' || anchor === 'top-left' || anchor === 'top-right') {
-            legendEl.style.top = '0';
-            if (anchor === 'top' && options.inset === undefined) {
-                legendEl.style.left = '50%';
-                legendEl.style.transform = 'translateX(-50%)';
-            }
-            if (options.inset === undefined) {
-                parentEl.style.paddingTop = '100px';
-            }
-        }
-        if (anchor === 'bottom' || anchor === 'bottom-left' || anchor === 'bottom-right') {
-            legendEl.style.bottom = '0';
-            if (anchor === 'bottom' && options.inset === undefined) {
-                legendEl.style.left = '50%';
-                legendEl.style.transform = 'translateX(-50%)';
-            }
+const applyBackground = (legendEl: HTMLElement, background: string | boolean | null): void => {
+    if (background !== false) {
+        legendEl.style.background = background === true ? 'white' : background || 'white';
+    }
+};
 
-            if (options.inset === undefined) {
-                parentEl.style.paddingBottom = '100px';
+const applyBorder = (legendEl: HTMLElement, border: string | boolean | null): void => {
+    if (border !== false) {
+        const borderColor = border === true ? '#DDDDDD' : border || '#DDDDDD';
+        legendEl.style.border = `1px solid ${borderColor}`;
+    }
+};
+
+const applyParentPadding = (
+    options: LegendOptions,
+    legendEl: HTMLElement,
+    parentEl: HTMLElement
+): void => {
+    if (!isInset(options)) {
+        // Watch for size changes
+        const observer = new MutationObserver(() => {
+            if (options.frameAnchor) {
+                const newSize = legendEl.getBoundingClientRect();
+                const parentConfig = kParentConfig[options.frameAnchor];
+                const useHeight =
+                    parentConfig.paddingType === 'paddingTop' ||
+                    parentConfig.paddingType === 'paddingBottom';
+
+                (parentEl.style as any)[parentConfig.paddingType] = useHeight
+                    ? newSize.height + 'px'
+                    : newSize.width + 'px';
             }
-        }
+        });
+
+        observer.observe(legendEl, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style', 'class'],
+        });
+    }
+};
+
+const responsiveScaleLegend = (
+    options: LegendOptions,
+    legendEl: HTMLElement,
+    plotEl?: HTMLElement
+): void => {
+    // Apply the anchor styles
+    const anchor = options.frameAnchor || 'right';
+    const config = kAnchorConfig[anchor];
+    Object.assign(legendEl.style, config.position);
+    if (config.centerTransform) {
+        legendEl.style.transform = 'translateX(-50%)';
     }
 
-    if (options.inset) {
-        const inset = options.inset;
-        legendEl.style.margin = `${inset[1]}px ${inset[0]}px`;
+    // Monitor the plot and responsive scale the size and position
+    // of the legend
+    if (plotEl) {
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (!plotEl.children || plotEl.childElementCount === 0) {
+                    return;
+                }
+
+                // The observed parent element
+                const parentEl = entry.target as HTMLElement;
+
+                // Find the x and y grid elements (we'll position the legend relative to these)
+                const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+                const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+                if (!yGridEl || !xGridEl) {
+                    console.warn('Missing y-grid or x-grid elements in the plot.');
+                    return;
+                }
+
+                // This assumes that the first child of the plot element is the SVG element
+                // itself. Verify this:
+                const svgEl = plotEl.children[0] as HTMLElement;
+                if (svgEl.tagName !== 'svg') {
+                    console.warn('The first child of the plot element is not an SVG element.');
+                    return;
+                }
+
+                // Read the width
+                const baseWidth = svgEl.getAttribute('width');
+                if (!baseWidth) {
+                    console.warn('Plot element does not have a width attribute.');
+                    return;
+                }
+
+                // Compute the scale factor based the based with vs the actual width
+                const parentRect = parentEl.getBoundingClientRect();
+                const actualWidth = parentRect.width;
+                const scaleFactor = actualWidth / parseFloat(baseWidth);
+
+                // Set the transform origin to maintian a stable position
+                if (config.transformOrigin) {
+                    legendEl.style.transformOrigin = config.transformOrigin;
+                }
+                legendEl.style.transform = `scale(${scaleFactor})`;
+
+                const inset = resolveInset(options);
+                if (inset) {
+                    // Compute the inset based upon the y-grid and x-grid positions
+                    const yGridRect = yGridEl.getBoundingClientRect();
+                    const xGridRect = xGridEl.getBoundingClientRect();
+                    const yShift = yGridRect.top - parentRect.top;
+                    const xShift = xGridRect.left - parentRect.left;
+
+                    // substract the distance from the parent plot to the y-grid, if possible
+                    const yInset = inset[1] * scaleFactor + yShift;
+                    const xInset = inset[0] * scaleFactor + xShift;
+                    if (config.centerTransform) {
+                        legendEl.style.margin = `${yInset}px 0px`;
+                    } else {
+                        legendEl.style.margin = `${yInset}px ${xInset}px`;
+                    }
+                }
+            }
+        });
+
+        resizeObserver.observe(plotEl.parentElement!);
     }
+};
+
+const isInset = (options: LegendOptions): boolean => {
+    return options.inset !== null || options.insetX !== null || options.insetY !== null;
+};
+
+const resolveInset = (options: LegendOptions): [number, number] | undefined => {
+    if (options.inset == null && options.insetX == null && options.insetY == null) {
+        return undefined;
+    }
+
+    if (options.inset !== null && options.insetX === null && options.insetY === null) {
+        return [Math.abs(options.inset), Math.abs(options.inset)];
+    }
+
+    return [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
+};
+
+const readLegendOptions = (legendEl: HTMLElement): LegendOptions => {
+    const options = readOptions(legendEl);
+    return {
+        inset: options['_inset'] as number | null,
+        insetX: options['_inset_x'] as number | null,
+        insetY: options['_inset_y'] as number | null,
+        frameAnchor: options['_frame_anchor'] as FrameAnchor | null,
+        background: options['_background'] as string | boolean | null,
+        border: options['_border'] as string | boolean | null,
+    };
+};
+
+const kParentConfig: Record<FrameAnchor, { paddingType: string }> = {
+    'top-left': { paddingType: 'paddingLeft' },
+    top: { paddingType: 'paddingTop' },
+    'top-right': { paddingType: 'paddingRight' },
+    right: { paddingType: 'paddingRight' },
+    'bottom-right': { paddingType: 'paddingRight' },
+    bottom: { paddingType: 'paddingBottom' },
+    'bottom-left': { paddingType: 'paddingLeft' },
+    left: { paddingType: 'paddingLeft' },
+    middle: { paddingType: '' },
+};
+
+const kAnchorConfig: Record<
+    FrameAnchor,
+    {
+        position: { [key: string]: string };
+        parentPadding?: string;
+        centerTransform?: boolean;
+        transformOrigin?: string;
+    }
+> = {
+    'top-left': { position: { top: '0', left: '0' }, transformOrigin: 'top left' },
+    top: {
+        position: { top: '0', left: '50%' },
+        centerTransform: true,
+        transformOrigin: 'top center',
+    },
+    'top-right': { position: { top: '0', right: '0' }, transformOrigin: 'top right' },
+    right: {
+        position: { right: '0', transformOrigin: 'center right' },
+    },
+    'bottom-right': { position: { bottom: '0', right: '0' }, transformOrigin: 'bottom right' },
+    bottom: {
+        position: { bottom: '0', left: '50%' },
+        centerTransform: true,
+        transformOrigin: 'bottom center',
+    },
+    'bottom-left': { position: { bottom: '0', left: '0' }, transformOrigin: 'bottom left' },
+    left: {
+        position: { left: '0' },
+        transformOrigin: 'center left',
+    },
+    middle: { position: {} },
 };
