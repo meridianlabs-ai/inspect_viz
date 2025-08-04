@@ -17,6 +17,7 @@ import { isNotebook } from '../util/platform';
 import { TableOptions } from '../inputs/table';
 import { replaceTooltipImpl as installPlotTooltips } from '../plot/tooltips';
 import { installTextCollisionHandler } from '../plot/text-collision';
+import { applyTickFormatting } from '../plot/ticks';
 
 interface MosaicProps {
     tables: Record<string, string>;
@@ -31,6 +32,9 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
 
     // initialize context
     const ctx = await vizContext(plotDefaultsAst.plotDefaults);
+
+    // handle tick formatting
+    applyTickFormatting(spec);
 
     // insert/wait for tables to be ready
     const tables: Record<string, string> = model.get('tables') || {};

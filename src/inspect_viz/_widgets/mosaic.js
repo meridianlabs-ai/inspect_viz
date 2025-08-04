@@ -2290,12 +2290,62 @@ var readTextOptions = (svgEl) => {
   return textOptions;
 };
 
+// js/plot/ticks.ts
+import * as d3TimeFormat2 from "https://cdn.jsdelivr.net/npm/d3-time-format@4.1.0/+esm";
+
+// js/util/spec.ts
+function visitPlot(obj, fn) {
+  if (Array.isArray(obj)) {
+    obj.flatMap((item) => visitPlot(item, fn));
+  } else if (typeof obj === "object" && obj !== null) {
+    if ("plot" in obj) {
+      fn(obj);
+    } else {
+      Object.values(obj).flatMap((value) => visitPlot(value, fn));
+    }
+  }
+}
+
+// js/plot/ticks.ts
+var applyTickFormatting = (spec) => {
+  visitPlot(spec, (plot) => {
+    if ("xTickFormat" in plot) {
+      const format2 = plot.xTickFormat;
+      if (typeof format2 === "string") {
+        processTickFormat(plot, "xTickFormat");
+        processTickFormat(plot, "yTickFormat");
+      }
+    }
+  });
+};
+var processTickFormat = (obj, formatKey) => {
+  if (formatKey in obj) {
+    const format2 = obj[formatKey];
+    if (typeof format2 === "string") {
+      if (isD3TimeFormat(format2)) {
+        obj[formatKey] = (val) => {
+          if (typeof val === "number") {
+            const d = new Date(val);
+            return d3TimeFormat2.timeFormat(format2)(d);
+          } else {
+            return d3TimeFormat2.timeFormat(format2)(val);
+          }
+        };
+      }
+    }
+  }
+};
+var isD3TimeFormat = (format2) => {
+  return /%[aAbBcdefHIjLmMpqQsSuUVwWxXyYzZ%]/.test(format2);
+};
+
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
   const spec = JSON.parse(model.get("spec"));
   const plotDefaultsSpec = { plotDefaults: spec.plotDefaults, vspace: 0 };
   const plotDefaultsAst = parseSpec(plotDefaultsSpec);
   const ctx = await vizContext(plotDefaultsAst.plotDefaults);
+  applyTickFormatting(spec);
   const tables = model.get("tables") || {};
   await syncTables(ctx, tables);
   el.classList.add("mosaic-widget");

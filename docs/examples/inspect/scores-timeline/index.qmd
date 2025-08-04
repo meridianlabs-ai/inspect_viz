@@ -16,9 +16,9 @@ from inspect_viz import Data, Selection
 from inspect_viz.input import checkbox_group, select
 from inspect_viz.layout import vconcat, vspace
 from inspect_viz.plot import plot, legend
-from inspect_viz.mark import dot, rule_x, text
+from inspect_viz.mark import dot, rule_x, text, regression_y
 from inspect_viz.table import table
-from inspect_viz.transform import ci_bounds
+from inspect_viz.transform import ci_bounds, epoch_ms
 
 # read data
 evals = Data.from_file("benchmarks.parquet") # <1>
@@ -29,6 +29,7 @@ ci_lower, ci_upper = ci_bounds( # <2>
     level=0.95,
     stderr="score_headline_stderr"
 ) # <2>
+
 
 vconcat(
     # select benchmark
@@ -43,7 +44,7 @@ vconcat(
         # benchmark score
         dot(
             evals,
-            x="model_release_date",
+            x=epoch_ms("model_release_date"),
             y="score_headline_value",
             r=3,
             fill="model_organization_name",
@@ -57,7 +58,7 @@ vconcat(
         # confidence interval
         rule_x( 
             evals,
-            x="model_release_date",
+            x=epoch_ms("model_release_date"),
             y="score_headline_value",
             y1=ci_lower,
             y2=ci_upper,
@@ -65,11 +66,16 @@ vconcat(
             stroke_opacity=0.4, # <4>
             marker="tick-x",
         ), 
+        regression_y(evals, 
+                x=epoch_ms("model_release_date"), 
+                y="score_headline_value", 
+                stroke="#AAAAAA"
+        ),
         # frontier annotation
         text(
             evals,
             text="model_display_name",  # <5>
-            x="model_release_date",
+            x=epoch_ms("model_release_date"),
             y="score_headline_value",
             line_anchor="middle",
             frame_anchor="right",
@@ -84,7 +90,9 @@ vconcat(
         y_label="Score",
         color_label="Organization",
         color_domain="fixed",
-        grid=True
+        x_tick_format="%b\n%Y",
+        grid=True,
+        
     )
 )
 ```

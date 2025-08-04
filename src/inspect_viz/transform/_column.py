@@ -3,6 +3,7 @@ from typing import Any, Literal, Sequence
 from pydantic import JsonValue
 
 from inspect_viz._util.marshall import dict_remove_none
+from inspect_viz.transform._sql import sql
 
 from .._core.param import Param
 from ._transform import Transform
@@ -115,3 +116,12 @@ def date_month(expr: str | Param) -> Transform:
     """
     config: dict[str, JsonValue] = {"dateMonth": expr}
     return Transform(config)
+
+
+def epoch_ms(expr: str | Param) -> Transform:
+    """Transform a Date value to epoch milliseconds.
+
+    Args:
+        expr: Expression or parameter.
+    """
+    return sql(f"epoch_ms({expr})")

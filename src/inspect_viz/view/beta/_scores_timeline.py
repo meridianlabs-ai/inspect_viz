@@ -8,6 +8,7 @@ from inspect_viz.layout._concat import vconcat
 from inspect_viz.layout._space import vspace
 from inspect_viz.mark._dot import dot
 from inspect_viz.mark._mark import Marks
+from inspect_viz.mark._regression import regression_y
 from inspect_viz.mark._rule import rule_x
 from inspect_viz.mark._text import text
 from inspect_viz.mark._title import Title
@@ -16,6 +17,9 @@ from inspect_viz.plot._attributes import PlotAttributes
 from inspect_viz.plot._legend import legend
 from inspect_viz.plot._plot import plot
 from inspect_viz.transform import ci_bounds
+from inspect_viz.transform._column import epoch_ms
+from inspect_viz.transform._sql import sql
+from inspect_viz.transform._transform import Transform
 
 
 def scores_timeline(
@@ -37,6 +41,7 @@ def scores_timeline(
     marks: Marks | None = None,
     width: float | Param | None = None,
     height: float | Param | None = None,
+    regression: bool = False,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
     """Eval scores by model, organization, and release date.
@@ -60,6 +65,7 @@ def scores_timeline(
        marks: Additional marks to include in the plot.
        width: The outer width of the plot in pixels, including margins. Defaults to 700.
        height: The outer height of the plot in pixels, including margins. The default is width / 1.618 (the [golden ratio](https://en.wikipedia.org/wiki/Golden_ratio))
+       regression: If `True`, adds a regression line to the plot (uses the confidence interval passed using ci). Defaults to False.
        **attributes: Additional `PlotAttributes`. By default, the `x_domain` is set to "fixed", the `y_domain` is set to `[0,1.0]`, `color_label` is set to "Organizations", and `color_domain` is set to `organizations`.
     """
     # fallback to task_name if required
@@ -78,6 +84,10 @@ def scores_timeline(
     ]:
         if field not in data.columns:
             raise ValueError(f"Field '{field}' not provided in passed 'data'.")
+
+    model_date_transform: str | Transform = model_release_date
+    if regression:
+        model_date_transform = epoch_ms(model_release_date)
 
     # resolve marks
     marks = flatten_marks(marks)
@@ -122,7 +132,7 @@ def scores_timeline(
     components = [
         dot(
             data,
-            x=model_release_date,
+            x=model_date_transform,
             y=score_value,
             r=3,
             fill=model_organization,
@@ -136,7 +146,7 @@ def scores_timeline(
             text(
                 data,
                 text=model_name,
-                x=model_release_date,
+                x=model_date_transform,
                 y=score_value,
                 line_anchor="middle",
                 frame_anchor="right",
@@ -154,7 +164,7 @@ def scores_timeline(
         components.append(
             rule_x(
                 data,
-                x=model_release_date,
+                x=model_date_transform,
                 y=score_value,
                 y1=ci_lower,
                 y2=ci_upper,
@@ -162,6 +172,20 @@ def scores_timeline(
                 stroke_opacity=0.4,
                 marker="tick-x",
             ),
+        )
+
+    # add regression line if requested
+    if regression:
+        components.append(
+            regression_y(
+                data,
+                x=model_date_transform,
+                y=score_value,
+                ci=ci,
+                precision=4,
+                stroke="#CCCCCC",
+                fill_opacity=0.2,
+            )
         )
 
     # resolve defaults
@@ -172,6 +196,7 @@ def scores_timeline(
         "color_label": "Organizations",
         "color_domain": organizations or "fixed",
         "grid": True,
+        "x_tick_format": "%b. %Y",
     }
     attributes = defaults | attributes
 

@@ -19,7 +19,7 @@ from ._aggregate import (
     variance,
 )
 from ._ci import ci_bounds
-from ._column import bin, column, date_day, date_month, date_month_day
+from ._column import bin, column, date_day, date_month, date_month_day, epoch_ms
 from ._sql import sql
 from ._transform import Transform
 from ._window import (
@@ -46,6 +46,7 @@ __all__ = [
     "date_day",
     "date_month",
     "date_month_day",
+    "epoch_ms",
     "argmax",
     "argmin",
     "avg",
