@@ -822,11 +822,6 @@ const resolveRowSelection = (options: TableOptions): RowSelectionOptions<any, an
     }
 };
 
-interface FilterModel {
-    filter: string;
-    filterParams?: Record<string, unknown>;
-}
-
 const filterForColumnType = (type: string): FilterModel => {
     // Select the proper filter type based on the column type
     switch (type) {
@@ -844,7 +839,7 @@ const filterForColumnType = (type: string): FilterModel => {
                 filter: 'agTextColumnFilter',
                 filterParams: {
                     filterOptions: ['equals'],
-                    textMatcher: ({ filterText, value }) => {
+                    textMatcher: ({ filterText, value }: { filterText: string; value: any }) => {
                         // Convert boolean to string for comparison
                         const stringValue = String(value);
                         return stringValue === filterText;
