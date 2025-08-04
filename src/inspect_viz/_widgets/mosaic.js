@@ -1782,6 +1782,14 @@ var readOptions = (el) => {
   const value = el.value;
   return value ? value.options || {} : {};
 };
+var readPlotEl = (el) => {
+  const value = el.value;
+  const plot = value?.plot;
+  if (plot) {
+    return plot.element;
+  }
+  return void 0;
+};
 
 // js/plot/tooltips.ts
 var HIDDEN_USER_CHANNEL = "_user_channels";
@@ -2346,84 +2354,165 @@ var isD3TimeFormat = (format2) => {
 // js/plot/legend.ts
 var installLegendHandler = (specEl) => {
   const legends = specEl.querySelectorAll("div.legend");
-  for (const legend of legends) {
+  for (const legend of Array.from(legends)) {
     const legendEl = legend;
-    const legendOptions = readOptions(legendEl);
-    const anchor = legendOptions["_frame_anchor"];
-    const inset = resolveInset(
-      legendOptions["_inset"],
-      legendOptions["_inset_x"],
-      legendOptions["_inset_y"]
-    );
-    const background = legendOptions["_background"];
-    const border = legendOptions["_border"];
-    resolveFrameAnchorStyles(
-      { anchor, inset, background, border },
-      legendEl,
-      legendEl.parentElement
-    );
+    const options = readLegendOptions(legendEl);
+    applyLegendStyles(options, legendEl, legendEl.parentElement);
   }
 };
-var resolveInset = (inset, insetX, insetY) => {
-  console.log({ inset, insetX, insetY });
-  if (inset == null && insetX == null && insetY == null) {
+var applyLegendStyles = (options, legendEl, parentEl) => {
+  if (!options.frameAnchor) return;
+  parentEl.style.position = "relative";
+  legendEl.style.padding = "0.3em";
+  legendEl.style.position = "absolute";
+  applyBackground(legendEl, options.background);
+  applyBorder(legendEl, options.border);
+  const plotEl = readPlotEl(legendEl);
+  responsiveScaleLegend(options, legendEl, plotEl);
+  applyParentPadding(options, legendEl, parentEl);
+};
+var applyBackground = (legendEl, background) => {
+  if (background !== false) {
+    legendEl.style.background = background === true ? "white" : background || "white";
+  }
+};
+var applyBorder = (legendEl, border) => {
+  if (border !== false) {
+    const borderColor = border === true ? "#DDDDDD" : border || "#DDDDDD";
+    legendEl.style.border = `1px solid ${borderColor}`;
+  }
+};
+var applyParentPadding = (options, legendEl, parentEl) => {
+  if (!isInset(options)) {
+    const observer = new MutationObserver(() => {
+      if (options.frameAnchor) {
+        const newSize = legendEl.getBoundingClientRect();
+        const parentConfig = kParentConfig[options.frameAnchor];
+        const useHeight = parentConfig.paddingType === "paddingTop" || parentConfig.paddingType === "paddingBottom";
+        parentEl.style[parentConfig.paddingType] = useHeight ? newSize.height + "px" : newSize.width + "px";
+      }
+    });
+    observer.observe(legendEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"]
+    });
+  }
+};
+var responsiveScaleLegend = (options, legendEl, plotEl) => {
+  const anchor = options.frameAnchor || "right";
+  const config = kAnchorConfig[anchor];
+  Object.assign(legendEl.style, config.position);
+  if (config.centerTransform) {
+    legendEl.style.transform = "translateX(-50%)";
+  }
+  if (plotEl) {
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (!plotEl.children || plotEl.childElementCount === 0) {
+          return;
+        }
+        const parentEl = entry.target;
+        const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+        const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+        if (!yGridEl || !xGridEl) {
+          console.warn("Missing y-grid or x-grid elements in the plot.");
+          return;
+        }
+        const svgEl = plotEl.children[0];
+        if (svgEl.tagName !== "svg") {
+          console.warn("The first child of the plot element is not an SVG element.");
+          return;
+        }
+        const baseWidth = svgEl.getAttribute("width");
+        if (!baseWidth) {
+          console.warn("Plot element does not have a width attribute.");
+          return;
+        }
+        const parentRect = parentEl.getBoundingClientRect();
+        const actualWidth = parentRect.width;
+        const scaleFactor = actualWidth / parseFloat(baseWidth);
+        if (config.transformOrigin) {
+          legendEl.style.transformOrigin = config.transformOrigin;
+        }
+        legendEl.style.transform = `scale(${scaleFactor})`;
+        const inset = resolveInset(options);
+        if (inset) {
+          const yGridRect = yGridEl.getBoundingClientRect();
+          const xGridRect = xGridEl.getBoundingClientRect();
+          const yShift = yGridRect.top - parentRect.top;
+          const xShift = xGridRect.left - parentRect.left;
+          const yInset = inset[1] * scaleFactor + yShift;
+          const xInset = inset[0] * scaleFactor + xShift;
+          if (config.centerTransform) {
+            legendEl.style.margin = `${yInset}px 0px`;
+          } else {
+            legendEl.style.margin = `${yInset}px ${xInset}px`;
+          }
+        }
+      }
+    });
+    resizeObserver.observe(plotEl.parentElement);
+  }
+};
+var isInset = (options) => {
+  return options.inset !== null || options.insetX !== null || options.insetY !== null;
+};
+var resolveInset = (options) => {
+  if (options.inset == null && options.insetX == null && options.insetY == null) {
     return void 0;
   }
-  if (inset !== null && insetX === null && insetY === null) {
-    return [Math.abs(inset), Math.abs(inset)];
+  if (options.inset !== null && options.insetX === null && options.insetY === null) {
+    return [Math.abs(options.inset), Math.abs(options.inset)];
   }
-  return [Math.abs(insetX || 0), Math.abs(insetY || 0)];
+  return [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
 };
-var resolveFrameAnchorStyles = (options, legendEl, parentEl) => {
-  if (options.anchor) {
-    const anchor = options.anchor;
-    parentEl.style.position = "relative";
-    if (options.background !== false) {
-      legendEl.style.background = options.background === true ? "white" : options.background || "white";
-    }
-    if (options.border !== false) {
-      const borderColor = options.border === true ? "#DDDDDD" : options.border || "#DDDDDD";
-      legendEl.style.border = `1px solid ${borderColor}`;
-    }
-    legendEl.style.padding = "0.3em";
-    legendEl.style.position = "absolute";
-    if (anchor === "left" || anchor === "top-left" || anchor === "bottom-left") {
-      legendEl.style.left = "0";
-      if (anchor === "left" && options.inset === void 0) {
-        parentEl.style.paddingLeft = "100px";
-      }
-    }
-    if (anchor === "right" || anchor === "top-right" || anchor === "bottom-right") {
-      legendEl.style.right = "0";
-      if (anchor === "right" && options.inset === void 0) {
-        parentEl.style.paddingRight = "100px";
-      }
-    }
-    if (anchor === "top" || anchor === "top-left" || anchor === "top-right") {
-      legendEl.style.top = "0";
-      if (anchor === "top" && options.inset === void 0) {
-        legendEl.style.left = "50%";
-        legendEl.style.transform = "translateX(-50%)";
-      }
-      if (options.inset === void 0) {
-        parentEl.style.paddingTop = "100px";
-      }
-    }
-    if (anchor === "bottom" || anchor === "bottom-left" || anchor === "bottom-right") {
-      legendEl.style.bottom = "0";
-      if (anchor === "bottom" && options.inset === void 0) {
-        legendEl.style.left = "50%";
-        legendEl.style.transform = "translateX(-50%)";
-      }
-      if (options.inset === void 0) {
-        parentEl.style.paddingBottom = "100px";
-      }
-    }
-  }
-  if (options.inset) {
-    const inset = options.inset;
-    legendEl.style.margin = `${inset[1]}px ${inset[0]}px`;
-  }
+var readLegendOptions = (legendEl) => {
+  const options = readOptions(legendEl);
+  return {
+    inset: options["_inset"],
+    insetX: options["_inset_x"],
+    insetY: options["_inset_y"],
+    frameAnchor: options["_frame_anchor"],
+    background: options["_background"],
+    border: options["_border"]
+  };
+};
+var kParentConfig = {
+  "top-left": { paddingType: "paddingLeft" },
+  top: { paddingType: "paddingTop" },
+  "top-right": { paddingType: "paddingRight" },
+  right: { paddingType: "paddingRight" },
+  "bottom-right": { paddingType: "paddingRight" },
+  bottom: { paddingType: "paddingBottom" },
+  "bottom-left": { paddingType: "paddingLeft" },
+  left: { paddingType: "paddingLeft" },
+  middle: { paddingType: "" }
+};
+var kAnchorConfig = {
+  "top-left": { position: { top: "0", left: "0" }, transformOrigin: "top left" },
+  top: {
+    position: { top: "0", left: "50%" },
+    centerTransform: true,
+    transformOrigin: "top center"
+  },
+  "top-right": { position: { top: "0", right: "0" }, transformOrigin: "top right" },
+  right: {
+    position: { right: "0", transformOrigin: "center right" }
+  },
+  "bottom-right": { position: { bottom: "0", right: "0" }, transformOrigin: "bottom right" },
+  bottom: {
+    position: { bottom: "0", left: "50%" },
+    centerTransform: true,
+    transformOrigin: "bottom center"
+  },
+  "bottom-left": { position: { bottom: "0", left: "0" }, transformOrigin: "bottom left" },
+  left: {
+    position: { left: "0" },
+    transformOrigin: "center left"
+  },
+  middle: { position: {} }
 };
 
 // js/widgets/mosaic.ts

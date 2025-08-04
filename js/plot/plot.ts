@@ -21,7 +21,6 @@ export const readPlotEl = (el: HTMLElement): HTMLElement | undefined => {
     const value = (el as any).value;
     const plot = value?.plot;
     if (plot) {
-        console.log({ parent: plot.element });
         return plot.element as HTMLElement;
     }
     return undefined;
