@@ -2,7 +2,7 @@
 import {
   parseSpec
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
-import { throttle as throttle3 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { throttle as throttle2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/context/index.ts
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
@@ -1479,46 +1479,6 @@ import {
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-function throttle2(func, wait, options = {}) {
-  let context;
-  let args;
-  let result;
-  let timeout = null;
-  let previous = 0;
-  const later = function() {
-    previous = options.leading === false ? 0 : Date.now();
-    timeout = null;
-    result = func.apply(context, args === null ? [] : args);
-    if (!timeout) {
-      context = null;
-      args = null;
-    }
-  };
-  return function(...callArgs) {
-    const now = Date.now();
-    if (!previous && options.leading === false) {
-      previous = now;
-    }
-    const remaining = wait - (now - previous);
-    context = this;
-    args = callArgs;
-    if (remaining <= 0 || remaining > wait) {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-      previous = now;
-      result = func.apply(context, args);
-      if (!timeout) {
-        context = null;
-        args = null;
-      }
-    } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(later, remaining);
-    }
-    return result;
-  };
-}
 
 // js/context/duckdb.ts
 async function initDuckdb() {
@@ -2403,65 +2363,97 @@ var installLegendHandler = (specEl) => {
   });
   observer.observe(specEl, { childList: true, subtree: true });
 };
+function legendPaddingRegion(spec) {
+  const result = { top: false, bottom: false, left: false, right: false };
+  function visitLegends(obj) {
+    if (!obj || typeof obj !== "object") return;
+    if ("legend" in obj) {
+      const legendObj = obj;
+      const hasInset = "_inset" in legendObj || "_inset_x" in legendObj || "_inset_y" in legendObj;
+      if (!hasInset && "_frame_anchor" in legendObj) {
+        const frameAnchor = legendObj["_frame_anchor"];
+        switch (frameAnchor) {
+          case "top":
+          case "top-left":
+          case "top-right":
+            result.top = true;
+            break;
+          case "bottom":
+          case "bottom-left":
+          case "bottom-right":
+            result.bottom = true;
+            break;
+          case "left":
+            result.left = true;
+            break;
+          case "right":
+            result.right = true;
+            break;
+        }
+      }
+    }
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        visitLegends(obj[key]);
+      }
+    }
+    if (Array.isArray(obj)) {
+      obj.forEach((item) => visitLegends(item));
+    }
+  }
+  visitLegends(spec);
+  return result;
+}
 var configuredLegends = /* @__PURE__ */ new WeakSet();
 var configureLegendHandler = (specEl) => {
-  const legends = specEl.querySelectorAll("div.legend");
-  const frameLegends = {};
-  for (const legend of Array.from(legends)) {
-    const legendEl = legend;
-    const options = readLegendOptions(legendEl);
-    if (configuredLegends.has(legend)) {
-      continue;
-    }
-    if (options.frameAnchor) {
-      const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
-      frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
-      frameLegends[legendKey].push(legendEl);
-    }
-  }
-  for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
-    for (const legendEl of legendEls) {
-      const options = readLegendOptions(legendEl);
-      let containerEl = specEl.querySelector(
-        `div.legend-container.${positionKey}`
-      );
-      if (containerEl === null) {
-        containerEl = document.createElement("div");
-        containerEl.className = `legend-container ${positionKey}`;
-        legendEl.parentElement.insertBefore(containerEl, legendEl);
-      }
-      containerEl.appendChild(legendEl);
-      const plotEl = readPlotEl(legendEl);
-      if (plotEl) {
-        applyLegendStyles(options, containerEl, plotEl, containerEl.parentElement);
-      }
-      configuredLegends.add(legendEl);
-    }
-  }
+  const frameLegends = groupLegendsByPosition(specEl);
+  emplaceLegendContainers(frameLegends, specEl);
+  const processLegends = () => {
+    const legends = specEl.querySelectorAll("div.legend");
+    legends.forEach((legend) => {
+      const legendEl = legend;
+      applyLegendStyles(legendEl);
+    });
+  };
+  processLegends();
+  const observer = new ResizeObserver(() => {
+    processLegends();
+  });
+  observer.observe(specEl);
 };
-var applyLegendStyles = (options, legendContainerEl, plotEl, parentEl) => {
-  if (!options.frameAnchor) return;
-  parentEl.style.position = "relative";
+var applyLegendStyles = (legendEl) => {
+  const options = readLegendOptions(legendEl);
+  if (!options.frameAnchor) {
+    return;
+  }
+  const legendContainerEl = legendEl.parentElement;
+  const legendContainerParentEl = legendContainerEl.parentElement;
+  legendContainerParentEl.style.position = "relative";
   legendContainerEl.style.padding = "0.3em";
   legendContainerEl.style.position = "absolute";
   applyBackground(legendContainerEl, options.background);
   applyBorder(legendContainerEl, options.border);
-  applyParentPadding(options, legendContainerEl, parentEl);
-  responsiveScaleLegend(options, legendContainerEl, plotEl);
+  applyParentPadding(options, legendContainerEl, legendContainerParentEl);
+  responsiveScaleLegend(options, legendEl, legendContainerEl);
   applyCursorStyle(legendContainerEl);
 };
-var applyBackground = (legendEl, background) => {
+var applyBackground = (targetEl, background) => {
   if (background !== false) {
-    legendEl.style.background = background === true ? "white" : background || "white";
+    targetEl.style.background = background === true ? "white" : background || "white";
   }
 };
-var applyBorder = (legendEl, border) => {
+var applyBorder = (targetEl, border) => {
   if (border !== false) {
     const borderColor = border === true ? "#DDDDDD" : border || "#DDDDDD";
-    legendEl.style.border = `1px solid ${borderColor}`;
+    targetEl.style.border = `1px solid ${borderColor}`;
   }
 };
 var applyCursorStyle = (legendEl) => {
+  const existingObserver = cursorObserver.get(legendEl);
+  if (existingObserver) {
+    existingObserver.disconnect();
+    cursorObserver.delete(legendEl);
+  }
   const observer = new MutationObserver(() => {
     if (hasValue(legendEl, "selection")) {
       const subContainerEl = legendEl.firstElementChild;
@@ -2469,7 +2461,9 @@ var applyCursorStyle = (legendEl) => {
     }
   });
   observer.observe(legendEl, { childList: true, subtree: true });
+  cursorObserver.set(legendEl, observer);
 };
+var cursorObserver = /* @__PURE__ */ new WeakMap();
 var applyParentPadding = (options, legendEl, parentEl) => {
   if (!options.inset) {
     const observer = new MutationObserver(() => {
@@ -2488,74 +2482,63 @@ var applyParentPadding = (options, legendEl, parentEl) => {
     });
   }
 };
-var responsiveScaleLegend = (options, legendEl, plotEl) => {
+var responsiveScaleLegend = (options, legendEl, legendContainerEl) => {
   const anchor = options.frameAnchor || "right";
   const config = kLegendAnchorConfig[anchor];
-  Object.assign(legendEl.style, config.position);
+  Object.assign(legendContainerEl.style, config.position);
   if (config.centerTransform) {
-    legendEl.style.transform = "translateX(-50%)";
+    legendContainerEl.style.transform = "translateX(-50%)";
   }
-  if (plotEl && plotEl.parentElement) {
-    let lastScaleFactor = null;
-    const resizeObserver = new ResizeObserver(
-      throttle2((entries) => {
-        for (let entry of entries) {
-          if (!plotEl.children || plotEl.childElementCount === 0) {
-            return;
-          }
-          const parentEl = entry.target;
-          const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-          const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-          if (!yGridEl || !xGridEl) {
-            console.warn("Missing y-grid or x-grid elements in the plot.");
-            return;
-          }
-          const svgEl = plotEl.children[0];
-          if (svgEl.tagName !== "svg") {
-            console.warn("The first child of the plot element is not an SVG element.");
-            return;
-          }
-          const baseWidth = svgEl.getAttribute("width");
-          if (!baseWidth) {
-            console.warn("Plot element does not have a width attribute.");
-            return;
-          }
-          const parentRect = parentEl.getBoundingClientRect();
-          const actualWidth = parentRect.width;
-          const scaleFactor = actualWidth / parseFloat(baseWidth);
-          if (lastScaleFactor !== null && Math.abs(scaleFactor - lastScaleFactor) < 1e-3) {
-            return;
-          }
-          lastScaleFactor = scaleFactor;
-          requestAnimationFrame(() => {
-            const styles = {};
-            if (config.transformOrigin) {
-              styles.transformOrigin = config.transformOrigin;
-            }
-            if (config.centerTransform) {
-              styles.transform = `translateX(-50%) scale(${scaleFactor})`;
-            } else {
-              styles.transform = `scale(${scaleFactor})`;
-            }
-            if (options.inset) {
-              const plotRect = findPlotRegionRect(plotEl);
-              const yShift = config.transformOrigin?.startsWith("bottom") ? parentRect.bottom - plotRect.bottom : plotRect.top - parentRect.top;
-              const xShift = config.transformOrigin?.endsWith("right") ? parentRect.right - plotRect.right : plotRect.left - parentRect.left;
-              const yInset = options.inset[1] * scaleFactor + yShift;
-              const xInset = options.inset[0] * scaleFactor + xShift;
-              if (config.centerTransform) {
-                styles.margin = `${yInset}px 0px`;
-              } else {
-                styles.margin = `${yInset}px ${xInset}px`;
-              }
-            }
-            Object.assign(legendEl.style, styles);
-          });
-        }
-      }, 16)
-    );
-    resizeObserver.observe(plotEl.parentElement);
+  const plotEl = readPlotEl(legendEl);
+  if (!plotEl || !plotEl.children || plotEl.childElementCount === 0) {
+    return;
   }
+  const parentEl = plotEl.parentElement;
+  if (!parentEl) {
+    console.warn("No parent element found for the plot.");
+    return;
+  }
+  const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+  const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+  if (!yGridEl || !xGridEl) {
+    console.warn("Missing y-grid or x-grid elements in the plot.");
+    return;
+  }
+  const svgEl = plotEl.children[0];
+  if (svgEl.tagName !== "svg") {
+    console.warn("The first child of the plot element is not an SVG element.");
+    return;
+  }
+  const baseWidth = svgEl.getAttribute("width");
+  if (!baseWidth) {
+    console.warn("Plot element does not have a width attribute.");
+    return;
+  }
+  const parentRect = parentEl.getBoundingClientRect();
+  const actualWidth = parentRect.width;
+  const scaleFactor = actualWidth / parseFloat(baseWidth);
+  const styles = {};
+  if (config.transformOrigin) {
+    styles.transformOrigin = config.transformOrigin;
+  }
+  if (config.centerTransform) {
+    styles.transform = `translateX(-50%) scale(${scaleFactor})`;
+  } else {
+    styles.transform = `scale(${scaleFactor})`;
+  }
+  if (options.inset) {
+    const plotRect = findPlotRegionRect(plotEl);
+    const yShift = config.transformOrigin?.startsWith("bottom") ? parentRect.bottom - plotRect.bottom : plotRect.top - parentRect.top;
+    const xShift = config.transformOrigin?.endsWith("right") ? parentRect.right - plotRect.right : plotRect.left - parentRect.left;
+    const yInset = options.inset[1] * scaleFactor + yShift;
+    const xInset = options.inset[0] * scaleFactor + xShift;
+    if (config.centerTransform) {
+      styles.margin = `${yInset}px 0px`;
+    } else {
+      styles.margin = `${yInset}px ${xInset}px`;
+    }
+  }
+  Object.assign(legendContainerEl.style, styles);
 };
 var resolveOptions = (options) => {
   if (options.inset == null && options.insetX == null && options.insetY == null) {
@@ -2646,6 +2629,39 @@ var kLegendAnchorConfig = {
   },
   middle: { position: {} }
 };
+function emplaceLegendContainers(frameLegends, specEl) {
+  for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
+    for (const legendEl of legendEls) {
+      let containerEl = specEl.querySelector(
+        `div.legend-container.${positionKey}`
+      );
+      if (containerEl === null) {
+        containerEl = document.createElement("div");
+        containerEl.className = `legend-container ${positionKey}`;
+        legendEl.parentElement.insertBefore(containerEl, legendEl);
+      }
+      containerEl.appendChild(legendEl);
+      configuredLegends.add(legendEl);
+    }
+  }
+}
+function groupLegendsByPosition(specEl) {
+  const legends = specEl.querySelectorAll("div.legend");
+  const frameLegends = {};
+  for (const legend of Array.from(legends)) {
+    const legendEl = legend;
+    const options = readLegendOptions(legendEl);
+    if (configuredLegends.has(legend)) {
+      continue;
+    }
+    if (options.frameAnchor) {
+      const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+      frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
+      frameLegends[legendKey].push(legendEl);
+    }
+  }
+  return frameLegends;
+}
 
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
@@ -2692,7 +2708,7 @@ async function render({ model, el }) {
     let lastContainerWidth = el.clientWidth;
     let lastContainerHeight = el.clientHeight;
     const resizeObserver = new ResizeObserver(
-      throttle3(async () => {
+      throttle2(async () => {
         if (lastContainerWidth !== el.clientWidth || lastContainerHeight !== el.clientHeight) {
           lastContainerWidth = el.clientWidth;
           lastContainerHeight = el.clientHeight;
@@ -2732,6 +2748,9 @@ function renderSetup(containerEl) {
 function responsiveSpec(spec, containerEl) {
   const kLegendWidth = 80;
   const kLegendHeight = 35;
+  const paddingRegion = legendPaddingRegion(spec);
+  const horizontalPadding = paddingRegion.left || paddingRegion.right ? kLegendWidth : 0;
+  const verticalPadding = paddingRegion.top || paddingRegion.bottom ? kLegendHeight : 0;
   spec = structuredClone(spec);
   if ("input" in spec && spec.input === "table") {
     const table = spec;
@@ -2740,14 +2759,14 @@ function responsiveSpec(spec, containerEl) {
     const hconcat = spec.hconcat;
     const plot = "plot" in hconcat[0] ? hconcat[0] : null;
     if (plot) {
-      plot.width = containerEl.clientWidth - (hconcat.length > 1 ? kLegendWidth : 0);
+      plot.width = containerEl.clientWidth - (hconcat.length > 1 ? horizontalPadding : 0);
       plot.height = containerEl.clientHeight;
     }
   } else if ("hconcat" in spec && spec.hconcat.length == 2) {
     const hconcat = spec.hconcat;
     const plot = "plot" in hconcat[0] && "legend" in hconcat[1] ? hconcat[0] : "plot" in hconcat[1] && "legend" in hconcat[0] ? hconcat[1] : void 0;
     if (plot) {
-      plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? kLegendWidth : 0);
+      plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? horizontalPadding : 0);
       plot.height = containerEl.clientHeight;
     }
   } else if ("vconcat" in spec && spec.vconcat.length == 2) {
@@ -2755,7 +2774,7 @@ function responsiveSpec(spec, containerEl) {
     const plot = "plot" in vconcat[0] && "legend" in vconcat[1] ? vconcat[0] : "plot" in vconcat[1] && "legend" in vconcat[0] ? vconcat[1] : void 0;
     if (plot) {
       plot.width = containerEl.clientWidth;
-      plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? kLegendHeight : 0);
+      plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? verticalPadding : 0);
     }
   }
   return spec;

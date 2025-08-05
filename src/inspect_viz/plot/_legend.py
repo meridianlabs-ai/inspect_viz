@@ -1,4 +1,5 @@
 from typing import cast
+
 from pydantic import JsonValue
 from typing_extensions import Literal
 

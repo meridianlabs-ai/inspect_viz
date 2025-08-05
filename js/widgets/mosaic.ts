@@ -18,7 +18,7 @@ import { TableOptions } from '../inputs/table';
 import { replaceTooltipImpl as installPlotTooltips } from '../plot/tooltips';
 import { installTextCollisionHandler } from '../plot/text-collision';
 import { applyTickFormatting } from '../plot/ticks';
-import { installLegendHandler } from '../plot/legend';
+import { installLegendHandler, legendPaddingRegion } from '../plot/legend';
 
 interface MosaicProps {
     tables: Record<string, string>;
@@ -156,11 +156,17 @@ function renderSetup(containerEl: HTMLElement): RenderOptions {
     return { autoFill, autoFillScrolling };
 }
 
+// TODO: Why is the stupid null error
+
 // if this is a single plot (w/ optional legend) in an hconcat or vconcat,
 // then give it dynamic sizing (more complex layouts don't get auto-sized)
 function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
     const kLegendWidth = 80; // best guess estimate
     const kLegendHeight = 35; // best guess estimate
+
+    const paddingRegion = legendPaddingRegion(spec);
+    const horizontalPadding = paddingRegion.left || paddingRegion.right ? kLegendWidth : 0;
+    const verticalPadding = paddingRegion.top || paddingRegion.bottom ? kLegendHeight : 0;
 
     spec = structuredClone(spec);
     if ('input' in spec && spec.input === 'table') {
@@ -172,7 +178,7 @@ function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
         const hconcat = spec.hconcat;
         const plot = 'plot' in hconcat[0] ? hconcat[0] : null;
         if (plot) {
-            plot.width = containerEl.clientWidth - (hconcat.length > 1 ? kLegendWidth : 0);
+            plot.width = containerEl.clientWidth - (hconcat.length > 1 ? horizontalPadding : 0);
             plot.height = containerEl.clientHeight;
         }
     } else if ('hconcat' in spec && spec.hconcat.length == 2) {
@@ -185,7 +191,8 @@ function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
                   ? hconcat[1]
                   : undefined;
         if (plot) {
-            plot.width = containerEl.clientWidth - (spec.hconcat.length > 1 ? kLegendWidth : 0);
+            plot.width =
+                containerEl.clientWidth - (spec.hconcat.length > 1 ? horizontalPadding : 0);
             plot.height = containerEl.clientHeight;
         }
     } else if ('vconcat' in spec && spec.vconcat.length == 2) {
@@ -199,7 +206,8 @@ function responsiveSpec(spec: Spec, containerEl: HTMLElement): Spec {
                   : undefined;
         if (plot) {
             plot.width = containerEl.clientWidth;
-            plot.height = containerEl.clientHeight - (spec.vconcat.length > 1 ? kLegendHeight : 0);
+            plot.height =
+                containerEl.clientHeight - (spec.vconcat.length > 1 ? verticalPadding : 0);
         }
     }
     return spec;

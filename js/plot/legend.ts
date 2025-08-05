@@ -1,3 +1,4 @@
+import { Spec } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 import { throttle } from '../util/async';
 import { hasValue, readOptions, readPlotEl } from './plot';
 
@@ -28,8 +29,6 @@ type FrameAnchor =
     | 'bottom-left'
     | 'left';
 
-// TODO: Position multiple legends appropriately
-
 export const installLegendHandler = (specEl: HTMLElement) => {
     configureLegendHandler(specEl);
 
@@ -41,6 +40,69 @@ export const installLegendHandler = (specEl: HTMLElement) => {
     });
     observer.observe(specEl, { childList: true, subtree: true });
 };
+
+export function legendPaddingRegion(spec: Spec): {
+    top: boolean;
+    bottom: boolean;
+    left: boolean;
+    right: boolean;
+} {
+    // The regions that need padding
+    const result = { top: false, bottom: false, left: false, right: false };
+
+    // Find legends and see what the deal is with inset and frame anchor
+    function visitLegends(obj: any): void {
+        if (!obj || typeof obj !== 'object') return;
+
+        // Check if this object has a "legend" key
+        if ('legend' in obj) {
+            const legendObj = obj;
+
+            // Check if it has inset properties
+            const hasInset =
+                '_inset' in legendObj || '_inset_x' in legendObj || '_inset_y' in legendObj;
+
+            if (!hasInset && '_frame_anchor' in legendObj) {
+                const frameAnchor = legendObj['_frame_anchor'] as string;
+
+                // Map frame anchor to inset requirements
+                switch (frameAnchor) {
+                    case 'top':
+                    case 'top-left':
+                    case 'top-right':
+                        result.top = true;
+                        break;
+                    case 'bottom':
+                    case 'bottom-left':
+                    case 'bottom-right':
+                        result.bottom = true;
+                        break;
+                    case 'left':
+                        result.left = true;
+                        break;
+                    case 'right':
+                        result.right = true;
+                        break;
+                }
+            }
+        }
+
+        // Recursively search through all object properties
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                visitLegends(obj[key]);
+            }
+        }
+
+        // Handle arrays
+        if (Array.isArray(obj)) {
+            obj.forEach(item => visitLegends(item));
+        }
+    }
+
+    visitLegends(spec);
+    return result;
+}
 
 // Track which SVGs have been setup
 // to avoid setting up multiple observers on the same SVG.
