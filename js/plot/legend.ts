@@ -1,5 +1,4 @@
 import { Spec } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
-import { throttle } from '../util/async';
 import { hasValue, readOptions, readPlotEl } from './plot';
 
 interface LegendOptions {
@@ -28,6 +27,13 @@ type FrameAnchor =
     | 'bottom'
     | 'bottom-left'
     | 'left';
+
+const kInsetX = '_inset_x';
+const kInsetY = '_inset_y';
+const kInset = '_inset';
+const kFrameAnchor = '_frame_anchor';
+const kBackground = '_background';
+const kBorder = '_border';
 
 export const installLegendHandler = (specEl: HTMLElement) => {
     configureLegendHandler(specEl);
@@ -59,11 +65,10 @@ export function legendPaddingRegion(spec: Spec): {
             const legendObj = obj;
 
             // Check if it has inset properties
-            const hasInset =
-                '_inset' in legendObj || '_inset_x' in legendObj || '_inset_y' in legendObj;
+            const hasInset = kInset in legendObj || kInsetX in legendObj || kInsetY in legendObj;
 
-            if (!hasInset && '_frame_anchor' in legendObj) {
-                const frameAnchor = legendObj['_frame_anchor'] as string;
+            if (!hasInset && kFrameAnchor in legendObj) {
+                const frameAnchor = legendObj[kFrameAnchor] as string;
 
                 // Map frame anchor to inset requirements
                 switch (frameAnchor) {
@@ -349,12 +354,12 @@ const resolveOptions = (options: LegendOptions): ResolvedLegendOptions => {
 const readLegendOptions = (legendEl: HTMLElement): ResolvedLegendOptions => {
     const optionsRaw = readOptions(legendEl);
     const options: LegendOptions = {
-        inset: optionsRaw['_inset'] as number | null,
-        insetX: optionsRaw['_inset_x'] as number | null,
-        insetY: optionsRaw['_inset_y'] as number | null,
-        frameAnchor: optionsRaw['_frame_anchor'] as FrameAnchor | null,
-        background: optionsRaw['_background'] as string | boolean | null,
-        border: optionsRaw['_border'] as string | boolean | null,
+        inset: optionsRaw[kInset] as number | null,
+        insetX: optionsRaw[kInsetX] as number | null,
+        insetY: optionsRaw[kInsetY] as number | null,
+        frameAnchor: optionsRaw[kFrameAnchor] as FrameAnchor | null,
+        background: optionsRaw[kBackground] as string | boolean | null,
+        border: optionsRaw[kBorder] as string | boolean | null,
     };
     return resolveOptions(options);
 };

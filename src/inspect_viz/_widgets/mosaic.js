@@ -2356,6 +2356,12 @@ var isD3TimeFormat = (format2) => {
 };
 
 // js/plot/legend.ts
+var kInsetX = "_inset_x";
+var kInsetY = "_inset_y";
+var kInset = "_inset";
+var kFrameAnchor = "_frame_anchor";
+var kBackground = "_background";
+var kBorder = "_border";
 var installLegendHandler = (specEl) => {
   configureLegendHandler(specEl);
   const observer = new MutationObserver(() => {
@@ -2369,9 +2375,9 @@ function legendPaddingRegion(spec) {
     if (!obj || typeof obj !== "object") return;
     if ("legend" in obj) {
       const legendObj = obj;
-      const hasInset = "_inset" in legendObj || "_inset_x" in legendObj || "_inset_y" in legendObj;
-      if (!hasInset && "_frame_anchor" in legendObj) {
-        const frameAnchor = legendObj["_frame_anchor"];
+      const hasInset = kInset in legendObj || kInsetX in legendObj || kInsetY in legendObj;
+      if (!hasInset && kFrameAnchor in legendObj) {
+        const frameAnchor = legendObj[kFrameAnchor];
         switch (frameAnchor) {
           case "top":
           case "top-left":
@@ -2565,12 +2571,12 @@ var resolveOptions = (options) => {
 var readLegendOptions = (legendEl) => {
   const optionsRaw = readOptions(legendEl);
   const options = {
-    inset: optionsRaw["_inset"],
-    insetX: optionsRaw["_inset_x"],
-    insetY: optionsRaw["_inset_y"],
-    frameAnchor: optionsRaw["_frame_anchor"],
-    background: optionsRaw["_background"],
-    border: optionsRaw["_border"]
+    inset: optionsRaw[kInset],
+    insetX: optionsRaw[kInsetX],
+    insetY: optionsRaw[kInsetY],
+    frameAnchor: optionsRaw[kFrameAnchor],
+    background: optionsRaw[kBackground],
+    border: optionsRaw[kBorder]
   };
   return resolveOptions(options);
 };
