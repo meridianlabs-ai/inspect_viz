@@ -79,7 +79,7 @@ plot(
             "Log Viewer": "log_viewer"
         }
     ),
-    legend=legend("color", location="bottom"),  # <2>
+    legend=legend("color", frame_anchor="bottom"),  # <2>
     x_label=None, x_ticks=[], fx_label=None,  # <3>
     y_label="score", y_domain=[0, 1.0]  # <4>
 )
@@ -128,7 +128,7 @@ plot(
         fill="model",
         tip=True
     ),
-    legend=legend("color", location="bottom"),
+    legend=legend("color", frame_anchor="bottom"),
     x_label=None, x_ticks=[], fx_label=None,
     y_label="score", y_domain=[0, 1.0]
 )
@@ -249,7 +249,7 @@ plot(
         y="score_headline_value",
         fill="model",
     ),
-    legend=legend("color", location="bottom"),
+    legend=legend("color", frame_anchor="bottom"),
     x_label=None, x_ticks=[], fx_label=None,
     y_label="score", y_domain=[0, 1.0],
     color_scheme="tableau10"

@@ -100,7 +100,7 @@ def tool_calls(
         title=title,
         width=width,
         height=height,
-        legend=legend("color", location="right"),
+        legend=legend("color", frame_anchor="right"),
         x_label=x_label,
         y_label=y_label,
         **attributes,

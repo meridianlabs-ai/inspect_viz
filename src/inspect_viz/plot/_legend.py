@@ -12,8 +12,8 @@ class Legend(Component):
     def __init__(
         self,
         legend: Literal["color", "opacity", "symbol"],
-        location: Literal["bottom", "left", "right", "top"],
         columns: Literal["auto"] | int | None,
+        frame_anchor: FrameAnchor | None,
         config: dict[str, JsonValue],
     ) -> None:
         # base config
@@ -21,24 +21,19 @@ class Legend(Component):
 
         # handle columns
         if columns == "auto":
-            columns = 1 if location in ["left", "right"] else None
+            columns = 1 if frame_anchor in ["left", "right"] else None
         if columns is not None:
             legend_config["columns"] = columns
+
+        # capture frame anchor
+        config["_frame_anchor"] = frame_anchor or "right"
 
         # forward super to config
         super().__init__(legend_config | config)
 
-        # save location
-        self._location = location
-
-    @property
-    def location(self) -> Literal["bottom", "left", "right", "top"]:
-        return self._location
-
 
 def legend(
     legend: Literal["color", "opacity", "symbol"],
-    location: Literal["bottom", "left", "right", "top"] = "right",
     columns: Literal["auto"] | int | None = "auto",
     label: str | None = None,
     target: Selection | None = None,
@@ -63,8 +58,6 @@ def legend(
     Args:
       legend: Legend type (`"color"`, `"opacity"`, or `"symbol"`).
       label: The legend label.
-      location: The legend location (used for display only when passing a legend
-        to the`plot()` function). Also affects default value for `columns`.
       columns: The number of columns to use to layout a discrete legend
         (defaults to "auto", which uses 1 column for location "left" or "right")
       target: The target selection. If specified, the legend is interactive,
@@ -114,11 +107,10 @@ def legend(
         config["for"] = for_plot
 
     # Forward options
-    config["_frame_anchor"] = frame_anchor or "right"
     config["_inset"] = inset
     config["_inset_x"] = inset_x
     config["_inset_y"] = inset_y
     config["_border"] = border
     config["_background"] = background
 
-    return Legend(legend, location, columns, config=config)
+    return Legend(legend, columns, frame_anchor or "right", config=config)

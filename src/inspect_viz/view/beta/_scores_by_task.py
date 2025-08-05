@@ -106,7 +106,7 @@ def scores_by_task(
     # render plot
     return plot(
         components,
-        legend=legend("color", location="bottom"),
+        legend=legend("color", frame_anchor="bottom"),
         x_label=None,
         fx_label=None,
         y_label=y_label,

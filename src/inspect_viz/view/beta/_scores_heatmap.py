@@ -168,10 +168,11 @@ def scores_heatmap(
         legend=(
             create_legend(
                 legend="color",
-                location="bottom",
+                frame_anchor="bottom",
                 columns="auto",
-                margin_left=222,
                 width=370,
+                border=False,
+                background=False,
             )
             if legend is None or legend is True
             else legend

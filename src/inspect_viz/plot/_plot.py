@@ -1,4 +1,4 @@
-from typing import Any, Literal, Sequence, Unpack
+from typing import Any, Literal, Sequence, Unpack, cast
 
 from shortuuid import uuid
 
@@ -27,7 +27,11 @@ def plot(
     width: float | Param | None = None,
     height: float | Param | None = None,
     name: str | None = None,
-    legend: Literal["color", "opacity", "symbol"] | Legend | None = None,
+    legend: Literal["color", "opacity", "symbol"]
+    | Sequence[Literal["color", "opacity", "symbol"]]
+    | Legend
+    | Sequence[Legend]
+    | None = None,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
     """Create a plot.
@@ -107,22 +111,31 @@ def plot(
     if legend is not None:
         # create name for plot and resolve/bind legend to it
         config["name"] = f"plot_{uuid()}"
+
+        # resolve the legend into components
+        legend_components: list[Legend]
         if isinstance(legend, str):
-            legend = create_legend(legend, location="right")
-        legend.config["for"] = config["name"]
+            legend_components = [create_legend(legend)]
+        elif isinstance(legend, Legend):
+            legend_components = [legend]
+        elif isinstance(legend, Sequence):
+            legend_components = []
+            for legend_item in legend:
+                if isinstance(legend_item, str):
+                    legend_components.append(
+                        create_legend(
+                            cast(Literal["color", "opacity", "symbol"], legend_item)
+                        )
+                    )
+                elif isinstance(legend_item, Legend):
+                    legend_components.append(legend_item)
+
+        for leg in legend_components:
+            leg.config["for"] = config["name"]
 
         # handle legend location
         plot_component = Component(config=config)
-        if legend.location in ["left", "right"]:
-            if "width" not in legend.config:
-                legend.config["width"] = 80
-            if legend.location == "left":
-                return hconcat(legend, plot_component)
-            else:
-                return hconcat(plot_component, legend)
-        elif legend.location == "bottom":
-            return vconcat(plot_component, legend)
-        else:
-            return vconcat(legend, plot_component)
+        return hconcat(plot_component, *legend_components)
+
     else:
         return hconcat(Component(config=config))

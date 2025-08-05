@@ -68,7 +68,7 @@ plot(
         channels={ "Log Viewer": "log_viewer" }, # <1>
         fill="model",
     ),
-    legend=legend("color", location="bottom"),
+    legend=legend("color", frame_anchor="bottom"),
     x_label=None, x_ticks=[], fx_label=None,
     y_label="score", y_domain=[0, 1.0]
 )
