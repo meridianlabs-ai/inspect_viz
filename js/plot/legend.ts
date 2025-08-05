@@ -1,5 +1,5 @@
 import { throttle } from '../util/async';
-import { readOptions, readPlotEl } from './plot';
+import { hasValue, readOptions, readPlotEl } from './plot';
 
 interface LegendOptions {
     inset: number | null;
@@ -25,8 +25,30 @@ type FrameAnchor =
 // TODO: Position multiple legends appropriately
 
 export const installLegendHandler = (specEl: HTMLElement) => {
+    configureLegendHandler(specEl);
+
+    // Watch the spec element for svgs to be added
+    // When they are added, attempt to connect our tooltip
+    // handler
+    const observer = new MutationObserver(() => {
+        configureLegendHandler(specEl);
+    });
+    observer.observe(specEl, { childList: true, subtree: true });
+};
+
+// Track which SVGs have been setup
+// to avoid setting up multiple observers on the same SVG.
+const configuredLegends = new WeakSet<Element>();
+
+const configureLegendHandler = (specEl: HTMLElement) => {
+    // Find all the legend elements in the spec element
     const legends = specEl.querySelectorAll('div.legend');
     for (const legend of Array.from(legends)) {
+        // Skip legends that have already been configured
+        if (configuredLegends.has(legend)) {
+            continue;
+        }
+
         // Find the element
         const legendEl = legend as HTMLElement;
 
@@ -36,6 +58,9 @@ export const installLegendHandler = (specEl: HTMLElement) => {
         // Resolve the frame anchor into element styles on the
         // element and its parent
         applyLegendStyles(options, legendEl, legendEl.parentElement!);
+
+        // Note that this is handled
+        configuredLegends.add(legend);
     }
 };
 
@@ -61,6 +86,9 @@ const applyLegendStyles = (
     // Scale the legand as the plot changes size
     const plotEl = readPlotEl(legendEl);
     responsiveScaleLegend(options, legendEl, plotEl);
+
+    // Apply cursor styles if interactive
+    applyCursorStyle(legendEl);
 };
 
 const applyBackground = (legendEl: HTMLElement, background: string | boolean | null): void => {
@@ -74,6 +102,16 @@ const applyBorder = (legendEl: HTMLElement, border: string | boolean | null): vo
         const borderColor = border === true ? '#DDDDDD' : border || '#DDDDDD';
         legendEl.style.border = `1px solid ${borderColor}`;
     }
+};
+
+const applyCursorStyle = (legendEl: HTMLElement): void => {
+    const observer = new MutationObserver(() => {
+        if (hasValue(legendEl, 'selection')) {
+            const subContainerEl = legendEl.firstElementChild;
+            (subContainerEl as HTMLElement).style.cursor = 'pointer';
+        }
+    });
+    observer.observe(legendEl, { childList: true, subtree: true });
 };
 
 const applyParentPadding = (
@@ -191,7 +229,6 @@ const responsiveScaleLegend = (
                             // Look through the plot to find rect of the plot
                             // which excludes the axes, etc..
                             const plotRect = findPlotRegionRect(plotEl);
-                            console.log({ plotRect, parentRect });
 
                             // Compute the inset based upon the y-grid and x-grid positions
                             const yShift = config.transformOrigin?.startsWith('bottom')
@@ -200,8 +237,6 @@ const responsiveScaleLegend = (
                             const xShift = config.transformOrigin?.endsWith('right')
                                 ? parentRect.right - plotRect.right
                                 : plotRect.left - parentRect.left;
-
-                            console.log({ xShift, yShift, inset });
 
                             // substract the distance from the parent plot to the y-grid, if possible
                             const yInset = inset[1] * scaleFactor + yShift;

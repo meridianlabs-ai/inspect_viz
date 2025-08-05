@@ -1830,6 +1830,10 @@ var readPlotEl = (el) => {
   }
   return void 0;
 };
+var hasValue = (el, key) => {
+  const value = el.value;
+  return value ? !!value[key] || false : false;
+};
 
 // js/plot/tooltips.ts
 var HIDDEN_USER_CHANNEL = "_user_channels";
@@ -2393,11 +2397,23 @@ var isD3TimeFormat = (format2) => {
 
 // js/plot/legend.ts
 var installLegendHandler = (specEl) => {
+  configureLegendHandler(specEl);
+  const observer = new MutationObserver(() => {
+    configureLegendHandler(specEl);
+  });
+  observer.observe(specEl, { childList: true, subtree: true });
+};
+var configuredLegends = /* @__PURE__ */ new WeakSet();
+var configureLegendHandler = (specEl) => {
   const legends = specEl.querySelectorAll("div.legend");
   for (const legend of Array.from(legends)) {
+    if (configuredLegends.has(legend)) {
+      continue;
+    }
     const legendEl = legend;
     const options = readLegendOptions(legendEl);
     applyLegendStyles(options, legendEl, legendEl.parentElement);
+    configuredLegends.add(legend);
   }
 };
 var applyLegendStyles = (options, legendEl, parentEl) => {
@@ -2410,6 +2426,7 @@ var applyLegendStyles = (options, legendEl, parentEl) => {
   applyParentPadding(options, legendEl, parentEl);
   const plotEl = readPlotEl(legendEl);
   responsiveScaleLegend(options, legendEl, plotEl);
+  applyCursorStyle(legendEl);
 };
 var applyBackground = (legendEl, background) => {
   if (background !== false) {
@@ -2421,6 +2438,15 @@ var applyBorder = (legendEl, border) => {
     const borderColor = border === true ? "#DDDDDD" : border || "#DDDDDD";
     legendEl.style.border = `1px solid ${borderColor}`;
   }
+};
+var applyCursorStyle = (legendEl) => {
+  const observer = new MutationObserver(() => {
+    if (hasValue(legendEl, "selection")) {
+      const subContainerEl = legendEl.firstElementChild;
+      subContainerEl.style.cursor = "pointer";
+    }
+  });
+  observer.observe(legendEl, { childList: true, subtree: true });
 };
 var applyParentPadding = (options, legendEl, parentEl) => {
   if (!isInset(options)) {
@@ -2492,10 +2518,8 @@ var responsiveScaleLegend = (options, legendEl, plotEl) => {
             const inset = resolveInset(options);
             if (inset) {
               const plotRect = findPlotRegionRect(plotEl);
-              console.log({ plotRect, parentRect });
               const yShift = config.transformOrigin?.startsWith("bottom") ? parentRect.bottom - plotRect.bottom : plotRect.top - parentRect.top;
               const xShift = config.transformOrigin?.endsWith("right") ? parentRect.right - plotRect.right : plotRect.left - parentRect.left;
-              console.log({ xShift, yShift, inset });
               const yInset = inset[1] * scaleFactor + yShift;
               const xInset = inset[0] * scaleFactor + xShift;
               if (config.centerTransform) {

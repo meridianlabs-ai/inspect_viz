@@ -25,3 +25,8 @@ export const readPlotEl = (el: HTMLElement): HTMLElement | undefined => {
     }
     return undefined;
 };
+
+export const hasValue = (el: HTMLElement, key: string): boolean => {
+    const value = (el as any).value;
+    return value ? !!value[key] || false : false;
+};
