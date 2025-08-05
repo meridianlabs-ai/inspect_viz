@@ -55,12 +55,12 @@ const applyLegendStyles = (
     applyBackground(legendEl, options.background);
     applyBorder(legendEl, options.border);
 
+    // Compute the size of the legend and apply padding
+    applyParentPadding(options, legendEl, parentEl);
+
     // Scale the legand as the plot changes size
     const plotEl = readPlotEl(legendEl);
     responsiveScaleLegend(options, legendEl, plotEl);
-
-    // Compute the size of the legend and apply padding
-    applyParentPadding(options, legendEl, parentEl);
 };
 
 const applyBackground = (legendEl: HTMLElement, background: string | boolean | null): void => {
@@ -86,7 +86,7 @@ const applyParentPadding = (
         const observer = new MutationObserver(() => {
             if (options.frameAnchor) {
                 const newSize = legendEl.getBoundingClientRect();
-                const parentConfig = kParentConfig[options.frameAnchor];
+                const parentConfig = kParentAnchorConfig[options.frameAnchor];
                 const useHeight =
                     parentConfig.paddingType === 'paddingTop' ||
                     parentConfig.paddingType === 'paddingBottom';
@@ -113,7 +113,7 @@ const responsiveScaleLegend = (
 ): void => {
     // Apply the anchor styles
     const anchor = options.frameAnchor || 'right';
-    const config = kAnchorConfig[anchor];
+    const config = kLegendAnchorConfig[anchor];
     Object.assign(legendEl.style, config.position);
     if (config.centerTransform) {
         legendEl.style.transform = 'translateX(-50%)';
@@ -223,10 +223,12 @@ const responsiveScaleLegend = (
     }
 };
 
+// Determines if the legend is inset based on the options provided.
 const isInset = (options: LegendOptions): boolean => {
     return options.inset !== null || options.insetX !== null || options.insetY !== null;
 };
 
+// Resolves the inset options into a tuple of [insetX, insetY] or undefined if no inset is specified.
 const resolveInset = (options: LegendOptions): [number, number] | undefined => {
     if (options.inset == null && options.insetX == null && options.insetY == null) {
         return undefined;
@@ -239,6 +241,7 @@ const resolveInset = (options: LegendOptions): [number, number] | undefined => {
     return [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
 };
 
+// Reads the legend options from the legend element's attributes.
 const readLegendOptions = (legendEl: HTMLElement): LegendOptions => {
     const options = readOptions(legendEl);
     return {
@@ -251,7 +254,36 @@ const readLegendOptions = (legendEl: HTMLElement): LegendOptions => {
     };
 };
 
-const kParentConfig: Record<FrameAnchor, { paddingType: string }> = {
+// Roots around in the plot to guess the internal dimensions based upon
+// the bounding rectangle of the plot element and the position of elements
+// within it.
+const findPlotRegionRect = (plotEl: HTMLElement): DOMRect => {
+    const plotRect = plotEl.getBoundingClientRect();
+
+    const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
+    const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
+
+    const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
+    const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
+
+    const right = plotRect.right;
+
+    let bottom = plotRect.bottom;
+    const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
+    if (xTicks) {
+        const xRect = xTicks.getBoundingClientRect();
+        bottom = xRect.top;
+    } else {
+        const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
+        if (xLabel) {
+            bottom = xLabel.getBoundingClientRect().top;
+        }
+    }
+    return new DOMRect(left, top, right - left, bottom - top);
+};
+
+// The style information for the parent element based on the anchor position.
+const kParentAnchorConfig: Record<FrameAnchor, { paddingType: string }> = {
     'top-left': { paddingType: 'paddingLeft' },
     top: { paddingType: 'paddingTop' },
     'top-right': { paddingType: 'paddingRight' },
@@ -263,7 +295,8 @@ const kParentConfig: Record<FrameAnchor, { paddingType: string }> = {
     middle: { paddingType: '' },
 };
 
-const kAnchorConfig: Record<
+// The style information for the legend element based on the anchor position.
+const kLegendAnchorConfig: Record<
     FrameAnchor,
     {
         position: { [key: string]: string };
@@ -294,32 +327,4 @@ const kAnchorConfig: Record<
         transformOrigin: 'center left',
     },
     middle: { position: {} },
-};
-
-// Roots around in the plot to guess the internal dimensions based upon
-// the bounding rectangle of the plot element and the position of elements
-// within it.
-const findPlotRegionRect = (plotEl: HTMLElement): DOMRect => {
-    const plotRect = plotEl.getBoundingClientRect();
-
-    const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
-    const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
-
-    const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
-    const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
-
-    const right = plotRect.right;
-
-    let bottom = plotRect.bottom;
-    const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
-    if (xTicks) {
-        const xRect = xTicks.getBoundingClientRect();
-        bottom = xRect.top;
-    } else {
-        const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
-        if (xLabel) {
-            bottom = xLabel.getBoundingClientRect().top;
-        }
-    }
-    return new DOMRect(left, top, right - left, bottom - top);
 };

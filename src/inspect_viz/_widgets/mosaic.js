@@ -2407,9 +2407,9 @@ var applyLegendStyles = (options, legendEl, parentEl) => {
   legendEl.style.position = "absolute";
   applyBackground(legendEl, options.background);
   applyBorder(legendEl, options.border);
+  applyParentPadding(options, legendEl, parentEl);
   const plotEl = readPlotEl(legendEl);
   responsiveScaleLegend(options, legendEl, plotEl);
-  applyParentPadding(options, legendEl, parentEl);
 };
 var applyBackground = (legendEl, background) => {
   if (background !== false) {
@@ -2427,7 +2427,7 @@ var applyParentPadding = (options, legendEl, parentEl) => {
     const observer = new MutationObserver(() => {
       if (options.frameAnchor) {
         const newSize = legendEl.getBoundingClientRect();
-        const parentConfig = kParentConfig[options.frameAnchor];
+        const parentConfig = kParentAnchorConfig[options.frameAnchor];
         const useHeight = parentConfig.paddingType === "paddingTop" || parentConfig.paddingType === "paddingBottom";
         parentEl.style[parentConfig.paddingType] = useHeight ? newSize.height + "px" : newSize.width + "px";
       }
@@ -2442,7 +2442,7 @@ var applyParentPadding = (options, legendEl, parentEl) => {
 };
 var responsiveScaleLegend = (options, legendEl, plotEl) => {
   const anchor = options.frameAnchor || "right";
-  const config = kAnchorConfig[anchor];
+  const config = kLegendAnchorConfig[anchor];
   Object.assign(legendEl.style, config.position);
   if (config.centerTransform) {
     legendEl.style.transform = "translateX(-50%)";
@@ -2535,7 +2535,27 @@ var readLegendOptions = (legendEl) => {
     border: options["_border"]
   };
 };
-var kParentConfig = {
+var findPlotRegionRect = (plotEl) => {
+  const plotRect = plotEl.getBoundingClientRect();
+  const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
+  const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
+  const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
+  const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
+  const right = plotRect.right;
+  let bottom = plotRect.bottom;
+  const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
+  if (xTicks) {
+    const xRect = xTicks.getBoundingClientRect();
+    bottom = xRect.top;
+  } else {
+    const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
+    if (xLabel) {
+      bottom = xLabel.getBoundingClientRect().top;
+    }
+  }
+  return new DOMRect(left, top, right - left, bottom - top);
+};
+var kParentAnchorConfig = {
   "top-left": { paddingType: "paddingLeft" },
   top: { paddingType: "paddingTop" },
   "top-right": { paddingType: "paddingRight" },
@@ -2546,7 +2566,7 @@ var kParentConfig = {
   left: { paddingType: "paddingLeft" },
   middle: { paddingType: "" }
 };
-var kAnchorConfig = {
+var kLegendAnchorConfig = {
   "top-left": { position: { top: "0", left: "0" }, transformOrigin: "top left" },
   top: {
     position: { top: "0", left: "50%" },
@@ -2569,26 +2589,6 @@ var kAnchorConfig = {
     transformOrigin: "center left"
   },
   middle: { position: {} }
-};
-var findPlotRegionRect = (plotEl) => {
-  const plotRect = plotEl.getBoundingClientRect();
-  const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
-  const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
-  const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
-  const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
-  const right = plotRect.right;
-  let bottom = plotRect.bottom;
-  const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
-  if (xTicks) {
-    const xRect = xTicks.getBoundingClientRect();
-    bottom = xRect.top;
-  } else {
-    const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
-    if (xLabel) {
-      bottom = xLabel.getBoundingClientRect().top;
-    }
-  }
-  return new DOMRect(left, top, right - left, bottom - top);
 };
 
 // js/widgets/mosaic.ts
