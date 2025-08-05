@@ -1,7 +1,6 @@
 ---
 title: "Penguins Explorer"
 subtitle: "Dataset: [penguins.parquet](penguins.parquet)"
-format: dashboard
 ---
 
 Use the species drop down to see only points for a particular species. Use the x and y drop downs to explore differnet variables.
