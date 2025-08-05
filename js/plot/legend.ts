@@ -110,72 +110,43 @@ const configuredLegends = new WeakSet<Element>();
 
 const configureLegendHandler = (specEl: HTMLElement) => {
     // Find all the legend elements in the spec element
-    const legends = specEl.querySelectorAll('div.legend');
-    const frameLegends: Record<string, HTMLElement[]> = {};
-    for (const legend of Array.from(legends)) {
-        // Find the element
-        const legendEl = legend as HTMLElement;
+    const frameLegends: Record<string, HTMLElement[]> = groupLegendsByPosition(specEl);
 
-        // read the legend options
-        const options = readLegendOptions(legendEl);
+    // Move legends into their containers
+    emplaceLegendContainers(frameLegends, specEl);
 
-        // Skip legends that have already been configured
-        if (configuredLegends.has(legend)) {
-            continue;
-        }
+    // Process each legend, applying styles
+    const processLegends = () => {
+        const legends = specEl.querySelectorAll('div.legend');
+        legends.forEach(legend => {
+            const legendEl = legend as HTMLElement;
+            applyLegendStyles(legendEl);
+        });
+    };
 
-        if (options.frameAnchor) {
-            // Create a legend key (which encodes the anchor and inset to group
-            // legends into buckets which share the same container position)
-            const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
-            frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
-            frameLegends[legendKey]!.push(legendEl);
-        }
-    }
+    // Process the legends immediately
+    processLegends();
 
-    // Process the legends by position
-    for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
-        for (const legendEl of legendEls) {
-            // read the legend options
-            const options = readLegendOptions(legendEl);
-
-            // Ensure there is a frame container for the legend container
-            let containerEl: HTMLElement | null = specEl.querySelector(
-                `div.legend-container.${positionKey}`
-            ) as HTMLElement | null;
-            if (containerEl === null) {
-                // Create a new container element
-                containerEl = document.createElement('div');
-                containerEl.className = `legend-container ${positionKey}`;
-                legendEl.parentElement!.insertBefore(containerEl, legendEl);
-            }
-
-            // Move the legend element into the container
-            containerEl.appendChild(legendEl);
-
-            // Resolve the frame anchor into element styles on the
-            // element and its parent
-            const plotEl = readPlotEl(legendEl);
-            if (plotEl) {
-                applyLegendStyles(options, containerEl, plotEl, containerEl.parentElement!);
-            }
-
-            // Note that this is handled
-            configuredLegends.add(legendEl);
-        }
-    }
+    // Watch the spec element and apply legend styles when the spec is resized
+    const observer = new ResizeObserver(() => {
+        processLegends();
+    });
+    observer.observe(specEl);
 };
 
-const applyLegendStyles = (
-    options: ResolvedLegendOptions,
-    legendContainerEl: HTMLElement,
-    plotEl: HTMLElement,
-    parentEl: HTMLElement
-): void => {
-    if (!options.frameAnchor) return;
+const applyLegendStyles = (legendEl: HTMLElement): void => {
+    // Read the legend options
+    const options = readLegendOptions(legendEl);
+    if (!options.frameAnchor) {
+        return;
+    }
+
+    // Legend container parents
+    const legendContainerEl = legendEl.parentElement as HTMLElement;
+    const legendContainerParentEl = legendContainerEl.parentElement as HTMLElement;
 
     // Global configuration
-    parentEl.style.position = 'relative';
+    legendContainerParentEl.style.position = 'relative';
     legendContainerEl.style.padding = '0.3em';
     legendContainerEl.style.position = 'absolute';
 
@@ -184,25 +155,25 @@ const applyLegendStyles = (
     applyBorder(legendContainerEl, options.border);
 
     // Compute the size of the legend and apply padding
-    applyParentPadding(options, legendContainerEl, parentEl);
+    applyParentPadding(options, legendContainerEl, legendContainerParentEl);
 
     // Scale the legend as the plot changes size
-    responsiveScaleLegend(options, legendContainerEl, plotEl);
+    responsiveScaleLegend(options, legendEl, legendContainerEl);
 
     // Apply cursor styles if interactive
     applyCursorStyle(legendContainerEl);
 };
 
-const applyBackground = (legendEl: HTMLElement, background: string | boolean | null): void => {
+const applyBackground = (targetEl: HTMLElement, background: string | boolean | null): void => {
     if (background !== false) {
-        legendEl.style.background = background === true ? 'white' : background || 'white';
+        targetEl.style.background = background === true ? 'white' : background || 'white';
     }
 };
 
-const applyBorder = (legendEl: HTMLElement, border: string | boolean | null): void => {
+const applyBorder = (targetEl: HTMLElement, border: string | boolean | null): void => {
     if (border !== false) {
         const borderColor = border === true ? '#DDDDDD' : border || '#DDDDDD';
-        legendEl.style.border = `1px solid ${borderColor}`;
+        targetEl.style.border = `1px solid ${borderColor}`;
     }
 };
 
@@ -260,114 +231,92 @@ const applyParentPadding = (
 const responsiveScaleLegend = (
     options: ResolvedLegendOptions,
     legendEl: HTMLElement,
-    plotEl?: HTMLElement
+    legendContainerEl: HTMLElement
 ): void => {
     // Apply the anchor styles
     const anchor = options.frameAnchor || 'right';
     const config = kLegendAnchorConfig[anchor];
-    Object.assign(legendEl.style, config.position);
+    Object.assign(legendContainerEl.style, config.position);
     if (config.centerTransform) {
-        legendEl.style.transform = 'translateX(-50%)';
+        legendContainerEl.style.transform = 'translateX(-50%)';
+    }
+    const plotEl = readPlotEl(legendEl);
+    if (!plotEl || !plotEl.children || plotEl.childElementCount === 0) {
+        return;
     }
 
-    // Monitor the plot and responsive scale the size and position
-    // of the legend
-    if (plotEl && plotEl.parentElement) {
-        // Throttle + only apply changes when scale factor changes
-        let lastScaleFactor: number | null = null;
-
-        const resizeObserver = new ResizeObserver(
-            throttle(entries => {
-                for (let entry of entries) {
-                    if (!plotEl.children || plotEl.childElementCount === 0) {
-                        return;
-                    }
-
-                    // The observed parent element
-                    const parentEl = entry.target as HTMLElement;
-
-                    // Find the x and y grid elements (we'll position the legend relative to these)
-                    const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-                    const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-                    if (!yGridEl || !xGridEl) {
-                        console.warn('Missing y-grid or x-grid elements in the plot.');
-                        return;
-                    }
-
-                    // This assumes that the first child of the plot element is the SVG element
-                    // itself. Verify this:
-                    const svgEl = plotEl.children[0] as HTMLElement;
-                    if (svgEl.tagName !== 'svg') {
-                        console.warn('The first child of the plot element is not an SVG element.');
-                        return;
-                    }
-
-                    // Read the width
-                    const baseWidth = svgEl.getAttribute('width');
-                    if (!baseWidth) {
-                        console.warn('Plot element does not have a width attribute.');
-                        return;
-                    }
-
-                    // Compute the scale factor based the based with vs the actual width
-                    const parentRect = parentEl.getBoundingClientRect();
-                    const actualWidth = parentRect.width;
-                    const scaleFactor = actualWidth / parseFloat(baseWidth);
-
-                    // Don't bother resizing if the scale factor hasn't changed much
-                    if (
-                        lastScaleFactor !== null &&
-                        Math.abs(scaleFactor - lastScaleFactor) < 0.001
-                    ) {
-                        return;
-                    }
-                    lastScaleFactor = scaleFactor;
-
-                    requestAnimationFrame(() => {
-                        // Accumulate any styles
-                        const styles: Partial<CSSStyleDeclaration> = {};
-
-                        // Set the transform origin to maintain a stable position
-                        if (config.transformOrigin) {
-                            styles.transformOrigin = config.transformOrigin;
-                        }
-                        if (config.centerTransform) {
-                            styles.transform = `translateX(-50%) scale(${scaleFactor})`;
-                        } else {
-                            styles.transform = `scale(${scaleFactor})`;
-                        }
-
-                        if (options.inset) {
-                            // Look through the plot to find rect of the plot
-                            // which excludes the axes, etc..
-                            const plotRect = findPlotRegionRect(plotEl);
-
-                            // Compute the inset based upon the y-grid and x-grid positions
-                            const yShift = config.transformOrigin?.startsWith('bottom')
-                                ? parentRect.bottom - plotRect.bottom
-                                : plotRect.top - parentRect.top;
-                            const xShift = config.transformOrigin?.endsWith('right')
-                                ? parentRect.right - plotRect.right
-                                : plotRect.left - parentRect.left;
-
-                            // substract the distance from the parent plot to the y-grid, if possible
-                            const yInset = options.inset[1] * scaleFactor + yShift;
-                            const xInset = options.inset[0] * scaleFactor + xShift;
-                            if (config.centerTransform) {
-                                styles.margin = `${yInset}px 0px`;
-                            } else {
-                                styles.margin = `${yInset}px ${xInset}px`;
-                            }
-                        }
-
-                        Object.assign(legendEl.style, styles);
-                    });
-                }
-            }, 16)
-        );
-
-        resizeObserver.observe(plotEl.parentElement);
+    // The observed parent element
+    const parentEl = plotEl.parentElement;
+    if (!parentEl) {
+        console.warn('No parent element found for the plot.');
+        return;
     }
+
+    // Find the x and y grid elements (we'll position the legend relative to these)
+    const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+    const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+    if (!yGridEl || !xGridEl) {
+        console.warn('Missing y-grid or x-grid elements in the plot.');
+        return;
+    }
+
+    // This assumes that the first child of the plot element is the SVG element
+    // itself. Verify this:
+    const svgEl = plotEl.children[0] as HTMLElement;
+    if (svgEl.tagName !== 'svg') {
+        console.warn('The first child of the plot element is not an SVG element.');
+        return;
+    }
+
+    // Read the width
+    const baseWidth = svgEl.getAttribute('width');
+    if (!baseWidth) {
+        console.warn('Plot element does not have a width attribute.');
+        return;
+    }
+
+    // Compute the scale factor based the based with vs the actual width
+    const parentRect = parentEl.getBoundingClientRect();
+    const actualWidth = parentRect.width;
+    const scaleFactor = actualWidth / parseFloat(baseWidth);
+
+    // Accumulate any styles
+    const styles: Partial<CSSStyleDeclaration> = {};
+
+    // Set the transform origin to maintain a stable position
+    if (config.transformOrigin) {
+        styles.transformOrigin = config.transformOrigin;
+    }
+    if (config.centerTransform) {
+        styles.transform = `translateX(-50%) scale(${scaleFactor})`;
+    } else {
+        styles.transform = `scale(${scaleFactor})`;
+    }
+
+    if (options.inset) {
+        // Look through the plot to find rect of the plot
+        // which excludes the axes, etc..
+        const plotRect = findPlotRegionRect(plotEl);
+
+        // Compute the inset based upon the y-grid and x-grid positions
+        const yShift = config.transformOrigin?.startsWith('bottom')
+            ? parentRect.bottom - plotRect.bottom
+            : plotRect.top - parentRect.top;
+        const xShift = config.transformOrigin?.endsWith('right')
+            ? parentRect.right - plotRect.right
+            : plotRect.left - parentRect.left;
+
+        // substract the distance from the parent plot to the y-grid, if possible
+        const yInset = options.inset[1] * scaleFactor + yShift;
+        const xInset = options.inset[0] * scaleFactor + xShift;
+        if (config.centerTransform) {
+            styles.margin = `${yInset}px 0px`;
+        } else {
+            styles.margin = `${yInset}px ${xInset}px`;
+        }
+    }
+
+    Object.assign(legendContainerEl.style, styles);
 };
 
 // Resolves the inset options into a tuple of [insetX, insetY] or undefined if no inset is specified.
@@ -484,3 +433,51 @@ const kLegendAnchorConfig: Record<
     },
     middle: { position: {} },
 };
+function emplaceLegendContainers(frameLegends: Record<string, HTMLElement[]>, specEl: HTMLElement) {
+    for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
+        for (const legendEl of legendEls) {
+            // Ensure there is a frame container for the legend container
+            let containerEl: HTMLElement | null = specEl.querySelector(
+                `div.legend-container.${positionKey}`
+            ) as HTMLElement | null;
+            if (containerEl === null) {
+                // Create a new container element
+                containerEl = document.createElement('div');
+                containerEl.className = `legend-container ${positionKey}`;
+                legendEl.parentElement!.insertBefore(containerEl, legendEl);
+            }
+
+            // Move the legend element into the container
+            containerEl.appendChild(legendEl);
+
+            // Note that this is handled
+            configuredLegends.add(legendEl);
+        }
+    }
+}
+
+function groupLegendsByPosition(specEl: HTMLElement) {
+    const legends = specEl.querySelectorAll('div.legend');
+    const frameLegends: Record<string, HTMLElement[]> = {};
+    for (const legend of Array.from(legends)) {
+        // Find the element
+        const legendEl = legend as HTMLElement;
+
+        // read the legend options
+        const options = readLegendOptions(legendEl);
+
+        // Skip legends that have already been configured
+        if (configuredLegends.has(legend)) {
+            continue;
+        }
+
+        if (options.frameAnchor) {
+            // Create a legend key (which encodes the anchor and inset to group
+            // legends into buckets which share the same container position)
+            const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+            frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
+            frameLegends[legendKey]!.push(legendEl);
+        }
+    }
+    return frameLegends;
+}
