@@ -10,6 +10,13 @@ interface LegendOptions {
     border: string | boolean | null;
 }
 
+interface ResolvedLegendOptions {
+    inset: [number, number] | undefined;
+    frameAnchor: FrameAnchor | null;
+    background: string | boolean | null;
+    border: string | boolean | null;
+}
+
 type FrameAnchor =
     | 'middle'
     | 'top-left'
@@ -21,7 +28,6 @@ type FrameAnchor =
     | 'bottom-left'
     | 'left';
 
-// TODO: If the the legend is interactive, update the mouse cursor to pointed on hover
 // TODO: Position multiple legends appropriately
 
 export const installLegendHandler = (specEl: HTMLElement) => {
@@ -43,52 +49,86 @@ const configuredLegends = new WeakSet<Element>();
 const configureLegendHandler = (specEl: HTMLElement) => {
     // Find all the legend elements in the spec element
     const legends = specEl.querySelectorAll('div.legend');
+    const frameLegends: Record<string, HTMLElement[]> = {};
     for (const legend of Array.from(legends)) {
-        // Skip legends that have already been configured
-        if (configuredLegends.has(legend)) {
-            continue;
-        }
-
         // Find the element
         const legendEl = legend as HTMLElement;
 
         // read the legend options
         const options = readLegendOptions(legendEl);
 
-        // Resolve the frame anchor into element styles on the
-        // element and its parent
-        applyLegendStyles(options, legendEl, legendEl.parentElement!);
+        // Skip legends that have already been configured
+        if (configuredLegends.has(legend)) {
+            continue;
+        }
 
-        // Note that this is handled
-        configuredLegends.add(legend);
+        if (options.frameAnchor) {
+            // Create a legend key (which encodes the anchor and inset to group
+            // legends into buckets which share the same container position)
+            const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+            frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
+            frameLegends[legendKey]!.push(legendEl);
+        }
+    }
+
+    // Process the legends by position
+    for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
+        for (const legendEl of legendEls) {
+            // read the legend options
+            const options = readLegendOptions(legendEl);
+
+            // Ensure there is a frame container for the legend container
+            let containerEl: HTMLElement | null = specEl.querySelector(
+                `div.legend-container.${positionKey}`
+            ) as HTMLElement | null;
+            if (containerEl === null) {
+                // Create a new container element
+                containerEl = document.createElement('div');
+                containerEl.className = `legend-container ${positionKey}`;
+                legendEl.parentElement!.insertBefore(containerEl, legendEl);
+            }
+
+            // Move the legend element into the container
+            containerEl.appendChild(legendEl);
+
+            // Resolve the frame anchor into element styles on the
+            // element and its parent
+            const plotEl = readPlotEl(legendEl);
+            if (plotEl) {
+                applyLegendStyles(options, containerEl, plotEl, containerEl.parentElement!);
+            }
+
+            // Note that this is handled
+            configuredLegends.add(legendEl);
+        }
     }
 };
 
 const applyLegendStyles = (
-    options: LegendOptions,
-    legendEl: HTMLElement,
+    options: ResolvedLegendOptions,
+    legendContainerEl: HTMLElement,
+    plotEl: HTMLElement,
     parentEl: HTMLElement
 ): void => {
     if (!options.frameAnchor) return;
 
     // Global configuration
     parentEl.style.position = 'relative';
-    legendEl.style.padding = '0.3em';
-    legendEl.style.position = 'absolute';
+    legendContainerEl.style.padding = '0.3em';
+    legendContainerEl.style.position = 'absolute';
 
     // Background and border
-    applyBackground(legendEl, options.background);
-    applyBorder(legendEl, options.border);
+    applyBackground(legendContainerEl, options.background);
+    applyBorder(legendContainerEl, options.border);
 
     // Compute the size of the legend and apply padding
-    applyParentPadding(options, legendEl, parentEl);
+    applyParentPadding(options, legendContainerEl, parentEl);
 
-    // Scale the legand as the plot changes size
-    const plotEl = readPlotEl(legendEl);
-    responsiveScaleLegend(options, legendEl, plotEl);
+    // Scale the legend as the plot changes size
+    responsiveScaleLegend(options, legendContainerEl, plotEl);
 
     // Apply cursor styles if interactive
-    applyCursorStyle(legendEl);
+    applyCursorStyle(legendContainerEl);
 };
 
 const applyBackground = (legendEl: HTMLElement, background: string | boolean | null): void => {
@@ -115,11 +155,11 @@ const applyCursorStyle = (legendEl: HTMLElement): void => {
 };
 
 const applyParentPadding = (
-    options: LegendOptions,
+    options: ResolvedLegendOptions,
     legendEl: HTMLElement,
     parentEl: HTMLElement
 ): void => {
-    if (!isInset(options)) {
+    if (!options.inset) {
         // Watch for size changes
         const observer = new MutationObserver(() => {
             if (options.frameAnchor) {
@@ -145,7 +185,7 @@ const applyParentPadding = (
 };
 
 const responsiveScaleLegend = (
-    options: LegendOptions,
+    options: ResolvedLegendOptions,
     legendEl: HTMLElement,
     plotEl?: HTMLElement
 ): void => {
@@ -224,8 +264,7 @@ const responsiveScaleLegend = (
                             styles.transform = `scale(${scaleFactor})`;
                         }
 
-                        const inset = resolveInset(options);
-                        if (inset) {
+                        if (options.inset) {
                             // Look through the plot to find rect of the plot
                             // which excludes the axes, etc..
                             const plotRect = findPlotRegionRect(plotEl);
@@ -239,8 +278,8 @@ const responsiveScaleLegend = (
                                 : plotRect.left - parentRect.left;
 
                             // substract the distance from the parent plot to the y-grid, if possible
-                            const yInset = inset[1] * scaleFactor + yShift;
-                            const xInset = inset[0] * scaleFactor + xShift;
+                            const yInset = options.inset[1] * scaleFactor + yShift;
+                            const xInset = options.inset[0] * scaleFactor + xShift;
                             if (config.centerTransform) {
                                 styles.margin = `${yInset}px 0px`;
                             } else {
@@ -258,35 +297,44 @@ const responsiveScaleLegend = (
     }
 };
 
-// Determines if the legend is inset based on the options provided.
-const isInset = (options: LegendOptions): boolean => {
-    return options.inset !== null || options.insetX !== null || options.insetY !== null;
-};
-
 // Resolves the inset options into a tuple of [insetX, insetY] or undefined if no inset is specified.
-const resolveInset = (options: LegendOptions): [number, number] | undefined => {
+const resolveOptions = (options: LegendOptions): ResolvedLegendOptions => {
     if (options.inset == null && options.insetX == null && options.insetY == null) {
-        return undefined;
+        return {
+            inset: undefined,
+            frameAnchor: options.frameAnchor,
+            background: options.background,
+            border: options.border,
+        };
     }
 
+    let inset: [number, number] | undefined = undefined;
     if (options.inset !== null && options.insetX === null && options.insetY === null) {
-        return [Math.abs(options.inset), Math.abs(options.inset)];
+        inset = [Math.abs(options.inset), Math.abs(options.inset)];
+    } else if (options.insetX !== null || options.insetY !== null) {
+        inset = [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
     }
 
-    return [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
+    return {
+        inset: inset,
+        frameAnchor: options.frameAnchor,
+        background: options.background,
+        border: options.border,
+    };
 };
 
 // Reads the legend options from the legend element's attributes.
-const readLegendOptions = (legendEl: HTMLElement): LegendOptions => {
-    const options = readOptions(legendEl);
-    return {
-        inset: options['_inset'] as number | null,
-        insetX: options['_inset_x'] as number | null,
-        insetY: options['_inset_y'] as number | null,
-        frameAnchor: options['_frame_anchor'] as FrameAnchor | null,
-        background: options['_background'] as string | boolean | null,
-        border: options['_border'] as string | boolean | null,
+const readLegendOptions = (legendEl: HTMLElement): ResolvedLegendOptions => {
+    const optionsRaw = readOptions(legendEl);
+    const options: LegendOptions = {
+        inset: optionsRaw['_inset'] as number | null,
+        insetX: optionsRaw['_inset_x'] as number | null,
+        insetY: optionsRaw['_inset_y'] as number | null,
+        frameAnchor: optionsRaw['_frame_anchor'] as FrameAnchor | null,
+        background: optionsRaw['_background'] as string | boolean | null,
+        border: optionsRaw['_border'] as string | boolean | null,
     };
+    return resolveOptions(options);
 };
 
 // Roots around in the plot to guess the internal dimensions based upon

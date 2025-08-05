@@ -2406,27 +2406,49 @@ var installLegendHandler = (specEl) => {
 var configuredLegends = /* @__PURE__ */ new WeakSet();
 var configureLegendHandler = (specEl) => {
   const legends = specEl.querySelectorAll("div.legend");
+  const frameLegends = {};
   for (const legend of Array.from(legends)) {
+    const legendEl = legend;
+    const options = readLegendOptions(legendEl);
     if (configuredLegends.has(legend)) {
       continue;
     }
-    const legendEl = legend;
-    const options = readLegendOptions(legendEl);
-    applyLegendStyles(options, legendEl, legendEl.parentElement);
-    configuredLegends.add(legend);
+    if (options.frameAnchor) {
+      const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+      frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
+      frameLegends[legendKey].push(legendEl);
+    }
+  }
+  for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
+    for (const legendEl of legendEls) {
+      const options = readLegendOptions(legendEl);
+      let containerEl = specEl.querySelector(
+        `div.legend-container.${positionKey}`
+      );
+      if (containerEl === null) {
+        containerEl = document.createElement("div");
+        containerEl.className = `legend-container ${positionKey}`;
+        legendEl.parentElement.insertBefore(containerEl, legendEl);
+      }
+      containerEl.appendChild(legendEl);
+      const plotEl = readPlotEl(legendEl);
+      if (plotEl) {
+        applyLegendStyles(options, containerEl, plotEl, containerEl.parentElement);
+      }
+      configuredLegends.add(legendEl);
+    }
   }
 };
-var applyLegendStyles = (options, legendEl, parentEl) => {
+var applyLegendStyles = (options, legendContainerEl, plotEl, parentEl) => {
   if (!options.frameAnchor) return;
   parentEl.style.position = "relative";
-  legendEl.style.padding = "0.3em";
-  legendEl.style.position = "absolute";
-  applyBackground(legendEl, options.background);
-  applyBorder(legendEl, options.border);
-  applyParentPadding(options, legendEl, parentEl);
-  const plotEl = readPlotEl(legendEl);
-  responsiveScaleLegend(options, legendEl, plotEl);
-  applyCursorStyle(legendEl);
+  legendContainerEl.style.padding = "0.3em";
+  legendContainerEl.style.position = "absolute";
+  applyBackground(legendContainerEl, options.background);
+  applyBorder(legendContainerEl, options.border);
+  applyParentPadding(options, legendContainerEl, parentEl);
+  responsiveScaleLegend(options, legendContainerEl, plotEl);
+  applyCursorStyle(legendContainerEl);
 };
 var applyBackground = (legendEl, background) => {
   if (background !== false) {
@@ -2449,7 +2471,7 @@ var applyCursorStyle = (legendEl) => {
   observer.observe(legendEl, { childList: true, subtree: true });
 };
 var applyParentPadding = (options, legendEl, parentEl) => {
-  if (!isInset(options)) {
+  if (!options.inset) {
     const observer = new MutationObserver(() => {
       if (options.frameAnchor) {
         const newSize = legendEl.getBoundingClientRect();
@@ -2515,13 +2537,12 @@ var responsiveScaleLegend = (options, legendEl, plotEl) => {
             } else {
               styles.transform = `scale(${scaleFactor})`;
             }
-            const inset = resolveInset(options);
-            if (inset) {
+            if (options.inset) {
               const plotRect = findPlotRegionRect(plotEl);
               const yShift = config.transformOrigin?.startsWith("bottom") ? parentRect.bottom - plotRect.bottom : plotRect.top - parentRect.top;
               const xShift = config.transformOrigin?.endsWith("right") ? parentRect.right - plotRect.right : plotRect.left - parentRect.left;
-              const yInset = inset[1] * scaleFactor + yShift;
-              const xInset = inset[0] * scaleFactor + xShift;
+              const yInset = options.inset[1] * scaleFactor + yShift;
+              const xInset = options.inset[0] * scaleFactor + xShift;
               if (config.centerTransform) {
                 styles.margin = `${yInset}px 0px`;
               } else {
@@ -2536,28 +2557,39 @@ var responsiveScaleLegend = (options, legendEl, plotEl) => {
     resizeObserver.observe(plotEl.parentElement);
   }
 };
-var isInset = (options) => {
-  return options.inset !== null || options.insetX !== null || options.insetY !== null;
-};
-var resolveInset = (options) => {
+var resolveOptions = (options) => {
   if (options.inset == null && options.insetX == null && options.insetY == null) {
-    return void 0;
+    return {
+      inset: void 0,
+      frameAnchor: options.frameAnchor,
+      background: options.background,
+      border: options.border
+    };
   }
+  let inset = void 0;
   if (options.inset !== null && options.insetX === null && options.insetY === null) {
-    return [Math.abs(options.inset), Math.abs(options.inset)];
+    inset = [Math.abs(options.inset), Math.abs(options.inset)];
+  } else if (options.insetX !== null || options.insetY !== null) {
+    inset = [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
   }
-  return [Math.abs(options.insetX || 0), Math.abs(options.insetY || 0)];
+  return {
+    inset,
+    frameAnchor: options.frameAnchor,
+    background: options.background,
+    border: options.border
+  };
 };
 var readLegendOptions = (legendEl) => {
-  const options = readOptions(legendEl);
-  return {
-    inset: options["_inset"],
-    insetX: options["_inset_x"],
-    insetY: options["_inset_y"],
-    frameAnchor: options["_frame_anchor"],
-    background: options["_background"],
-    border: options["_border"]
+  const optionsRaw = readOptions(legendEl);
+  const options = {
+    inset: optionsRaw["_inset"],
+    insetX: optionsRaw["_inset_x"],
+    insetY: optionsRaw["_inset_y"],
+    frameAnchor: optionsRaw["_frame_anchor"],
+    background: optionsRaw["_background"],
+    border: optionsRaw["_border"]
   };
+  return resolveOptions(options);
 };
 var findPlotRegionRect = (plotEl) => {
   const plotRect = plotEl.getBoundingClientRect();

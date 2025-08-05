@@ -1,0 +1,12 @@
+.legend-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.legend-container.top,
+.legend-container.bottom
+ {
+    flex-direction: row;
+}
+
