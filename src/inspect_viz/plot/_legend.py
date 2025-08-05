@@ -1,3 +1,4 @@
+from typing import cast
 from pydantic import JsonValue
 from typing_extensions import Literal
 
@@ -21,7 +22,19 @@ class Legend(Component):
 
         # handle columns
         if columns == "auto":
-            columns = 1 if frame_anchor in ["left", "right"] else None
+            columns = (
+                1
+                if frame_anchor
+                in [
+                    "left",
+                    "right",
+                    "top-right",
+                    "top-left",
+                    "bottom-right",
+                    "bottom-left",
+                ]
+                else None
+            )
         if columns is not None:
             legend_config["columns"] = columns
 
@@ -30,6 +43,11 @@ class Legend(Component):
 
         # forward super to config
         super().__init__(legend_config | config)
+
+    @property
+    def frame_anchor(self) -> FrameAnchor:
+        """The frame anchor for the legend."""
+        return cast(FrameAnchor, self.config["_frame_anchor"])
 
 
 def legend(

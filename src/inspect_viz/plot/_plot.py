@@ -135,7 +135,17 @@ def plot(
 
         # handle legend location
         plot_component = Component(config=config)
-        return hconcat(plot_component, *legend_components)
+        if leg.frame_anchor in [
+            "left",
+            "right",
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+        ]:
+            return hconcat(plot_component, *legend_components)
+        else:
+            return hconcat(plot_component, *legend_components)
 
     else:
         return hconcat(Component(config=config))
