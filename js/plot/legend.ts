@@ -144,7 +144,15 @@ const applyBorder = (legendEl: HTMLElement, border: string | boolean | null): vo
     }
 };
 
+// Watch the legend and apply a cursor style if it has a selection
 const applyCursorStyle = (legendEl: HTMLElement): void => {
+    // If the legend already has a cursor observer, remove it
+    const existingObserver = cursorObserver.get(legendEl);
+    if (existingObserver) {
+        existingObserver.disconnect();
+        cursorObserver.delete(legendEl);
+    }
+
     const observer = new MutationObserver(() => {
         if (hasValue(legendEl, 'selection')) {
             const subContainerEl = legendEl.firstElementChild;
@@ -152,7 +160,10 @@ const applyCursorStyle = (legendEl: HTMLElement): void => {
         }
     });
     observer.observe(legendEl, { childList: true, subtree: true });
+
+    cursorObserver.set(legendEl, observer);
 };
+const cursorObserver = new WeakMap<HTMLElement, MutationObserver>();
 
 const applyParentPadding = (
     options: ResolvedLegendOptions,
