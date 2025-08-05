@@ -82,10 +82,12 @@ def legend(
       for_plot: The name of the plot this legend applies to. A plot must include a
         `name` attribute to be referenced. Note that this is not use when
         passing a legend to the `plot()` function.
-      frame_anchor: Where to position the relative the plot frame.
+      frame_anchor: Where to position the relative the plot frame. Defaults to "right".
       inset: The inset of the legend from the plot frame, in pixels. If no inset is specified, the legend will be positioned outside the plot frame.
       inset_x: The horizontal inset of the legend from the plot frame, in pixels.
       inset_y: The vertical inset of the legend from the plot frame, in pixels.
+      border: The border color for the legend. Pass 'True' to use the default border color, or a string to specify a custom color. Pass 'False' to disable the border. Defaults to `True`.
+      background: The background color for the legend. Pass 'True' to use the default background color, or a string to specify a custom color. Pass 'False' to disable the background. Defaults to `True`.
     """
     config: dict[str, JsonValue] = {}
     if label is not None:
@@ -112,7 +114,7 @@ def legend(
         config["for"] = for_plot
 
     # Forward options
-    config["_frame_anchor"] = frame_anchor
+    config["_frame_anchor"] = frame_anchor or "right"
     config["_inset"] = inset
     config["_inset_x"] = inset_x
     config["_inset_y"] = inset_y

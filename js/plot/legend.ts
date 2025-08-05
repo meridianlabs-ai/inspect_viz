@@ -1,3 +1,4 @@
+import { throttle } from '../util/async';
 import { readOptions, readPlotEl } from './plot';
 
 interface LegendOptions {
@@ -22,7 +23,6 @@ type FrameAnchor =
 
 // TODO: If the the legend is interactive, update the mouse cursor to pointed on hover
 // TODO: Position multiple legends appropriately
-// TODO: Scale the legend as the plot scales
 
 export const installLegendHandler = (specEl: HTMLElement) => {
     const legends = specEl.querySelectorAll('div.legend');
@@ -121,71 +121,105 @@ const responsiveScaleLegend = (
 
     // Monitor the plot and responsive scale the size and position
     // of the legend
-    if (plotEl) {
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                if (!plotEl.children || plotEl.childElementCount === 0) {
-                    return;
-                }
+    if (plotEl && plotEl.parentElement) {
+        // Throttle + only apply changes when scale factor changes
+        let lastScaleFactor: number | null = null;
 
-                // The observed parent element
-                const parentEl = entry.target as HTMLElement;
-
-                // Find the x and y grid elements (we'll position the legend relative to these)
-                const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-                const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-                if (!yGridEl || !xGridEl) {
-                    console.warn('Missing y-grid or x-grid elements in the plot.');
-                    return;
-                }
-
-                // This assumes that the first child of the plot element is the SVG element
-                // itself. Verify this:
-                const svgEl = plotEl.children[0] as HTMLElement;
-                if (svgEl.tagName !== 'svg') {
-                    console.warn('The first child of the plot element is not an SVG element.');
-                    return;
-                }
-
-                // Read the width
-                const baseWidth = svgEl.getAttribute('width');
-                if (!baseWidth) {
-                    console.warn('Plot element does not have a width attribute.');
-                    return;
-                }
-
-                // Compute the scale factor based the based with vs the actual width
-                const parentRect = parentEl.getBoundingClientRect();
-                const actualWidth = parentRect.width;
-                const scaleFactor = actualWidth / parseFloat(baseWidth);
-
-                // Set the transform origin to maintian a stable position
-                if (config.transformOrigin) {
-                    legendEl.style.transformOrigin = config.transformOrigin;
-                }
-                legendEl.style.transform = `scale(${scaleFactor})`;
-
-                const inset = resolveInset(options);
-                if (inset) {
-                    // Compute the inset based upon the y-grid and x-grid positions
-                    const yGridRect = yGridEl.getBoundingClientRect();
-                    const xGridRect = xGridEl.getBoundingClientRect();
-                    const yShift = yGridRect.top - parentRect.top;
-                    const xShift = xGridRect.left - parentRect.left;
-
-                    // substract the distance from the parent plot to the y-grid, if possible
-                    const yInset = inset[1] * scaleFactor + yShift;
-                    const xInset = inset[0] * scaleFactor + xShift;
-                    if (config.centerTransform) {
-                        legendEl.style.margin = `${yInset}px 0px`;
-                    } else {
-                        legendEl.style.margin = `${yInset}px ${xInset}px`;
+        const resizeObserver = new ResizeObserver(
+            throttle(entries => {
+                for (let entry of entries) {
+                    if (!plotEl.children || plotEl.childElementCount === 0) {
+                        return;
                     }
-                }
-            }
-        });
 
-        resizeObserver.observe(plotEl.parentElement!);
+                    // The observed parent element
+                    const parentEl = entry.target as HTMLElement;
+
+                    // Find the x and y grid elements (we'll position the legend relative to these)
+                    const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+                    const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+                    if (!yGridEl || !xGridEl) {
+                        console.warn('Missing y-grid or x-grid elements in the plot.');
+                        return;
+                    }
+
+                    // This assumes that the first child of the plot element is the SVG element
+                    // itself. Verify this:
+                    const svgEl = plotEl.children[0] as HTMLElement;
+                    if (svgEl.tagName !== 'svg') {
+                        console.warn('The first child of the plot element is not an SVG element.');
+                        return;
+                    }
+
+                    // Read the width
+                    const baseWidth = svgEl.getAttribute('width');
+                    if (!baseWidth) {
+                        console.warn('Plot element does not have a width attribute.');
+                        return;
+                    }
+
+                    // Compute the scale factor based the based with vs the actual width
+                    const parentRect = parentEl.getBoundingClientRect();
+                    const actualWidth = parentRect.width;
+                    const scaleFactor = actualWidth / parseFloat(baseWidth);
+
+                    // Don't bother resizing if the scale factor hasn't changed much
+                    if (
+                        lastScaleFactor !== null &&
+                        Math.abs(scaleFactor - lastScaleFactor) < 0.001
+                    ) {
+                        return;
+                    }
+                    lastScaleFactor = scaleFactor;
+
+                    requestAnimationFrame(() => {
+                        // Accumulate any styles
+                        const styles: Partial<CSSStyleDeclaration> = {};
+
+                        // Set the transform origin to maintain a stable position
+                        if (config.transformOrigin) {
+                            styles.transformOrigin = config.transformOrigin;
+                        }
+                        if (config.centerTransform) {
+                            styles.transform = `translateX(-50%) scale(${scaleFactor})`;
+                        } else {
+                            styles.transform = `scale(${scaleFactor})`;
+                        }
+
+                        const inset = resolveInset(options);
+                        if (inset) {
+                            // Look through the plot to find rect of the plot
+                            // which excludes the axes, etc..
+                            const plotRect = findPlotRegionRect(plotEl);
+                            console.log({ plotRect, parentRect });
+
+                            // Compute the inset based upon the y-grid and x-grid positions
+                            const yShift = config.transformOrigin?.startsWith('bottom')
+                                ? parentRect.bottom - plotRect.bottom
+                                : plotRect.top - parentRect.top;
+                            const xShift = config.transformOrigin?.endsWith('right')
+                                ? parentRect.right - plotRect.right
+                                : plotRect.left - parentRect.left;
+
+                            console.log({ xShift, yShift, inset });
+
+                            // substract the distance from the parent plot to the y-grid, if possible
+                            const yInset = inset[1] * scaleFactor + yShift;
+                            const xInset = inset[0] * scaleFactor + xShift;
+                            if (config.centerTransform) {
+                                styles.margin = `${yInset}px 0px`;
+                            } else {
+                                styles.margin = `${yInset}px ${xInset}px`;
+                            }
+                        }
+
+                        Object.assign(legendEl.style, styles);
+                    });
+                }
+            }, 16)
+        );
+
+        resizeObserver.observe(plotEl.parentElement);
     }
 };
 
@@ -260,4 +294,32 @@ const kAnchorConfig: Record<
         transformOrigin: 'center left',
     },
     middle: { position: {} },
+};
+
+// Roots around in the plot to guess the internal dimensions based upon
+// the bounding rectangle of the plot element and the position of elements
+// within it.
+const findPlotRegionRect = (plotEl: HTMLElement): DOMRect => {
+    const plotRect = plotEl.getBoundingClientRect();
+
+    const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
+    const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
+
+    const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
+    const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
+
+    const right = plotRect.right;
+
+    let bottom = plotRect.bottom;
+    const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
+    if (xTicks) {
+        const xRect = xTicks.getBoundingClientRect();
+        bottom = xRect.top;
+    } else {
+        const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
+        if (xLabel) {
+            bottom = xLabel.getBoundingClientRect().top;
+        }
+    }
+    return new DOMRect(left, top, right - left, bottom - top);
 };

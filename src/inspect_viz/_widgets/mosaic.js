@@ -2,7 +2,7 @@
 import {
   parseSpec
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
-import { throttle as throttle2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { throttle as throttle3 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/context/index.ts
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
@@ -1479,6 +1479,46 @@ import {
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+function throttle2(func, wait, options = {}) {
+  let context;
+  let args;
+  let result;
+  let timeout = null;
+  let previous = 0;
+  const later = function() {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, args === null ? [] : args);
+    if (!timeout) {
+      context = null;
+      args = null;
+    }
+  };
+  return function(...callArgs) {
+    const now = Date.now();
+    if (!previous && options.leading === false) {
+      previous = now;
+    }
+    const remaining = wait - (now - previous);
+    context = this;
+    args = callArgs;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) {
+        context = null;
+        args = null;
+      }
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+}
 
 // js/context/duckdb.ts
 async function initDuckdb() {
@@ -2407,52 +2447,68 @@ var responsiveScaleLegend = (options, legendEl, plotEl) => {
   if (config.centerTransform) {
     legendEl.style.transform = "translateX(-50%)";
   }
-  if (plotEl) {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        if (!plotEl.children || plotEl.childElementCount === 0) {
-          return;
-        }
-        const parentEl = entry.target;
-        const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-        const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-        if (!yGridEl || !xGridEl) {
-          console.warn("Missing y-grid or x-grid elements in the plot.");
-          return;
-        }
-        const svgEl = plotEl.children[0];
-        if (svgEl.tagName !== "svg") {
-          console.warn("The first child of the plot element is not an SVG element.");
-          return;
-        }
-        const baseWidth = svgEl.getAttribute("width");
-        if (!baseWidth) {
-          console.warn("Plot element does not have a width attribute.");
-          return;
-        }
-        const parentRect = parentEl.getBoundingClientRect();
-        const actualWidth = parentRect.width;
-        const scaleFactor = actualWidth / parseFloat(baseWidth);
-        if (config.transformOrigin) {
-          legendEl.style.transformOrigin = config.transformOrigin;
-        }
-        legendEl.style.transform = `scale(${scaleFactor})`;
-        const inset = resolveInset(options);
-        if (inset) {
-          const yGridRect = yGridEl.getBoundingClientRect();
-          const xGridRect = xGridEl.getBoundingClientRect();
-          const yShift = yGridRect.top - parentRect.top;
-          const xShift = xGridRect.left - parentRect.left;
-          const yInset = inset[1] * scaleFactor + yShift;
-          const xInset = inset[0] * scaleFactor + xShift;
-          if (config.centerTransform) {
-            legendEl.style.margin = `${yInset}px 0px`;
-          } else {
-            legendEl.style.margin = `${yInset}px ${xInset}px`;
+  if (plotEl && plotEl.parentElement) {
+    let lastScaleFactor = null;
+    const resizeObserver = new ResizeObserver(
+      throttle2((entries) => {
+        for (let entry of entries) {
+          if (!plotEl.children || plotEl.childElementCount === 0) {
+            return;
           }
+          const parentEl = entry.target;
+          const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
+          const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
+          if (!yGridEl || !xGridEl) {
+            console.warn("Missing y-grid or x-grid elements in the plot.");
+            return;
+          }
+          const svgEl = plotEl.children[0];
+          if (svgEl.tagName !== "svg") {
+            console.warn("The first child of the plot element is not an SVG element.");
+            return;
+          }
+          const baseWidth = svgEl.getAttribute("width");
+          if (!baseWidth) {
+            console.warn("Plot element does not have a width attribute.");
+            return;
+          }
+          const parentRect = parentEl.getBoundingClientRect();
+          const actualWidth = parentRect.width;
+          const scaleFactor = actualWidth / parseFloat(baseWidth);
+          if (lastScaleFactor !== null && Math.abs(scaleFactor - lastScaleFactor) < 1e-3) {
+            return;
+          }
+          lastScaleFactor = scaleFactor;
+          requestAnimationFrame(() => {
+            const styles = {};
+            if (config.transformOrigin) {
+              styles.transformOrigin = config.transformOrigin;
+            }
+            if (config.centerTransform) {
+              styles.transform = `translateX(-50%) scale(${scaleFactor})`;
+            } else {
+              styles.transform = `scale(${scaleFactor})`;
+            }
+            const inset = resolveInset(options);
+            if (inset) {
+              const plotRect = findPlotRegionRect(plotEl);
+              console.log({ plotRect, parentRect });
+              const yShift = config.transformOrigin?.startsWith("bottom") ? parentRect.bottom - plotRect.bottom : plotRect.top - parentRect.top;
+              const xShift = config.transformOrigin?.endsWith("right") ? parentRect.right - plotRect.right : plotRect.left - parentRect.left;
+              console.log({ xShift, yShift, inset });
+              const yInset = inset[1] * scaleFactor + yShift;
+              const xInset = inset[0] * scaleFactor + xShift;
+              if (config.centerTransform) {
+                styles.margin = `${yInset}px 0px`;
+              } else {
+                styles.margin = `${yInset}px ${xInset}px`;
+              }
+            }
+            Object.assign(legendEl.style, styles);
+          });
         }
-      }
-    });
+      }, 16)
+    );
     resizeObserver.observe(plotEl.parentElement);
   }
 };
@@ -2514,6 +2570,26 @@ var kAnchorConfig = {
   },
   middle: { position: {} }
 };
+var findPlotRegionRect = (plotEl) => {
+  const plotRect = plotEl.getBoundingClientRect();
+  const yLabel = plotEl.querySelector('g[aria-label="y-axis label"]');
+  const top = yLabel ? yLabel.getBoundingClientRect().bottom : plotRect.top;
+  const yTicks = plotEl.querySelector('g[aria-label="y-axis tick"]');
+  const left = yTicks ? yTicks.getBoundingClientRect().right : plotRect.left;
+  const right = plotRect.right;
+  let bottom = plotRect.bottom;
+  const xTicks = plotEl.querySelector('g[aria-label="x-axis tick"]');
+  if (xTicks) {
+    const xRect = xTicks.getBoundingClientRect();
+    bottom = xRect.top;
+  } else {
+    const xLabel = plotEl.querySelector('g[aria-label="x-axis label"]');
+    if (xLabel) {
+      bottom = xLabel.getBoundingClientRect().top;
+    }
+  }
+  return new DOMRect(left, top, right - left, bottom - top);
+};
 
 // js/widgets/mosaic.ts
 async function render({ model, el }) {
@@ -2560,7 +2636,7 @@ async function render({ model, el }) {
     let lastContainerWidth = el.clientWidth;
     let lastContainerHeight = el.clientHeight;
     const resizeObserver = new ResizeObserver(
-      throttle2(async () => {
+      throttle3(async () => {
         if (lastContainerWidth !== el.clientWidth || lastContainerHeight !== el.clientHeight) {
           lastContainerWidth = el.clientWidth;
           lastContainerHeight = el.clientHeight;
