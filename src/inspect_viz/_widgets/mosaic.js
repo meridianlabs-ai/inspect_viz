@@ -2,7 +2,7 @@
 import {
   parseSpec
 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
-import { throttle as throttle2 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { throttle as throttle3 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/context/index.ts
 import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
@@ -1479,6 +1479,46 @@ import {
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+function throttle2(func, wait, options = {}) {
+  let context;
+  let args;
+  let result;
+  let timeout = null;
+  let previous = 0;
+  const later = function() {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, args === null ? [] : args);
+    if (!timeout) {
+      context = null;
+      args = null;
+    }
+  };
+  return function(...callArgs) {
+    const now = Date.now();
+    if (!previous && options.leading === false) {
+      previous = now;
+    }
+    const remaining = wait - (now - previous);
+    context = this;
+    args = callArgs;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) {
+        context = null;
+        args = null;
+      }
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+}
 
 // js/context/duckdb.ts
 async function initDuckdb() {
@@ -2362,13 +2402,24 @@ var kInset = "_inset";
 var kFrameAnchor = "_frame_anchor";
 var kBackground = "_background";
 var kBorder = "_border";
-var installLegendHandler = (specEl) => {
-  configureLegendHandler(specEl);
+var installLegendHandler = (specEl, responsive) => {
+  const existingObserver = observedSpecs.get(specEl);
+  if (existingObserver) {
+    existingObserver.disconnect();
+    observedSpecs.delete(specEl);
+  }
+  const hasLegend = specEl.querySelector("div.legend") !== null;
+  if (!hasLegend) {
+    return;
+  }
+  configureLegendHandler(specEl, responsive);
   const observer = new MutationObserver(() => {
-    configureLegendHandler(specEl);
+    configureLegendHandler(specEl, responsive);
   });
   observer.observe(specEl, { childList: true, subtree: true });
+  observedSpecs.set(specEl, observer);
 };
+var observedSpecs = /* @__PURE__ */ new WeakMap();
 function legendPaddingRegion(spec) {
   const result = { top: false, bottom: false, left: false, right: false };
   function visitLegends(obj) {
@@ -2411,21 +2462,36 @@ function legendPaddingRegion(spec) {
   return result;
 }
 var configuredLegends = /* @__PURE__ */ new WeakSet();
-var configureLegendHandler = (specEl) => {
-  const frameLegends = groupLegendsByPosition(specEl);
-  emplaceLegendContainers(frameLegends, specEl);
-  const processLegends = () => {
+var specHandlers = /* @__PURE__ */ new WeakMap();
+var configureLegendHandler = (specEl, responsive) => {
+  const newLegends = Array.from(specEl.querySelectorAll("div.legend")).filter(
+    (legend) => !configuredLegends.has(legend)
+  );
+  const frameLegends = groupLegendsByPosition(newLegends);
+  const existingObserver = specHandlers.get(specEl);
+  if (existingObserver) {
+    existingObserver.disconnect();
+    specHandlers.delete(specEl);
+  }
+  const processLegends = throttle2(() => {
     const legends = specEl.querySelectorAll("div.legend");
     legends.forEach((legend) => {
       const legendEl = legend;
       applyLegendStyles(legendEl);
     });
-  };
+  }, 25);
+  if (newLegends.length > 0) {
+    emplaceLegendContainers(frameLegends, specEl);
+    newLegends.forEach((legend) => configuredLegends.add(legend));
+  }
   processLegends();
-  const observer = new ResizeObserver(() => {
-    processLegends();
-  });
-  observer.observe(specEl);
+  if (responsive) {
+    const observer = new ResizeObserver(() => {
+      processLegends();
+    });
+    observer.observe(specEl);
+    specHandlers.set(specEl, observer);
+  }
 };
 var applyLegendStyles = (legendEl) => {
   const options = readLegendOptions(legendEl);
@@ -2502,12 +2568,6 @@ var responsiveScaleLegend = (options, legendEl, legendContainerEl) => {
   const parentEl = plotEl.parentElement;
   if (!parentEl) {
     console.warn("No parent element found for the plot.");
-    return;
-  }
-  const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-  const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-  if (!yGridEl || !xGridEl) {
-    console.warn("Missing y-grid or x-grid elements in the plot.");
     return;
   }
   const svgEl = plotEl.children[0];
@@ -2647,19 +2707,14 @@ function emplaceLegendContainers(frameLegends, specEl) {
         legendEl.parentElement.insertBefore(containerEl, legendEl);
       }
       containerEl.appendChild(legendEl);
-      configuredLegends.add(legendEl);
     }
   }
 }
-function groupLegendsByPosition(specEl) {
-  const legends = specEl.querySelectorAll("div.legend");
+function groupLegendsByPosition(legends) {
   const frameLegends = {};
   for (const legend of Array.from(legends)) {
     const legendEl = legend;
     const options = readLegendOptions(legendEl);
-    if (configuredLegends.has(legend)) {
-      continue;
-    }
     if (options.frameAnchor) {
       const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
       frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
@@ -2701,7 +2756,7 @@ async function render({ model, el }) {
       el.appendChild(specEl);
       replaceTooltipImpl(specEl);
       installTextCollisionHandler(specEl);
-      installLegendHandler(specEl);
+      installLegendHandler(specEl, !renderOptions.autoFill);
       await displayUnhandledErrors(ctx, el);
     } catch (e) {
       console.error(e);
@@ -2714,7 +2769,7 @@ async function render({ model, el }) {
     let lastContainerWidth = el.clientWidth;
     let lastContainerHeight = el.clientHeight;
     const resizeObserver = new ResizeObserver(
-      throttle2(async () => {
+      throttle3(async () => {
         if (lastContainerWidth !== el.clientWidth || lastContainerHeight !== el.clientHeight) {
           lastContainerWidth = el.clientWidth;
           lastContainerHeight = el.clientHeight;

@@ -1,5 +1,6 @@
 import { Spec } from 'https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm';
 import { hasValue, readOptions, readPlotEl } from './plot';
+import { throttle } from '../util/async';
 
 interface LegendOptions {
     inset: number | null;
@@ -35,17 +36,34 @@ const kFrameAnchor = '_frame_anchor';
 const kBackground = '_background';
 const kBorder = '_border';
 
-export const installLegendHandler = (specEl: HTMLElement) => {
-    configureLegendHandler(specEl);
+export const installLegendHandler = (specEl: HTMLElement, responsive: boolean) => {
+    // If the spec element has already been configured, dispose of it
+    const existingObserver = observedSpecs.get(specEl);
+    if (existingObserver) {
+        existingObserver.disconnect();
+        observedSpecs.delete(specEl);
+    }
+
+    // Check if the spec element has a legend
+    const hasLegend = specEl.querySelector('div.legend') !== null;
+    if (!hasLegend) {
+        // No legend found, so we don't need to do anything
+        return;
+    }
+
+    // Configure the legend handler for this spec element
+    configureLegendHandler(specEl, responsive);
 
     // Watch the spec element for svgs to be added
     // When they are added, attempt to connect our tooltip
     // handler
     const observer = new MutationObserver(() => {
-        configureLegendHandler(specEl);
+        configureLegendHandler(specEl, responsive);
     });
     observer.observe(specEl, { childList: true, subtree: true });
+    observedSpecs.set(specEl, observer);
 };
+const observedSpecs = new WeakMap<HTMLElement, MutationObserver>();
 
 export function legendPaddingRegion(spec: Spec): {
     top: boolean;
@@ -109,34 +127,52 @@ export function legendPaddingRegion(spec: Spec): {
     return result;
 }
 
-// Track which SVGs have been setup
+// Track which legends have been setup
 // to avoid setting up multiple observers on the same SVG.
 const configuredLegends = new WeakSet<Element>();
+const specHandlers = new WeakMap<HTMLElement, ResizeObserver>();
 
-const configureLegendHandler = (specEl: HTMLElement) => {
+const configureLegendHandler = (specEl: HTMLElement, responsive: boolean) => {
     // Find all the legend elements in the spec element
-    const frameLegends: Record<string, HTMLElement[]> = groupLegendsByPosition(specEl);
+    const newLegends = Array.from(specEl.querySelectorAll('div.legend')).filter(
+        legend => !configuredLegends.has(legend)
+    );
+    const frameLegends: Record<string, HTMLElement[]> = groupLegendsByPosition(newLegends);
 
-    // Move legends into their containers
-    emplaceLegendContainers(frameLegends, specEl);
+    // Dispose of any existing observer for this spec element
+    const existingObserver = specHandlers.get(specEl);
+    if (existingObserver) {
+        existingObserver.disconnect();
+        specHandlers.delete(specEl);
+    }
 
     // Process each legend, applying styles
-    const processLegends = () => {
+    const processLegends = throttle(() => {
         const legends = specEl.querySelectorAll('div.legend');
         legends.forEach(legend => {
             const legendEl = legend as HTMLElement;
             applyLegendStyles(legendEl);
         });
-    };
+    }, 25);
 
+    if (newLegends.length > 0) {
+        // Move legends into their containers
+        emplaceLegendContainers(frameLegends, specEl);
+
+        // Note that this legend has been processed
+        newLegends.forEach(legend => configuredLegends.add(legend));
+    }
     // Process the legends immediately
     processLegends();
 
     // Watch the spec element and apply legend styles when the spec is resized
-    const observer = new ResizeObserver(() => {
-        processLegends();
-    });
-    observer.observe(specEl);
+    if (responsive) {
+        const observer = new ResizeObserver(() => {
+            processLegends();
+        });
+        observer.observe(specEl);
+        specHandlers.set(specEl, observer);
+    }
 };
 
 const applyLegendStyles = (legendEl: HTMLElement): void => {
@@ -245,6 +281,8 @@ const responsiveScaleLegend = (
     if (config.centerTransform) {
         legendContainerEl.style.transform = 'translateX(-50%)';
     }
+
+    // Find the plot element which owns the legend
     const plotEl = readPlotEl(legendEl);
     if (!plotEl || !plotEl.children || plotEl.childElementCount === 0) {
         return;
@@ -254,14 +292,6 @@ const responsiveScaleLegend = (
     const parentEl = plotEl.parentElement;
     if (!parentEl) {
         console.warn('No parent element found for the plot.');
-        return;
-    }
-
-    // Find the x and y grid elements (we'll position the legend relative to these)
-    const yGridEl = plotEl.querySelector('g[aria-label="y-grid"]');
-    const xGridEl = plotEl.querySelector('g[aria-label="x-grid"]');
-    if (!yGridEl || !xGridEl) {
-        console.warn('Missing y-grid or x-grid elements in the plot.');
         return;
     }
 
@@ -438,6 +468,7 @@ const kLegendAnchorConfig: Record<
     },
     middle: { position: {} },
 };
+
 function emplaceLegendContainers(frameLegends: Record<string, HTMLElement[]>, specEl: HTMLElement) {
     for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
         for (const legendEl of legendEls) {
@@ -454,15 +485,11 @@ function emplaceLegendContainers(frameLegends: Record<string, HTMLElement[]>, sp
 
             // Move the legend element into the container
             containerEl.appendChild(legendEl);
-
-            // Note that this is handled
-            configuredLegends.add(legendEl);
         }
     }
 }
 
-function groupLegendsByPosition(specEl: HTMLElement) {
-    const legends = specEl.querySelectorAll('div.legend');
+function groupLegendsByPosition(legends: Element[]): Record<string, HTMLElement[]> {
     const frameLegends: Record<string, HTMLElement[]> = {};
     for (const legend of Array.from(legends)) {
         // Find the element
@@ -470,11 +497,6 @@ function groupLegendsByPosition(specEl: HTMLElement) {
 
         // read the legend options
         const options = readLegendOptions(legendEl);
-
-        // Skip legends that have already been configured
-        if (configuredLegends.has(legend)) {
-            continue;
-        }
 
         if (options.frameAnchor) {
             // Create a legend key (which encodes the anchor and inset to group

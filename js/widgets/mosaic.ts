@@ -75,7 +75,7 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
             installTextCollisionHandler(specEl);
 
             // install legend handlers
-            installLegendHandler(specEl);
+            installLegendHandler(specEl, !renderOptions.autoFill);
 
             await displayUnhandledErrors(ctx, el);
         } catch (e: unknown) {
