@@ -243,7 +243,7 @@ def _crop_image(
     image_bytes: bytes, pad: int, scale: int, background_color: str
 ) -> Image.Image:
     # open image
-    img = Image.open(BytesIO(image_bytes))
+    img: Image.Image = Image.open(BytesIO(image_bytes))
 
     # build an image filled with the background colour of the top-left pixel
     bg = Image.new(img.mode, img.size, background_color)
@@ -255,7 +255,23 @@ def _crop_image(
     if bbox:
         img_cropped = img.crop(bbox)
         img_fill = img.getpixel((0, 0))
-        img_cropped = ImageOps.expand(img_cropped, border=pad * scale, fill=img_fill)
+
+        if img_fill is not None:
+            # we read the pixel, resolve the fill_value
+            if isinstance(img_fill, float):
+                # Convert float (grayscale) to int for compatibility
+                img_cropped = ImageOps.expand(
+                    img_cropped, border=pad * scale, fill=int(img_fill)
+                )
+            else:
+                img_cropped = ImageOps.expand(
+                    img_cropped, border=pad * scale, fill=img_fill
+                )
+        else:
+            # no value for the top left pixel, use background color
+            img_cropped = ImageOps.expand(
+                img_cropped, border=pad * scale, fill=background_color
+            )
         img.close()
         img = img_cropped
 
