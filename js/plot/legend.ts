@@ -504,13 +504,11 @@ function groupLegendsByPosition(legends: Element[]): Record<string, HTMLElement[
         // read the legend options
         const options = readLegendOptions(legendEl);
 
-        if (options.frameAnchor) {
-            // Create a legend key (which encodes the anchor and inset to group
-            // legends into buckets which share the same container position)
-            const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
-            frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
-            frameLegends[legendKey]!.push(legendEl);
-        }
+        // Create a legend key (which encodes the anchor and inset to group
+        // legends into buckets which share the same container position)
+        const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+        frameLegends[legendKey] = frameLegends[legendKey] || [];
+        frameLegends[legendKey]!.push(legendEl);
     }
     return frameLegends;
 }

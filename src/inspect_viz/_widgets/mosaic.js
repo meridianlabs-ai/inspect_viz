@@ -2718,11 +2718,9 @@ function groupLegendsByPosition(legends) {
   for (const legend of Array.from(legends)) {
     const legendEl = legend;
     const options = readLegendOptions(legendEl);
-    if (options.frameAnchor) {
-      const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
-      frameLegends[legendKey] = frameLegends[options.frameAnchor] || [];
-      frameLegends[legendKey].push(legendEl);
-    }
+    const legendKey = `${options.frameAnchor}-${options.inset?.[0] || 0}-${options.inset?.[1] || 0}`;
+    frameLegends[legendKey] = frameLegends[legendKey] || [];
+    frameLegends[legendKey].push(legendEl);
   }
   return frameLegends;
 }
