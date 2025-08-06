@@ -2467,6 +2467,9 @@ var configureLegendHandler = (specEl, responsive) => {
   const newLegends = Array.from(specEl.querySelectorAll("div.legend")).filter(
     (legend) => !configuredLegends.has(legend)
   );
+  if (newLegends.every((legend) => legend.childElementCount === 0)) {
+    return;
+  }
   const frameLegends = groupLegendsByPosition(newLegends);
   const existingObserver = specHandlers.get(specEl);
   if (existingObserver) {

@@ -137,6 +137,12 @@ const configureLegendHandler = (specEl: HTMLElement, responsive: boolean) => {
     const newLegends = Array.from(specEl.querySelectorAll('div.legend')).filter(
         legend => !configuredLegends.has(legend)
     );
+
+    if (newLegends.every(legend => legend.childElementCount === 0)) {
+        // Do nothing, these are just empty legends
+        return;
+    }
+
     const frameLegends: Record<string, HTMLElement[]> = groupLegendsByPosition(newLegends);
 
     // Dispose of any existing observer for this spec element
