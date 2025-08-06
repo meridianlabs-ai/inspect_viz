@@ -49,7 +49,7 @@ jobs:
                   python -m pip install .[dev]
             - name: Run mypy
               run: |
-                  mypy .
+                  mypy src
 
     ts-typecheck:
         runs-on: ubuntu-latest
