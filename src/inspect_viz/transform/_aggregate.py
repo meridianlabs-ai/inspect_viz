@@ -1,4 +1,6 @@
-from typing import Any, Unpack
+from typing import Any
+
+from typing_extensions import Unpack
 
 from inspect_viz.transform._window import WindowOptions
 

@@ -1,4 +1,6 @@
-from typing import Literal, NotRequired, TypedDict, cast
+from typing import Literal, TypedDict, cast
+
+from typing_extensions import NotRequired
 
 from inspect_viz._core.data import Data
 from inspect_viz._core.param import Param

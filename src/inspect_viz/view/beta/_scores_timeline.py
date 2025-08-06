@@ -1,4 +1,6 @@
-from typing import Literal, Unpack
+from typing import Literal
+
+from typing_extensions import Unpack
 
 from inspect_viz import Component, Data
 from inspect_viz._core.param import Param

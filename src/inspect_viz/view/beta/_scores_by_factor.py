@@ -1,4 +1,4 @@
-from typing import Unpack
+from typing_extensions import Unpack
 
 from inspect_viz import Component, Data, Param
 from inspect_viz._util.channels import resolve_log_viewer_channel

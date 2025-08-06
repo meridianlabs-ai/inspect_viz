@@ -1,6 +1,6 @@
-from typing import TypedDict, Unpack
+from typing import TypedDict
 
-from typing_extensions import Literal
+from typing_extensions import Literal, Unpack
 
 from inspect_viz._core.component import Component
 from inspect_viz._core.data import Data

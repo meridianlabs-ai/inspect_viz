@@ -1,6 +1,7 @@
-from typing import Any, Literal, Sequence, Unpack, cast
+from typing import Any, Literal, Sequence, cast
 
 from shortuuid import uuid
+from typing_extensions import Unpack
 
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz._util.platform import quarto_fig_size
