@@ -34,9 +34,14 @@ Here's an Inspect Viz plot created with the [`scores_timeline()`](view-scores-ti
 #| 
 from inspect_viz import Data
 from inspect_viz.view.beta import scores_timeline
+from inspect_viz.plot import legend
 
 evals = Data.from_file("benchmarks.parquet")
-scores_timeline(evals)
+scores_timeline(
+    evals, 
+    legend=legend(legend="color", frame_anchor="top-left", inset=20), 
+    regression=True
+)
 ```
 
 Use the filters to switch benchmarks and restrict to models from various organization(s). Hover over the points to get additional details on them or view the underlying Inspect log for the evals.
