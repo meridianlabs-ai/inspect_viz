@@ -3,6 +3,7 @@ from typing import Literal, Unpack
 from inspect_viz import Component, Data
 from inspect_viz._core.param import Param
 from inspect_viz._util.channels import resolve_log_viewer_channel
+from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz.input import checkbox_group, select
 from inspect_viz.layout._concat import vconcat
 from inspect_viz.layout._space import vspace
@@ -14,11 +15,11 @@ from inspect_viz.mark._text import text
 from inspect_viz.mark._title import Title
 from inspect_viz.mark._util import flatten_marks
 from inspect_viz.plot._attributes import PlotAttributes
-from inspect_viz.plot._legend import legend
+from inspect_viz.plot._legend import Legend
+from inspect_viz.plot._legend import legend as legend_fn
 from inspect_viz.plot._plot import plot
 from inspect_viz.transform import ci_bounds
 from inspect_viz.transform._column import epoch_ms
-from inspect_viz.transform._sql import sql
 from inspect_viz.transform._transform import Transform
 
 
@@ -42,6 +43,7 @@ def scores_timeline(
     width: float | Param | None = None,
     height: float | Param | None = None,
     regression: bool = False,
+    legend: Legend | NotGiven | None = NOT_GIVEN,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
     """Eval scores by model, organization, and release date.
@@ -66,6 +68,7 @@ def scores_timeline(
        width: The outer width of the plot in pixels, including margins. Defaults to 700.
        height: The outer height of the plot in pixels, including margins. The default is width / 1.618 (the [golden ratio](https://en.wikipedia.org/wiki/Golden_ratio))
        regression: If `True`, adds a regression line to the plot (uses the confidence interval passed using ci). Defaults to False.
+       legend: Legend to use for the plot (defaults to `None`, which uses the default legend).
        **attributes: Additional `PlotAttributes`. By default, the `x_domain` is set to "fixed", the `y_domain` is set to `[0,1.0]`, `color_label` is set to "Organizations", and `color_domain` is set to `organizations`.
     """
     # fallback to task_name if required
@@ -204,8 +207,13 @@ def scores_timeline(
     components.extend(marks)
 
     # resolve legend
+    plot_legend: Legend | None
     if num_organizations > 1:
-        plot_legend = legend("color", target=data.selection)
+        plot_legend = (
+            legend_fn("color", target=data.selection)
+            if isinstance(legend, NotGiven)
+            else legend
+        )
     else:
         plot_legend = None
 
