@@ -11,7 +11,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    ruff:
+    py-ruff:
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -25,7 +25,7 @@ jobs:
               with:
                   args: 'format --check'
 
-    mypy:
+    py-mypy:
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -90,7 +90,7 @@ jobs:
             - name: Check format
               run: yarn build
 
-    python-build:
+    py-build:
         runs-on: ubuntu-latest
         strategy:
             matrix:
