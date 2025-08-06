@@ -53,6 +53,7 @@ class Legend(Component):
 
 def legend(
     legend: Literal["color", "opacity", "symbol"],
+    *,
     columns: Literal["auto"] | int | None = "auto",
     label: str | None = None,
     target: Selection | None = None,

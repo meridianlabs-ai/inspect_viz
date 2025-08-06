@@ -39,7 +39,7 @@ from inspect_viz.plot import legend
 evals = Data.from_file("benchmarks.parquet")
 scores_timeline(
     evals, 
-    legend=legend(legend="color", frame_anchor="top-left", inset=20), 
+    legend=legend("color", frame_anchor="top-left", inset=20), 
     regression=True
 )
 ```
