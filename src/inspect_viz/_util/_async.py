@@ -4,12 +4,12 @@ from typing import Coroutine, Literal, TypeVar, cast
 import nest_asyncio  # type: ignore
 import sniffio
 
+from inspect_viz._util.platform import running_in_notebook
+
 T = TypeVar("T")
 
 
 def run_coroutine(coroutine: Coroutine[None, None, T]) -> T:
-    from inspect_ai._util.platform import running_in_notebook
-
     if current_async_backend() == "trio":
         raise RuntimeError("run_coroutine cannot be used with trio")
 
