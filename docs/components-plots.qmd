@@ -325,7 +325,7 @@ See `PlotAttributes` for documentation on all available plot attributes.
 
 *Legends* can be added to `plot` specifications or included as standalone elements.
 
-See the `legend()` function documentation for details on legend options including location, columns, label text, size, and margins.
+See the `legend()` function documentation for details on legend options including columns, label text, size, frame_anchor, inset, and margins.
 
 The `name` directive gives a `plot` a unique name. A standalone legend can reference a named plot `legend(..., for_plot="penguins")` to avoid respecifying scale domains and ranges.
 
