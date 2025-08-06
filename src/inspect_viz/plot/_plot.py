@@ -8,7 +8,7 @@ from inspect_viz._util.platform import quarto_fig_size
 from .._core import Component
 from .._core.param import Param
 from ..interactor._interactors import Interactor
-from ..layout._concat import hconcat, vconcat
+from ..layout._concat import hconcat
 from ..mark._mark import Mark
 from ..mark._title import Title
 from ..mark._title import title as title_mark
