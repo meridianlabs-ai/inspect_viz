@@ -1,6 +1,6 @@
-from pytest import mark
 from inspect_viz import Component, Data
 from inspect_viz.plot import legend, plot
+from pytest import mark
 
 from ._schema import Legend, Plot
 from .utils import check_component

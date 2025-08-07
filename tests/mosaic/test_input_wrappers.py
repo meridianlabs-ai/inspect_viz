@@ -1,8 +1,8 @@
-from pytest import mark
 from inspect_viz import Data
 from inspect_viz._core.selection import Selection
 from inspect_viz.input import search, slider
 from inspect_viz.table import column, table
+from pytest import mark
 
 from ._schema import Search, Slider, Table
 from .utils import check_component
