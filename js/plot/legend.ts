@@ -209,7 +209,7 @@ const applyLegendStyles = (legendEl: HTMLElement): void => {
     responsiveScaleLegend(options, legendEl, legendContainerEl);
 
     // Apply cursor styles if interactive
-    applyCursorStyle(legendContainerEl);
+    applyCursorStyle(legendEl);
 };
 
 const applyBackground = (targetEl: HTMLElement, background: string | boolean | null): void => {
@@ -234,13 +234,18 @@ const applyCursorStyle = (legendEl: HTMLElement): void => {
         cursorObserver.delete(legendEl);
     }
 
-    const observer = new MutationObserver(() => {
+    const applyPointer = () => {
         if (hasValue(legendEl, 'selection')) {
             const subContainerEl = legendEl.firstElementChild;
             (subContainerEl as HTMLElement).style.cursor = 'pointer';
         }
+    };
+
+    const observer = new MutationObserver(() => {
+        applyPointer();
     });
     observer.observe(legendEl, { childList: true, subtree: true });
+    applyPointer();
 
     cursorObserver.set(legendEl, observer);
 };

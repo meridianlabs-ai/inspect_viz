@@ -2511,7 +2511,7 @@ var applyLegendStyles = (legendEl) => {
   applyBorder(legendContainerEl, options.border);
   applyParentPadding(options, legendContainerEl, legendContainerParentEl);
   responsiveScaleLegend(options, legendEl, legendContainerEl);
-  applyCursorStyle(legendContainerEl);
+  applyCursorStyle(legendEl);
 };
 var applyBackground = (targetEl, background) => {
   if (background !== false) {
@@ -2530,13 +2530,17 @@ var applyCursorStyle = (legendEl) => {
     existingObserver.disconnect();
     cursorObserver.delete(legendEl);
   }
-  const observer = new MutationObserver(() => {
+  const applyPointer = () => {
     if (hasValue(legendEl, "selection")) {
       const subContainerEl = legendEl.firstElementChild;
       subContainerEl.style.cursor = "pointer";
     }
+  };
+  const observer = new MutationObserver(() => {
+    applyPointer();
   });
   observer.observe(legendEl, { childList: true, subtree: true });
+  applyPointer();
   cursorObserver.set(legendEl, observer);
 };
 var cursorObserver = /* @__PURE__ */ new WeakMap();
