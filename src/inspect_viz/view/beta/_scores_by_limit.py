@@ -7,6 +7,7 @@ import pandas as pd
 from inspect_viz._core.component import Component
 from inspect_viz._core.data import Data
 from inspect_viz._core.selection import Selection
+from inspect_viz._util.channels import resolve_log_viewer_channel
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz._util.stats import z_score
 from inspect_viz.interactor._interactors import highlight, nearest_x
@@ -98,6 +99,13 @@ def scores_by_limit_df(
         "count": [],
     }
 
+    # Add log column support if it exists
+    has_log_column = "log" in df.columns
+    if has_log_column:
+        data_dict["log"] = []
+        # Get the first log value for each model
+        log_by_model = df.groupby("model")["log"].first().to_dict()
+
     # For each limit, compute the success rate and standard error
     for current_limit in limits:
         df_limit = df.copy()
@@ -135,6 +143,8 @@ def scores_by_limit_df(
             data_dict["standard_error"].append(row["standard_error"])
             data_dict["other_termination_rate"].append(row["other_termination_rate"])
             data_dict["count"].append(row["count"])
+            if has_log_column:
+                data_dict["log"].append(log_by_model[row["model"]])
 
     return pd.DataFrame(data_dict)
 
@@ -223,6 +233,7 @@ def scores_by_limit(
     }
     if not isinstance(limit_label, NotGiven):
         channels[limit_label] = limit
+    resolve_log_viewer_channel(data, channels)
 
     # The selected model
     model_selection = Selection.single()
