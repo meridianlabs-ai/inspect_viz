@@ -8,6 +8,7 @@ from inspect_viz._core.component import Component
 from inspect_viz._core.data import Data
 from inspect_viz._core.selection import Selection
 from inspect_viz._util.channels import resolve_log_viewer_channel
+from inspect_viz._util.inspect import value_to_float
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz._util.stats import z_score
 from inspect_viz.interactor._interactors import highlight, nearest_x
@@ -74,8 +75,6 @@ def scores_by_limit_df(
         )
 
     # coerce the score to a float
-    from inspect_ai.scorer import value_to_float
-
     to_float = value_to_float()
     df[score] = df[score].apply(to_float)
 
