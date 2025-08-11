@@ -3,7 +3,6 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
-from inspect_ai.scorer import value_to_float
 
 from inspect_viz._core.component import Component
 from inspect_viz._core.data import Data
@@ -74,6 +73,8 @@ def scores_by_limit_df(
         )
 
     # coerce the score to a float
+    from inspect_ai.scorer import value_to_float
+
     to_float = value_to_float()
     df[score] = df[score].apply(to_float)
 
