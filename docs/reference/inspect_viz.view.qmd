@@ -13,6 +13,8 @@ View functions are currently in beta and are exported from the **inspect_ai.view
 ### scores_timeline
 ### scores_by_model
 ### scores_heatmap
+### scores_by_limit
+### scores_by_limit_df
 
 ## Tools
 
