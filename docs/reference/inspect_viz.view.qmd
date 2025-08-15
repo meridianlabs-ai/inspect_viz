@@ -20,6 +20,10 @@ View functions are currently in beta and are exported from the **inspect_ai.view
 
 ### tool_calls
 
+## Samples
+
+### samples_heatmap
+
 ## Types
 
 ### CellOptions

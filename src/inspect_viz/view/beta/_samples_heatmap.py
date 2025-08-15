@@ -12,13 +12,13 @@ from inspect_viz.plot._heatmap import CellOptions, heatmap
 from inspect_viz.plot._legend import Legend
 
 
-def scores_heatmap(
+def samples_heatmap(
     data: Data,
-    task_name: str = "task_display_name",
-    task_label: str | None | NotGiven = None,
+    id: str = "id",
+    id_label: str | None | NotGiven = None,
     model_name: str = "model_display_name",
     model_label: str | None | NotGiven = None,
-    score_value: str = "score_headline_value",
+    score_value: str | None = None,
     cell: CellOptions | None = None,
     tip: bool = True,
     title: str | Title | None = None,
@@ -35,8 +35,8 @@ def scores_heatmap(
 
     Args:
        data: Evals data table.
-       task_name: Name of column to use for columns.
-       task_label: x-axis label (defaults to None).
+       id: Name of column to use for displaying the sample id.
+       id_label: x-axis label (defaults to None).
        model_name: Name of column to use for rows.
        model_label: y-axis label (defaults to None).
        score_value: Name of the column to use as values to determine cell color.
@@ -51,9 +51,14 @@ def scores_heatmap(
        orientation: The orientation of the heatmap. If "horizontal", the tasks will be on the x-axis and models on the y-axis. If "vertical", the tasks will be on the y-axis and models on the x-axis.
        **attributes: Additional `PlotAttributes
     """
-    # resolve x
-    if task_name == "task_display_name" and task_name not in data.columns:
-        task_name = "task_name"
+    # validate columns
+    if id not in data.columns:
+        raise ValueError(f"Column '{id}' not found in data.")
+
+    if score_value is None:
+        raise ValueError(
+            "Please provide the score_value in order to generate a heatmap."
+        )
 
     # Resolve the y column to average
     margin_left = None
@@ -80,8 +85,9 @@ def scores_heatmap(
         x_tick_rotate=45,
         margin_bottom=75,
         color_scale="linear",
+        x_scale="band",
         padding=0,
-        color_scheme="viridis",
+        color_scheme="greens",
         color_domain=color_domain,
     )
     attributes = defaultAttributes | attributes
@@ -89,14 +95,14 @@ def scores_heatmap(
     # resolve cell options
     default_cell_options = CellOptions(
         inset=1,
-        text="white",
+        text=None,
     )
     cell = default_cell_options | (cell or {})
 
     # channels
     channels: dict[str, str] = {}
-    if task_name == "task_name" or task_name == "task_display_name":
-        channels["Task"] = task_name
+    if id == "id":
+        channels["Sample Id"] = id
     if model_name == "model" or model_name == "model_display_name":
         channels["Model"] = model_name
     if score_value == "score_headline_value":
@@ -105,8 +111,8 @@ def scores_heatmap(
 
     return heatmap(
         data,
-        x_value=task_name,
-        x_label=task_label,
+        x_value=id,
+        x_label=id_label,
         y_value=model_name,
         y_label=model_label,
         color_value=score_value,

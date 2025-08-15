@@ -1,0 +1,68 @@
+---
+title: Samples Heatmap
+subtitle: "Dataset: [writing.parquet](writing.parquet)"
+---
+
+This example illustrates the code behind the [`samples_heatmap()`](../../../view-samples-heatmap.qmd) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
+
+```{python}
+#| filename: Code
+from inspect_viz import Data
+from inspect_viz.plot import plot, legend
+from inspect_viz.mark import cell, text
+from inspect_viz.transform import avg
+from inspect_ai.analysis import samples_df,SampleSummary, EvalModel
+from inspect_ai.analysis import prepare, model_info, log_viewer
+
+
+samples_data = Data.from_file("writing_bench_samples.parquet") # <1>
+
+channels = {                                # <2>
+    "Model": "model_display_name",          # <2>
+    "Score": "score_multi_scorer_wrapper",  # <2>
+    "Log viewer": "log_viewer"              # <2>
+}
+
+plot(
+    cell(                       # <3>                                  
+        samples_data,
+        x="id",
+        y="model_display_name",
+        fill="score_multi_scorer_wrapper", # <4>
+        channels=channels,
+        tip=True,
+        inset=1, 
+        sort={
+            "y": {  "value": "fill",          # <5>
+                    "reduce": "sum",          # <5>
+                    "reverse": True           # <5>
+                },                            # <5>
+            "x": {  "value": "fill",          # <6>
+                    "reduce": "sum",          # <6>
+                    "reverse": False          # <6>
+                }
+        }   
+    ),
+    padding=0,
+    color_scheme="greens",
+    height=250,
+    margin_left=50,
+    x_label=None,
+    y_label=None,
+    x_scale="band",
+    legend=legend("color", frame_anchor="bottom", border=False)
+
+)
+```
+
+1. Read the data (the parquet file was generated using `samples_df` with `SampleSummary` and `EvalModel` column definitions.)
+
+2. Channels are used to customize what is display in the tooltip for each cell.
+
+3. Use a cell mark to create each colored cell.
+
+4. The fill is used to compute the color for each cell.
+
+5. Sorts the y-axis by the total score for each model, with the highest score at the top.
+
+6. Sorts the x-axis by the total score for each question, witht he highest score at the right.

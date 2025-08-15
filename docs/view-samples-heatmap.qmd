@@ -1,0 +1,60 @@
+---
+title: "Scores Heatmap"
+reference: "inspect_viz.view.beta"
+filters: 
+   - at: pre-ast
+     type: json
+     path: reference/filter/filter.py
+   - at: pre-ast
+     path: reference/filter/post.lua
+datafile: "writing_bench_samples.parquet"
+---
+
+## Overview
+
+The `samples_heatmap()`function renders a heatmap for viewing individual sample scores. Each sample is shown along one axis, models are shown along the other axis.
+
+```{python}
+from inspect_viz import Data
+from inspect_viz.view.beta import samples_heatmap
+
+samples = Data.from_file("writing_bench_samples.parquet")
+samples_heatmap(
+  samples, 
+  score_value="score_multi_scorer_wrapper", 
+  height=200, 
+  legend=True
+)
+```
+
+## Data Preparation
+
+Above we read the data for the plot from a parquet file. This file was in turn created by:
+
+1. Reading logs into a dataframe with `samples_df`, specifying the SampleSummaryColumns and the EvaalModel columns.
+
+2. Using the `prepare()` function to `model_info()` and `log_viewer()` columns to the data frame.
+
+```python
+from inspect_ai.analysis import samples_df, log_viewer, model_into, prepare, EvalModel, SampleSummary
+
+df = samples_df("logs", columns=SampleSummary + EvalModel)
+df = prepare(df, 
+  model_info(), 
+  df = prepare(df, 
+      model_info(),
+      log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"}),
+  )
+)
+df.to_parquet("writing_bench_samples.parquet")
+```
+
+{{< include _data_preparation_optional.md >}}
+
+
+## Function Reference {reference="samples_heatmap"}
+
+## Implementation
+
+The [Samples Heatmap](examples/inspect/samples-heatmap/index.qmd) example demonstrates how this view was implemented using lower level plotting components.
+
