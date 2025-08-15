@@ -36,17 +36,27 @@ Above we read the data for the plot from a parquet file. This file was in turn c
 2. Using the `prepare()` function to `model_info()` and `log_viewer()` columns to the data frame.
 
 ```python
-from inspect_ai.analysis import samples_df, log_viewer, model_into, prepare, EvalModel, SampleSummary
+from inspect_ai.analysis import samples_df, log_viewer, model_info, prepare, EvalModel, SampleSummary
 
 df = samples_df("logs", columns=SampleSummary + EvalModel)
 df = prepare(df, 
-  model_info(), 
-  df = prepare(df, 
-      model_info(),
-      log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"}),
+    model_info(), 
+    log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"}),
   )
-)
 df.to_parquet("writing_bench_samples.parquet")
+```
+
+If your samples are using non-numeric values (for example 'C' and 'I' to represent correct and incorrect), you can use the `score_to_float` prepare function in `inspect.analysis` to convert the score values to floats. For example:
+
+```python
+from inspect_ai.analysis import samples_df, log_viewer, model_info, score_to_float, prepare, EvalModel, SampleSummary
+
+df = samples_df("logs", columns=SampleSummary + EvalModel)
+df = prepare(df, 
+    model_info(), 
+    log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"}),
+    score_to_float("score_includes")
+  )
 ```
 
 {{< include _data_preparation_optional.md >}}
