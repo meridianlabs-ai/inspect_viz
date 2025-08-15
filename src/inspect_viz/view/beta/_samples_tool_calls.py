@@ -12,7 +12,7 @@ from inspect_viz.plot._attributes import PlotAttributes
 from inspect_viz.transform._aggregate import first
 
 
-def tool_calls(
+def samples_tool_calls(
     data: Data,
     x: str = "order",
     y: str = "id",

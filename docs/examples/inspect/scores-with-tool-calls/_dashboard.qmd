@@ -8,7 +8,7 @@ format: dashboard
 from inspect_viz import Data, Selection
 from inspect_viz.input import select
 from inspect_viz.table import column, table
-from inspect_viz.view.beta import scores_by_model, tool_calls
+from inspect_viz.view.beta import scores_by_model, samples_tool_calls
 
 # read data
 evals = Data.from_file("cybench.parquet")
@@ -45,5 +45,5 @@ select(tools, label="Tool Calls for Model:", column="model_display_name", value=
 ```
 
 ```{python}
-tool_calls(tools)
+samples_tool_calls(tools)
 ```

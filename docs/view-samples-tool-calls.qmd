@@ -1,5 +1,5 @@
 ---
-title: "Tool Calls"
+title: "Samples Tool Calls"
 reference: "inspect_viz.view.beta"
 filters:
    - at: pre-ast
@@ -11,14 +11,14 @@ filters:
 
 ## Overview
 
-The `tool_calls()` function creates a heat map visualising tool calls over evaluation turns.
+The `samples_tool_calls()` function creates a heat map visualising tool calls over evaluation turns.
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import tool_calls
+from inspect_viz.view.beta import samples_tool_calls
 
 tools = Data.from_file("cybench_tools.parquet")
-tool_calls(tools)
+samples_tool_calls(tools)
 ```
 
 
@@ -64,8 +64,8 @@ df.to_parquet("cybench_tools.parquet")
 
 Note that the trimming of columns is particularly important because Inspect Viz embeds datasets directly in the web pages that host them (so we want to minimize their size for page load performance and bandwidth usage).
 
-## Function Reference {reference="tool_calls"}
+## Function Reference {reference="samples_tool_calls"}
 
 ## Implementation
 
-The [Tool Calls](examples/inspect/tool-calls/index.qmd) example demonstrates how this view was implemented using lower level plotting components.
+The [Samples Tool Calls](examples/inspect/samples-tool-calls/index.qmd) example demonstrates how this view was implemented using lower level plotting components.

@@ -75,15 +75,15 @@ evals = Data.from_file("evals-hint.parquet")
 scores_by_factor(evals, "task_arg_hint", ("No hint", "Hint"))
 ```
 
-The [`tool_calls()`](view-tool-calls.qmd) view enables you to visualize tool calls by sample:
+The [`samples_tool_calls()`](view-samples-tool-calls.qmd) view enables you to visualize tool calls by sample:
 
 ```{python}
-from inspect_viz.view.beta import tool_calls
+from inspect_viz.view.beta import samples_tool_calls
 
 tools = Data.from_file("cybench_tools.parquet")
-tool_calls(tools)
+samples_tool_calls(tools)
 ```
-
+`
 Available views include:
 
 {{< include _views.md >}}

@@ -1,5 +1,5 @@
 ---
-title: "Scores Heatmap"
+title: "Samples Heatmap"
 reference: "inspect_viz.view.beta"
 filters: 
    - at: pre-ast

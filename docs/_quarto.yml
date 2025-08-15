@@ -71,7 +71,8 @@ website:
                - href: view-scores-by-limit.qmd
                - href: view-scores-timeline.qmd
                - href: view-scores-heatmap.qmd
-               - href: view-tool-calls.qmd
+               - href: view-samples-tool-calls.qmd
+               - href: view-samples-heatmap.qmd
            - text: Components
              contents:
                - href: components-plots.qmd
@@ -100,7 +101,8 @@ website:
               - href: examples/inspect/scores-by-limit/index.qmd
               - href: examples/inspect/scores-timeline/index.qmd
               - href: examples/inspect/scores-heatmap/index.qmd
-              - href: examples/inspect/tool-calls/index.qmd
+              - href: examples/inspect/samples-tool-calls/index.qmd
+              - href: examples/inspect/samples-heatmap/index.qmd
           - section: General
             contents:
               - href: examples/general/penguins/index.qmd

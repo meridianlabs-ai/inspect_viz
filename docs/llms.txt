@@ -61,7 +61,7 @@ Finally, these sections provide additional related documentation:
 - [scores_timeline()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-timeline.html.md): Scatter plot with eval scores by model, organization, and release date. Filterable by evaluation and organization.
 - [scores_heatmap()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-heatmap.html.md): Heatmap with values for comparing scores across model and task.
 - [scores_by_model()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-by-model.html.md): Bar plot for comparing model scores on a single eval.
-- [tool_calls()](https://meridianlabs-ai.github.io/inspect_viz/view-tool-calls.html.md): Heat map visualising tool calls over evaluation turns. 
+- [samples_tool_calls()](https://meridianlabs-ai.github.io/inspect_viz/view-samples-tool-calls.html.md): Heat map visualising tool calls over evaluation turns. 
 
 ## Publishing
 

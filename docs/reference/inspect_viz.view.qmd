@@ -16,13 +16,14 @@ View functions are currently in beta and are exported from the **inspect_ai.view
 ### scores_by_limit
 ### scores_by_limit_df
 
-## Tools
-
-### tool_calls
-
 ## Samples
 
+### samples_tool_calls
 ### samples_heatmap
+
+## General
+
+### heatmap
 
 ## Types
 

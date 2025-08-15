@@ -1,9 +1,9 @@
 ---
-title: "Tool Calls"
+title: "Sample Tool Calls"
 subtitle: "Dataset: [cybench_tools.parquet](cybench_tools.parquet)"
 ---
 
-This example illustrates the code behind the [`tool_calls()`](../../../reference/inspect_viz.view.qmd#tool_calls) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
+This example illustrates the code behind the [`samples_tool_calls()`](../../../reference/inspect_viz.view.qmd#samples_tool_calls) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
 
 The plot visualizes tool usage over a series of turns in a Cybench evaluation. We use a `cell()` mark to visualize tool use over messages in each sample of an evaluation. We note any limit that ended the sample using a `text()` mark on the right side of the frame. 
 
