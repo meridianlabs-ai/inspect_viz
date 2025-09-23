@@ -1,5 +1,8 @@
+from typing import Any
+
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
 from typing_extensions import Unpack
 
 from inspect_viz._core.component import Component
@@ -122,7 +125,7 @@ def scores_radar_df(
     return pd.concat(all_rows, ignore_index=True)
 
 
-def compute_angles(num_axes: int, endpoint: bool = True) -> np.ndarray:
+def compute_angles(num_axes: int, endpoint: bool = True) -> NDArray[np.floating[Any]]:
     """Computes the angles by number of axes."""
     return np.linspace(0, 2 * np.pi, num_axes, endpoint=endpoint)
 
