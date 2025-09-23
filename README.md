@@ -46,7 +46,7 @@ yarn dev # or
 yarn dev-sourcemap
 ```
 
-To build the docs locally and view them in your browser, intall the optional doc dependencies and run `quarto preview`.
+To build the docs locally and view them in your browser, install the optional doc dependencies and run `quarto preview`.
 
 ```sh
 pip install -e ".[doc]"
