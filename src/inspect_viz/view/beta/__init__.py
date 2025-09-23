@@ -6,6 +6,7 @@ from ._scores_by_limit import scores_by_limit, scores_by_limit_df
 from ._scores_by_model import scores_by_model
 from ._scores_by_task import scores_by_task
 from ._scores_heatmap import scores_heatmap
+from ._scores_radar import scores_radar, scores_radar_df
 from ._scores_timeline import scores_timeline
 
 __all__ = [
@@ -21,4 +22,6 @@ __all__ = [
     "scores_by_limit_df",
     "scores_by_limit",
     "heatmap",
+    "scores_radar",
+    "scores_radar_df",
 ]

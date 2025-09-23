@@ -46,5 +46,11 @@ yarn dev # or
 yarn dev-sourcemap
 ```
 
-If you use VS Code, you should be sure to have installed the recommended extensions (Python, Ruff, MyPy, Inspect AI, Quarto). Note that you'll be prompted to install these when you open the project in VS Code.
+To build the docs locally and view them in your browser, intall the optional doc dependencies and run `quarto preview`.
 
+```sh
+pip install -e ".[doc]"
+quarto preview inspect_viz/docs/index.qmd
+```
+
+If you use VS Code, you should be sure to have installed the recommended extensions (Python, Ruff, MyPy, Inspect AI, Quarto). Note that you'll be prompted to install these when you open the project in VS Code.

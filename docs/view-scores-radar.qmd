@@ -1,0 +1,37 @@
+---
+title: "Scores Radar"
+reference: "inspect_viz.view.beta"
+filters: 
+   - at: pre-ast
+     type: json
+     path: reference/filter/filter.py
+   - at: pre-ast
+     path: reference/filter/post.lua
+datafile: "writing_bench_radar.parquet"
+---
+
+## Overview
+
+The `scores_radar()`function renders a radar chart for comparing eval scores across multiple models and metrics.
+
+```{python}
+from inspect_viz import Data
+from inspect_viz.view.beta import scores_radar
+
+evals = Data.from_file("writing_bench_radar.parquet")
+scores_radar(evals)
+```
+
+## Data Preparation
+
+{{< include _data_preparation_scores_radar.md >}}
+
+## Function Reference
+
+### scores_radar {reference="scores_radar"}
+
+### scores_radar_df {reference="scores_radar_df"}
+
+## Implementation
+
+The [Scores Radar](examples/inspect/scores-radar/index.qmd) example demonstrates how this view was implemented using lower level plotting components.

@@ -71,6 +71,7 @@ website:
                - href: view-scores-by-limit.qmd
                - href: view-scores-timeline.qmd
                - href: view-scores-heatmap.qmd
+               - href: view-scores-radar.qmd
                - href: view-sample-tool-calls.qmd
                - href: view-sample-heatmap.qmd
            - text: Components
@@ -101,6 +102,7 @@ website:
               - href: examples/inspect/scores-by-limit/index.qmd
               - href: examples/inspect/scores-timeline/index.qmd
               - href: examples/inspect/scores-heatmap/index.qmd
+              - href: examples/inspect/scores-radar/index.qmd
               - href: examples/inspect/sample-tool-calls/index.qmd
               - href: examples/inspect/sample-heatmap/index.qmd
           - section: General

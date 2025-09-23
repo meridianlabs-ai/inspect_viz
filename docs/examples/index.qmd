@@ -21,6 +21,7 @@ These examples demonstrates creating visualisations from Inspect log files (leve
 | [Scores by Limit](inspect/scores-by-limit/index.qmd) | Line plot for evaluating how a model’s success rate changes as token or time limits  increase.
 | [Scores Timeline](inspect/scores-timeline/index.qmd) | Eval scores for various models, with release date on the x-axis. |
 | [Scores Heatmap](inspect/scores-heatmap/index.qmd) |  Heatmap with values for comparing scores across model and task. |
+| [Scores Radar](inspect/scores-radar/index.qmd) |  Radar plot to compare scores across models and metrics in a single eval. |
 | [Sample Tool Calls](inspect/sample-tool-calls/index.qmd) | Visualise tool usage over a series of turns. |
 | [Sample Heatmap](inspect/sample-heatmap/index.qmd) | a Heatmap for viewing individual sample scores. |
 

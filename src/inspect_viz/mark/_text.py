@@ -12,7 +12,7 @@ from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark
 from ._options import MarkOptions
 from ._types import FrameAnchor, LineAnchor
-from ._util import column_param
+from ._util import args_to_data, column_param
 
 
 def text(
@@ -31,11 +31,11 @@ def text(
     r"""A text mark that displays textual labels.
 
     Args:
-        data: The data source for the mark (not required if not binding `text` to a column).
-        x: The horizontal position channel specifying the text's anchor point, typically bound to the *x* scale.
-        y: The vertical position channel specifying the text's anchor point, typically bound to the *y* scale.
-        z: An optional ordinal channel for grouping data into series.
-        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). To place a single piece of text  specify the text as a string[] (e.g. `["My Text"]`).
+        data: The data source for the mark (not required if not binding `text` to a column). If None, any of x, y, z, text can be provided as sequences.
+        x: The horizontal position channel specifying the text's anchor point, typically bound to the *x* scale. When data is None, can be a sequence of x-coordinates.
+        y: The vertical position channel specifying the text's anchor point, typically bound to the *y* scale. When data is None, can be a sequence of y-coordinates.
+        z: An optional ordinal channel for grouping data into series. When data is None, can be a sequence of z-values.
+        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). When data is None, can be a sequence of text values. To place a single piece of text specify the text as a string[] (e.g. `["My Text"]`).
         filter_by: Selection to filter by (defaults to data source selection).
         frame_anchor: The frame anchor specifies defaults for **x** and **y**, along with **textAnchor** and **lineAnchor**, based on the plot's frame; it may be one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*, *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
         line_anchor: The line anchor controls how text is aligned (typically vertically) relative to its anchor point; it is one of *top*, *bottom*, or *middle*. If the frame anchor is *top*, *top-left*, or *top-right*, the default line anchor is *top*; if the frame anchor is *bottom*, *bottom-right*, or *bottom-left*, the default is *bottom*; otherwise it is *middle*.
@@ -43,6 +43,17 @@ def text(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
+    if data is None:
+        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+
+        # data might be empty if no args are provided
+        if data:
+            # reassign parameters to column names for column_param
+            x = "x" if "x" in data.columns else None
+            y = "y" if "y" in data.columns else None
+            z = "z" if "z" in data.columns else None
+            text = "text" if "text" in data.columns else None
+
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,
@@ -81,11 +92,11 @@ def text_x(
     If an **interval** is specified, such as *day*, **y** is transformed to the middle of the interval.
 
     Args:
-        data: The data source for the mark.
-        x: The horizontal position channel specifying the text's anchor point, typically bound to the *x* scale.
+        data: The data source for the mark. If None, any of x, y, z, text can be provided as sequences.
+        x: The horizontal position channel specifying the text's anchor point, typically bound to the *x* scale. When data is None, can be a sequence of x-coordinates.
         y: The vertical position channel specifying the text's anchor point, typically bound to the *y* scale; defaults to the zero-based index of the data [0, 1, 2, …].
-        z: An optional ordinal channel for grouping data into series.
-        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). If not specified, defaults to the zero-based index [0, 1, 2, …].
+        z: An optional ordinal channel for grouping data into series. When data is None, can be a sequence of z-values.
+        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). When data is None, can be a sequence of text values. If not specified, defaults to the zero-based index [0, 1, 2, …].
         interval: An interval (such as *day* or a number), to transform **y** values to the middle of the interval.
         filter_by: Selection to filter by (defaults to data source selection).
         frame_anchor: The frame anchor specifies defaults for **x** and **y**, along with **textAnchor** and **lineAnchor**, based on the plot's frame; it may be one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*, *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
@@ -94,6 +105,17 @@ def text_x(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
+    if data is None:
+        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+
+        # data might be empty if no args are provided
+        if data:
+            # reassign parameters to column names for column_param
+            x = "x" if "x" in data.columns else None
+            y = "y" if "y" in data.columns else None
+            z = "z" if "z" in data.columns else None
+            text = "text" if "text" in data.columns else None
+
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,
@@ -133,11 +155,11 @@ def text_y(
     If an **interval** is specified, such as *day*, **x** is transformed to the middle of the interval.
 
     Args:
-        data: The data source for the mark.
-        y: The vertical position channel specifying the text's anchor point, typically bound to the *y* scale.
+        data: The data source for the mark. If None, any of x, y, z, text can be provided as sequences.
+        y: The vertical position channel specifying the text's anchor point, typically bound to the *y* scale. When data is None, can be a sequence of y-coordinates.
         x: The horizontal position channel specifying the text's anchor point, typically bound to the *x* scale; defaults to the zero-based index of the data [0, 1, 2, …].
-        z: An optional ordinal channel for grouping data into series.
-        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). If not specified, defaults to the zero-based index [0, 1, 2, …].
+        z: An optional ordinal channel for grouping data into series. When data is None, can be a sequence of z-values.
+        text: The text contents channel, possibly with line breaks (\n, \r\n, or \r). When data is None, can be a sequence of text values. If not specified, defaults to the zero-based index [0, 1, 2, …].
         interval: An interval (such as *day* or a number), to transform **x** values to the middle of the interval.
         filter_by: Selection to filter by (defaults to data source selection).
         frame_anchor: The frame anchor specifies defaults for **x** and **y**, along with **textAnchor** and **lineAnchor**, based on the plot's frame; it may be one of the four sides (*top*, *right*, *bottom*, *left*), one of the four corners (*top-left*, *top-right*, *bottom-right*, *bottom-left*), or the *middle* of the frame.
@@ -146,6 +168,17 @@ def text_y(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
+    if data is None:
+        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+
+        # data might be empty if no args are provided
+        if data:
+            # reassign parameters to column names for column_param
+            x = "x" if "x" in data.columns else None
+            y = "y" if "y" in data.columns else None
+            z = "z" if "z" in data.columns else None
+            text = "text" if "text" in data.columns else None
+
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,

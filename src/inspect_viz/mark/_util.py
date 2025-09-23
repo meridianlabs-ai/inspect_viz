@@ -1,3 +1,6 @@
+from typing import Any
+
+import pandas as pd
 from pydantic import JsonValue
 
 from .._core import Data, Param
@@ -37,3 +40,14 @@ def flatten_marks(marks: Marks | None) -> list[Mark]:
         else:
             result.extend(item)
     return result
+
+
+def args_to_data(args: dict[str, Any]) -> Data:
+    """Turns a dictionary of key-value pairs into a data object. Key-value pairs with value None are ignored.
+
+    Args:
+        args: Dictionary of key-value pairs (e.g., {"x": [0, 1, 2], "y": [0, 1, 2]}).
+    """
+    return Data.from_dataframe(
+        pd.DataFrame({k: v for k, v in args.items() if v is not None})
+    )

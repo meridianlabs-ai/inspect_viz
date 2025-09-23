@@ -6,5 +6,6 @@
 | [`scores_timeline()`](view-scores-timeline.qmd) | Scatter plot with eval scores by model, organization, and release date. Filterable by evaluation and organization. |
 | [`scores_heatmap()`](view-scores-heatmap.qmd) |  Heatmap with values for comparing scores across model and task. |
 | [`scores_by_model()`](view-scores-by-model.qmd) | Bar plot for comparing model scores on a single eval. |
+| [`scores_radar()`](view-scores-radar.qmd) | Radar plot for comparing model scores across multiple metrics on a single eval. |
 | [`sample_tool_calls()`](view-sample-tool-calls.qmd) | Heat map visualising tool calls over evaluation turns. |
 | [`sample_heatmap()`](view-sample-heatmap.qmd) | Heat map visualising sample scores. |
