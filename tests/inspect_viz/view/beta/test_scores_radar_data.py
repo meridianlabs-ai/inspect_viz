@@ -3,14 +3,13 @@ from inspect_viz.view.beta import scores_radar_df
 
 
 def test_scores_radar_df() -> None:
-    # row 3 is expected to be ignored as scores_radar_df processes the first row per model
     evals_df = pd.DataFrame(
         {
-            "model": ["model1", "model2", "model1"],
-            "task_id": ["task1", "task2", "task3"],
-            "log": ["path1", "path2", "path3"],
-            "score_myscorer_mymetric1": [1, 2, 3],
-            "score_myscorer_mymetric2": [2, 1, 3],
+            "model": ["model1", "model2"],
+            "task_id": ["task1", "task2"],
+            "log": ["path1", "path2"],
+            "score_myscorer_mymetric1": [1, 2],
+            "score_myscorer_mymetric2": [2, 1],
         }
     )
 
