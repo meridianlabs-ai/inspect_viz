@@ -52,16 +52,20 @@ def scores_radar_df(
     if missing_columns:
         raise ValueError(f"Required columns not found in data: {missing_columns}")
 
-    columns_to_keep = metric_cols + ["task_id"]
+    # check for multiple rows per model and throw exception if found
+    model_counts = data.groupby("model").size()
+    duplicate_models = model_counts[model_counts > 1]
+    if not duplicate_models.empty:
+        raise ValueError(
+            f"Multiple rows found for models: {duplicate_models.index.tolist()}. "
+            f"Expected exactly one row per model."
+        )
+
+    columns_to_keep = required_columns
     if "log" in data.columns:
         columns_to_keep.append("log")
 
-    # handle multiple rows per model by taking first row
-    data_dedup = data.groupby("model")[columns_to_keep].first().reset_index()
-
-    models = data_dedup["model"].tolist()
-    if len(models) == 0:
-        raise ValueError("No valid models found in data.")
+    data = data[columns_to_keep]
 
     # calculate angles for radar chart coordinates
     num_axes = len(metrics)
@@ -74,16 +78,16 @@ def scores_radar_df(
     for metric_name, metric_col in zip(metrics, metric_cols, strict=True):
         # handle metrics where lower is better
         if invert and metric_name in invert:
-            max_val = data_dedup[metric_col].astype(float).max()
-            values = max_val - data_dedup[metric_col].astype(float)
+            max_val = data[metric_col].astype(float).max()
+            values = max_val - data[metric_col].astype(float)
         else:
-            values = data_dedup[metric_col].astype(float)
+            values = data[metric_col].astype(float)
 
         metric_percentile_ranks[metric_name] = values.rank(method="average", pct=True)
 
     all_rows = []
-    for i, model in enumerate(models):
-        model_data = data_dedup[data_dedup["model"] == model]
+    for i, model in enumerate(data["model"].tolist()):
+        model_data = data[data["model"] == model]
         values_raw = model_data[metric_cols].values[0].astype(float).tolist()
         values_scaled = [metric_percentile_ranks[metric].iloc[i] for metric in metrics]
 
