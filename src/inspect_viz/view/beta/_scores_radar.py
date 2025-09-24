@@ -21,11 +21,8 @@ from inspect_viz.plot._legend import legend as create_legend
 def scores_radar_df(
     data: pd.DataFrame,
     scorer: str,
-    metrics: list[str] | None | NotGiven = None,
-    invert: list[str] | None | NotGiven = None,
-    model_column_name: str = "model",
-    task_id_column_name: str = "task_id",
-    log_column_name: str = "log",
+    metrics: list[str] | None = None,
+    invert: list[str] | None = None,
 ) -> pd.DataFrame:
     """
     Creates a dataframe for a radar chart showing multiple models.
@@ -37,9 +34,6 @@ def scores_radar_df(
         metrics: Optional list of specific metrics to plot. If None, all metrics
                  starting with 'score_{scorer}_' will be used.
         invert: Optional list of metrics to invert (where lower scores are better).
-        model_column_name: Name of column containing model names. Defaults to "model".
-        task_id_column_name: Name of column containing task ids. Defaults to "task_id".
-        log_column_name: Name of column containing log paths. Defaults to "log".
     """
     if metrics:
         metric_cols = [f"score_{scorer}_{metric}" for metric in metrics]
@@ -53,19 +47,19 @@ def scores_radar_df(
             )
         metrics = [col.replace(f"score_{scorer}_", "") for col in metric_cols]
 
-    required_columns = [model_column_name, task_id_column_name] + metric_cols
+    required_columns = ["model", "task_id"] + metric_cols
     missing_columns = [col for col in required_columns if col not in data.columns]
     if missing_columns:
         raise ValueError(f"Required columns not found in data: {missing_columns}")
 
-    columns_to_keep = metric_cols + [task_id_column_name]
-    if log_column_name in data.columns:
-        columns_to_keep.append(log_column_name)
+    columns_to_keep = metric_cols + ["task_id"]
+    if "log" in data.columns:
+        columns_to_keep.append("log")
 
     # handle multiple rows per model by taking first row
-    data_dedup = data.groupby(model_column_name)[columns_to_keep].first().reset_index()
+    data_dedup = data.groupby("model")[columns_to_keep].first().reset_index()
 
-    models = data_dedup[model_column_name].tolist()
+    models = data_dedup["model"].tolist()
     if len(models) == 0:
         raise ValueError("No valid models found in data.")
 
@@ -89,7 +83,7 @@ def scores_radar_df(
 
     all_rows = []
     for i, model in enumerate(models):
-        model_data = data_dedup[data_dedup[model_column_name] == model]
+        model_data = data_dedup[data_dedup["model"] == model]
         values_raw = model_data[metric_cols].values[0].astype(float).tolist()
         values_scaled = [metric_percentile_ranks[metric].iloc[i] for metric in metrics]
 
@@ -97,12 +91,8 @@ def scores_radar_df(
         values_scaled_closed = values_scaled + [values_scaled[0]]
 
         # get task_id and log for this model
-        task_id_value = model_data[task_id_column_name].item()
-        log_value = (
-            model_data[log_column_name].item()
-            if log_column_name in model_data.columns
-            else ""
-        )
+        task_id_value = model_data["task_id"].item()
+        log_value = model_data["log"].item() if "log" in model_data.columns else ""
 
         model_rows = pd.DataFrame(
             {
@@ -188,6 +178,11 @@ def scores_radar(
 
     if "model_display_name" not in data.columns:
         model = "model"
+
+    required_columns = [model, "task_id", "log", "metric", "value", "x", "y"]
+    missing_columns = [col for col in required_columns if col not in data.columns]
+    if missing_columns:
+        raise ValueError(f"Required columns not found in data: {missing_columns}")
 
     metrics = data.column_unique("metric")
     axes = axes_coordinates(num_axes=len(metrics))
