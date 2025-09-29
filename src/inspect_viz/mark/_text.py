@@ -12,7 +12,7 @@ from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark
 from ._options import MarkOptions
 from ._types import FrameAnchor, LineAnchor
-from ._util import args_to_data, column_param
+from ._util import args_to_data, check_column_names, column_param
 
 
 def text(
@@ -44,15 +44,7 @@ def text(
         **options: Additional `MarkOptions`.
     """
     if data is None:
-        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
-
-        # data might be empty if no args are provided
-        if data:
-            # reassign parameters to column names for column_param
-            x = "x" if "x" in data.columns else None
-            y = "y" if "y" in data.columns else None
-            z = "z" if "z" in data.columns else None
-            text = "text" if "text" in data.columns else None
+        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -106,15 +98,7 @@ def text_x(
         **options: Additional `MarkOptions`.
     """
     if data is None:
-        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
-
-        # data might be empty if no args are provided
-        if data:
-            # reassign parameters to column names for column_param
-            x = "x" if "x" in data.columns else None
-            y = "y" if "y" in data.columns else None
-            z = "z" if "z" in data.columns else None
-            text = "text" if "text" in data.columns else None
+        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -169,15 +153,7 @@ def text_y(
         **options: Additional `MarkOptions`.
     """
     if data is None:
-        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
-
-        # data might be empty if no args are provided
-        if data:
-            # reassign parameters to column names for column_param
-            x = "x" if "x" in data.columns else None
-            y = "y" if "y" in data.columns else None
-            z = "z" if "z" in data.columns else None
-            text = "text" if "text" in data.columns else None
+        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -199,3 +175,25 @@ def text_y(
 
 def text_styles_config(styles: TextStyles | None) -> dict[str, Any]:
     return dict_to_camel(dict(styles)) if styles else {}
+
+
+def infer_text_mark_config_inputs(
+    x: ChannelIntervalSpec | ChannelSpec | Param | None,
+    y: ChannelIntervalSpec | ChannelSpec | Param | None,
+    z: Channel | Param | None,
+    text: Channel | Param | None,
+) -> tuple[
+    Data | None,
+    ChannelIntervalSpec | ChannelSpec | Param | None,
+    ChannelIntervalSpec | ChannelSpec | Param | None,
+    Channel | Param | None,
+    Channel | Param | None,
+]:
+    """Helper function to infer the text mark config inputs when data is created from args."""
+    data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+
+    # data might be empty if no args are provided (this is intended behavior that's why we don't raise)
+    if data:
+        # reassign parameters to column names for column_param
+        x, y, z, text = check_column_names(data, ["x", "y", "z", "text"])
+    return data, x, y, z, text

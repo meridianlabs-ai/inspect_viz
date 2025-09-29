@@ -8,7 +8,7 @@ from ._channel import Channel, ChannelSpec
 from ._mark import Mark
 from ._options import MarkOptions
 from ._types import Curve, Marker
-from ._util import args_to_data, column_param
+from ._util import args_to_data, check_column_names, column_param
 
 
 def line(
@@ -44,12 +44,15 @@ def line(
         **options: Additional `MarkOptions`.
     """
     if data is None:
+        if not x or not y:
+            raise ValueError(
+                f"If data is None, x and y must be provided as sequences. "
+                f"Received input x: {x}, y: {y}"
+            )
         data = args_to_data({"x": x, "y": y, "z": z})
 
         # reassign parameters to column names for column_param
-        x = "x" if "x" in data.columns else None
-        y = "y" if "y" in data.columns else None
-        z = "z" if "z" in data.columns else None
+        x, y, z = check_column_names(data, ["x", "y", "z"])
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -102,12 +105,15 @@ def line_x(
         **options: Additional `MarkOptions`.
     """
     if data is None:
+        if not x:
+            raise ValueError(
+                f"If data is None, x must be provided as a sequence. "
+                f"Received input x: {x}"
+            )
         data = args_to_data({"x": x, "y": y, "z": z})
 
         # reassign parameters to column names for column_param
-        x = "x" if "x" in data.columns else None
-        y = "y" if "y" in data.columns else None
-        z = "z" if "z" in data.columns else None
+        x, y, z = check_column_names(data, ["x", "y", "z"])
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -160,12 +166,15 @@ def line_y(
         **options: Additional `MarkOptions`.
     """
     if data is None:
+        if not y:
+            raise ValueError(
+                f"If data is None, y must be provided as a sequence. "
+                f"Received input y: {y}"
+            )
         data = args_to_data({"x": x, "y": y, "z": z})
 
         # reassign parameters to column names for column_param
-        x = "x" if "x" in data.columns else None
-        y = "y" if "y" in data.columns else None
-        z = "z" if "z" in data.columns else None
+        x, y, z = check_column_names(data, ["x", "y", "z"])
 
     config: dict[str, Any] = dict_remove_none(
         dict(
