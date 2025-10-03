@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any
 
 from typing_extensions import Unpack
@@ -43,16 +44,7 @@ def line(
         tension: The tension option for bundle, cardinal and Catmull-Rom splines.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        if not x or not y:
-            raise ValueError(
-                f"If data is None, x and y must be provided as sequences. "
-                f"Received input x: {x}, y: {y}"
-            )
-        data = args_to_data({"x": x, "y": y, "z": z})
-
-        # reassign parameters to column names for column_param
-        x, y, z = check_column_names(data, ["x", "y", "z"])
+    data, x, y, z = resolve_line_inputs(data, x, y, z, ArgsValidation.X_AND_Y)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -104,16 +96,7 @@ def line_x(
         tension: The tension option for bundle, cardinal and Catmull-Rom splines.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        if not x:
-            raise ValueError(
-                f"If data is None, x must be provided as a sequence. "
-                f"Received input x: {x}"
-            )
-        data = args_to_data({"x": x, "y": y, "z": z})
-
-        # reassign parameters to column names for column_param
-        x, y, z = check_column_names(data, ["x", "y", "z"])
+    data, x, y, z = resolve_line_inputs(data, x, y, z, ArgsValidation.X_ONLY)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -165,16 +148,7 @@ def line_y(
         tension: The tension option for bundle, cardinal and Catmull-Rom splines.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        if not y:
-            raise ValueError(
-                f"If data is None, y must be provided as a sequence. "
-                f"Received input y: {y}"
-            )
-        data = args_to_data({"x": x, "y": y, "z": z})
-
-        # reassign parameters to column names for column_param
-        x, y, z = check_column_names(data, ["x", "y", "z"])
+    data, x, y, z = resolve_line_inputs(data, x, y, z, ArgsValidation.Y_ONLY)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
@@ -192,3 +166,47 @@ def line_y(
     )
 
     return Mark("lineY", config, options)
+
+
+class ArgsValidation(Enum):
+    X_AND_Y = "x_and_y"
+    X_ONLY = "x_only"
+    Y_ONLY = "y_only"
+
+
+def resolve_line_inputs(
+    data: Data | None,
+    x: ChannelSpec | Param,
+    y: ChannelSpec | Param,
+    z: Channel | Param | None = None,
+    validation: ArgsValidation = ArgsValidation.X_AND_Y,
+) -> tuple[
+    Data,
+    ChannelSpec | Param,
+    ChannelSpec | Param,
+    Channel | Param | None,
+]:
+    """Helper function to resolve the line mark config inputs."""
+    if data is None:
+        if validation == ArgsValidation.X_AND_Y and (not x or not y):
+            raise ValueError(
+                f"If data is None, x and y must be provided as sequences. "
+                f"Received input x: {x}, y: {y}"
+            )
+        elif validation == ArgsValidation.X_ONLY and not x:
+            raise ValueError(
+                f"If data is None, x must be provided as a sequence. "
+                f"Received input x: {x}"
+            )
+        elif validation == ArgsValidation.Y_ONLY and not y:
+            raise ValueError(
+                f"If data is None, y must be provided as a sequence. "
+                f"Received input y: {y}"
+            )
+
+        data = args_to_data({"x": x, "y": y, "z": z})
+
+        # reassign parameters to column names for column_param
+        x, y, z = check_column_names(data, ["x", "y", "z"])
+
+    return data, x, y, z

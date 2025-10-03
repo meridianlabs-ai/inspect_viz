@@ -43,16 +43,15 @@ def text(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
+    data, x_col, y_col, z_col, text_col = resolve_text_inputs(data, x, y, z, text)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,
-            x=column_param(data, x),
-            y=column_param(data, y),
-            z=column_param(data, z),
-            text=column_param(data, text),
+            x=column_param(data, x_col),
+            y=column_param(data, y_col),
+            z=column_param(data, z_col),
+            text=column_param(data, text_col),
             frameAnchor=frame_anchor,
             lineAnchor=line_anchor,
             rotate=rotate,
@@ -97,16 +96,15 @@ def text_x(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
+    data, x_col, y_col, z_col, text_col = resolve_text_inputs(data, x, y, z, text)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,
-            x=column_param(data, x),
-            y=column_param(data, y),
-            z=column_param(data, z),
-            text=column_param(data, text),
+            x=column_param(data, x_col),
+            y=column_param(data, y_col),
+            z=column_param(data, z_col),
+            text=column_param(data, text_col),
             interval=interval,
             frameAnchor=frame_anchor,
             lineAnchor=line_anchor,
@@ -152,16 +150,15 @@ def text_y(
         styles: `TextStyles` to apply.
         **options: Additional `MarkOptions`.
     """
-    if data is None:
-        data, x, y, z, text = infer_text_mark_config_inputs(data, x, y, z, text)  # type: ignore
+    data, x_col, y_col, z_col, text_col = resolve_text_inputs(data, x, y, z, text)
 
     config: dict[str, Any] = dict_remove_none(
         dict(
             data=data._plot_from(filter_by) if data else None,
-            y=column(y) if isinstance(y, str) else y,
-            x=column(x) if isinstance(x, str) else x,
-            z=column(z) if isinstance(z, str) else z,
-            text=column(text) if isinstance(text, str) else text,
+            y=column(y_col) if isinstance(y_col, str) else y_col,
+            x=column(x_col) if isinstance(x_col, str) else x_col,
+            z=column(z_col) if isinstance(z_col, str) else z_col,
+            text=column(text_col) if isinstance(text_col, str) else text_col,
             interval=interval,
             frameAnchor=frame_anchor,
             lineAnchor=line_anchor,
@@ -177,7 +174,8 @@ def text_styles_config(styles: TextStyles | None) -> dict[str, Any]:
     return dict_to_camel(dict(styles)) if styles else {}
 
 
-def infer_text_mark_config_inputs(
+def resolve_text_inputs(
+    data: Data | None,
     x: ChannelIntervalSpec | ChannelSpec | Param | None,
     y: ChannelIntervalSpec | ChannelSpec | Param | None,
     z: Channel | Param | None,
@@ -189,11 +187,15 @@ def infer_text_mark_config_inputs(
     Channel | Param | None,
     Channel | Param | None,
 ]:
-    """Helper function to infer the text mark config inputs when data is created from args."""
-    data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+    """Helper function to resolve the text mark config inputs."""
+    if data is None:
+        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
 
-    # data might be empty if no args are provided (this is intended behavior that's why we don't raise)
+    # data might be empty if no x, y, z, text are provided
+    # this is intended behavior that's why we don't raise an error
     if data:
         # reassign parameters to column names for column_param
-        x, y, z, text = check_column_names(data, ["x", "y", "z", "text"])
-    return data, x, y, z, text
+        x_col, y_col, z_col, text_col = check_column_names(
+            data, ["x", "y", "z", "text"]
+        )
+    return data, x_col, y_col, z_col, text_col

@@ -129,8 +129,8 @@ def labels_coordinates(metrics: list[str]) -> dict[str, list[str] | list[float]]
     angles = compute_angles(len(metrics), endpoint=False)
     return {
         "metric": metrics,
-        "x": (1.12 * np.cos(angles)).tolist(),
-        "y": (1.12 * np.sin(angles)).tolist(),
+        "x": (1.24 * np.cos(angles)).tolist(),
+        "y": (1.24 * np.sin(angles)).tolist(),
     }
 
 
@@ -160,8 +160,7 @@ def scores_radar(
     data: Data | pd.DataFrame,
     model: str = "model_display_name",
     title: str | Title | None = None,
-    height: float | None = 700,
-    width: float | None = 700,
+    width: float | None = 500,
     legend: Legend | NotGiven | None = NOT_GIVEN,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
@@ -172,8 +171,8 @@ def scores_radar(
         data: A dataframe prepared using the `scores_radar_df` function.
         model: Name of field holding the model (defaults to "model_display_name").
         title: Title for plot (`str` or mark created with the `title()` function)
-        height: The outer height of the plot in pixels, including margins. Defaults to 700.
-        width: The outer width of the plot in pixels, including margins. Defaults to 700.
+        width: The outer width of the plot in pixels, including margins. Defaults to 500.
+               Height is automatically set to match width to maintain square aspect ratio.
         legend: Options for the legend. Pass None to disable the legend.
         **attributes: Additional `PlotAttributes`.
     """
@@ -244,9 +243,9 @@ def scores_radar(
             x="x",
             y="y",
             stroke=model,
+            filter_by=model_selection,
             tip=True,
             channels=channels,
-            filter_by=model_selection,
         ),
         line(
             data,
@@ -254,6 +253,7 @@ def scores_radar(
             y="y",
             stroke=model,
             stroke_opacity=0.4,
+            tip=False,
         ),
         # polygon vertex markers
         circle(
@@ -264,6 +264,7 @@ def scores_radar(
             fill=model,
             stroke="white",
             filter_by=model_selection,
+            tip=False,
         ),
         # axis labels
         text(
@@ -281,7 +282,7 @@ def scores_radar(
 
     # resolve default attributes
     defaults: PlotAttributes = {
-        "margin": 30,
+        "margin": max(30, int(width * 0.12)) if width else 36,
         "x_axis": False,
         "y_axis": False,
     }
@@ -291,7 +292,7 @@ def scores_radar(
         elements,
         title=title,
         width=width,
-        height=height,
+        height=width,
         legend=plot_legend,
         **attributes,
     )

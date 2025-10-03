@@ -59,9 +59,9 @@ elements = [
         x="x",  # <7>
         y="y",  # <7>
         stroke="model_display_name",  # <7>
+        filter_by=model_selection,  # <7>
         tip=True,  # <7>
         channels=channels,  # <7>
-        filter_by=model_selection,  # <7>
     ),  # <7>
     line(  # <7>
         data,  # <7>
@@ -69,6 +69,7 @@ elements = [
         y="y",  # <7>
         stroke="model_display_name",  # <7>
         stroke_opacity=0.4,  # <7>
+        tip=False,  # <7>
     ),  # <7>
     circle(  # <8>
         data,  # <8>
@@ -78,6 +79,7 @@ elements = [
         fill="model_display_name",  # <8>
         stroke="white",  # <8>
         filter_by=model_selection,  # <8>
+        tip=False,  # <8>
     ),
     # axis labels
     text(  # <9>
@@ -89,11 +91,11 @@ elements = [
 
 plot(
     elements,
-    margin=30,
+    margin=60,
     x_axis=False,  # <10>
     y_axis=False,  # <10>
-    width=600,
-    height=600,
+    width=500,
+    height=500,
     legend=legend("color", target=model_selection),  # <11>
 )
 ```

@@ -36,6 +36,13 @@ const kFrameAnchor = '_frame_anchor';
 const kBackground = '_background';
 const kBorder = '_border';
 
+const SCALING_CONFIG = {
+    SMALL_PLOT_THRESHOLD: 0.6,
+    LARGE_PLOT_THRESHOLD: 1.5,
+    MIN_SCALE: 0.7,
+    MAX_SCALE: 1.3,
+} as const;
+
 export const installLegendHandler = (specEl: HTMLElement, responsive: boolean) => {
     // If the spec element has already been configured, dispose of it
     const existingObserver = observedSpecs.get(specEl);
@@ -288,6 +295,33 @@ const applyParentPadding = (
     }
 };
 
+/**
+ * Calculates the adaptive scale factor for legend sizing based on plot dimensions.
+ * Uses breakpoints to prevent legends from becoming too small or too large.
+ *
+ * @param rawScaleFactor - The ratio of actual width to base width
+ * @returns Scale factor between MIN_SCALE and MAX_SCALE
+ */
+const calculateAdaptiveScale = (rawScaleFactor: number): number => {
+    const { SMALL_PLOT_THRESHOLD, LARGE_PLOT_THRESHOLD, MIN_SCALE, MAX_SCALE } = SCALING_CONFIG;
+
+    if (rawScaleFactor < SMALL_PLOT_THRESHOLD) {
+        // For small plots (< 60% of base size), use fixed scale to prevent tiny legends
+        return MIN_SCALE;
+    }
+
+    if (rawScaleFactor > LARGE_PLOT_THRESHOLD) {
+        // For large plots (> 150% of base size), cap the scale to prevent huge legends
+        return MAX_SCALE;
+    }
+
+    // For normal range (60%-150% of base size), use linear interpolation
+    // This creates a smooth transition between the fixed scales
+    const progress =
+        (rawScaleFactor - SMALL_PLOT_THRESHOLD) / (LARGE_PLOT_THRESHOLD - SMALL_PLOT_THRESHOLD);
+    return MIN_SCALE + progress * (MAX_SCALE - MIN_SCALE);
+};
+
 const responsiveScaleLegend = (
     options: ResolvedLegendOptions,
     legendEl: HTMLElement,
@@ -329,10 +363,13 @@ const responsiveScaleLegend = (
         return;
     }
 
-    // Compute the scale factor based the based with vs the actual width
+    // Compute the scale factor based on the base width vs the actual width
     const parentRect = parentEl.getBoundingClientRect();
     const actualWidth = parentRect.width;
-    const scaleFactor = actualWidth / parseFloat(baseWidth);
+    const rawScaleFactor = actualWidth / parseFloat(baseWidth);
+
+    // Calculate adaptive scale factor
+    const scaleFactor = calculateAdaptiveScale(rawScaleFactor);
 
     // Accumulate any styles
     const styles: Partial<CSSStyleDeclaration> = {};
