@@ -299,7 +299,7 @@ const applyParentPadding = (
  * Calculates the adaptive scale factor for legend sizing based on plot dimensions.
  * Uses breakpoints to prevent legends from becoming too small or too large.
  *
- * @param rawScaleFactor - The ratio of actual width to base width
+ * @param rawScaleFactor - The ratio of actual width (parent) to base width (SVG) (actual width / base width)
  * @returns Scale factor between MIN_SCALE and MAX_SCALE
  */
 const calculateAdaptiveScale = (rawScaleFactor: number): number => {
