@@ -160,7 +160,7 @@ def scores_radar(
     data: Data,
     model: str = "model_display_name",
     title: str | Title | None = None,
-    width: float | None = 500,
+    width: float | None = 400,
     legend: Legend | NotGiven | None = NOT_GIVEN,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
