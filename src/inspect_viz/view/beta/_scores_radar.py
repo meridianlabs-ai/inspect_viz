@@ -157,7 +157,7 @@ def grid_circles_coordinates() -> list[dict[str, list[float]]]:
 
 
 def scores_radar(
-    data: Data | pd.DataFrame,
+    data: Data,
     model: str = "model_display_name",
     title: str | Title | None = None,
     width: float | None = 500,
@@ -168,7 +168,7 @@ def scores_radar(
     Creates a radar chart showing scores for multiple models across multiple metrics.
 
     Args:
-        data: A dataframe prepared using the `scores_radar_df` function.
+        data: A `Data` object prepared using the `scores_radar_df` function.
         model: Name of field holding the model (defaults to "model_display_name").
         title: Title for plot (`str` or mark created with the `title()` function)
         width: The outer width of the plot in pixels, including margins. Defaults to 500.
@@ -176,9 +176,6 @@ def scores_radar(
         legend: Options for the legend. Pass None to disable the legend.
         **attributes: Additional `PlotAttributes`.
     """
-    if isinstance(data, pd.DataFrame):
-        data = Data.from_dataframe(data)
-
     if "model_display_name" not in data.columns:
         model = "model"
 
