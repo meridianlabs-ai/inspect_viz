@@ -516,44 +516,6 @@ const getAnchorConfig = (anchor: FrameAnchor, options: ResolvedLegendOptions): A
     return { position: { position: 'absolute' } };
 };
 
-// The style information for the legend element based on the anchor position.
-const kLegendAnchorConfig: Record<FrameAnchor, AnchorConfig> = {
-    'top-left': {
-        position: { position: 'absolute', top: '0', left: '0' },
-        transformOrigin: 'top left',
-    },
-    top: {
-        position: { position: 'absolute', top: '0', left: '50%' },
-        centerTransform: true,
-        transformOrigin: 'top center',
-    },
-    'top-right': {
-        position: { position: 'absolute', top: '0', right: '0' },
-        transformOrigin: 'top right',
-    },
-    right: {
-        position: { position: 'absolute', right: '0' },
-    },
-    'bottom-right': {
-        position: { position: 'absolute', bottom: '0', right: '0' },
-        transformOrigin: 'bottom right',
-    },
-    bottom: {
-        position: { position: 'absolute', bottom: '0', left: '50%' },
-        centerTransform: true,
-        transformOrigin: 'bottom center',
-    },
-    'bottom-left': {
-        position: { position: 'absolute', bottom: '0', left: '0' },
-        transformOrigin: 'bottom left',
-    },
-    left: {
-        position: { position: 'absolute', left: '0' },
-        transformOrigin: 'center left',
-    },
-    middle: { position: { position: 'absolute' } },
-};
-
 function emplaceLegendContainers(frameLegends: Record<string, HTMLElement[]>, specEl: HTMLElement) {
     for (const [positionKey, legendEls] of Object.entries(frameLegends)) {
         for (const legendEl of legendEls) {
