@@ -12,7 +12,7 @@ from ._channel import Channel, ChannelIntervalSpec, ChannelSpec
 from ._mark import Mark
 from ._options import MarkOptions
 from ._types import FrameAnchor, LineAnchor
-from ._util import args_to_data, check_column_names, column_param
+from ._util import args_to_data, column_param
 
 
 def text(
@@ -187,15 +187,54 @@ def resolve_text_inputs(
     Channel | Param | None,
     Channel | Param | None,
 ]:
-    """Helper function to resolve the text mark config inputs."""
-    if data is None:
-        data = args_to_data({"x": x, "y": y, "z": z, "text": text})
+    """Helper function to resolve and validate text mark channel inputs.
 
-    # data might be empty if no x, y, z, text are provided
-    # this is intended behavior that's why we don't raise an error
+    This function handles the conversion of channel parameters to column references:
+    - If data is None and parameters contain sequences (lists/tuples), creates a Data
+      object with those sequences as columns named "x", "y", "z", "text".
+    - For string parameters (column names), validates they exist in the data. Returns
+      None if a column name doesn't exist.
+    - For list/tuple parameters that were converted to columns, returns the column name
+      (e.g., "x", "y", "z", "text") instead of the original sequence.
+    - For other parameter types (Param objects, dicts, None), returns them unchanged.
+
+    Args:
+        data: The data source, or None to create one from sequences in parameters.
+        x: The x channel specification.
+        y: The y channel specification.
+        z: The z channel specification.
+        text: The text channel specification.
+
+    Returns:
+        A tuple of (data, x_col, y_col, z_col, text_col) where:
+        - data: The Data object (created if None was passed, otherwise the original).
+        - x_col, y_col, z_col, text_col: Resolved column references - either validated
+          string column names, converted sequence names, or the original parameter values.
+    """
+    params_to_cols = {"x": x, "y": y, "z": z, "text": text}
+
+    if data is None:
+        data = args_to_data(params_to_cols)
+
+    # Initialize with original values
+    x_col, y_col, z_col, text_col = x, y, z, text
+
     if data:
-        # reassign parameters to column names for column_param
-        x_col, y_col, z_col, text_col = check_column_names(
-            data, ["x", "y", "z", "text"]
-        )
+        # For each parameter, determine the appropriate column reference
+        def resolve_param(param: Any, col_name: str) -> Any:
+            # If param is a string (and not a Param object), validate it exists in data
+            if isinstance(param, str) and not isinstance(param, Param):
+                return param if param in data.columns else None
+            # If param is a sequence/list (was converted to a column), use the column name
+            elif isinstance(param, (list, tuple)) and col_name in data.columns:
+                return col_name
+            # Otherwise return as-is (Param objects, None, etc.)
+            else:
+                return param
+
+        x_col = resolve_param(x, "x")
+        y_col = resolve_param(y, "y")
+        z_col = resolve_param(z, "z")
+        text_col = resolve_param(text, "text")
+
     return data, x_col, y_col, z_col, text_col
