@@ -36,13 +36,6 @@ const kFrameAnchor = '_frame_anchor';
 const kBackground = '_background';
 const kBorder = '_border';
 
-const SCALING_CONFIG = {
-    SMALL_PLOT_THRESHOLD: 0.6,
-    LARGE_PLOT_THRESHOLD: 1.5,
-    MIN_SCALE: 0.7,
-    MAX_SCALE: 1.3,
-} as const;
-
 export const installLegendHandler = (specEl: HTMLElement, responsive: boolean) => {
     // If the spec element has already been configured, dispose of it
     const existingObserver = observedSpecs.get(specEl);
@@ -206,7 +199,6 @@ const applyLegendStyles = (legendEl: HTMLElement): void => {
     } else {
         legendContainerEl.style.padding = '0.3em';
     }
-    legendContainerEl.style.position = 'absolute';
     legendContainerEl.style.width = 'max-content';
 
     // Background and border
@@ -295,33 +287,6 @@ const applyParentPadding = (
     }
 };
 
-/**
- * Calculates the adaptive scale factor for legend sizing based on plot dimensions.
- * Uses breakpoints to prevent legends from becoming too small or too large.
- *
- * @param rawScaleFactor - The ratio of actual width (parent) to base width (SVG) (actual width / base width)
- * @returns Scale factor between MIN_SCALE and MAX_SCALE
- */
-const calculateAdaptiveScale = (rawScaleFactor: number): number => {
-    const { SMALL_PLOT_THRESHOLD, LARGE_PLOT_THRESHOLD, MIN_SCALE, MAX_SCALE } = SCALING_CONFIG;
-
-    if (rawScaleFactor < SMALL_PLOT_THRESHOLD) {
-        // For small plots (< 60% of base size), use fixed scale to prevent tiny legends
-        return MIN_SCALE;
-    }
-
-    if (rawScaleFactor > LARGE_PLOT_THRESHOLD) {
-        // For large plots (> 150% of base size), cap the scale to prevent huge legends
-        return MAX_SCALE;
-    }
-
-    // For normal range (60%-150% of base size), use linear interpolation
-    // This creates a smooth transition between the fixed scales
-    const progress =
-        (rawScaleFactor - SMALL_PLOT_THRESHOLD) / (LARGE_PLOT_THRESHOLD - SMALL_PLOT_THRESHOLD);
-    return MIN_SCALE + progress * (MAX_SCALE - MIN_SCALE);
-};
-
 const responsiveScaleLegend = (
     options: ResolvedLegendOptions,
     legendEl: HTMLElement,
@@ -329,7 +294,7 @@ const responsiveScaleLegend = (
 ): void => {
     // Apply the anchor styles
     const anchor = options.frameAnchor || 'right';
-    const config = kLegendAnchorConfig[anchor];
+    const config = getAnchorConfig(anchor, options);
     Object.assign(legendContainerEl.style, config.position);
     if (config.centerTransform) {
         legendContainerEl.style.transform = 'translateX(-50%)';
@@ -365,11 +330,13 @@ const responsiveScaleLegend = (
 
     // Compute the scale factor based on the base width vs the actual width
     const parentRect = parentEl.getBoundingClientRect();
-    const actualWidth = parentRect.width;
-    const rawScaleFactor = actualWidth / parseFloat(baseWidth);
+    const svgWidth = svgEl.getBoundingClientRect().width;
+    const rawScaleFactor = svgWidth / parseFloat(baseWidth);
 
-    // Calculate adaptive scale factor
-    const scaleFactor = calculateAdaptiveScale(rawScaleFactor);
+    // Calculate scale factor
+    // Don't allow the scaleFactor to grow (since there is a max
+    // size for a plot, we shouldn't scale the legend beyond that)
+    const scaleFactor = Math.min(1, rawScaleFactor);
 
     // Accumulate any styles
     const styles: Partial<CSSStyleDeclaration> = {};
@@ -491,38 +458,100 @@ const kParentAnchorConfig: Record<FrameAnchor, { paddingType: string }> = {
     middle: { paddingType: '' },
 };
 
-// The style information for the legend element based on the anchor position.
-const kLegendAnchorConfig: Record<
-    FrameAnchor,
-    {
-        position: { [key: string]: string };
-        parentPadding?: string;
-        centerTransform?: boolean;
-        transformOrigin?: string;
+interface AnchorConfig {
+    position: { [key: string]: string };
+    parentPadding?: string;
+    centerTransform?: boolean;
+    transformOrigin?: string;
+}
+
+const getAnchorConfig = (anchor: FrameAnchor, options: ResolvedLegendOptions): AnchorConfig => {
+    switch (anchor) {
+        case 'top-left':
+            return {
+                position: { position: 'absolute', top: '0', left: '0' },
+                transformOrigin: 'top left',
+            };
+        case 'top':
+            return {
+                position: { position: 'absolute', top: '0', left: '50%' },
+                centerTransform: true,
+                transformOrigin: 'top center',
+            };
+        case 'top-right':
+            return {
+                position: { position: 'absolute', top: '0', right: '0' },
+                transformOrigin: 'top right',
+            };
+        case 'right':
+            if (options.inset) {
+                return { position: { position: 'absolute', right: '0' } };
+            } else {
+                return { position: {} };
+            }
+        case 'bottom-right':
+            return {
+                position: { position: 'absolute', bottom: '0', right: '0' },
+                transformOrigin: 'bottom right',
+            };
+        case 'bottom':
+            return {
+                position: { position: 'absolute', bottom: '0', left: '50%' },
+                centerTransform: true,
+                transformOrigin: 'bottom center',
+            };
+        case 'bottom-left':
+            return {
+                position: { position: 'absolute', bottom: '0', left: '0' },
+                transformOrigin: 'bottom left',
+            };
+        case 'left':
+            return {
+                position: { position: 'absolute', left: '0' },
+                transformOrigin: 'center left',
+            };
+        case 'middle':
+            return { position: { position: 'absolute' } };
     }
-> = {
-    'top-left': { position: { top: '0', left: '0' }, transformOrigin: 'top left' },
+    return { position: { position: 'absolute' } };
+};
+
+// The style information for the legend element based on the anchor position.
+const kLegendAnchorConfig: Record<FrameAnchor, AnchorConfig> = {
+    'top-left': {
+        position: { position: 'absolute', top: '0', left: '0' },
+        transformOrigin: 'top left',
+    },
     top: {
-        position: { top: '0', left: '50%' },
+        position: { position: 'absolute', top: '0', left: '50%' },
         centerTransform: true,
         transformOrigin: 'top center',
     },
-    'top-right': { position: { top: '0', right: '0' }, transformOrigin: 'top right' },
-    right: {
-        position: { right: '0', transformOrigin: 'center right' },
+    'top-right': {
+        position: { position: 'absolute', top: '0', right: '0' },
+        transformOrigin: 'top right',
     },
-    'bottom-right': { position: { bottom: '0', right: '0' }, transformOrigin: 'bottom right' },
+    right: {
+        position: { position: 'absolute', right: '0' },
+    },
+    'bottom-right': {
+        position: { position: 'absolute', bottom: '0', right: '0' },
+        transformOrigin: 'bottom right',
+    },
     bottom: {
-        position: { bottom: '0', left: '50%' },
+        position: { position: 'absolute', bottom: '0', left: '50%' },
         centerTransform: true,
         transformOrigin: 'bottom center',
     },
-    'bottom-left': { position: { bottom: '0', left: '0' }, transformOrigin: 'bottom left' },
+    'bottom-left': {
+        position: { position: 'absolute', bottom: '0', left: '0' },
+        transformOrigin: 'bottom left',
+    },
     left: {
-        position: { left: '0' },
+        position: { position: 'absolute', left: '0' },
         transformOrigin: 'center left',
     },
-    middle: { position: {} },
+    middle: { position: { position: 'absolute' } },
 };
 
 function emplaceLegendContainers(frameLegends: Record<string, HTMLElement[]>, specEl: HTMLElement) {
