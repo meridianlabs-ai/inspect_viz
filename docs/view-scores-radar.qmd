@@ -19,7 +19,7 @@ from inspect_viz import Data
 from inspect_viz.view.beta import scores_radar
 
 evals = Data.from_file("writing_bench_radar.parquet")
-scores_radar(evals)
+scores_radar(evals, new_line=True)
 ```
 
 ## Data Preparation

@@ -35,7 +35,7 @@ channels = {  # <2>
 metrics = data.column_unique("metric")
 axes = axes_coordinates(num_axes=len(metrics))  # <3>
 grid_circles = grid_circles_coordinates()  # <3>
-labels = labels_coordinates(metrics=metrics)  # <3>
+labels = labels_coordinates(metrics=metrics, new_line=True)  # <3>
 
 # enable interactive highlighting of a chosen model
 model_selection = Selection.single()  # <4>
@@ -82,20 +82,24 @@ elements = [
         tip=False,  # <8>
     ),
     # axis labels
-    text(  # <9>
-        x=labels["x"],  # <9>
-        y=labels["y"],  # <9>
-        text=labels["metric"],  # <9>
-    ),  # <9>
+    *[  # <9>
+        text(  # <9>
+            x=label["x"],  # <9>
+            y=label["y"],  # <9>
+            text=label["metric"],  # <9>
+            frame_anchor=label["frame_anchor"],  # <9>
+        )  # <9>
+        for label in labels  # <9>
+    ],  # <9>
 ]
 
 plot(
     elements,
-    margin=60,
+    margin=48,
     x_axis=False,  # <10>
     y_axis=False,  # <10>
-    width=500,
-    height=500,
+    width=400,
+    height=400,
     legend=legend("color", target=model_selection),  # <11>
 )
 ```
