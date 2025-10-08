@@ -16,10 +16,13 @@ The `scores_radar()`function renders a radar chart for comparing eval scores acr
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_radar
+from inspect_viz.view.beta import scores_radar, LabelStyles
 
 evals = Data.from_file("writing_bench_radar.parquet")
-scores_radar(evals, new_line=True)
+scores_radar(
+  evals,
+  label_styles=LabelStyles(line_width=3)  # wrap label text
+)
 ```
 
 ## Data Preparation

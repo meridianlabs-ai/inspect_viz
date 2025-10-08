@@ -1,10 +1,11 @@
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
-from typing_extensions import Unpack
+from typing_extensions import TypedDict, Unpack
 
+from inspect_viz._core import Param
 from inspect_viz._core.component import Component
 from inspect_viz._core.data import Data
 from inspect_viz._core.selection import Selection
@@ -12,10 +13,20 @@ from inspect_viz._util.channels import resolve_log_viewer_channel
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz.mark import circle, line, text
 from inspect_viz.mark._title import Title
+from inspect_viz.mark._types import TextOverflow, TextStyles
 from inspect_viz.plot import plot
 from inspect_viz.plot._attributes import PlotAttributes
 from inspect_viz.plot._legend import Legend
 from inspect_viz.plot._legend import legend as create_legend
+
+
+class LabelStyles(TypedDict, total=False):
+    """Label styling options. It's a subset of `TextStyles`."""
+
+    line_width: float | Param
+    """The line width in ems (e.g., 10 for about 20 characters); defaults to infinity, disabling wrapping and clipping. If **text_overflow** is null, lines will be wrapped at the specified length. If a line is split at a soft hyphen (\xad), a hyphen (-) will be displayed at the end of the line. If **text_overflow** is not null, lines will be clipped according to the given strategy."""
+    text_overflow: TextOverflow | Param
+    """Text overflow behavior."""
 
 
 def scores_radar_df(
@@ -125,13 +136,12 @@ def compute_angles(num_axes: int, endpoint: bool = True) -> NDArray[np.floating[
 
 
 def labels_coordinates(
-    metrics: list[str], new_line: bool = False, width: float = 400, margin: float = 0
+    metrics: list[str], width: float = 400, margin: float = 0
 ) -> list[dict[str, Any]]:
     """Computes coordinates for labels to be used in a radar chart.
 
     Args:
         metrics: List of metric names for label text.
-        new_line: Whether to replace whitespace with new lines in the metric name.
         width: Chart width in pixels, used to calculate radius.
         margin: Margin in pixels (defaults to 0) to substract from width.
 
@@ -163,7 +173,7 @@ def labels_coordinates(
 
         labels.append(
             {
-                "metric": [metric.replace(" ", "\n") if new_line else metric],
+                "metric": [metric],
                 "x": [float(label_radius * np.cos(angle))],
                 "y": [float(label_radius * np.sin(angle))],
                 "frame_anchor": frame_anchor,
@@ -200,8 +210,8 @@ def scores_radar(
     model: str = "model_display_name",
     title: str | Title | None = None,
     width: float = 400,
-    new_line: bool = False,
     legend: Legend | NotGiven | None = NOT_GIVEN,
+    label_styles: LabelStyles | None = None,
     **attributes: Unpack[PlotAttributes],
 ) -> Component:
     """
@@ -213,8 +223,8 @@ def scores_radar(
         title: Title for plot (`str` or mark created with the `title()` function)
         width: The outer width of the plot in pixels, including margins. Defaults to 400.
                Height is automatically set to match width to maintain square aspect ratio.
-        new_line: Whether to replace whitespace with new lines in label text. Defaults to False.
         legend: Options for the legend. Pass None to disable the legend.
+        label_styles: Label styling options. It accepts `line_width` and `text_overflow`.
         **attributes: Additional `PlotAttributes`.
                       Use `margin` to set custom margin (defaults to max(30, width * 0.12)).
     """
@@ -233,9 +243,7 @@ def scores_radar(
     metrics = data.column_unique("metric")
     axes = axes_coordinates(num_axes=len(metrics))
     grid_circles = grid_circles_coordinates()
-    labels = labels_coordinates(
-        metrics=metrics, new_line=new_line, width=width, margin=plot_margin
-    )
+    labels = labels_coordinates(metrics=metrics, width=width, margin=plot_margin)
 
     model_selection = Selection.single()
 
@@ -318,6 +326,7 @@ def scores_radar(
                 y=label["y"],
                 text=label["metric"],
                 frame_anchor=label["frame_anchor"],
+                styles=cast(TextStyles, label_styles) if label_styles else None,
             )
             for label in labels
         ],

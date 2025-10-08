@@ -16,6 +16,7 @@ from inspect_viz._core.selection import Selection
 from inspect_viz.mark import circle, line, text
 from inspect_viz.plot import plot
 from inspect_viz.plot._legend import legend
+from inspect_viz.view.beta import LabelStyles
 from inspect_viz.view.beta._scores_radar import (
     axes_coordinates,
     grid_circles_coordinates,
@@ -35,7 +36,7 @@ channels = {  # <2>
 metrics = data.column_unique("metric")
 axes = axes_coordinates(num_axes=len(metrics))  # <3>
 grid_circles = grid_circles_coordinates()  # <3>
-labels = labels_coordinates(metrics=metrics, new_line=True)  # <3>
+labels = labels_coordinates(metrics=metrics)  # <3>
 
 # enable interactive highlighting of a chosen model
 model_selection = Selection.single()  # <4>
@@ -88,6 +89,7 @@ elements = [
             y=label["y"],  # <9>
             text=label["metric"],  # <9>
             frame_anchor=label["frame_anchor"],  # <9>
+            styles=LabelStyles(line_width=3),  # <9>
         )  # <9>
         for label in labels  # <9>
     ],  # <9>
