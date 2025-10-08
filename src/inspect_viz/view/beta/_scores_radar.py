@@ -238,7 +238,13 @@ def scores_radar(
 
     # use margin from attributes or calculate default
     margin_attr = attributes.get("margin")
-    plot_margin = int(margin_attr) if margin_attr else max(30, int(width * 0.12))
+    plot_margin = int(margin_attr) if margin_attr else max(60, int(width * 0.12))
+
+    # wrap label text if any metric name is longer than 10 characters
+    if not label_styles and any(
+        len(metric) > 10 for metric in data.column_unique("metric")
+    ):
+        label_styles = LabelStyles(line_width=8)
 
     metrics = data.column_unique("metric")
     axes = axes_coordinates(num_axes=len(metrics))

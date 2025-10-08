@@ -89,7 +89,7 @@ elements = [
             y=label["y"],  # <9>
             text=label["metric"],  # <9>
             frame_anchor=label["frame_anchor"],  # <9>
-            styles=LabelStyles(line_width=3),  # <9>
+            styles=LabelStyles(line_width=8),  # <9>
         )  # <9>
         for label in labels  # <9>
     ],  # <9>
@@ -97,7 +97,7 @@ elements = [
 
 plot(
     elements,
-    margin=48,
+    margin=60,
     x_axis=False,  # <10>
     y_axis=False,  # <10>
     width=400,
