@@ -26,10 +26,10 @@ df = scores_by_limit_df(                          # <3>
     score="score_swe_bench_scorer",        # <3>
 )
 
-df = prepare(df,                                                     #<4>
+df = prepare(df, [                                                   #<4>
   model_info(),                                                      #<4>
   log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" }) #<4>
-)                                                                  #<4>
+])                                                                  #<4>
 
 df.to_parquet("{{< meta datafile>}}")
 ```

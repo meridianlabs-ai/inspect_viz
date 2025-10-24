@@ -6,13 +6,13 @@ Above we read the data for the plot from a parquet file. This file was in turn c
 2. Using the [`prepare()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare) function to add [`model_info()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#model_info) and [`log_viewer()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#model_info) columns to the data frame.
 
 ```python
-from inspect_ai.analysis import evals_df, log_viewer, model_into, prepare
+from inspect_ai.analysis import evals_df, log_viewer, model_info, prepare
 
 df = evals_df("logs")
-df = prepare(df, 
+df = prepare(df, [
     model_info(),
-    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"}),
-)
+    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"})
+])
 df.to_parquet("{{< meta datafile>}}")
 ```
 

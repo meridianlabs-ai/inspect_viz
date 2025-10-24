@@ -38,10 +38,10 @@ Above we read the data for the plot from a parquet file. This file was in turn c
 from inspect_ai.analysis import samples_df, log_viewer, model_info, prepare, EvalModel, SampleSummary
 
 df = samples_df("logs", columns=SampleSummary + EvalModel)
-df = prepare(df, 
-    [model_info(), 
-    log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"})]
-  )
+df = prepare(df, [
+    model_info(), 
+    log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"})
+  ])
 df.to_parquet("writing_bench_samples.parquet")
 ```
 
@@ -51,11 +51,11 @@ If your samples are using non-numeric values (for example 'C' and 'I' to represe
 from inspect_ai.analysis import samples_df, log_viewer, model_info, score_to_float, prepare, EvalModel, SampleSummary
 
 df = samples_df("logs", columns=SampleSummary + EvalModel)
-df = prepare(df, 
-    [model_info(), 
+df = prepare(df, [
+    model_info(), 
     log_viewer("sample", {"logs": "https://samples.meridianlabs.ai/"}),
-    score_to_float("score_includes")]
-  )
+    score_to_float("score_includes")
+  ])
 ```
 
 {{< include _data_preparation_optional.md >}}

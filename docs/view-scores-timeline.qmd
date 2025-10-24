@@ -33,15 +33,15 @@ Above we read the data for the plot from a parquet file. This file was in turn c
 
 ```python
 from inspect_ai.analysis import (
-    evals_df, frontier, log_viewer, model_into, prepare
+    evals_df, frontier, log_viewer, model_info, prepare
 )
 
 df = evals_df("logs")
-df = prepare(df, 
+df = prepare(df, [
     model_info(),
     frontier(),
-    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"}),
-)
+    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"})
+])
 df.to_parquet("{{< meta datafile>}}")
 ```
 
