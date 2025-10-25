@@ -1,0 +1,41 @@
+---
+title: "Scores Radar By Metric"
+reference: "inspect_viz.view.beta"
+filters: 
+   - at: pre-ast
+     type: json
+     path: reference/filter/filter.py
+   - at: pre-ast
+     path: reference/filter/post.lua
+datafile: "writing_bench_radar.parquet"
+---
+
+## Overview
+
+The `scores_radar_by_metric()`function renders a radar chart for comparing model scores across multiple metrics from a single task. This is useful for tasks with composite metrics, where each metric is a separate axis on the radar chart.
+
+```{python}
+from inspect_viz import Data
+from inspect_viz.view.beta import scores_radar_by_metric
+
+evals = Data.from_file("writing_bench_radar.parquet")
+scores_radar_by_metric(evals)
+```
+
+The scores plotted on this radar chart have been normalized using percentile ranking, which means each score represents the model's relative performance compared to all other models in the dataset. Specifically, a score of 0.5 indicates that the model performed better than 50% of the other models. Absolute scores are displayed in the tooltips.
+
+You can use `scores_radar_by_metric_df()` to produce data with min-max normalization, omit normalization entirely, or invert the scores for metrics where lower scores are better.
+
+## Data Preparation
+
+{{< include _data_preparation_scores_radar_by_metric.md >}}
+
+## Function Reference
+
+### scores_radar_by_metric {reference="scores_radar_by_metric"}
+
+### scores_radar_by_metric_df {reference="scores_radar_by_metric_df"}
+
+## Implementation
+
+The [Scores Radar By Metric](examples/inspect/scores-radar-by-metric/index.qmd) example demonstrates how this view was implemented using lower level plotting components.

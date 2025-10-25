@@ -2,7 +2,7 @@ Above we read the data for the plot from a parquet file. This file was in turn c
 
 1. Reading evals level data into a data frame with [`evals_df()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#evals_df).
 
-2. Converting the evals dataframe into a dataframe specifically used by `scores_radar()` by using the `scores_radar_df()` function. The output of `scores_radar_df()` can be directly passed to `scores_radar()`. `scores_radar_df()` expects a scorer name and an optional list of metric names to visualize on the radar chart.
+2. Converting the evals dataframe into a dataframe specifically used by `scores_radar_by_metric()` by using the `scores_radar_by_metric_df()` function. The output of `scores_radar_by_metric_df()` can be directly passed to `scores_radar_by_metric()`. `scores_radar_by_metric_df()` expects a scorer name, an optional list of metric names to visualize, an optional list of metric names to invert where lower scores correspond to better scores, an optional normalization method to scale scores, and an optional min-max domain to use for normalization on the radar chart.
 
 3. Using the [`prepare()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare) function to add [`model_info()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#model_info) and [`log_viewer()`](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#model_info) columns to the data frame.
 
@@ -15,7 +15,7 @@ from inspect_ai.analysis import (
     model_info,
     prepare,
 )
-from inspect_viz.view.beta import scores_radar_df
+from inspect_viz.view.beta import scores_radar_by_metric_df
 
 
 df = evals_df("logs/writing_bench/")  # <1>
@@ -28,12 +28,14 @@ metrics = [  # <2>
     "Literature Review",  # <2>
     "Paper Outline",  # <2>
 ]
+normalization = "percentile"  # <2>
 
-data = scores_radar_df(  # <2>
+df = scores_radar_by_metric_df(  # <2>
     df,  # <2>
     scorer,  # <2>
     metrics,  # <2>
-)
+    normalization,  # <2>
+)  # <2>
 
 df = prepare(df, [  # <3>
     model_info(),  # <3>
@@ -45,6 +47,6 @@ df.to_parquet("{{< meta datafile>}}")
 
 1. Read the evals data info a dataframe.
 
-2. Convert the dataframe into a `scores_radar()` specific dataframe.
+2. Convert the dataframe into a `scores_radar_by_metric()` specific dataframe.
 
 3. Add pretty model names and log links to the dataframe using `prepare()`.

@@ -1,13 +1,12 @@
 ---
-title: "Scores Radar"
-subtitle: "Dataset: [writing_bench.parquet](writing_bench.parquet)"
-datafile: "writing_bench.parquet"
+title: "Scores Radar By Task"
+subtitle: "Dataset: [radar_by_task.parquet](radar_by_task.parquet)"
+datafile: "radar_by_task.parquet"
 ---
 
-This example illustrates the code behind the [`scores_radar()`](../../../view-scores-radar.qmd) pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.
+This example illustrates the code behind the [`scores_radar_by_task()`](../../../view-scores-radar-by-task.qmd) pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.
 
-The radar chart is useful to compare scores across multiple models and metrics. The chart scales values for visualization purposes by normalizing them using percentile ranks, the raw values are displayed in the tooltips.
-
+`scores_radar_by_task()` is useful to compare headline metrics from different tasks across multiple models. The data preparation function scales values for visualization purposes by normalizing them using percentile ranks, the raw values are displayed in the tooltips.
 
 ```{python}
 #| filename: Code
@@ -24,19 +23,20 @@ from inspect_viz.view.beta._scores_radar import (
 )
 
 
-data = Data.from_file("writing_bench.parquet")  # <1>
+data = Data.from_file("radar_by_task.parquet")  # <1>
 
 channels = {  # <2>
     "Model": "model_display_name",  # <2>
     "Metric": "metric",  # <2>
     "Score": "value",  # <2>
     "Log viewer": "log_viewer",  # <2>
+    "Task": "task_display_name",  # <2>
 }  # <2>
 
-metrics = data.column_unique("metric")
-axes = axes_coordinates(num_axes=len(metrics))  # <3>
+tasks = data.column_unique("task_display_name")
+axes = axes_coordinates(num_axes=len(tasks))  # <3>
 grid_circles = grid_circles_coordinates()  # <3>
-labels = labels_coordinates(metrics=metrics)  # <3>
+labels = labels_coordinates(labels=tasks)  # <3>
 
 # enable interactive highlighting of a chosen model
 model_selection = Selection.single()  # <4>
@@ -87,7 +87,7 @@ elements = [
         text(  # <9>
             x=label["x"],  # <9>
             y=label["y"],  # <9>
-            text=label["metric"],  # <9>
+            text=label["label"],  # <9>
             frame_anchor=label["frame_anchor"],  # <9>
             styles=LabelStyles(line_width=8),  # <9>
         )  # <9>
@@ -120,6 +120,6 @@ plot(
 
 ## Data Preparation
 
-The data dataset for this example was created using the `scores_radar_df()` function, which reads evals metadata, scales scores by percentile ranks, and computes coordinates for the radar chart.
+The data dataset for this example was created using the `scores_radar_by_task_df()` function, which reads evals metadata, scales scores by percentile ranks or min-max normalization, and computes coordinates for the radar chart.
 
-{{< include ../../../_data_preparation_scores_radar.md >}}
+{{< include ../../../_data_preparation_scores_radar_by_task.md >}}

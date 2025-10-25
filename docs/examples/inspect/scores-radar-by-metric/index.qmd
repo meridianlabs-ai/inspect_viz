@@ -1,0 +1,125 @@
+---
+title: "Scores Radar By Metric"
+subtitle: "Dataset: [writing_bench.parquet](writing_bench.parquet)"
+datafile: "writing_bench.parquet"
+---
+
+This example illustrates the code behind the [`scores_radar_by_metric()`](../../../view-scores-radar-by-metric.qmd) pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.
+
+`scores_radar_by_metric()` is useful to compare scores across multiple models and metrics from a single task with composite metrics. The data preparation function scales values for visualization purposes by normalizing them using percentile ranks or min-max normalization, the raw values are displayed in the tooltips. 
+
+
+```{python}
+#| filename: Code
+from inspect_viz._core.data import Data
+from inspect_viz._core.selection import Selection
+from inspect_viz.mark import circle, line, text
+from inspect_viz.plot import plot
+from inspect_viz.plot._legend import legend
+from inspect_viz.view.beta import LabelStyles
+from inspect_viz.view.beta._scores_radar import (
+    axes_coordinates,
+    grid_circles_coordinates,
+    labels_coordinates,
+)
+
+
+data = Data.from_file("writing_bench.parquet")  # <1>
+
+channels = {  # <2>
+    "Model": "model_display_name",  # <2>
+    "Metric": "metric",  # <2>
+    "Score": "value",  # <2>
+    "Log viewer": "log_viewer",  # <2>
+}  # <2>
+
+metrics = data.column_unique("metric")
+axes = axes_coordinates(num_axes=len(metrics))  # <3>
+grid_circles = grid_circles_coordinates()  # <3>
+labels = labels_coordinates(labels=metrics)  # <3>
+
+# enable interactive highlighting of a chosen model
+model_selection = Selection.single()  # <4>
+
+elements = [
+    *[  # <5>
+        line(  # <5>
+            x=data["x"],  # <5>
+            y=data["y"],  # <5>
+            stroke="#e0e0e0",  # <5>
+        )  # <5>
+        for data in grid_circles  # <5>
+    ],  # <5>
+    line(  # <6>
+        x=axes["x"],  # <6>
+        y=axes["y"],  # <6>
+        stroke="#ddd",  # <6>
+    ),  # <6>
+    line(  # <7>
+        data,  # <7>
+        x="x",  # <7>
+        y="y",  # <7>
+        stroke="model_display_name",  # <7>
+        filter_by=model_selection,  # <7>
+        tip=True,  # <7>
+        channels=channels,  # <7>
+    ),  # <7>
+    line(  # <7>
+        data,  # <7>
+        x="x",  # <7>
+        y="y",  # <7>
+        stroke="model_display_name",  # <7>
+        stroke_opacity=0.4,  # <7>
+        tip=False,  # <7>
+    ),  # <7>
+    circle(  # <8>
+        data,  # <8>
+        x="x",  # <8>
+        y="y",  # <8>
+        r=4,  # <8>
+        fill="model_display_name",  # <8>
+        stroke="white",  # <8>
+        filter_by=model_selection,  # <8>
+        tip=False,  # <8>
+    ),
+    # axis labels
+    *[  # <9>
+        text(  # <9>
+            x=label["x"],  # <9>
+            y=label["y"],  # <9>
+            text=label["label"],  # <9>
+            frame_anchor=label["frame_anchor"],  # <9>
+            styles=LabelStyles(line_width=8),  # <9>
+        )  # <9>
+        for label in labels  # <9>
+    ],  # <9>
+]
+
+plot(
+    elements,
+    margin=60,
+    x_axis=False,  # <10>
+    y_axis=False,  # <10>
+    width=400,
+    height=400,
+    legend=legend("color", target=model_selection),  # <11>
+)
+```
+
+1. **Load data** from a Parquet file into an `inspect_viz.Data` table.
+2. **Channels** provide readable names for tooltips and the log viewer.
+3. **Coordinates**: compute coordinates for axes, grid circles, and labels.
+4. **Selection** enables interactive hovering/clicking to emphasize a single model.
+5. **Grid lines `line()` mark** draws grid circles.
+6. **Axes spokes `line()` mark** draws axes.
+7. **Polygon outlines `line()` mark** draws polygon outlines.
+8. **Polygon vertex markers `circle()` mark** draws polygon vertex markers.
+9. **Axis labels `text()` mark** draws axis labels.
+10. **Layout** draws the plot with no axes since axes are arbitrary scalers in the radar chart.
+11. **Legend** draws a legend for the model selection.
+
+## Data Preparation
+
+The data dataset for this example was created using the `scores_radar_by_metric_df()` function, which reads evals metadata, scales scores by percentile ranks or min-max normalization, and computes coordinates for the radar chart.
+
+{{< include ../../../_data_preparation_scores_radar_by_metric.md >}}

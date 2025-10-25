@@ -34,7 +34,8 @@ Finally, these sections provide additional related documentation:
 - [Scores Timeline](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-timeline/index.html.md): Dot plot of eval scores for various models, with release date on the x-axis.
 - [Scores Heatmap](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-heatmap/index.html.md): Heatmap with values for comparing scores across model and task.
 - [Scores by Model](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-by-model/index.html.md): Visualise model scores on a single evaluation, with one or more baselines.
-- [Scores Radar](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-radar/index.html.md): Radar plot to scores across models and metrics in a single eval.
+- [Scores Radar By Task](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-radar-by-task/index.html.md): Radar plot comparing multiple models across headline metrics from different evals.
+- [Scores Radar By Metric](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-radar-by-metric/index.html.md): Radar plot for comparing model scores across multiple metrics from a single eval.
 - [Sample Tool Calls](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/sample-tool-calls/index.html.md): Visualise tool usage over a series of turns.
 - [Sample Heatmap](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/sample-heatmap/index.html.md): Heat map visualising sample scores.
 - [Penguins Explorer](https://meridianlabs-ai.github.io/inspect_viz/examples/general/penguins/index.html.md): Dot plots, tables, color and symbol channels, filtering inputs.
@@ -62,7 +63,8 @@ Finally, these sections provide additional related documentation:
 - [scores_by_limit()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-by-limit.html.md): Line plot showing success rate by token limit.
 - [scores_timeline()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-timeline.html.md): Scatter plot with eval scores by model, organization, and release date. Filterable by evaluation and organization.
 - [scores_heatmap()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-heatmap.html.md): Heatmap with values for comparing scores across model and task.
-- [scores_radar()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-radar.html.md): Radar plot to scores across models and metrics in a single eval.
+- [scores_radar_by_task()](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-radar-by-task/index.html.md): Radar plot comparing multiple models across headline metrics from different evals.
+- [scores_radar_by_metric()](https://meridianlabs-ai.github.io/inspect_viz/examples/inspect/scores-radar-by-metric/index.html.md): Radar plot for comparing model scores across multiple metrics from a single eval.
 - [scores_by_model()](https://meridianlabs-ai.github.io/inspect_viz/view-scores-by-model.html.md): Bar plot for comparing model scores on a single eval.
 - [sample_tool_calls()](https://meridianlabs-ai.github.io/inspect_viz/view-sample-tool-calls.html.md): Heat map visualising tool calls over evaluation turns. 
 
