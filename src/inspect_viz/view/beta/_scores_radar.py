@@ -12,6 +12,7 @@ from inspect_viz._core.selection import Selection
 from inspect_viz._util.channels import resolve_log_viewer_channel
 from inspect_viz._util.notgiven import NOT_GIVEN, NotGiven
 from inspect_viz.mark import circle, line, text
+from inspect_viz.mark import title as title_mark
 from inspect_viz.mark._title import Title
 from inspect_viz.mark._types import TextOverflow, TextStyles
 from inspect_viz.plot import plot
@@ -102,7 +103,7 @@ def scores_radar_by_task_df(
     # calculate angles for radar chart coordinates
     angles_closed = compute_closed_angles(num_axes=data["task_name"].nunique())
 
-    # calculate percentile ranks for each task across all models
+    # calculate normlaized scores for each task across all models
     normalized_values: dict[str, pd.Series] = {}
     for task_name in data["task_name"].unique():
         task_data = data[data["task_name"] == task_name]
@@ -129,18 +130,19 @@ def scores_radar_by_task_df(
             value_raw = float(task_data["score_headline_value"].item())
             value_scaled = normalized_values[task_name].loc[model]
 
-            task_id_value = task_data["task_id"].item()
-            log_value = task_data["log"].item() if "log" in model_data.columns else ""
+            task_id = task_data["task_id"].item()
+            log_url = task_data["log"].item() if "log" in model_data.columns else ""
 
-            model_row["task_id"].append(task_id_value)
+            model_row["task_id"].append(task_id)
             model_row["task_name"].append(task_name)
             model_row["model"].append(model)
-            model_row["log"].append(log_value)
+            model_row["log"].append(log_url)
             model_row["metric"].append(metric_name)
             model_row["scorer"].append(scorer_name)
             model_row["value"].append(value_raw)
             model_row["value_scaled"].append(value_scaled)
 
+        # append first value to the end to close the polygon lines
         for key in model_row.keys():
             model_row[key] = append_first_value_to_list(model_row[key])
 
@@ -172,7 +174,7 @@ def scores_radar_by_metric_df(
         data: Evals data table containing model scores. It assumes one row per model.
         scorer: The name of the scorer to use for identifying metric columns.
         metrics: Optional list of specific metrics to plot. If None, all metrics
-                 starting with 'score_{scorer}_' will be used.
+                 starting with 'score_{scorer}_' from the data will be used.
         invert: Optional list of metrics to invert (where lower scores are better).
         normalization: The normalization method to use for the metric values. Can be "percentile",
                        "min_max", or "absolute". Defaults to "absolute" (no normalization).
@@ -215,7 +217,7 @@ def scores_radar_by_metric_df(
     num_axes = len(metrics)
     angles_closed = compute_closed_angles(num_axes)
 
-    # calculate percentile ranks for each metric across all models
+    # calculate normalized scores for each metric across all models
     normalized_values: dict[str, pd.Series] = {}
     for metric_name, metric_col in zip(metrics, metric_cols, strict=True):
         values = invert_values_if_needed(data[metric_col], metric_name, invert, domain)
@@ -230,15 +232,15 @@ def scores_radar_by_metric_df(
         values_scaled = [normalized_values[metric].loc[model] for metric in metrics]
 
         # get task_id and log for this model
-        task_id_value = model_data["task_id"].item()
-        task_name_value = model_data["task_name"].item()
-        log_value = model_data["log"].item() if "log" in model_data.columns else ""
+        task_id = model_data["task_id"].item()
+        task_name = model_data["task_name"].item()
+        log_url = model_data["log"].item() if "log" in model_data.columns else ""
 
         model_row = create_empty_radar_chart_row()
-        model_row["task_id"] = [task_id_value] * (num_axes + 1)
-        model_row["task_name"] = [task_name_value] * (num_axes + 1)
+        model_row["task_id"] = [task_id] * (num_axes + 1)
+        model_row["task_name"] = [task_name] * (num_axes + 1)
         model_row["model"] = [model] * (num_axes + 1)
-        model_row["log"] = [log_value] * (num_axes + 1)
+        model_row["log"] = [log_url] * (num_axes + 1)
         model_row["metric"] = append_first_value_to_list(metrics)
         model_row["scorer"] = [scorer] * (num_axes + 1)
         model_row["value"] = append_first_value_to_list(values_raw)
@@ -267,7 +269,7 @@ def scores_radar_by_metric(
     Args:
         data: A `Data` object prepared using the `scores_radar_by_metric_df` function.
         label: Name of field holding the axes labels (defaults to "metric").
-        **kwargs: Additional arguments for the `scores_radar` function.
+        **kwargs: Additional arguments for the `scores_radar_by_task` function.
     """
     return scores_radar_by_task(data, label=label, **kwargs)
 
@@ -276,7 +278,7 @@ def scores_radar_by_task(
     data: Data,
     model: str = "model_display_name",
     label: str = "task_display_name",
-    title: str | Title | None = None,  # TODO: Check whether title is well positioned
+    title: str | Title | None = None,
     width: float = 400,
     channels: dict[str, str] | None = None,
     legend: Legend | NotGiven | None = NOT_GIVEN,
@@ -291,16 +293,15 @@ def scores_radar_by_task(
         model: Name of field holding the model (defaults to "model_display_name").
         label: Name of field holding the axes labels (defaults to "task_display_name");
                use "metric" to plot against metrics.
-        title: Title for plot (`str` or mark created with the `title()` function)
+        title: Title for plot (`str` or mark created with the `title()` function).
         width: The outer width of the plot in pixels, including margins. Defaults to 400.
                Height is automatically set to match width to maintain square aspect ratio.
-        channels: Channels for the tooltips. Defaults are "Model", "Score", "Metric",
-                  "Scorer", and "Task". Values in the dictionary should correspond to
-                  columns in the data.
+        channels: Channels for the tooltips. Defaults are "Model", "Score", "Scaled Score",
+                  "Metric", "Scorer", and "Task". Values in the dictionary should correspond
+                  to column names in the data.
         legend: Options for the legend. Pass None to disable the legend.
-        label_styles: Label styling options. It accepts `line_width` and `text_overflow`.
-        **attributes: Additional `PlotAttributes`.
-                      Use `margin` to set custom margin (defaults to max(30, width * 0.12)).
+        label_styles: Label styling options. It accepts `line_width` and `text_overflow`. Defaults to None.
+        **attributes: Additional `PlotAttributes`. Use `margin` to set custom margin (defaults to max(60, width * 0.12)).
     """
     if "model_display_name" not in data.columns:
         model = "model"
@@ -448,7 +449,7 @@ def scores_radar_by_task(
 
     return plot(
         elements,
-        title=title,
+        title=title_mark(title=title, margin_top=45) if title else None,
         width=width,
         height=width,
         legend=plot_legend,
@@ -461,6 +462,12 @@ def compute_angles(num_axes: int, endpoint: bool = True) -> NDArray[np.floating[
     return np.linspace(0, 2 * np.pi, num_axes, endpoint=endpoint)
 
 
+def compute_closed_angles(num_axes: int) -> NDArray[np.floating[Any]]:
+    """Computes angles and closes the polygon."""
+    angles = compute_angles(num_axes, endpoint=False)
+    return np.append(angles, angles[0])
+
+
 def labels_coordinates(
     labels: list[str], width: float = 400, margin: float = 0
 ) -> list[dict[str, Any]]:
@@ -470,9 +477,6 @@ def labels_coordinates(
         labels: List of values for label text.
         width: Chart width in pixels, used to calculate radius.
         margin: Margin in pixels (defaults to 0) to subtract from width.
-
-    Returns:
-        List of dictionaries, each containing text mark arguments for one label.
     """
     angles = compute_angles(len(labels), endpoint=False)
 
@@ -532,7 +536,6 @@ def grid_circles_coordinates() -> list[dict[str, list[float]]]:
 
 
 def create_empty_radar_chart_row() -> dict[str, list[str | float]]:
-    """Creates an empty radar chart row."""
     return {
         "task_id": [],
         "task_name": [],
@@ -550,14 +553,12 @@ def create_empty_radar_chart_row() -> dict[str, list[str | float]]:
 def check_required_columns(
     data: pd.DataFrame | Data, required_columns: list[str]
 ) -> None:
-    """Checks if the required columns are present in the data."""
     missing_columns = [col for col in required_columns if col not in data.columns]
     if missing_columns:
         raise ValueError(f"Required columns not found in data: {missing_columns}")
 
 
 def append_first_value_to_list(values: list[Any]) -> list[Any]:
-    """Appends the first value to the end of a list."""
     if values:
         return values + [values[0]]
     return values
@@ -589,11 +590,26 @@ def invert_values_if_needed(
 
 def normalize_values(
     values: pd.Series,
-    index: pd.Series,
+    index: pd.Series | pd.Index | None = None,
     normalization: Literal["percentile", "min_max", "absolute"] = "absolute",
     domain: tuple[float, float] | None = None,
 ) -> pd.Series:
-    """Computes normalized values for a series of values."""
+    """
+    Computes normalized values for a series of values.
+
+    Args:
+        values: Series of values to normalize.
+        index: Index of the values to use for the normalized values. If None, the index of the values is used.
+        normalization: The normalization method to use. Can be "percentile", "min_max", or "absolute". Defaults to "absolute".
+                       * "percentile": Computes the percentile rank of the values.
+                       * "min_max": Computes the normalized values between 0 and 1 using the domain.
+                       * "absolute": Returns the values as is without normalization.
+        domain: The domain to use for the normalization. Only used if normalization is "min_max". Otherwise, the domain is
+                inferred from the values. Defaults to None.
+    """
+    if index is None:
+        index = values.index
+
     if normalization == "percentile":
         normalized = values.rank(method="average", pct=True)
     elif normalization == "min_max":
@@ -610,9 +626,3 @@ def normalize_values(
     elif normalization == "absolute":
         normalized = values.astype(float)
     return pd.Series(normalized.values, index=index)
-
-
-def compute_closed_angles(num_axes: int) -> NDArray[np.floating[Any]]:
-    """Computes angles and closes the polygon."""
-    angles = compute_angles(num_axes, endpoint=False)
-    return np.append(angles, angles[0])

@@ -20,33 +20,35 @@ from inspect_viz.view.beta import scores_radar_by_metric_df
 
 df = evals_df("logs/writing_bench/")  # <1>
 
-scorer = "multi_scorer_wrapper"  # <2>
-metrics = [  # <2>
-    "Abstract",  # <2>
-    "Introduction",  # <2>
-    "Experiments",  # <2>
-    "Literature Review",  # <2>
-    "Paper Outline",  # <2>
-]
-normalization = "percentile"  # <2>
-
 df = scores_radar_by_metric_df(  # <2>
     df,  # <2>
-    scorer,  # <2>
-    metrics,  # <2>
-    normalization,  # <2>
-)  # <2>
+    scorer="multi_scorer_wrapper",  # <3>
+    metrics=[  # <4>
+        "Abstract",  # <4>
+        "Introduction",  # <4>
+        "Experiments",  # <4>
+        "Literature Review",  # <4>
+        "Paper Outline",  # <4>
+    ],  # <4>
+    normalization="percentile",  # <5>
+)
 
-df = prepare(df, [  # <3>
-    model_info(),  # <3>
-    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })  # <3>
-])  # <3>
+df = prepare(df, [  # <6>
+    model_info(),  # <6>
+    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })  # <6>
+])  # <6>
 
 df.to_parquet("{{< meta datafile>}}")
 ```
 
-1. Read the evals data info a dataframe.
+1. Read the evals data into a dataframe.
 
 2. Convert the dataframe into a `scores_radar_by_metric()` specific dataframe.
 
-3. Add pretty model names and log links to the dataframe using `prepare()`.
+3. A task might have multiple scorers, specify the scorer which you want to plot. The function only supports plotting one scorer at a time. The scorer name should correspond to columns in `df` named `score_{scorer}_{metric}`.
+
+4. Specify a list of metrics to plot on the radar chart. If unspecified, all metrics from a scorer will be plotted. Metric names in the list should correspond to columns in `df` named `score_{scorer}_{metric}`.
+
+5. Choose an optional normalization method to scale the raw scores. Available options: `"percentile"` (computes percentile rank, useful for identifying consistently strong performers), `"min_max"` (scales scores between min-max values, sensitive to outliers), or `"absolute"` (default, no normalization, may result in incomprehensible charts if metrics have different scales).
+
+6. Add pretty model names and log links to the dataframe using `prepare()`.

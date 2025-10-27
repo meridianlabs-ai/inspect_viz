@@ -26,37 +26,41 @@ df = evals_df([  # <1>
     "logs/swe-bench",  # <1>
 ])  # <1>
 
-models = [  # <2>
-    "openai/o3",  # <2>
-    "anthropic/claude-3-7-sonnet-latest",  # <2>
-]  # <2>
-normalization = "percentile"  # <2>
-
 df = scores_radar_by_task_df(  # <2>
     df,  # <2>
-    models=models,  # <2>
-    normalization=normalization,  # <2>
-)  # <2>
+    models=[  # <3>
+        "openai/o3",  # <3>
+        "anthropic/claude-3-7-sonnet-latest",  # <3>
+    ],  # <3>
+    normalization="min_max",  # <4>
+    domain=(0, 1),  # <5>
+)
 
-task_name_mapping = {  # <3>
-    "aime2024": "AIME 2024",  # <3>
-    "cybench": "CyBench",  # <3>
-    "gpqa_diamond": "GPQA Diamond",  # <3>
-    "mmlu_pro": "MMLU Pro",  # <3>
-    "swe_bench": "SWE Bench",  # <3>
-}  # <3>
-
-df = prepare(df, [  # <3>
-    model_info(),  # <3>
-    task_info(task_name_mapping),  # <3>
-    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })  # <3>
-])  # <3>
+df = prepare(df, [  # <6>
+    model_info(),  # <6>
+    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })  # <6>
+    task_info(task_name_mapping={  # <7>
+        "aime2024": "AIME 2024",  # <7>
+        "cybench": "CyBench",  # <7>
+        "gpqa_diamond": "GPQA Diamond",  # <7>
+        "mmlu_pro": "MMLU Pro",  # <7>
+        "swe_bench": "SWE Bench",  # <7>
+    }),  # <7>
+])
 
 df.to_parquet("{{< meta datafile>}}")
 ```
 
-1. Read the evals data info a dataframe.
+1. Read the evals data into a dataframe.
 
 2. Convert the dataframe into a `scores_radar_by_task()` specific dataframe.
 
-3. Add pretty model names, task names and log links to the dataframe using `prepare()`.
+3. Filter specific models to plot on the radar chart. Each task in the data should have the same set of models.
+
+4. Choose an optional normalization method to scale the raw scores. Available options: `"percentile"` (computes percentile rank, useful for identifying consistently strong performers), `"min_max"` (scales scores between min-max values, sensitive to outliers), or `"absolute"` (default, no normalization, may result in incomprehensible charts if metrics have different scales).
+
+5. Specify an optional domain when using min-max normalization. If unspecified, min-max values are inferred from the data.
+
+6. Add pretty model names and log links to the dataframe using `prepare()`.
+
+7. Provide an optional task name mapping for pretty task names in `prepare()`.
