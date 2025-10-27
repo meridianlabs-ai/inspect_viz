@@ -308,6 +308,9 @@ def scores_radar_by_task(
 
     if "task_display_name" not in data.columns:
         task_name = "task_name"
+
+        if label == "task_display_name":
+            label = "task_name"
     else:
         task_name = "task_display_name"
 
@@ -389,7 +392,7 @@ def scores_radar_by_task(
             fill=model,
             fill_opacity=0.1,
             curve="linear-closed",
-            filter_by=model_selection,
+            filter_by=Selection.single(empty=True, include=model_selection),
         ),
         # polygon outlines
         line(
@@ -492,13 +495,13 @@ def labels_coordinates(
         angle_deg = np.degrees(angle) % 360
 
         # determine frame_anchor based on quadrant
-        if 315 <= angle_deg or angle_deg < 45:  # right side
+        if 280 <= angle_deg or angle_deg < 80:  # right side
             frame_anchor = "left"
-        elif 45 <= angle_deg < 135:  # top
+        elif 80 <= angle_deg < 100:  # top
             frame_anchor = "bottom"
-        elif 135 <= angle_deg < 225:  # left side
+        elif 100 <= angle_deg < 260:  # left side
             frame_anchor = "right"
-        else:  # 225 <= angle_deg < 315, bottom
+        else:  # 260 <= angle_deg < 280, bottom
             frame_anchor = "top"
 
         labels_coordinates.append(
