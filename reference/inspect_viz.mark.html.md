@@ -7,7 +7,7 @@
 
 A dot mark that draws circles, or other symbols, as in a scatterplot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dot.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L15)
 
 ``` python
 def dot(
@@ -74,7 +74,7 @@ that *data* = \[*y₀*, *y₁*, *y₂*, …\].
 If an **interval** is specified, such as *day*, **y** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dot.py#L62)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L62)
 
 ``` python
 def dot_x(
@@ -147,7 +147,7 @@ that *data* = \[*x₀*, *x₁*, *x₂*, …\].
 If an **interval** is specified, such as *day*, **x** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dot.py#L117)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L117)
 
 ``` python
 def dot_y(
@@ -216,7 +216,7 @@ A circle mark that draws circles as in a scatterplot.
 
 Like dot, but with the symbol fixed to be a circle.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dot.py#L172)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L172)
 
 ``` python
 def circle(
@@ -274,7 +274,7 @@ A hexagon mark that draws hexagons as in a scatterplot.
 
 Like dot, but with the symbol fixed to be a hexagon.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dot.py#L218)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L218)
 
 ``` python
 def hexagon(
@@ -335,13 +335,13 @@ Points along the line are connected in input order. If there are
 multiple series via the **z**, **fill**, or **stroke** channel, series
 are drawn in input order such that the last series is drawn on top.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_line.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L15)
 
 ``` python
 def line(
-    data: Data,
-    x: ChannelSpec | Param,
-    y: ChannelSpec | Param,
+    data: Data | None = None,
+    x: ChannelSpec | Param | None = None,
+    y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
     marker: Marker | bool | Param | None = None,
@@ -354,19 +354,21 @@ def line(
 ) -> Mark
 ```
 
-`data` [Data](inspect_viz.qmd#data)  
-The data source for the mark.
+`data` [Data](inspect_viz.qmd#data) \| None  
+The data source for the mark. If None, x and y must be provided as
+sequences.
 
-`x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
+`x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The required horizontal position channel, typically bound to the *x*
-scale.
+scale. When data is None, must be a sequence of x-coordinates.
 
-`y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
+`y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The required vertical position channel, typically bound to the *y*
-scale.
+scale. When data is None, must be a sequence of y-coordinates.
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `filter_by` [Selection](inspect_viz.qmd#selection) \| None  
 Selection to filter by (defaults to data source selection).
@@ -400,12 +402,12 @@ A horizontal line mark that connects control points.
 Like line, except that **y** defaults to the zero-based index of the
 data \[0, 1, 2, …\].
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_line.py#L64)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L67)
 
 ``` python
 def line_x(
-    data: Data,
-    x: ChannelSpec | Param,
+    data: Data | None = None,
+    x: ChannelSpec | Param | None = None,
     y: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
@@ -419,19 +421,20 @@ def line_x(
 ) -> Mark
 ```
 
-`data` [Data](inspect_viz.qmd#data)  
-The data source for the mark.
+`data` [Data](inspect_viz.qmd#data) \| None  
+The data source for the mark. If None, x must be provided as a sequence.
 
-`x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
+`x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The required horizontal position channel, typically bound to the *x*
-scale.
+scale. When data is None, must be a sequence of x-coordinates.
 
 `y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The vertical position channel, typically bound to the *y* scale;
 defaults to the zero-based index of the data \[0, 1, 2, …\].
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `filter_by` [Selection](inspect_viz.qmd#selection) \| None  
 Selection to filter by (defaults to data source selection).
@@ -465,12 +468,12 @@ A vertical line mark that connects control points.
 Like line, except that **x** defaults to the zero-based index of the
 data \[0, 1, 2, …\].
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_line.py#L114)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L119)
 
 ``` python
 def line_y(
-    data: Data,
-    y: ChannelSpec | Param,
+    data: Data | None = None,
+    y: ChannelSpec | Param | None = None,
     x: ChannelSpec | Param | None = None,
     z: Channel | Param | None = None,
     filter_by: Selection | None = None,
@@ -484,19 +487,20 @@ def line_y(
 ) -> Mark
 ```
 
-`data` [Data](inspect_viz.qmd#data)  
-The data source for the mark.
+`data` [Data](inspect_viz.qmd#data) \| None  
+The data source for the mark. If None, y must be provided as a sequence.
 
-`y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
+`y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The required vertical position channel, typically bound to the *y*
-scale.
+scale. When data is None, must be a sequence of y-coordinates.
 
 `x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The horizontal position channel, typically bound to the *x* scale;
 defaults to the zero-based index of the data \[0, 1, 2, …\].
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `filter_by` [Selection](inspect_viz.qmd#selection) \| None  
 Selection to filter by (defaults to data source selection).
@@ -537,7 +541,7 @@ If **x2** is not specified, it defaults to **x1**. If **y2** is not
 specified, it defaults to **y1**. Typically either **x2** or **y2** is
 unspecified, creating either a horizontal or vertical area.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_area.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L14)
 
 ``` python
 def area(
@@ -625,7 +629,7 @@ is applied and **x** defaults to the identity function, assuming that
 **x2** is specified, the other defaults to **x**, which defaults to
 zero.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_area.py#L74)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L74)
 
 ``` python
 def area_x(
@@ -720,7 +724,7 @@ is applied and **y** defaults to the identity function, assuming that
 **y2** is specified, the other defaults to **y**, which defaults to
 zero.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_area.py#L135)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L135)
 
 ``` python
 def area_y(
@@ -823,7 +827,7 @@ extent of the plot’s frame.
 If *y* is quantitative, use the rectX mark instead. If *x* is ordinal,
 use the cell mark instead.”
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_bar.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L14)
 
 ``` python
 def bar_x(
@@ -984,7 +988,7 @@ extent of the plot’s frame.
 If *x* is quantitative, use the rectY mark instead. If *y* is ordinal,
 use the cell mark instead.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_bar.py#L105)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L105)
 
 ``` python
 def bar_y(
@@ -1131,7 +1135,7 @@ options optimized for density visualization. It bins spatial data into a
 raster grid and applies kernel density smoothing to create smooth
 density surfaces from point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_raster.py#L79)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L79)
 
 ``` python
 def heatmap(
@@ -1209,7 +1213,7 @@ distribution, by default using a circular dot mark. The density mark
 calculates density values that can be mapped to encoding channels such
 as fill or r using the special field name “density”.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_density.py#L17)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L17)
 
 ``` python
 def density(
@@ -1307,7 +1311,7 @@ distribution, by default using an areaX mark.
 
 Set the *type* property to use a different base mark type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_density.py#L100)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L100)
 
 ``` python
 def density_x(
@@ -1371,7 +1375,7 @@ distribution, by default using an areaY mark.
 
 Set the *type* property to use a different base mark type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_density.py#L156)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L156)
 
 ``` python
 def density_y(
@@ -1436,7 +1440,7 @@ bins the given data into a 2D grid, computes density estimates, and
 draws contour lines at specified threshold levels. The contour mark is
 useful for visualizing the density or distribution of 2D point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_contour.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_contour.py#L14)
 
 ``` python
 def contour(
@@ -1511,7 +1515,7 @@ The regressionY mark draws a regression line with optional confidence
 bands showing the relationship between variables. The x variable is the
 independent variable and y is the dependent variable.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_regression.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_regression.py#L13)
 
 ``` python
 def regression_y(
@@ -1562,7 +1566,7 @@ The errorBarX mark draws horizontal error bars showing confidence
 intervals or uncertainty around data points. The error bars extend
 horizontally from the central value.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_error_bar.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L14)
 
 ``` python
 def error_bar_x(
@@ -1621,7 +1625,7 @@ The errorBarY mark draws vertical error bars showing confidence
 intervals or uncertainty around data points. The error bars extend
 vertically from the central value.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_error_bar.py#L62)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L62)
 
 ``` python
 def error_bar_y(
@@ -1681,7 +1685,7 @@ A cell mark that draws axis-aligned rectangles for categorical data.
 Cells are typically used to create heatmaps and other grid-based
 visualizations where both x and y represent categorical or ordinal data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_cell.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L13)
 
 ``` python
 def cell(
@@ -1746,7 +1750,7 @@ positioning.
 The *x* values should be ordinal (categories), and the optional *y*
 values should also be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_cell.py#L67)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L67)
 
 ``` python
 def cell_x(
@@ -1811,7 +1815,7 @@ positioning.
 The *y* values should be ordinal (categories), and the optional *x*
 values should also be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_cell.py#L120)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L120)
 
 ``` python
 def cell_y(
@@ -1875,7 +1879,7 @@ A horizontal grid mark.
 The gridX mark draws horizontal grid lines across the plot area. It is
 primarily used for adding visual reference lines along the x-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_grid.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L14)
 
 ``` python
 def grid_x(
@@ -1933,7 +1937,7 @@ A vertical grid mark.
 The gridY mark draws vertical grid lines across the plot area. It is
 primarily used for adding visual reference lines along the y-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_grid.py#L60)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L60)
 
 ``` python
 def grid_y(
@@ -2001,7 +2005,7 @@ The gridFx mark draws horizontal grid lines for faceted plots. It is
 primarily used for adding visual reference lines along the fx-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_grid.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L112)
 
 ``` python
 def grid_fx(
@@ -2054,7 +2058,7 @@ The gridFy mark draws vertical grid lines for faceted plots. It is
 primarily used for adding visual reference lines along the fy-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_grid.py#L155)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L155)
 
 ``` python
 def grid_fy(
@@ -2120,7 +2124,7 @@ The mark creates a hexagonal grid and counts or aggregates data points
 within each hexagon, then renders the results using the specified mark
 type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_hexbin.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexbin.py#L15)
 
 ``` python
 def hexbin(
@@ -2192,7 +2196,7 @@ requiring data.
 The hexgrid mark is designed to complement hexbin marks by showing the
 grid structure. It’s a stroke-only mark where fill is not supported.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_hexgrid.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexgrid.py#L11)
 
 ``` python
 def hexgrid(
@@ -2218,7 +2222,7 @@ Waffle charts are a form of unit chart where data is represented as a
 grid of small squares or rectangles, useful for showing part-to-whole
 relationships and making proportions more tangible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_waffle.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L14)
 
 ``` python
 def waffle_x(
@@ -2328,7 +2332,7 @@ Waffle charts are a form of unit chart where data is represented as a
 grid of small squares or rectangles, useful for showing part-to-whole
 relationships and making proportions more tangible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_waffle.py#L103)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L103)
 
 ``` python
 def waffle_y(
@@ -2441,7 +2445,7 @@ applies spatial interpolation and kernel density smoothing. The raster
 mark is useful for visualizing continuous spatial phenomena from
 discrete sample points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_raster.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L14)
 
 ``` python
 def raster(
@@ -2517,7 +2521,7 @@ supports tiling and prefetching for better performance with large
 datasets. It provides scalable raster visualization with efficient
 memory usage.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_raster.py#L144)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L144)
 
 ``` python
 def raster_tile(
@@ -2595,7 +2599,7 @@ A vector mark that draws arrows or other directional shapes.
 Vectors are typically used to represent direction and magnitude in data,
 such as wind vectors, force fields, or gradients.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_vector.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L14)
 
 ``` python
 def vector(
@@ -2653,7 +2657,7 @@ A vectorX mark that draws horizontal directional vectors.
 VectorX marks are oriented primarily along the x-axis and are useful for
 showing horizontal flow or direction.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_vector.py#L65)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L65)
 
 ``` python
 def vector_x(
@@ -2711,7 +2715,7 @@ A vectorY mark that draws vertical directional vectors.
 VectorY marks are oriented primarily along the y-axis and are useful for
 showing vertical flow or direction.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_vector.py#L116)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L116)
 
 ``` python
 def vector_y(
@@ -2770,7 +2774,7 @@ Spikes are a specialized type of vector that typically appear as thin
 lines or needles, useful for showing precise directional data or
 impulses.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_vector.py#L167)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L167)
 
 ``` python
 def spike(
@@ -2829,7 +2833,7 @@ The arrow mark draws arrows between two points, with customizable
 arrowheads and curved paths. It is useful for indicating direction,
 flow, or relationships between data points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_arrow.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_arrow.py#L13)
 
 ``` python
 def arrow(
@@ -2915,7 +2919,7 @@ horizontal position and **y1** and **y2** for the vertical endpoints.
 For horizontal links, specify **y** (or **y1** and **y2**) for the
 vertical position and **x1** and **x2** for the horizontal endpoints.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_link.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_link.py#L14)
 
 ``` python
 def link(
@@ -2996,7 +3000,7 @@ and draws a line segment for each edge of the triangulation. This is
 useful for visualizing spatial relationships and adjacencies in
 scattered point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_delaunay.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L14)
 
 ``` python
 def delaunay_link(
@@ -3064,7 +3068,7 @@ and draws filled triangular polygons for each triangle in the
 triangulation. This creates a continuous mesh surface useful for spatial
 interpolation and surface visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_delaunay.py#L70)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L70)
 
 ``` python
 def delaunay_mesh(
@@ -3132,7 +3136,7 @@ Thiessen polygons) of the data points and draws filled polygons for each
 cell. Each cell contains all points that are closer to the cell’s
 generator point than to any other generator.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_delaunay.py#L182)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L182)
 
 ``` python
 def voronoi(
@@ -3200,7 +3204,7 @@ points and draws line segments for the boundaries between cells. This
 creates a mesh of cell edges useful for visualizing the spatial
 partitioning without filled polygons.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_delaunay.py#L237)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L237)
 
 ``` python
 def voronoi_mesh(
@@ -3267,7 +3271,7 @@ polygon representing the smallest convex shape that contains all the
 points. This is useful for showing the overall extent or boundary of a
 point cloud.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_delaunay.py#L126)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L126)
 
 ``` python
 def hull(
@@ -3340,7 +3344,7 @@ raster image. Unlike traditional line marks that use curve
 interpolation, dense lines operate on a pixel grid to accumulate line
 density information.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_dense.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dense.py#L14)
 
 ``` python
 def dense_line(
@@ -3421,7 +3425,7 @@ Create a plot title mark.
 
 Adds a title at the top of the plot frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_title.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L29)
 
 ``` python
 def title(
@@ -3466,7 +3470,7 @@ The frame mark is commonly used for visual separation of facets,
 providing backgrounds for plot areas, or creating borders around
 visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_frame.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_frame.py#L11)
 
 ``` python
 def frame(
@@ -3532,7 +3536,7 @@ The axisX mark draws a horizontal axis at the bottom or top of the plot
 (or both). It is primarily used for displaying scales and reference
 lines along the x-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_axis.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L16)
 
 ``` python
 def axis_x(
@@ -3642,7 +3646,7 @@ The axisY mark draws a vertical axis at the left or right of the plot
 (or both). It is primarily used for displaying scales and reference
 lines along the y-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_axis.py#L101)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L101)
 
 ``` python
 def axis_y(
@@ -3752,7 +3756,7 @@ The axisFx mark draws a horizontal axis for faceted plots. It is
 primarily used for displaying scales and reference lines along the
 fx-axis in faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_axis.py#L186)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L186)
 
 ``` python
 def axis_fx(
@@ -3862,7 +3866,7 @@ The axisFy mark draws a vertical axis for faceted plots. It is primarily
 used for displaying scales and reference lines along the fy-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_axis.py#L271)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L271)
 
 ``` python
 def axis_fy(
@@ -3972,7 +3976,7 @@ RuleX marks are horizontal lines that span the full extent of the plot
 area, typically used for reference lines, grid lines, or highlighting
 specific values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_rule.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L15)
 
 ``` python
 def rule_x(
@@ -4041,7 +4045,7 @@ RuleY marks are vertical lines that span the full extent of the plot
 area, typically used for reference lines, grid lines, or highlighting
 specific values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_rule.py#L72)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L72)
 
 ``` python
 def rule_y(
@@ -4109,7 +4113,7 @@ A tickX mark that draws horizontal tick marks.
 TickX marks are horizontal lines typically used for marking positions
 along the x-axis or creating horizontal reference lines.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_tick.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L15)
 
 ``` python
 def tick_x(
@@ -4171,7 +4175,7 @@ A tickY mark that draws vertical tick marks.
 TickY marks are vertical lines typically used for marking positions
 along the y-axis or creating vertical reference lines.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_tick.py#L69)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L69)
 
 ``` python
 def tick_y(
@@ -4233,7 +4237,7 @@ A rect mark that draws axis-aligned rectangles.
 Both *x* and *y* should be quantitative or temporal; rect does not
 perform grouping, so use rectX or rectY for ordinal data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_rect.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L15)
 
 ``` python
 def rect(
@@ -4343,7 +4347,7 @@ A rectX mark that draws axis-aligned rectangles.
 The *x* values should be quantitative or temporal, and the optional *y*
 values should be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_rect.py#L104)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L104)
 
 ``` python
 def rect_x(
@@ -4453,7 +4457,7 @@ A rectY mark that draws axis-aligned rectangles.
 The *y* values should be quantitative or temporal, and the optional *x*
 values should be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_rect.py#L192)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L192)
 
 ``` python
 def rect_y(
@@ -4560,7 +4564,7 @@ Additional mark options from MarkOptions.
 
 A text mark that displays textual labels.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_text.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L18)
 
 ``` python
 def text(
@@ -4580,23 +4584,26 @@ def text(
 
 `data` [Data](inspect_viz.qmd#data) \| None  
 The data source for the mark (not required if not binding `text` to a
-column).
+column). If None, any of x, y, z, text can be provided as sequences.
 
 `x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The horizontal position channel specifying the text’s anchor point,
-typically bound to the *x* scale.
+typically bound to the *x* scale. When data is None, can be a sequence
+of x-coordinates.
 
 `y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param) \| None  
 The vertical position channel specifying the text’s anchor point,
-typically bound to the *y* scale.
+typically bound to the *y* scale. When data is None, can be a sequence
+of y-coordinates.
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `text` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-The text contents channel, possibly with line breaks (, , or . To place
-a single piece of text specify the text as a string\[\]
-(e.g. `["My Text"]`).
+The text contents channel, possibly with line breaks (, , or . When data
+is None, can be a sequence of text values. To place a single piece of
+text specify the text as a string\[\] (e.g. `["My Text"]`).
 
 `filter_by` [Selection](inspect_viz.qmd#selection) \| None  
 Selection to filter by (defaults to data source selection).
@@ -4636,7 +4643,7 @@ data \[0, 1, 2, …\].
 If an **interval** is specified, such as *day*, **y** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_text.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L65)
 
 ``` python
 def text_x(
@@ -4656,11 +4663,13 @@ def text_x(
 ```
 
 `data` [Data](inspect_viz.qmd#data) \| None  
-The data source for the mark.
+The data source for the mark. If None, any of x, y, z, text can be
+provided as sequences.
 
 `x` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
 The horizontal position channel specifying the text’s anchor point,
-typically bound to the *x* scale.
+typically bound to the *x* scale. When data is None, can be a sequence
+of x-coordinates.
 
 `y` [ChannelIntervalSpec](inspect_viz.mark.qmd#channelintervalspec) \| [Param](inspect_viz.qmd#param) \| None  
 The vertical position channel specifying the text’s anchor point,
@@ -4668,11 +4677,13 @@ typically bound to the *y* scale; defaults to the zero-based index of
 the data \[0, 1, 2, …\].
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `text` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-The text contents channel, possibly with line breaks (, , or . If not
-specified, defaults to the zero-based index \[0, 1, 2, …\].
+The text contents channel, possibly with line breaks (, , or . When data
+is None, can be a sequence of text values. If not specified, defaults to
+the zero-based index \[0, 1, 2, …\].
 
 `interval` Interval \| [Param](inspect_viz.qmd#param) \| None  
 An interval (such as *day* or a number), to transform **y** values to
@@ -4716,7 +4727,7 @@ data \[0, 1, 2, …\].
 If an **interval** is specified, such as *day*, **x** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_text.py#L115)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L119)
 
 ``` python
 def text_y(
@@ -4736,11 +4747,13 @@ def text_y(
 ```
 
 `data` [Data](inspect_viz.qmd#data) \| None  
-The data source for the mark.
+The data source for the mark. If None, any of x, y, z, text can be
+provided as sequences.
 
 `y` [ChannelSpec](inspect_viz.mark.qmd#channelspec) \| [Param](inspect_viz.qmd#param)  
 The vertical position channel specifying the text’s anchor point,
-typically bound to the *y* scale.
+typically bound to the *y* scale. When data is None, can be a sequence
+of y-coordinates.
 
 `x` [ChannelIntervalSpec](inspect_viz.mark.qmd#channelintervalspec) \| [Param](inspect_viz.qmd#param) \| None  
 The horizontal position channel specifying the text’s anchor point,
@@ -4748,11 +4761,13 @@ typically bound to the *x* scale; defaults to the zero-based index of
 the data \[0, 1, 2, …\].
 
 `z` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-An optional ordinal channel for grouping data into series.
+An optional ordinal channel for grouping data into series. When data is
+None, can be a sequence of z-values.
 
 `text` [Channel](inspect_viz.mark.qmd#channel) \| [Param](inspect_viz.qmd#param) \| None  
-The text contents channel, possibly with line breaks (, , or . If not
-specified, defaults to the zero-based index \[0, 1, 2, …\].
+The text contents channel, possibly with line breaks (, , or . When data
+is None, can be a sequence of text values. If not specified, defaults to
+the zero-based index \[0, 1, 2, …\].
 
 `interval` Interval \| [Param](inspect_viz.qmd#param) \| None  
 An interval (such as *day* or a number), to transform **x** values to
@@ -4799,7 +4814,7 @@ This mark is useful for: - Adding logos, icons, or other imagery to
 visualizations - Creating image-based scatter plots or dashboards -
 Displaying photographs or other raster content within plots
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_image.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_image.py#L15)
 
 ``` python
 def image(
@@ -4883,7 +4898,7 @@ support for map projections and geographic styling. It’s designed for
 displaying geographic features like countries, states, cities, or any
 spatial geometry.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_geo.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L13)
 
 ``` python
 def geo(
@@ -4927,7 +4942,7 @@ This mark is particularly useful for: - Adding coordinate reference
 lines to world maps - Showing distortion in map projections - Providing
 spatial reference for geographic data
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_geo.py#L77)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L77)
 
 ``` python
 def graticule(
@@ -4952,7 +4967,7 @@ This mark is particularly useful for: - Adding a border around world
 maps with spherical projections - Showing the extent of the projection -
 Creating a background for geographic visualizations
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_geo.py#L52)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L52)
 
 ``` python
 def sphere(
@@ -4971,7 +4986,7 @@ spherical projections only.
 Plot mark (create marks using mark functions, e.g. `dot()`, `bar_x()`,
 etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_mark.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L15)
 
 ``` python
 class Mark(Component)
@@ -4981,7 +4996,7 @@ class Mark(Component)
 
 Shared options for all marks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_options.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L8)
 
 ``` python
 class MarkOptions(TypedDict, total=False)
@@ -5218,7 +5233,7 @@ other text marks, but not with other marks.
 
 Set of marks to add to a plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_mark.py#L74)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L74)
 
 ``` python
 Marks: TypeAlias = Mark | Sequence[Mark | Sequence[Mark]]
@@ -5228,7 +5243,7 @@ Marks: TypeAlias = Mark | Sequence[Mark | Sequence[Mark]]
 
 Plot title mark.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_title.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L8)
 
 ``` python
 class Title(Mark)
@@ -5238,7 +5253,7 @@ class Title(Mark)
 
 Data channel for visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L42)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L42)
 
 ``` python
 Channel: TypeAlias = (
@@ -5250,7 +5265,7 @@ Channel: TypeAlias = (
 
 Data channel spec for visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L80)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L80)
 
 ``` python
 ChannelSpec: TypeAlias = Channel | ChannelWithScale
@@ -5261,7 +5276,7 @@ ChannelSpec: TypeAlias = Channel | ChannelWithScale
 In some contexts, when specifying a mark channel’s value, you can
 provide a {value, interval} object to specify an associated interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L100)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L100)
 
 ``` python
 ChannelIntervalSpec: TypeAlias = ChannelSpec | ChannelWithInterval
@@ -5271,7 +5286,7 @@ ChannelIntervalSpec: TypeAlias = ChannelSpec | ChannelWithInterval
 
 Channel with associated interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L93)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L93)
 
 ``` python
 class ChannelWithInterval(TypedDict)
@@ -5282,7 +5297,7 @@ class ChannelWithInterval(TypedDict)
 Channel with label and scale to override the scale that would normally
 be associated with the channel.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L56)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L56)
 
 ``` python
 class ChannelWithScale(TypedDict)
@@ -5292,7 +5307,7 @@ class ChannelWithScale(TypedDict)
 
 Known channel names.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_channel.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L7)
 
 ``` python
 ChannelName: TypeAlias = Literal[
@@ -5333,7 +5348,7 @@ ChannelName: TypeAlias = Literal[
 
 Options for the tip mark.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_options.py#L214)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L214)
 
 ``` python
 class TipOptions(TypedDict, total=False)
@@ -5401,7 +5416,7 @@ temporal channels, and otherwise a number format.
 The pointer mode for the tip; corresponds to pointerX, pointerY, and
 pointer.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_options.py#L210)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L210)
 
 ``` python
 TipPointer: TypeAlias = Literal["x", "y", "xy"]
@@ -5411,7 +5426,7 @@ TipPointer: TypeAlias = Literal["x", "y", "xy"]
 
 The curve (interpolation) method for connecting adjacent points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L7)
 
 ``` python
 Curve: TypeAlias = Literal[
@@ -5442,7 +5457,7 @@ Curve: TypeAlias = Literal[
 
 Symbol type for dot or density plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L45)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L45)
 
 ``` python
 Symbol: TypeAlias = Literal[
@@ -5467,7 +5482,7 @@ Symbol: TypeAlias = Literal[
 
 Symbols used as plot markers.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L76)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L76)
 
 ``` python
 Marker: TypeAlias = Literal[
@@ -5496,7 +5511,7 @@ The spatial interpolation method.
   triangulation
 - *random-walk* - apply a random walk from each pixel
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L32)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L32)
 
 ``` python
 Interpolate: TypeAlias = Literal[
@@ -5508,7 +5523,7 @@ Interpolate: TypeAlias = Literal[
 
 Defaults for **x** and **y** based on the plot’s frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L63)
 
 ``` python
 FrameAnchor: TypeAlias = Literal[
@@ -5529,7 +5544,7 @@ FrameAnchor: TypeAlias = Literal[
 The line anchor controls how text is aligned (typically vertically)
 relative to its anchor point.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L112)
 
 ``` python
 LineAnchor = Literal["top", "bottom", "middle"]
@@ -5553,7 +5568,7 @@ How to truncate (or wrap) lines of text longer than the given
 If no **title** was specified, if text requires truncation, a title
 containing the non-truncated text will be implicitly added.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L89)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L89)
 
 ``` python
 TextOverflow: TypeAlias = (
@@ -5574,7 +5589,7 @@ TextOverflow: TypeAlias = (
 
 Text styling options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/mark/_types.py#L116)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L116)
 
 ``` python
 class TextStyles(TypedDict, total=False)

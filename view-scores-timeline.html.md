@@ -33,15 +33,15 @@ in turn created by:
 
 ``` python
 from inspect_ai.analysis import (
-    evals_df, frontier, log_viewer, model_into, prepare
+    evals_df, frontier, log_viewer, model_info, prepare
 )
 
 df = evals_df("logs")
-df = prepare(df, 
+df = prepare(df, [
     model_info(),
     frontier(),
-    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"}),
-)
+    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"})
+])
 df.to_parquet("benchmarks.parquet")
 ```
 
@@ -59,7 +59,7 @@ organization will filter the plot by that organization.
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_timeline.py#L28)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -73,7 +73,7 @@ def scores_timeline(
     score_stderr: str = "score_headline_stderr",
     organizations: list[str] | None = None,
     filters: bool | list[Literal["task", "organization"]] = True,
-    ci: float | bool = 0.95,
+    ci: float | bool | NotGiven = NOT_GIVEN,
     time_label: str = "Release Date",
     score_label: str = "Score",
     eval_label: str = "Eval",
@@ -120,7 +120,7 @@ List of organizations to include (in order of desired presentation).
 `filters` bool \| list\[Literal\['task', 'organization'\]\]  
 Provide UI to filter plot by task and organization(s).
 
-`ci` float \| bool  
+`ci` float \| bool \| NotGiven  
 Confidence interval (defaults to 0.95, pass `False` for no confidence
 intervals)
 

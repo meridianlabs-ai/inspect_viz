@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-99.9.9">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -69,15 +69,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../reference/inspect_viz.qmd#options_context" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-3aa970819e70fbc78806154e5a1fcd28.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3ce9b6b5994d5f9c95269e9dba282a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ce0cac9a36cf9dc7b2a179d7e0c3f9e1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -128,8 +127,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Inspect Viz</span>
     </a>
@@ -141,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Getting Started</span></a>
   </li>  
   <li class="nav-item">
@@ -157,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Publishing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../reference/index.html"> 
+    <a class="nav-link active" href="../reference/index.html" aria-current="page"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
@@ -192,10 +189,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
-      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -1532,9 +1525,9 @@ Note
 <p>Bar plot for comparing eval scores.</p>
 <p>Summarize eval scores using a bar plot. By default, scores (<code>y</code>) are plotted by “task_display_name” (<code>fx</code>) and “model_display_name” (<code>x</code>). By default, confidence intervals are also plotted (disable this with <code>y_ci=False</code>).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_task.py#L20">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_task.py#L20">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_task(</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_task(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    model_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"model_display_name"</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    task_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"task_display_name"</span>,</span>
@@ -1548,7 +1541,7 @@ Note
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    height: <span class="bu">float</span> <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -1608,9 +1601,9 @@ Note
 <h3 class="anchored" data-anchor-id="scores_by_factor">scores_by_factor</h3>
 <p>Summarize eval scores with a factor of variation (e.g ‘No hint’ vs.&nbsp;‘Hint’).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_factor.py#L16">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_factor.py#L16">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_factor(</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_factor(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    factor: <span class="bu">str</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    factor_labels: <span class="bu">tuple</span>[<span class="bu">str</span>, <span class="bu">str</span>],</span>
@@ -1627,7 +1620,7 @@ Note
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    height: <span class="bu">float</span> <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -1699,9 +1692,9 @@ Note
 <h3 class="anchored" data-anchor-id="scores_timeline">scores_timeline</h3>
 <p>Eval scores by model, organization, and release date.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_timeline.py#L28">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_timeline.py#L29">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_timeline(</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_timeline(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    task_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"task_display_name"</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    model_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"model_display_name"</span>,</span>
@@ -1712,7 +1705,7 @@ Note
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    score_stderr: <span class="bu">str</span> <span class="op">=</span> <span class="st">"score_headline_stderr"</span>,</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    organizations: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    filters: <span class="bu">bool</span> <span class="op">|</span> <span class="bu">list</span>[Literal[<span class="st">"task"</span>, <span class="st">"organization"</span>]] <span class="op">=</span> <span class="va">True</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    ci: <span class="bu">float</span> <span class="op">|</span> <span class="bu">bool</span> <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    ci: <span class="bu">float</span> <span class="op">|</span> <span class="bu">bool</span> <span class="op">|</span> NotGiven <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    time_label: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Release Date"</span>,</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    score_label: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Score"</span>,</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    eval_label: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Eval"</span>,</span>
@@ -1723,7 +1716,7 @@ Note
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    regression: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -1765,7 +1758,7 @@ Note
 <dd>
 <p>Provide UI to filter plot by task and organization(s).</p>
 </dd>
-<dt><code class="ref-definition">ci</code> <span class="element-type"><span class="element-type-name">float</span> | <span class="element-type-name">bool</span></span></dt>
+<dt><code class="ref-definition">ci</code> <span class="element-type"><span class="element-type-name">float</span> | <span class="element-type-name">bool</span> | <span class="element-type-name">NotGiven</span></span></dt>
 <dd>
 <p>Confidence interval (defaults to 0.95, pass <code>False</code> for no confidence intervals)</p>
 </dd>
@@ -1816,9 +1809,9 @@ Note
 <p>Bar plot for comparing the scores of different models on a single evaluation.</p>
 <p>Summarize eval scores using a bar plot. By default, scores (<code>y</code>) are plotted by “model_display_name” (<code>y</code>). By default, confidence intervals are also plotted (disable this with <code>y_ci=False</code>).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_model.py#L19">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_model.py#L19">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_model(</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_model(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    model_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"model_display_name"</span>,</span>
@@ -1835,7 +1828,7 @@ Note
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    height: <span class="bu">float</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -1903,9 +1896,9 @@ Note
 <h3 class="anchored" data-anchor-id="scores_heatmap">scores_heatmap</h3>
 <p>Creates a heatmap plot of success rate of eval data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_heatmap.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_heatmap.py#L15">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_heatmap(</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_heatmap(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    task_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"task_display_name"</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    task_label: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">|</span> NotGiven <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1922,7 +1915,7 @@ Note
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    sort: Literal[<span class="st">"ascending"</span>, <span class="st">"descending"</span>] <span class="op">|</span> SortOrder <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="st">"ascending"</span>,</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    orientation: Literal[<span class="st">"horizontal"</span>, <span class="st">"vertical"</span>] <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -1995,9 +1988,9 @@ Note
 <p>Visualizes success rate as a function of a resource limit (time, tokens).</p>
 <p>Model success rate is plotted as a function of the time, tokens, or other resource limit.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_limit.py#L157">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L157">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_limit(</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_limit(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    model: <span class="bu">str</span> <span class="op">=</span> <span class="st">"model_display_name"</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    success: <span class="bu">str</span> <span class="op">=</span> <span class="st">"success_rate"</span>,</span>
@@ -2014,7 +2007,7 @@ Note
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    ci: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -2086,15 +2079,15 @@ Note
 <h3 class="anchored" data-anchor-id="scores_by_limit_df">scores_by_limit_df</h3>
 <p>Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_limit.py#L27">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L27">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_limit_df(</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_by_limit_df(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df: pd.DataFrame,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    score: <span class="bu">str</span>,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    limit: Literal[<span class="st">"total_tokens"</span>, <span class="st">"total_time"</span>, <span class="st">"working_time"</span>] <span class="op">=</span> <span class="st">"total_tokens"</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    scale: Literal[<span class="st">"log"</span>, <span class="st">"linear"</span>, <span class="st">"auto"</span>] <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    steps: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">df</code> <span class="element-type">pd.DataFrame</span></dt>
 <dd>
@@ -2125,9 +2118,9 @@ Note
 <h3 class="anchored" data-anchor-id="sample_tool_calls">sample_tool_calls</h3>
 <p>Heat map visualising tool calls over evaluation turns.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_sample_tool_calls.py#L18">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_tool_calls.py#L18">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_tool_calls(</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_tool_calls(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    x: <span class="bu">str</span> <span class="op">=</span> <span class="st">"order"</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    y: <span class="bu">str</span> <span class="op">=</span> <span class="st">"id"</span>,</span>
@@ -2142,7 +2135,7 @@ Note
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    height: <span class="bu">float</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    legend: Legend <span class="op">|</span> NotGiven <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> NOT_GIVEN,</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -2206,9 +2199,9 @@ Note
 <h3 class="anchored" data-anchor-id="sample_heatmap">sample_heatmap</h3>
 <p>Creates a heatmap plot of success rate of eval data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_sample_heatmap.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_heatmap.py#L15">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_heatmap(</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_heatmap(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span>: <span class="bu">str</span> <span class="op">=</span> <span class="st">"id"</span>,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    id_label: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">|</span> NotGiven <span class="op">=</span> <span class="va">None</span>,</span>
@@ -2225,7 +2218,7 @@ Note
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    sort: Literal[<span class="st">"ascending"</span>, <span class="st">"descending"</span>] <span class="op">|</span> SortOrder <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="st">"ascending"</span>,</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    orientation: Literal[<span class="st">"horizontal"</span>, <span class="st">"vertical"</span>] <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -2300,9 +2293,9 @@ Note
 <h3 class="anchored" data-anchor-id="heatmap">heatmap</h3>
 <p>Creates a heatmap plot of arbitrary data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_heatmap.py#L32">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L32">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heatmap(</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heatmap(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    x_value: <span class="bu">str</span> <span class="op">=</span> <span class="st">"id"</span>,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    x_label: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">|</span> NotGiven <span class="op">=</span> <span class="va">None</span>,</span>
@@ -2320,7 +2313,7 @@ Note
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    sort: Literal[<span class="st">"ascending"</span>, <span class="st">"descending"</span>] <span class="op">|</span> SortOrder <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="st">"ascending"</span>,</span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    orientation: Literal[<span class="st">"horizontal"</span>, <span class="st">"vertical"</span>] <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>attributes: Unpack[PlotAttributes],</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Component</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <dl>
 <dt><code class="ref-definition">data</code> <span class="element-type"><span class="element-type-name"><a href="../reference/inspect_viz.html#data">Data</a></span></span></dt>
 <dd>
@@ -2399,9 +2392,9 @@ Note
 <h3 class="anchored" data-anchor-id="celloptions">CellOptions</h3>
 <p>Cell options for the heatmap.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_heatmap.py#L22">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L22">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CellOptions(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CellOptions(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section class="level4">
 <h4 class="anchored" data-anchor-id="">Attributes</h4>
 <dl>

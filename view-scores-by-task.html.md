@@ -31,13 +31,13 @@ in turn created by:
     columns to the data frame.
 
 ``` python
-from inspect_ai.analysis import evals_df, log_viewer, model_into, prepare
+from inspect_ai.analysis import evals_df, log_viewer, model_info, prepare
 
 df = evals_df("logs")
-df = prepare(df, 
+df = prepare(df, [
     model_info(),
-    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"}),
-)
+    log_viewer("eval", {"logs": "https://samples.meridianlabs.ai/"})
+])
 df.to_parquet("evals.parquet")
 ```
 
@@ -59,7 +59,7 @@ plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By
 default, confidence intervals are also plotted (disable this with
 `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(

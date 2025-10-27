@@ -65,7 +65,7 @@ usage).
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(

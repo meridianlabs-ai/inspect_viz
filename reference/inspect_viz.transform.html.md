@@ -7,7 +7,7 @@
 
 SQL transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_sql.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_sql.py#L6)
 
 ``` python
 def sql(sql: str, label: str | None = None) -> Transform
@@ -25,7 +25,7 @@ A label for this expression, for example to label a plot axis.
 
 Aggregation transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_agg.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_agg.py#L6)
 
 ``` python
 def agg(agg: str, label: str | None = None) -> Transform
@@ -45,7 +45,7 @@ A label for this expression, for example to label a plot axis.
 
 Intpret a string or param-value as a column reference.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L75)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L75)
 
 ``` python
 def column(column: str | Param) -> Transform
@@ -58,7 +58,7 @@ Column name or paramameter.
 
 Bin a continuous variable into discrete intervals.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L12)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L12)
 
 ``` python
 def bin(
@@ -126,7 +126,7 @@ Transform a Date value to a day of the month for cyclic comparison.
 
 Year and month values are collapsed to enable comparison over days only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L97)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L97)
 
 ``` python
 def date_day(expr: str | Param) -> Transform
@@ -141,7 +141,7 @@ Transform a Date value to a month boundary for cyclic comparison.
 
 Year values are collapsed to enable comparison over months only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L109)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L109)
 
 ``` python
 def date_month(expr: str | Param) -> Transform
@@ -157,7 +157,7 @@ comparison.
 
 The resulting value is still date-typed.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L85)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L85)
 
 ``` python
 def date_month_day(expr: str | Param) -> Transform
@@ -170,7 +170,7 @@ Expression or parameter.
 
 Transform a Date value to epoch milliseconds.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_column.py#L121)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L121)
 
 ``` python
 def epoch_ms(expr: str | Param) -> Transform
@@ -185,7 +185,7 @@ Expression or parameter.
 
 Compute the average (mean) value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L47)
 
 ``` python
 def avg(
@@ -208,7 +208,7 @@ Window transform options.
 
 A count aggregate transform.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L63)
 
 ``` python
 def count(
@@ -233,7 +233,7 @@ Window transform options.
 
 Compute the sum of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L207)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L207)
 
 ``` python
 def sum(
@@ -256,7 +256,7 @@ Window transform options.
 
 Compute the minimum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L127)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L127)
 
 ``` python
 def min(
@@ -279,7 +279,7 @@ Window transform options.
 
 Compute the maximum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L111)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L111)
 
 ``` python
 def max(
@@ -302,7 +302,7 @@ Window transform options.
 
 Compute the median value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L143)
 
 ``` python
 def median(
@@ -325,7 +325,7 @@ Window transform options.
 
 Compute the mode value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L159)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L159)
 
 ``` python
 def mode(
@@ -348,7 +348,7 @@ Window transform options.
 
 Return the first column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L79)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L79)
 
 ``` python
 def first(
@@ -371,7 +371,7 @@ Window transform options.
 
 Return the last column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L95)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L95)
 
 ``` python
 def last(
@@ -394,7 +394,7 @@ Window transform options.
 
 Compute the product of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L175)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L175)
 
 ``` python
 def product(
@@ -418,7 +418,7 @@ Window transform options.
 Compute the quantile value of the given column at the provided
 probability threshold.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L271)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L271)
 
 ``` python
 def quantile(
@@ -445,7 +445,7 @@ Window transform options.
 
 Compute the standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L191)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L191)
 
 ``` python
 def stddev(
@@ -468,7 +468,7 @@ Window transform options.
 
 Compute the population standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L239)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L239)
 
 ``` python
 def stddev_pop(
@@ -491,7 +491,7 @@ Window transform options.
 
 Compute the sample variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L223)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L223)
 
 ``` python
 def variance(
@@ -514,7 +514,7 @@ Window transform options.
 
 Compute the population variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L255)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L255)
 
 ``` python
 def var_pop(
@@ -537,7 +537,7 @@ Window transform options.
 
 Find a value of the first column that minimizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L29)
 
 ``` python
 def argmin(
@@ -564,7 +564,7 @@ Window transform options.
 
 Find a value of the first column that maximizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_aggregate.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L11)
 
 ``` python
 def argmax(
@@ -602,7 +602,7 @@ Specify the confidence interval either as:
     desired scale (e.g., z\*stderr, bootstrap deltas, HDIs from bayesian
     posterior distributions, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_ci.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_ci.py#L8)
 
 ``` python
 def ci_bounds(
@@ -636,7 +636,7 @@ Column name for upper bound.
 
 Compute the 1-based row number over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L25)
 
 ``` python
 def row_number(**options: Unpack[WindowOptions]) -> Transform
@@ -651,7 +651,7 @@ Compute the row rank over an ordered window partition.
 
 Sorting ties result in gaps in the rank numbers (\[1, 1, 3, …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L35)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L35)
 
 ``` python
 def rank(**options: Unpack[WindowOptions]) -> Transform
@@ -667,7 +667,7 @@ Compute the dense row rank (no gaps) over an ordered window partition.
 Sorting ties do not result in gaps in the rank numbers ( \[1, 1, 2,
 …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L47)
 
 ``` python
 def dense_rank(**options: Unpack[WindowOptions]) -> Transform
@@ -680,7 +680,7 @@ Window transform options.
 
 Compute the percetange rank over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L59)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L59)
 
 ``` python
 def percent_rank(**options: Unpack[WindowOptions]) -> Transform
@@ -697,7 +697,7 @@ partition.
 Equals the number of partition rows preceding or peer with the current
 row, divided by the total number of partition rows.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L69)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L69)
 
 ``` python
 def cume_dist(**options: Unpack[WindowOptions]) -> Transform
@@ -711,7 +711,7 @@ Window transform options.
 Compute an n-tile integer ranging from 1 to `num_buckets` dividing the
 partition as equally as possible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L81)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L81)
 
 ``` python
 def n_tile(num_buckets: int, **options: Unpack[WindowOptions]) -> Transform
@@ -730,7 +730,7 @@ Compute lagging values in a column.
 Returns the value at the row that is at `offset` rows (default `1`)
 before the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L92)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L92)
 
 ``` python
 def lag(
@@ -760,7 +760,7 @@ Compute leading values in a column.
 Returns the value at the row that is at `offset` rows (default `1`)
 after the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L112)
 
 ``` python
 def lead(
@@ -787,7 +787,7 @@ Window transform options.
 
 Get the first value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L132)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L132)
 
 ``` python
 def first_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
@@ -803,7 +803,7 @@ Window transform options.
 
 Get the last value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L143)
 
 ``` python
 def last_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
@@ -820,7 +820,7 @@ Window transform options.
 Get the nth value of the given column in the current window frame,
 counting from one.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L154)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L154)
 
 ``` python
 def nth_value(
@@ -843,7 +843,7 @@ Window transform options.
 
 Column transformation operation.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_transform.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_transform.py#L7)
 
 ``` python
 Transform: TypeAlias = dict[str, JsonValue]
@@ -853,7 +853,7 @@ Transform: TypeAlias = dict[str, JsonValue]
 
 Window transform options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/transform/_window.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L9)
 
 ``` python
 class WindowOptions(TypedDict, total=False)

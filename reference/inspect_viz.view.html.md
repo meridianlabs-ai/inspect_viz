@@ -19,7 +19,7 @@ plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By
 default, confidence intervals are also plotted (disable this with
 `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -88,7 +88,7 @@ to 10 pixels and `x_ticks` is set to `[]`.
 Summarize eval scores with a factor of variation (e.g ‘No hint’
 vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -168,7 +168,7 @@ Additional \`PlotAttributes
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_timeline.py#L28)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -182,7 +182,7 @@ def scores_timeline(
     score_stderr: str = "score_headline_stderr",
     organizations: list[str] | None = None,
     filters: bool | list[Literal["task", "organization"]] = True,
-    ci: float | bool = 0.95,
+    ci: float | bool | NotGiven = NOT_GIVEN,
     time_label: str = "Release Date",
     score_label: str = "Score",
     eval_label: str = "Eval",
@@ -229,7 +229,7 @@ List of organizations to include (in order of desired presentation).
 `filters` bool \| list\[Literal\['task', 'organization'\]\]  
 Provide UI to filter plot by task and organization(s).
 
-`ci` float \| bool  
+`ci` float \| bool \| NotGiven  
 Confidence interval (defaults to 0.95, pass `False` for no confidence
 intervals)
 
@@ -279,7 +279,7 @@ Summarize eval scores using a bar plot. By default, scores (`y`) are
 plotted by “model_display_name” (`y`). By default, confidence intervals
 are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -359,7 +359,7 @@ Additional `PlotAttributes`. By default, the `y_inset_top` and
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
 
 ``` python
 def scores_heatmap(
@@ -447,7 +447,7 @@ tokens).
 Model success rate is plotted as a function of the time, tokens, or
 other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -531,7 +531,7 @@ Additional `PlotAttributes`.
 Prepares a dataframe for plotting success rate as a function of a
 resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(
@@ -567,7 +567,7 @@ The number of points to use when sampling the limit range (defaults to
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -642,7 +642,7 @@ Additional `PlotAttributes`. By default, the `margin_top` is set to 0,
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
 
 ``` python
 def sample_heatmap(
@@ -728,7 +728,7 @@ Additional \`PlotAttributes
 
 Creates a heatmap plot of arbitrary data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_heatmap.py#L32)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L32)
 
 ``` python
 def heatmap(
@@ -818,7 +818,7 @@ Additional \`PlotAttributes
 
 Cell options for the heatmap.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/96f6ba17a9211475b9f33f4fe7fdad9f0d881f0b/src/inspect_viz/view/beta/_heatmap.py#L22)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L22)
 
 ``` python
 class CellOptions(TypedDict, total=False)
