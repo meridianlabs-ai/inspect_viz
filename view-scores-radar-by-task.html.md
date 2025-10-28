@@ -136,7 +136,7 @@ Provide an optional task name mapping for pretty task names in
 Creates a radar chart showing scores for multiple models across multiple
 tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -194,7 +194,7 @@ multiple models and tasks.
 This is useful for comparing the headline metrics of multiple models
 across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(

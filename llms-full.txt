@@ -2536,7 +2536,7 @@ plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By
 default, confidence intervals are also plotted (disable this with
 `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -2669,7 +2669,7 @@ Summarize eval scores using a bar plot. By default, scores (`y`) are
 plotted by “model_display_name” (`y`). By default, confidence intervals
 are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -2809,7 +2809,7 @@ this is “task_arg_hint”).
 Summarize eval scores with a factor of variation (e.g ‘No hint’
 vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -2952,7 +2952,7 @@ organization will filter the plot by that organization.
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -3120,7 +3120,7 @@ isn’t prepared with `log_viewer()` and `model_info()`).
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
 
 ``` python
 def scores_heatmap(
@@ -3273,7 +3273,7 @@ usage).
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -3417,7 +3417,7 @@ isn’t prepared with `log_viewer()` and `model_info()`).
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
 
 ``` python
 def sample_heatmap(
@@ -3641,7 +3641,7 @@ Provide an optional task name mapping for pretty task names in
 Creates a radar chart showing scores for multiple models across multiple
 tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -3699,7 +3699,7 @@ multiple models and tasks.
 This is useful for comparing the headline metrics of multiple models
 across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(
@@ -3876,7 +3876,7 @@ metrics in a single task.
 This is useful for tasks with multiple metrics, where each metric is a
 separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -3903,7 +3903,7 @@ multiple metrics in a single task.
 This is useful for tasks with multiple metrics, where each metric is a
 separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(
@@ -5501,7 +5501,7 @@ Data sources can be created from any standard Python data frame
 (e.g. Pandas, Polars, etc.) or from a path pointing to a data file in a
 standard format (e.g. csv, parquet, etc.)
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/data.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/data.py#L18)
 
 ``` python
 class Data
@@ -5518,7 +5518,7 @@ from_dataframe
 Create `Data` from a standard Python data frame (e.g. Pandas, Polars,
 PyArrow, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/data.py#L24)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/data.py#L24)
 
 ``` python
 @classmethod
@@ -5531,7 +5531,7 @@ Data frame to read.
 from_file  
 Create `Data` from a data file (e.g. csv, parquet, feather, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/data.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/data.py#L33)
 
 ``` python
 @classmethod
@@ -5552,7 +5552,7 @@ notebook or Jupyter based publishing system.
 See the documentation on inputs, plots, marks, and interactors for
 details on available components.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/component.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/component.py#L47)
 
 ``` python
 class Component(AnyWidget)
@@ -5571,7 +5571,7 @@ Selection types include:
 - `Selection.single()` for a single clause only
 - `Selection.crossfilter()` for a cross-filtered intersection
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/selection.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/selection.py#L10)
 
 ``` python
 class Selection(str)
@@ -5583,7 +5583,7 @@ intersect
 Create a new Selection instance with an intersect (conjunction)
 resolution strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/selection.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/selection.py#L27)
 
 ``` python
 @classmethod
@@ -5613,7 +5613,7 @@ union
 Create a new Selection instance with a union (disjunction) resolution
 strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/selection.py#L43)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/selection.py#L43)
 
 ``` python
 @classmethod
@@ -5643,7 +5643,7 @@ single
 Create a new Selection instance with a singular resolution strategy that
 keeps only the most recent selection clause.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/selection.py#L59)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/selection.py#L59)
 
 ``` python
 @classmethod
@@ -5673,7 +5673,7 @@ crossfilter
 Create a new Selection instance with a cross-filtered intersect
 resolution strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/selection.py#L75)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/selection.py#L75)
 
 ``` python
 @classmethod
@@ -5698,7 +5698,7 @@ to the new selection.
 
 Parameter that can be bound from inputs.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/param.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/param.py#L16)
 
 ``` python
 class Param(str)
@@ -5716,7 +5716,7 @@ Default value.
 
 Type alias for parameter values (scalar or sequence of scalars).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/param.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/param.py#L10)
 
 ``` python
 ParamValue: TypeAlias = (
@@ -5730,7 +5730,7 @@ ParamValue: TypeAlias = (
 
 Inspect Viz global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/_options.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/_options.py#L25)
 
 ``` python
 options: Options = Options(output_format="auto")
@@ -5740,7 +5740,7 @@ options: Options = Options(output_format="auto")
 
 Context manager for temporarily overriding global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/_options.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/_options.py#L29)
 
 ``` python
 @contextmanager
@@ -5754,7 +5754,7 @@ Options to override within the context.
 
 Inspect Viz global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/_core/_options.py#L12)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/_core/_options.py#L12)
 
 ``` python
 class Options(SimpleNamespace)
@@ -5791,7 +5791,7 @@ plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By
 default, confidence intervals are also plotted (disable this with
 `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -5860,7 +5860,7 @@ to 10 pixels and `x_ticks` is set to `[]`.
 Summarize eval scores with a factor of variation (e.g ‘No hint’
 vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -5940,7 +5940,7 @@ Additional \`PlotAttributes
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -6051,7 +6051,7 @@ Summarize eval scores using a bar plot. By default, scores (`y`) are
 plotted by “model_display_name” (`y`). By default, confidence intervals
 are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -6131,7 +6131,7 @@ Additional `PlotAttributes`. By default, the `y_inset_top` and
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
 
 ``` python
 def scores_heatmap(
@@ -6219,7 +6219,7 @@ tokens).
 Model success rate is plotted as a function of the time, tokens, or
 other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -6303,7 +6303,7 @@ Additional `PlotAttributes`.
 Prepares a dataframe for plotting success rate as a function of a
 resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(
@@ -6339,7 +6339,7 @@ The number of points to use when sampling the limit range (defaults to
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -6414,7 +6414,7 @@ Additional `PlotAttributes`. By default, the `margin_top` is set to 0,
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
 
 ``` python
 def sample_heatmap(
@@ -6500,7 +6500,7 @@ Additional \`PlotAttributes
 
 Creates a heatmap plot of arbitrary data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L32)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_heatmap.py#L32)
 
 ``` python
 def heatmap(
@@ -6590,7 +6590,7 @@ Additional \`PlotAttributes
 
 Cell options for the heatmap.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/view/beta/_heatmap.py#L22)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_heatmap.py#L22)
 
 ``` python
 class CellOptions(TypedDict, total=False)
@@ -6614,7 +6614,7 @@ disable text.
 
 Create a plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_plot.py#L21)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_plot.py#L21)
 
 ``` python
 def plot(
@@ -6689,7 +6689,7 @@ Additional `PlotAttributes`.
 
 Plot attributes.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L155)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L155)
 
 ``` python
 class PlotAttributes(TypedDict, total=False)
@@ -7967,7 +7967,7 @@ effective area), while a negative value insets away from the right edge
 
 Create a legend.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_legend.py#L54)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_legend.py#L54)
 
 ``` python
 def legend(
@@ -8066,7 +8066,7 @@ disable the background. Defaults to `True`.
 
 Plot legend (create legends using the `legend()` function).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_legend.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_legend.py#L11)
 
 ``` python
 class Legend(Component)
@@ -8083,7 +8083,7 @@ The frame anchor for the legend.
 
 Genreate an HTML snippet for a plot or other component.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_write.py#L21)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_write.py#L21)
 
 ``` python
 def to_html(component: Component, dependencies: bool = True) -> str
@@ -8102,7 +8102,7 @@ when generating HTML.
 
 Write an HTML file for a plot or other component.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_write.py#L77)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_write.py#L77)
 
 ``` python
 def write_html(
@@ -8126,7 +8126,7 @@ when generating HTML.
 
 Export a plot or table to a PNG.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_write.py#L105)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_write.py#L105)
 
 ``` python
 def write_png(
@@ -8156,7 +8156,7 @@ Set global plot defaults.
 Note that this function should be called once at the outset (subsequent
 calls to it do not reset the defaults).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_defaults.py#L42)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_defaults.py#L42)
 
 ``` python
 def plot_defaults(**defaults: Unpack[PlotDefaults]) -> None
@@ -8172,7 +8172,7 @@ Default options for plots.
 Use the `plot_defaults()` function to set global defaults for plot
 options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_defaults.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_defaults.py#L9)
 
 ``` python
 class PlotDefaults(PlotAttributes, total=False)
@@ -8219,7 +8219,7 @@ scale, it might be 396.
 How a scale encodes abstract data, say by applying a mathematical
 transformation.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L7)
 
 ``` python
 PositionScale: TypeAlias = Literal[
@@ -8247,7 +8247,7 @@ Built-in projection types.
 Named projections are scaled and translated to fit the **domain** to the
 plot’s frame (minus insets).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L25)
 
 ``` python
 Projection: TypeAlias = Literal[
@@ -8274,7 +8274,7 @@ Projection: TypeAlias = Literal[
 
 Continuous scaling transformations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L48)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L48)
 
 ``` python
 ContinuousScale: TypeAlias = Literal[
@@ -8293,7 +8293,7 @@ ContinuousScale: TypeAlias = Literal[
 
 Color scale tranformations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L60)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L60)
 
 ``` python
 ColorScale: TypeAlias = Literal[
@@ -8324,7 +8324,7 @@ ColorScale: TypeAlias = Literal[
 
 Color schemes.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L84)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L84)
 
 ``` python
 ColorScheme: TypeAlias = Literal[
@@ -8377,7 +8377,7 @@ ColorScheme: TypeAlias = Literal[
 
 How to interpolate color range values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L130)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L130)
 
 ``` python
 Interpolate: TypeAlias = Literal[
@@ -8393,7 +8393,7 @@ Interpolate: TypeAlias = Literal[
 
 Whether to apply a directional arrow to an axis scale label.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/plot/_attributes.py#L140)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/plot/_attributes.py#L140)
 
 ``` python
 LabelArrow = (
@@ -8419,7 +8419,7 @@ LabelArrow = (
 
 A dot mark that draws circles, or other symbols, as in a scatterplot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L15)
 
 ``` python
 def dot(
@@ -8486,7 +8486,7 @@ that *data* = \[*y₀*, *y₁*, *y₂*, …\].
 If an **interval** is specified, such as *day*, **y** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L62)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L62)
 
 ``` python
 def dot_x(
@@ -8559,7 +8559,7 @@ that *data* = \[*x₀*, *x₁*, *x₂*, …\].
 If an **interval** is specified, such as *day*, **x** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L117)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L117)
 
 ``` python
 def dot_y(
@@ -8628,7 +8628,7 @@ A circle mark that draws circles as in a scatterplot.
 
 Like dot, but with the symbol fixed to be a circle.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L172)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L172)
 
 ``` python
 def circle(
@@ -8686,7 +8686,7 @@ A hexagon mark that draws hexagons as in a scatterplot.
 
 Like dot, but with the symbol fixed to be a hexagon.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L218)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L218)
 
 ``` python
 def hexagon(
@@ -8747,7 +8747,7 @@ Points along the line are connected in input order. If there are
 multiple series via the **z**, **fill**, or **stroke** channel, series
 are drawn in input order such that the last series is drawn on top.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L15)
 
 ``` python
 def line(
@@ -8814,7 +8814,7 @@ A horizontal line mark that connects control points.
 Like line, except that **y** defaults to the zero-based index of the
 data \[0, 1, 2, …\].
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L67)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L67)
 
 ``` python
 def line_x(
@@ -8880,7 +8880,7 @@ A vertical line mark that connects control points.
 Like line, except that **x** defaults to the zero-based index of the
 data \[0, 1, 2, …\].
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L119)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L119)
 
 ``` python
 def line_y(
@@ -8953,7 +8953,7 @@ If **x2** is not specified, it defaults to **x1**. If **y2** is not
 specified, it defaults to **y1**. Typically either **x2** or **y2** is
 unspecified, creating either a horizontal or vertical area.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L14)
 
 ``` python
 def area(
@@ -9041,7 +9041,7 @@ is applied and **x** defaults to the identity function, assuming that
 **x2** is specified, the other defaults to **x**, which defaults to
 zero.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L74)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L74)
 
 ``` python
 def area_x(
@@ -9136,7 +9136,7 @@ is applied and **y** defaults to the identity function, assuming that
 **y2** is specified, the other defaults to **y**, which defaults to
 zero.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L135)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L135)
 
 ``` python
 def area_y(
@@ -9239,7 +9239,7 @@ extent of the plot’s frame.
 If *y* is quantitative, use the rectX mark instead. If *x* is ordinal,
 use the cell mark instead.”
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_bar.py#L14)
 
 ``` python
 def bar_x(
@@ -9400,7 +9400,7 @@ extent of the plot’s frame.
 If *x* is quantitative, use the rectY mark instead. If *y* is ordinal,
 use the cell mark instead.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L105)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_bar.py#L105)
 
 ``` python
 def bar_y(
@@ -9547,7 +9547,7 @@ options optimized for density visualization. It bins spatial data into a
 raster grid and applies kernel density smoothing to create smooth
 density surfaces from point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L79)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L79)
 
 ``` python
 def heatmap(
@@ -9625,7 +9625,7 @@ distribution, by default using a circular dot mark. The density mark
 calculates density values that can be mapped to encoding channels such
 as fill or r using the special field name “density”.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L17)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L17)
 
 ``` python
 def density(
@@ -9723,7 +9723,7 @@ distribution, by default using an areaX mark.
 
 Set the *type* property to use a different base mark type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L100)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L100)
 
 ``` python
 def density_x(
@@ -9787,7 +9787,7 @@ distribution, by default using an areaY mark.
 
 Set the *type* property to use a different base mark type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L156)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L156)
 
 ``` python
 def density_y(
@@ -9852,7 +9852,7 @@ bins the given data into a 2D grid, computes density estimates, and
 draws contour lines at specified threshold levels. The contour mark is
 useful for visualizing the density or distribution of 2D point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_contour.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_contour.py#L14)
 
 ``` python
 def contour(
@@ -9927,7 +9927,7 @@ The regressionY mark draws a regression line with optional confidence
 bands showing the relationship between variables. The x variable is the
 independent variable and y is the dependent variable.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_regression.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_regression.py#L13)
 
 ``` python
 def regression_y(
@@ -9978,7 +9978,7 @@ The errorBarX mark draws horizontal error bars showing confidence
 intervals or uncertainty around data points. The error bars extend
 horizontally from the central value.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_error_bar.py#L14)
 
 ``` python
 def error_bar_x(
@@ -10037,7 +10037,7 @@ The errorBarY mark draws vertical error bars showing confidence
 intervals or uncertainty around data points. The error bars extend
 vertically from the central value.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L62)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_error_bar.py#L62)
 
 ``` python
 def error_bar_y(
@@ -10097,7 +10097,7 @@ A cell mark that draws axis-aligned rectangles for categorical data.
 Cells are typically used to create heatmaps and other grid-based
 visualizations where both x and y represent categorical or ordinal data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L13)
 
 ``` python
 def cell(
@@ -10162,7 +10162,7 @@ positioning.
 The *x* values should be ordinal (categories), and the optional *y*
 values should also be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L67)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L67)
 
 ``` python
 def cell_x(
@@ -10227,7 +10227,7 @@ positioning.
 The *y* values should be ordinal (categories), and the optional *x*
 values should also be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L120)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L120)
 
 ``` python
 def cell_y(
@@ -10291,7 +10291,7 @@ A horizontal grid mark.
 The gridX mark draws horizontal grid lines across the plot area. It is
 primarily used for adding visual reference lines along the x-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L14)
 
 ``` python
 def grid_x(
@@ -10349,7 +10349,7 @@ A vertical grid mark.
 The gridY mark draws vertical grid lines across the plot area. It is
 primarily used for adding visual reference lines along the y-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L60)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L60)
 
 ``` python
 def grid_y(
@@ -10417,7 +10417,7 @@ The gridFx mark draws horizontal grid lines for faceted plots. It is
 primarily used for adding visual reference lines along the fx-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L112)
 
 ``` python
 def grid_fx(
@@ -10470,7 +10470,7 @@ The gridFy mark draws vertical grid lines for faceted plots. It is
 primarily used for adding visual reference lines along the fy-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L155)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L155)
 
 ``` python
 def grid_fy(
@@ -10536,7 +10536,7 @@ The mark creates a hexagonal grid and counts or aggregates data points
 within each hexagon, then renders the results using the specified mark
 type.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexbin.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_hexbin.py#L15)
 
 ``` python
 def hexbin(
@@ -10608,7 +10608,7 @@ requiring data.
 The hexgrid mark is designed to complement hexbin marks by showing the
 grid structure. It’s a stroke-only mark where fill is not supported.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexgrid.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_hexgrid.py#L11)
 
 ``` python
 def hexgrid(
@@ -10634,7 +10634,7 @@ Waffle charts are a form of unit chart where data is represented as a
 grid of small squares or rectangles, useful for showing part-to-whole
 relationships and making proportions more tangible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_waffle.py#L14)
 
 ``` python
 def waffle_x(
@@ -10744,7 +10744,7 @@ Waffle charts are a form of unit chart where data is represented as a
 grid of small squares or rectangles, useful for showing part-to-whole
 relationships and making proportions more tangible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L103)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_waffle.py#L103)
 
 ``` python
 def waffle_y(
@@ -10857,7 +10857,7 @@ applies spatial interpolation and kernel density smoothing. The raster
 mark is useful for visualizing continuous spatial phenomena from
 discrete sample points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L14)
 
 ``` python
 def raster(
@@ -10933,7 +10933,7 @@ supports tiling and prefetching for better performance with large
 datasets. It provides scalable raster visualization with efficient
 memory usage.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L144)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L144)
 
 ``` python
 def raster_tile(
@@ -11011,7 +11011,7 @@ A vector mark that draws arrows or other directional shapes.
 Vectors are typically used to represent direction and magnitude in data,
 such as wind vectors, force fields, or gradients.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L14)
 
 ``` python
 def vector(
@@ -11069,7 +11069,7 @@ A vectorX mark that draws horizontal directional vectors.
 VectorX marks are oriented primarily along the x-axis and are useful for
 showing horizontal flow or direction.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L65)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L65)
 
 ``` python
 def vector_x(
@@ -11127,7 +11127,7 @@ A vectorY mark that draws vertical directional vectors.
 VectorY marks are oriented primarily along the y-axis and are useful for
 showing vertical flow or direction.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L116)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L116)
 
 ``` python
 def vector_y(
@@ -11186,7 +11186,7 @@ Spikes are a specialized type of vector that typically appear as thin
 lines or needles, useful for showing precise directional data or
 impulses.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L167)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L167)
 
 ``` python
 def spike(
@@ -11245,7 +11245,7 @@ The arrow mark draws arrows between two points, with customizable
 arrowheads and curved paths. It is useful for indicating direction,
 flow, or relationships between data points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_arrow.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_arrow.py#L13)
 
 ``` python
 def arrow(
@@ -11331,7 +11331,7 @@ horizontal position and **y1** and **y2** for the vertical endpoints.
 For horizontal links, specify **y** (or **y1** and **y2**) for the
 vertical position and **x1** and **x2** for the horizontal endpoints.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_link.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_link.py#L14)
 
 ``` python
 def link(
@@ -11412,7 +11412,7 @@ and draws a line segment for each edge of the triangulation. This is
 useful for visualizing spatial relationships and adjacencies in
 scattered point data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L14)
 
 ``` python
 def delaunay_link(
@@ -11480,7 +11480,7 @@ and draws filled triangular polygons for each triangle in the
 triangulation. This creates a continuous mesh surface useful for spatial
 interpolation and surface visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L70)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L70)
 
 ``` python
 def delaunay_mesh(
@@ -11548,7 +11548,7 @@ Thiessen polygons) of the data points and draws filled polygons for each
 cell. Each cell contains all points that are closer to the cell’s
 generator point than to any other generator.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L182)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L182)
 
 ``` python
 def voronoi(
@@ -11616,7 +11616,7 @@ points and draws line segments for the boundaries between cells. This
 creates a mesh of cell edges useful for visualizing the spatial
 partitioning without filled polygons.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L237)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L237)
 
 ``` python
 def voronoi_mesh(
@@ -11683,7 +11683,7 @@ polygon representing the smallest convex shape that contains all the
 points. This is useful for showing the overall extent or boundary of a
 point cloud.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L126)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L126)
 
 ``` python
 def hull(
@@ -11756,7 +11756,7 @@ raster image. Unlike traditional line marks that use curve
 interpolation, dense lines operate on a pixel grid to accumulate line
 density information.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dense.py#L14)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dense.py#L14)
 
 ``` python
 def dense_line(
@@ -11837,7 +11837,7 @@ Create a plot title mark.
 
 Adds a title at the top of the plot frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_title.py#L29)
 
 ``` python
 def title(
@@ -11882,7 +11882,7 @@ The frame mark is commonly used for visual separation of facets,
 providing backgrounds for plot areas, or creating borders around
 visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_frame.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_frame.py#L11)
 
 ``` python
 def frame(
@@ -11948,7 +11948,7 @@ The axisX mark draws a horizontal axis at the bottom or top of the plot
 (or both). It is primarily used for displaying scales and reference
 lines along the x-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L16)
 
 ``` python
 def axis_x(
@@ -12058,7 +12058,7 @@ The axisY mark draws a vertical axis at the left or right of the plot
 (or both). It is primarily used for displaying scales and reference
 lines along the y-axis.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L101)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L101)
 
 ``` python
 def axis_y(
@@ -12168,7 +12168,7 @@ The axisFx mark draws a horizontal axis for faceted plots. It is
 primarily used for displaying scales and reference lines along the
 fx-axis in faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L186)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L186)
 
 ``` python
 def axis_fx(
@@ -12278,7 +12278,7 @@ The axisFy mark draws a vertical axis for faceted plots. It is primarily
 used for displaying scales and reference lines along the fy-axis in
 faceted visualizations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L271)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L271)
 
 ``` python
 def axis_fy(
@@ -12388,7 +12388,7 @@ RuleX marks are horizontal lines that span the full extent of the plot
 area, typically used for reference lines, grid lines, or highlighting
 specific values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rule.py#L15)
 
 ``` python
 def rule_x(
@@ -12457,7 +12457,7 @@ RuleY marks are vertical lines that span the full extent of the plot
 area, typically used for reference lines, grid lines, or highlighting
 specific values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L72)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rule.py#L72)
 
 ``` python
 def rule_y(
@@ -12525,7 +12525,7 @@ A tickX mark that draws horizontal tick marks.
 TickX marks are horizontal lines typically used for marking positions
 along the x-axis or creating horizontal reference lines.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_tick.py#L15)
 
 ``` python
 def tick_x(
@@ -12587,7 +12587,7 @@ A tickY mark that draws vertical tick marks.
 TickY marks are vertical lines typically used for marking positions
 along the y-axis or creating vertical reference lines.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L69)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_tick.py#L69)
 
 ``` python
 def tick_y(
@@ -12649,7 +12649,7 @@ A rect mark that draws axis-aligned rectangles.
 Both *x* and *y* should be quantitative or temporal; rect does not
 perform grouping, so use rectX or rectY for ordinal data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L15)
 
 ``` python
 def rect(
@@ -12759,7 +12759,7 @@ A rectX mark that draws axis-aligned rectangles.
 The *x* values should be quantitative or temporal, and the optional *y*
 values should be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L104)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L104)
 
 ``` python
 def rect_x(
@@ -12869,7 +12869,7 @@ A rectY mark that draws axis-aligned rectangles.
 The *y* values should be quantitative or temporal, and the optional *x*
 values should be ordinal.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L192)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L192)
 
 ``` python
 def rect_y(
@@ -12976,7 +12976,7 @@ Additional mark options from MarkOptions.
 
 A text mark that displays textual labels.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L18)
 
 ``` python
 def text(
@@ -13055,7 +13055,7 @@ data \[0, 1, 2, …\].
 If an **interval** is specified, such as *day*, **y** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L65)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L65)
 
 ``` python
 def text_x(
@@ -13139,7 +13139,7 @@ data \[0, 1, 2, …\].
 If an **interval** is specified, such as *day*, **x** is transformed to
 the middle of the interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L119)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L119)
 
 ``` python
 def text_y(
@@ -13226,7 +13226,7 @@ This mark is useful for: - Adding logos, icons, or other imagery to
 visualizations - Creating image-based scatter plots or dashboards -
 Displaying photographs or other raster content within plots
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_image.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_image.py#L15)
 
 ``` python
 def image(
@@ -13310,7 +13310,7 @@ support for map projections and geographic styling. It’s designed for
 displaying geographic features like countries, states, cities, or any
 spatial geometry.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L13)
 
 ``` python
 def geo(
@@ -13354,7 +13354,7 @@ This mark is particularly useful for: - Adding coordinate reference
 lines to world maps - Showing distortion in map projections - Providing
 spatial reference for geographic data
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L77)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L77)
 
 ``` python
 def graticule(
@@ -13379,7 +13379,7 @@ This mark is particularly useful for: - Adding a border around world
 maps with spherical projections - Showing the extent of the projection -
 Creating a background for geographic visualizations
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L52)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L52)
 
 ``` python
 def sphere(
@@ -13398,7 +13398,7 @@ spherical projections only.
 Plot mark (create marks using mark functions, e.g. `dot()`, `bar_x()`,
 etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_mark.py#L15)
 
 ``` python
 class Mark(Component)
@@ -13408,7 +13408,7 @@ class Mark(Component)
 
 Shared options for all marks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L8)
 
 ``` python
 class MarkOptions(TypedDict, total=False)
@@ -13645,7 +13645,7 @@ other text marks, but not with other marks.
 
 Set of marks to add to a plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L74)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_mark.py#L74)
 
 ``` python
 Marks: TypeAlias = Mark | Sequence[Mark | Sequence[Mark]]
@@ -13655,7 +13655,7 @@ Marks: TypeAlias = Mark | Sequence[Mark | Sequence[Mark]]
 
 Plot title mark.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_title.py#L8)
 
 ``` python
 class Title(Mark)
@@ -13665,7 +13665,7 @@ class Title(Mark)
 
 Data channel for visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L42)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L42)
 
 ``` python
 Channel: TypeAlias = (
@@ -13677,7 +13677,7 @@ Channel: TypeAlias = (
 
 Data channel spec for visualization.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L80)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L80)
 
 ``` python
 ChannelSpec: TypeAlias = Channel | ChannelWithScale
@@ -13688,7 +13688,7 @@ ChannelSpec: TypeAlias = Channel | ChannelWithScale
 In some contexts, when specifying a mark channel’s value, you can
 provide a {value, interval} object to specify an associated interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L100)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L100)
 
 ``` python
 ChannelIntervalSpec: TypeAlias = ChannelSpec | ChannelWithInterval
@@ -13698,7 +13698,7 @@ ChannelIntervalSpec: TypeAlias = ChannelSpec | ChannelWithInterval
 
 Channel with associated interval.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L93)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L93)
 
 ``` python
 class ChannelWithInterval(TypedDict)
@@ -13709,7 +13709,7 @@ class ChannelWithInterval(TypedDict)
 Channel with label and scale to override the scale that would normally
 be associated with the channel.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L56)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L56)
 
 ``` python
 class ChannelWithScale(TypedDict)
@@ -13719,7 +13719,7 @@ class ChannelWithScale(TypedDict)
 
 Known channel names.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L7)
 
 ``` python
 ChannelName: TypeAlias = Literal[
@@ -13760,7 +13760,7 @@ ChannelName: TypeAlias = Literal[
 
 Options for the tip mark.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L214)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L214)
 
 ``` python
 class TipOptions(TypedDict, total=False)
@@ -13828,7 +13828,7 @@ temporal channels, and otherwise a number format.
 The pointer mode for the tip; corresponds to pointerX, pointerY, and
 pointer.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L210)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L210)
 
 ``` python
 TipPointer: TypeAlias = Literal["x", "y", "xy"]
@@ -13838,7 +13838,7 @@ TipPointer: TypeAlias = Literal["x", "y", "xy"]
 
 The curve (interpolation) method for connecting adjacent points.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L7)
 
 ``` python
 Curve: TypeAlias = Literal[
@@ -13869,7 +13869,7 @@ Curve: TypeAlias = Literal[
 
 Symbol type for dot or density plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L45)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L45)
 
 ``` python
 Symbol: TypeAlias = Literal[
@@ -13894,7 +13894,7 @@ Symbol: TypeAlias = Literal[
 
 Symbols used as plot markers.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L76)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L76)
 
 ``` python
 Marker: TypeAlias = Literal[
@@ -13923,7 +13923,7 @@ The spatial interpolation method.
   triangulation
 - *random-walk* - apply a random walk from each pixel
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L32)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L32)
 
 ``` python
 Interpolate: TypeAlias = Literal[
@@ -13935,7 +13935,7 @@ Interpolate: TypeAlias = Literal[
 
 Defaults for **x** and **y** based on the plot’s frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L63)
 
 ``` python
 FrameAnchor: TypeAlias = Literal[
@@ -13956,7 +13956,7 @@ FrameAnchor: TypeAlias = Literal[
 The line anchor controls how text is aligned (typically vertically)
 relative to its anchor point.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L112)
 
 ``` python
 LineAnchor = Literal["top", "bottom", "middle"]
@@ -13980,7 +13980,7 @@ How to truncate (or wrap) lines of text longer than the given
 If no **title** was specified, if text requires truncation, a title
 containing the non-truncated text will be implicitly added.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L89)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L89)
 
 ``` python
 TextOverflow: TypeAlias = (
@@ -14001,7 +14001,7 @@ TextOverflow: TypeAlias = (
 
 Text styling options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L116)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L116)
 
 ``` python
 class TextStyles(TypedDict, total=False)
@@ -14064,7 +14064,7 @@ is typically *normal*.
 
 Select a continuous 1D interval selection over the `x` scale domain.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L56)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L56)
 
 ``` python
 def interval_x(
@@ -14102,7 +14102,7 @@ CSS styles for the brush (SVG `rect`) element.
 
 Select a continuous 1D interval selection over the `y` scale domain.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L123)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L123)
 
 ``` python
 def interval_y(
@@ -14141,7 +14141,7 @@ CSS styles for the brush (SVG `rect`) element.
 Select a continuous 2D interval selection over the `x` and `y` scale
 domains.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L91)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L91)
 
 ``` python
 def interval_xy(
@@ -14186,7 +14186,7 @@ CSS styles for the brush (SVG `rect`) element.
 
 Select values from the mark closest to the pointer *x* location.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L227)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L227)
 
 ``` python
 def nearest_x(
@@ -14224,7 +14224,7 @@ points.
 
 Select values from the mark closest to the pointer *y* location.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L253)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L253)
 
 ``` python
 def nearest_y(
@@ -14262,7 +14262,7 @@ points.
 
 Select individal values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L158)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L158)
 
 ``` python
 def toggle(
@@ -14291,7 +14291,7 @@ filtered by this interactor’s selection in cross-filtering setups.
 Select individal values in the `x` scale domain. Clicking or touching a
 mark toggles its selection status.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L183)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L183)
 
 ``` python
 def toggle_x(
@@ -14314,7 +14314,7 @@ filtered by this interactor’s selection in cross-filtering setups.
 
 Toggle interactor over the `"y"` encoding channel only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L307)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L307)
 
 ``` python
 def toggle_y(
@@ -14338,7 +14338,7 @@ filtered by this interactor’s selection in cross-filtering setups.
 Select individal values in the `color` scale domain. Clicking or
 touching a mark toggles its selection status.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L205)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L205)
 
 ``` python
 def toggle_color(
@@ -14361,7 +14361,7 @@ filtered by this interactor’s selection in cross-filtering setups.
 
 Select aspects of individual marks within a 2D range.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L279)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L279)
 
 ``` python
 def region(
@@ -14397,7 +14397,7 @@ Highlight individual visualized data points based on a `Selection`.
 Selected values keep their normal appearance. Unselected values are
 deemphasized.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L17)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L17)
 
 ``` python
 def highlight(
@@ -14438,7 +14438,7 @@ unchanged.
 
 Pan a plot along both the `x` and `y` scales.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L328)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L328)
 
 ``` python
 def pan(
@@ -14473,7 +14473,7 @@ field of the first valid prior mark definition is used.
 
 Pan a plot along the `x` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L353)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L353)
 
 ``` python
 def pan_x(
@@ -14508,7 +14508,7 @@ field of the first valid prior mark definition is used.
 
 Pan a plot along the `y` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L378)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L378)
 
 ``` python
 def pan_y(
@@ -14543,7 +14543,7 @@ field of the first valid prior mark definition is used.
 
 Pan and zoom a plot along both the `x` and `y` scales.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L403)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L403)
 
 ``` python
 def pan_zoom(
@@ -14578,7 +14578,7 @@ field of the first valid prior mark definition is used.
 
 Pan and zoom a plot along the `x` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L428)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L428)
 
 ``` python
 def pan_zoom_x(
@@ -14613,7 +14613,7 @@ field of the first valid prior mark definition is used.
 
 Pan and zoom a plot along the `y` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L453)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L453)
 
 ``` python
 def pan_zoom_y(
@@ -14651,7 +14651,7 @@ field of the first valid prior mark definition is used.
 Interactors imbue plots with interactive behavior, such as selecting or
 highlighting values, and panning or zooming the display.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_interactors.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_interactors.py#L9)
 
 ``` python
 class Interactor(Component)
@@ -14661,7 +14661,7 @@ class Interactor(Component)
 
 Brush options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/interactor/_brush.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/interactor/_brush.py#L6)
 
 ``` python
 class Brush(TypedDict, total=False)
@@ -14696,7 +14696,7 @@ The stroke opacity of the brush rectangle.
 
 SQL transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_sql.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_sql.py#L6)
 
 ``` python
 def sql(sql: str, label: str | None = None) -> Transform
@@ -14714,7 +14714,7 @@ A label for this expression, for example to label a plot axis.
 
 Aggregation transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_agg.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_agg.py#L6)
 
 ``` python
 def agg(agg: str, label: str | None = None) -> Transform
@@ -14734,7 +14734,7 @@ A label for this expression, for example to label a plot axis.
 
 Intpret a string or param-value as a column reference.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L75)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L75)
 
 ``` python
 def column(column: str | Param) -> Transform
@@ -14747,7 +14747,7 @@ Column name or paramameter.
 
 Bin a continuous variable into discrete intervals.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L12)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L12)
 
 ``` python
 def bin(
@@ -14815,7 +14815,7 @@ Transform a Date value to a day of the month for cyclic comparison.
 
 Year and month values are collapsed to enable comparison over days only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L97)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L97)
 
 ``` python
 def date_day(expr: str | Param) -> Transform
@@ -14830,7 +14830,7 @@ Transform a Date value to a month boundary for cyclic comparison.
 
 Year values are collapsed to enable comparison over months only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L109)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L109)
 
 ``` python
 def date_month(expr: str | Param) -> Transform
@@ -14846,7 +14846,7 @@ comparison.
 
 The resulting value is still date-typed.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L85)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L85)
 
 ``` python
 def date_month_day(expr: str | Param) -> Transform
@@ -14859,7 +14859,7 @@ Expression or parameter.
 
 Transform a Date value to epoch milliseconds.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_column.py#L121)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_column.py#L121)
 
 ``` python
 def epoch_ms(expr: str | Param) -> Transform
@@ -14874,7 +14874,7 @@ Expression or parameter.
 
 Compute the average (mean) value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L47)
 
 ``` python
 def avg(
@@ -14897,7 +14897,7 @@ Window transform options.
 
 A count aggregate transform.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L63)
 
 ``` python
 def count(
@@ -14922,7 +14922,7 @@ Window transform options.
 
 Compute the sum of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L207)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L207)
 
 ``` python
 def sum(
@@ -14945,7 +14945,7 @@ Window transform options.
 
 Compute the minimum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L127)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L127)
 
 ``` python
 def min(
@@ -14968,7 +14968,7 @@ Window transform options.
 
 Compute the maximum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L111)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L111)
 
 ``` python
 def max(
@@ -14991,7 +14991,7 @@ Window transform options.
 
 Compute the median value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L143)
 
 ``` python
 def median(
@@ -15014,7 +15014,7 @@ Window transform options.
 
 Compute the mode value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L159)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L159)
 
 ``` python
 def mode(
@@ -15037,7 +15037,7 @@ Window transform options.
 
 Return the first column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L79)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L79)
 
 ``` python
 def first(
@@ -15060,7 +15060,7 @@ Window transform options.
 
 Return the last column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L95)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L95)
 
 ``` python
 def last(
@@ -15083,7 +15083,7 @@ Window transform options.
 
 Compute the product of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L175)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L175)
 
 ``` python
 def product(
@@ -15107,7 +15107,7 @@ Window transform options.
 Compute the quantile value of the given column at the provided
 probability threshold.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L271)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L271)
 
 ``` python
 def quantile(
@@ -15134,7 +15134,7 @@ Window transform options.
 
 Compute the standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L191)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L191)
 
 ``` python
 def stddev(
@@ -15157,7 +15157,7 @@ Window transform options.
 
 Compute the population standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L239)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L239)
 
 ``` python
 def stddev_pop(
@@ -15180,7 +15180,7 @@ Window transform options.
 
 Compute the sample variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L223)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L223)
 
 ``` python
 def variance(
@@ -15203,7 +15203,7 @@ Window transform options.
 
 Compute the population variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L255)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L255)
 
 ``` python
 def var_pop(
@@ -15226,7 +15226,7 @@ Window transform options.
 
 Find a value of the first column that minimizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L29)
 
 ``` python
 def argmin(
@@ -15253,7 +15253,7 @@ Window transform options.
 
 Find a value of the first column that maximizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_aggregate.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_aggregate.py#L11)
 
 ``` python
 def argmax(
@@ -15291,7 +15291,7 @@ Specify the confidence interval either as:
     desired scale (e.g., z\*stderr, bootstrap deltas, HDIs from bayesian
     posterior distributions, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_ci.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_ci.py#L8)
 
 ``` python
 def ci_bounds(
@@ -15325,7 +15325,7 @@ Column name for upper bound.
 
 Compute the 1-based row number over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L25)
 
 ``` python
 def row_number(**options: Unpack[WindowOptions]) -> Transform
@@ -15340,7 +15340,7 @@ Compute the row rank over an ordered window partition.
 
 Sorting ties result in gaps in the rank numbers (\[1, 1, 3, …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L35)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L35)
 
 ``` python
 def rank(**options: Unpack[WindowOptions]) -> Transform
@@ -15356,7 +15356,7 @@ Compute the dense row rank (no gaps) over an ordered window partition.
 Sorting ties do not result in gaps in the rank numbers ( \[1, 1, 2,
 …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L47)
 
 ``` python
 def dense_rank(**options: Unpack[WindowOptions]) -> Transform
@@ -15369,7 +15369,7 @@ Window transform options.
 
 Compute the percetange rank over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L59)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L59)
 
 ``` python
 def percent_rank(**options: Unpack[WindowOptions]) -> Transform
@@ -15386,7 +15386,7 @@ partition.
 Equals the number of partition rows preceding or peer with the current
 row, divided by the total number of partition rows.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L69)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L69)
 
 ``` python
 def cume_dist(**options: Unpack[WindowOptions]) -> Transform
@@ -15400,7 +15400,7 @@ Window transform options.
 Compute an n-tile integer ranging from 1 to `num_buckets` dividing the
 partition as equally as possible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L81)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L81)
 
 ``` python
 def n_tile(num_buckets: int, **options: Unpack[WindowOptions]) -> Transform
@@ -15419,7 +15419,7 @@ Compute lagging values in a column.
 Returns the value at the row that is at `offset` rows (default `1`)
 before the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L92)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L92)
 
 ``` python
 def lag(
@@ -15449,7 +15449,7 @@ Compute leading values in a column.
 Returns the value at the row that is at `offset` rows (default `1`)
 after the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L112)
 
 ``` python
 def lead(
@@ -15476,7 +15476,7 @@ Window transform options.
 
 Get the first value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L132)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L132)
 
 ``` python
 def first_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
@@ -15492,7 +15492,7 @@ Window transform options.
 
 Get the last value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L143)
 
 ``` python
 def last_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
@@ -15509,7 +15509,7 @@ Window transform options.
 Get the nth value of the given column in the current window frame,
 counting from one.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L154)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L154)
 
 ``` python
 def nth_value(
@@ -15532,7 +15532,7 @@ Window transform options.
 
 Column transformation operation.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_transform.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_transform.py#L7)
 
 ``` python
 Transform: TypeAlias = dict[str, JsonValue]
@@ -15542,7 +15542,7 @@ Transform: TypeAlias = dict[str, JsonValue]
 
 Window transform options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/transform/_window.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/transform/_window.py#L9)
 
 ``` python
 class WindowOptions(TypedDict, total=False)
@@ -15571,7 +15571,7 @@ Window range frame specification as an array or array-valued expression.
 
 Tabular display of data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/table/_table.py#L243)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/table/_table.py#L243)
 
 ``` python
 def table(
@@ -15676,7 +15676,7 @@ The intitial selected value will be “All” when `target` is a `Selection`
 (indicating select all records) and the param value when `target` is a
 `Param`.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_select.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_select.py#L10)
 
 ``` python
 def select(
@@ -15743,7 +15743,7 @@ Width in pixels (defaults to 150).
 
 Select input widget.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_slider.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_slider.py#L10)
 
 ``` python
 def slider(
@@ -15816,7 +15816,7 @@ The width of the slider in screen pixels (defaults to 200)
 
 Text search input widget
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_search.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_search.py#L10)
 
 ``` python
 def search(
@@ -15885,7 +15885,7 @@ The `values` tuple enables you to determine what value is communicated
 to the target for checked and unchecked states (by default, this is
 `True` and `False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_checkbox.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_checkbox.py#L8)
 
 ``` python
 def checkbox(
@@ -15939,7 +15939,7 @@ The intitial selected value will be “All” when `target` is a `Selection`
 (indicating select all records) and the param value when `target` is a
 `Param`.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_radio_group.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_radio_group.py#L8)
 
 ``` python
 def radio_group(
@@ -16006,7 +16006,7 @@ The intitial selected values will be empty when `target` is a
 `target` is a `Param` (param values should be an array with one or more
 checkbox values).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/input/_checkbox_group.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/input/_checkbox_group.py#L8)
 
 ``` python
 def checkbox_group(
@@ -16059,7 +16059,7 @@ A selection to filter the data source indicated by the `data` parameter.
 
 Horizontally concatenate components in a row layout.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/layout/_concat.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/layout/_concat.py#L16)
 
 ``` python
 def hconcat(*component: Component) -> Component
@@ -16072,7 +16072,7 @@ Components to concatenate.
 
 Vertically concatenate components in a column layout.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/layout/_concat.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/layout/_concat.py#L6)
 
 ``` python
 def vconcat(*component: Component) -> Component
@@ -16085,7 +16085,7 @@ Components to concatenate.
 
 Horizontal space to place between widgets.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/layout/_space.py#L4)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/layout/_space.py#L4)
 
 ``` python
 def hspace(hspace: float | str = 10) -> Component
@@ -16099,7 +16099,7 @@ use CSS units (em, pt, px, etc).
 
 Veritcal space to place between widgets.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/layout/_space.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/layout/_space.py#L13)
 
 ``` python
 def vspace(vspace: float | str = 10) -> Component

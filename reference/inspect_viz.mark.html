@@ -1595,7 +1595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="dot">dot</h3>
 <p>A dot mark that draws circles, or other symbols, as in a scatterplot.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1658,7 +1658,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Like dot, except that <strong>y</strong> defaults to the identity function, assuming that <em>data</em> = [<em>y₀</em>, <em>y₁</em>, <em>y₂</em>, …].</p>
 <p>If an <strong>interval</strong> is specified, such as <em>day</em>, <strong>y</strong> is transformed to the middle of the interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L62">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L62">Source</a>
 </div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot_x(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1726,7 +1726,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Like dot, except that <strong>x</strong> defaults to the identity function, assuming that <em>data</em> = [<em>x₀</em>, <em>x₁</em>, <em>x₂</em>, …].</p>
 <p>If an <strong>interval</strong> is specified, such as <em>day</em>, <strong>x</strong> is transformed to the middle of the interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L117">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L117">Source</a>
 </div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dot_y(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1793,7 +1793,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A circle mark that draws circles as in a scatterplot.</p>
 <p>Like dot, but with the symbol fixed to be a circle.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L172">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L172">Source</a>
 </div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> circle(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1850,7 +1850,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A hexagon mark that draws hexagons as in a scatterplot.</p>
 <p>Like dot, but with the symbol fixed to be a hexagon.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dot.py#L218">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dot.py#L218">Source</a>
 </div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hexagon(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1907,7 +1907,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A line mark that connects control points.</p>
 <p>Points along the line are connected in input order. If there are multiple series via the <strong>z</strong>, <strong>fill</strong>, or <strong>stroke</strong> channel, series are drawn in input order such that the last series is drawn on top.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1979,7 +1979,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal line mark that connects control points.</p>
 <p>Like line, except that <strong>y</strong> defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L67">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L67">Source</a>
 </div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line_x(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -2051,7 +2051,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical line mark that connects control points.</p>
 <p>Like line, except that <strong>x</strong> defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_line.py#L119">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_line.py#L119">Source</a>
 </div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line_y(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -2124,7 +2124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <strong>x1</strong> and <strong>y1</strong> channels specify the area’s baseline; the <strong>x2</strong> and <strong>y2</strong> channels specify the area’s topline. Both the baseline and topline are typically bound to the same scales as their respective dimensions.</p>
 <p>If <strong>x2</strong> is not specified, it defaults to <strong>x1</strong>. If <strong>y2</strong> is not specified, it defaults to <strong>y1</strong>. Typically either <strong>x2</strong> or <strong>y2</strong> is unspecified, creating either a horizontal or vertical area.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> area(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2197,7 +2197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <strong>x</strong> channel specifies the area’s length (or width); it is typically bound to the <em>x</em> scale. The <strong>y</strong> channel specifies the area’s vertical position; it is typically bound to the <em>y</em> scale and defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <p>If neither <strong>x1</strong> nor <strong>x2</strong> is specified, an implicit stackX transform is applied and <strong>x</strong> defaults to the identity function, assuming that <em>data</em> = [<em>x₀</em>, <em>x₁</em>, <em>x₂</em>, …]. Otherwise, if only one of <strong>x1</strong> or <strong>x2</strong> is specified, the other defaults to <strong>x</strong>, which defaults to zero.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L74">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L74">Source</a>
 </div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> area_x(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2277,7 +2277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <strong>y</strong> channel specifies the area’s height (or length); it is typically bound to the <em>y</em> scale. The <strong>x</strong> channel specifies the area’s horizontal position; it is typically bound to the <em>x</em> scale and defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <p>If neither <strong>y1</strong> nor <strong>y2</strong> is specified, an implicit stackY transform is applied and <strong>y</strong> defaults to the identity function, assuming that <em>data</em> = [<em>y₀</em>, <em>y₁</em>, <em>y₂</em>, …]. Otherwise, if only one of <strong>y1</strong> or <strong>y2</strong> is specified, the other defaults to <strong>y</strong>, which defaults to zero.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_area.py#L135">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_area.py#L135">Source</a>
 </div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> area_y(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2359,7 +2359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The optional <strong>y</strong> ordinal channel specifies the vertical position; it is typically bound to the <em>y</em> scale, which must be a <em>band</em> scale. If the <strong>y</strong> channel is not specified, the bar will span the vertical extent of the plot’s frame.</p>
 <p>If <em>y</em> is quantitative, use the rectX mark instead. If <em>x</em> is ordinal, use the cell mark instead.”</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_bar.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bar_x(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2481,7 +2481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The optional <strong>x</strong> ordinal channel specifies the horizontal position; it is typically bound to the <em>x</em> scale, which must be a <em>band</em> scale. If the <strong>x</strong> channel is not specified, the bar will span the horizontal extent of the plot’s frame.</p>
 <p>If <em>x</em> is quantitative, use the rectY mark instead. If <em>y</em> is ordinal, use the cell mark instead.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_bar.py#L105">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_bar.py#L105">Source</a>
 </div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bar_y(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2600,7 +2600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a heatmap mark for density visualization with optimized defaults.</p>
 <p>The heatmap mark is essentially a raster mark with different default options optimized for density visualization. It bins spatial data into a raster grid and applies kernel density smoothing to create smooth density surfaces from point data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L79">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L79">Source</a>
 </div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heatmap(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2675,7 +2675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a 2D density mark that shows smoothed point cloud densities.</p>
 <p>The density mark bins the data, counts the number of records that fall into each bin, and smooths the resulting counts, then plots the smoothed distribution, by default using a circular dot mark. The density mark calculates density values that can be mapped to encoding channels such as fill or r using the special field name “density”.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L17">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L17">Source</a>
 </div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> density(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2778,7 +2778,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaX mark.</p>
 <p>Set the <em>type</em> property to use a different base mark type.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L100">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L100">Source</a>
 </div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> density_x(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2841,7 +2841,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The mark bins the data, counts the number of records that fall into each bin, smooths the resulting counts, and then plots the smoothed distribution, by default using an areaY mark.</p>
 <p>Set the <em>type</em> property to use a different base mark type.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_density.py#L156">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_density.py#L156">Source</a>
 </div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> density_y(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2905,7 +2905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a contour mark that draws contour lines of equal value.</p>
 <p>The contour mark creates isolines showing contours of equal value. It bins the given data into a 2D grid, computes density estimates, and draws contour lines at specified threshold levels. The contour mark is useful for visualizing the density or distribution of 2D point data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_contour.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_contour.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb18"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> contour(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -2977,7 +2977,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical regression mark.</p>
 <p>The regressionY mark draws a regression line with optional confidence bands showing the relationship between variables. The x variable is the independent variable and y is the dependent variable.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_regression.py#L13">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_regression.py#L13">Source</a>
 </div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> regression_y(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3029,7 +3029,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal error bar mark.</p>
 <p>The errorBarX mark draws horizontal error bars showing confidence intervals or uncertainty around data points. The error bars extend horizontally from the central value.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_error_bar.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb20"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> error_bar_x(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3096,7 +3096,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical error bar mark.</p>
 <p>The errorBarY mark draws vertical error bars showing confidence intervals or uncertainty around data points. The error bars extend vertically from the central value.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_error_bar.py#L62">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_error_bar.py#L62">Source</a>
 </div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> error_bar_y(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3166,7 +3166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A cell mark that draws axis-aligned rectangles for categorical data.</p>
 <p>Cells are typically used to create heatmaps and other grid-based visualizations where both x and y represent categorical or ordinal data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L13">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L13">Source</a>
 </div>
 <div class="sourceCode" id="cb22"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cell(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3238,7 +3238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A cellX mark that draws axis-aligned rectangles with ordinal positioning.</p>
 <p>The <em>x</em> values should be ordinal (categories), and the optional <em>y</em> values should also be ordinal.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L67">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L67">Source</a>
 </div>
 <div class="sourceCode" id="cb23"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cell_x(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3310,7 +3310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A cellY mark that draws axis-aligned rectangles with ordinal positioning.</p>
 <p>The <em>y</em> values should be ordinal (categories), and the optional <em>x</em> values should also be ordinal.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_cell.py#L120">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_cell.py#L120">Source</a>
 </div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cell_y(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3382,7 +3382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal grid mark.</p>
 <p>The gridX mark draws horizontal grid lines across the plot area. It is primarily used for adding visual reference lines along the x-axis.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb25"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grid_x(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    x: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -3444,7 +3444,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical grid mark.</p>
 <p>The gridY mark draws vertical grid lines across the plot area. It is primarily used for adding visual reference lines along the y-axis.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L60">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L60">Source</a>
 </div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grid_y(</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    y: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -3516,7 +3516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal facet grid mark.</p>
 <p>The gridFx mark draws horizontal grid lines for faceted plots. It is primarily used for adding visual reference lines along the fx-axis in faceted visualizations.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L112">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L112">Source</a>
 </div>
 <div class="sourceCode" id="cb27"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grid_fx(</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    x: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -3573,7 +3573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical facet grid mark.</p>
 <p>The gridFy mark draws vertical grid lines for faceted plots. It is primarily used for adding visual reference lines along the fy-axis in faceted visualizations.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_grid.py#L155">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_grid.py#L155">Source</a>
 </div>
 <div class="sourceCode" id="cb28"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grid_fy(</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    y: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -3641,7 +3641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The hexbin mark bins two-dimensional point data into hexagonal bins and displays aggregated values for each bin. This is useful for visualizing density patterns in large datasets and for creating hexagonal heatmaps.</p>
 <p>The mark creates a hexagonal grid and counts or aggregates data points within each hexagon, then renders the results using the specified mark type.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexbin.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_hexbin.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hexbin(</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3714,7 +3714,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The hexgrid mark creates a hexagonal grid pattern, typically used as a background or reference grid for hexbin visualizations. This is a decoration mark that shows the underlying hexagonal structure without requiring data.</p>
 <p>The hexgrid mark is designed to complement hexbin marks by showing the grid structure. It’s a stroke-only mark where fill is not supported.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_hexgrid.py#L11">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_hexgrid.py#L11">Source</a>
 </div>
 <div class="sourceCode" id="cb30"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hexgrid(</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    bin_width: <span class="bu">float</span> <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -3736,7 +3736,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A waffleX mark that creates horizontal waffle charts.</p>
 <p>Waffle charts are a form of unit chart where data is represented as a grid of small squares or rectangles, useful for showing part-to-whole relationships and making proportions more tangible.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_waffle.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> waffle_x(</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3862,7 +3862,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A waffleY mark that creates vertical waffle charts.</p>
 <p>Waffle charts are a form of unit chart where data is represented as a grid of small squares or rectangles, useful for showing part-to-whole relationships and making proportions more tangible.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_waffle.py#L103">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_waffle.py#L103">Source</a>
 </div>
 <div class="sourceCode" id="cb32"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> waffle_y(</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -3991,7 +3991,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a raster mark for spatial samples with optional interpolation and smoothing.</p>
 <p>The raster mark bins spatial data into a raster grid and optionally applies spatial interpolation and kernel density smoothing. The raster mark is useful for visualizing continuous spatial phenomena from discrete sample points.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb33"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> raster(</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4063,7 +4063,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create an experimental raster tile mark with tiling and prefetching for scalable rasters.</p>
 <p>The rasterTile mark is an experimental version of the raster mark that supports tiling and prefetching for better performance with large datasets. It provides scalable raster visualization with efficient memory usage.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_raster.py#L144">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_raster.py#L144">Source</a>
 </div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> raster_tile(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4140,7 +4140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vector mark that draws arrows or other directional shapes.</p>
 <p>Vectors are typically used to represent direction and magnitude in data, such as wind vectors, force fields, or gradients.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb35"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vector(</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4207,7 +4207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vectorX mark that draws horizontal directional vectors.</p>
 <p>VectorX marks are oriented primarily along the x-axis and are useful for showing horizontal flow or direction.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L65">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L65">Source</a>
 </div>
 <div class="sourceCode" id="cb36"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vector_x(</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4274,7 +4274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vectorY mark that draws vertical directional vectors.</p>
 <p>VectorY marks are oriented primarily along the y-axis and are useful for showing vertical flow or direction.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L116">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L116">Source</a>
 </div>
 <div class="sourceCode" id="cb37"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vector_y(</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4341,7 +4341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A spike mark that draws spike-shaped directional indicators.</p>
 <p>Spikes are a specialized type of vector that typically appear as thin lines or needles, useful for showing precise directional data or impulses.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_vector.py#L167">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_vector.py#L167">Source</a>
 </div>
 <div class="sourceCode" id="cb38"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spike(</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4408,7 +4408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>An arrow mark.</p>
 <p>The arrow mark draws arrows between two points, with customizable arrowheads and curved paths. It is useful for indicating direction, flow, or relationships between data points.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_arrow.py#L13">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_arrow.py#L13">Source</a>
 </div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> arrow(</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4501,7 +4501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The link mark connects pairs of points with line segments. It supports both simple positioning using x and y (which serve as shorthand for x1/x2 and y1/y2), and explicit positioning using x1/y1 and x2/y2 coordinates for full control over link endpoints.</p>
 <p>For vertical links, specify <strong>x</strong> (or <strong>x1</strong> and <strong>x2</strong>) for the horizontal position and <strong>y1</strong> and <strong>y2</strong> for the vertical endpoints. For horizontal links, specify <strong>y</strong> (or <strong>y1</strong> and <strong>y2</strong>) for the vertical position and <strong>x1</strong> and <strong>x2</strong> for the horizontal endpoints.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_link.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_link.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb40"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> link(</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4588,7 +4588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a Delaunay link mark that draws links for each edge of the Delaunay triangulation.</p>
 <p>The delaunayLink mark computes the Delaunay triangulation of the data and draws a line segment for each edge of the triangulation. This is useful for visualizing spatial relationships and adjacencies in scattered point data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb41"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delaunay_link(</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4660,7 +4660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a Delaunay mesh mark that draws a mesh of the Delaunay triangulation.</p>
 <p>The delaunayMesh mark computes the Delaunay triangulation of the data and draws filled triangular polygons for each triangle in the triangulation. This creates a continuous mesh surface useful for spatial interpolation and surface visualization.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L70">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L70">Source</a>
 </div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delaunay_mesh(</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4732,7 +4732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a Voronoi mark that draws polygons for each cell of the Voronoi tessellation.</p>
 <p>The voronoi mark computes the Voronoi tessellation (also known as Thiessen polygons) of the data points and draws filled polygons for each cell. Each cell contains all points that are closer to the cell’s generator point than to any other generator.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L182">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L182">Source</a>
 </div>
 <div class="sourceCode" id="cb43"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> voronoi(</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4804,7 +4804,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a Voronoi mesh mark that draws a mesh for the cell boundaries of the Voronoi tessellation.</p>
 <p>The voronoiMesh mark computes the Voronoi tessellation of the data points and draws line segments for the boundaries between cells. This creates a mesh of cell edges useful for visualizing the spatial partitioning without filled polygons.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L237">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L237">Source</a>
 </div>
 <div class="sourceCode" id="cb44"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> voronoi_mesh(</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4876,7 +4876,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a hull mark that draws a convex hull around points.</p>
 <p>The hull mark computes the convex hull of the data points and draws a polygon representing the smallest convex shape that contains all the points. This is useful for showing the overall extent or boundary of a point cloud.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_delaunay.py#L126">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_delaunay.py#L126">Source</a>
 </div>
 <div class="sourceCode" id="cb45"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hull(</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -4949,7 +4949,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The denseLine mark forms a binned raster grid and “draws” straight lines into it, creating a density visualization of line segments rather than individual points. This is useful for visualizing the density of linear features, trajectories, or paths in spatial data.</p>
 <p>The mark bins the data into a 2D grid and renders density values as a raster image. Unlike traditional line marks that use curve interpolation, dense lines operate on a pixel grid to accumulate line density information.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_dense.py#L14">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_dense.py#L14">Source</a>
 </div>
 <div class="sourceCode" id="cb46"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense_line(</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -5029,7 +5029,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a plot title mark.</p>
 <p>Adds a title at the top of the plot frame.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L29">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_title.py#L29">Source</a>
 </div>
 <div class="sourceCode" id="cb47"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> title(</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    title: <span class="bu">str</span>,</span>
@@ -5067,7 +5067,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The frame mark draws a rectangular border around the plot’s frame area. By default, it draws a complete rectangular outline, but when an anchor is specified, it draws only a line on the given side (ignoring rx, ry, fill, and fillOpacity).</p>
 <p>The frame mark is commonly used for visual separation of facets, providing backgrounds for plot areas, or creating borders around visualizations.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_frame.py#L11">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_frame.py#L11">Source</a>
 </div>
 <div class="sourceCode" id="cb48"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> frame(</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    anchor: Literal[<span class="st">"top"</span>, <span class="st">"right"</span>, <span class="st">"bottom"</span>, <span class="st">"left"</span>] <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5124,7 +5124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal axis mark.</p>
 <p>The axisX mark draws a horizontal axis at the bottom or top of the plot (or both). It is primarily used for displaying scales and reference lines along the x-axis.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L16">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L16">Source</a>
 </div>
 <div class="sourceCode" id="cb49"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> axis_x(</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    x: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5251,7 +5251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical axis mark.</p>
 <p>The axisY mark draws a vertical axis at the left or right of the plot (or both). It is primarily used for displaying scales and reference lines along the y-axis.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L101">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L101">Source</a>
 </div>
 <div class="sourceCode" id="cb50"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> axis_y(</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    y: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5378,7 +5378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A horizontal facet axis mark.</p>
 <p>The axisFx mark draws a horizontal axis for faceted plots. It is primarily used for displaying scales and reference lines along the fx-axis in faceted visualizations.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L186">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L186">Source</a>
 </div>
 <div class="sourceCode" id="cb51"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> axis_fx(</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    x: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5505,7 +5505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A vertical facet axis mark.</p>
 <p>The axisFy mark draws a vertical axis for faceted plots. It is primarily used for displaying scales and reference lines along the fy-axis in faceted visualizations.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_axis.py#L271">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_axis.py#L271">Source</a>
 </div>
 <div class="sourceCode" id="cb52"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> axis_fy(</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    y: ChannelSpec <span class="op">|</span> Param <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5632,7 +5632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A ruleX mark that draws horizontal rule lines.</p>
 <p>RuleX marks are horizontal lines that span the full extent of the plot area, typically used for reference lines, grid lines, or highlighting specific values.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rule.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb53"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_x(</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5709,7 +5709,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A ruleY mark that draws vertical rule lines.</p>
 <p>RuleY marks are vertical lines that span the full extent of the plot area, typically used for reference lines, grid lines, or highlighting specific values.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rule.py#L72">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rule.py#L72">Source</a>
 </div>
 <div class="sourceCode" id="cb54"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_y(</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -5786,7 +5786,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A tickX mark that draws horizontal tick marks.</p>
 <p>TickX marks are horizontal lines typically used for marking positions along the x-axis or creating horizontal reference lines.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_tick.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb55"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tick_x(</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -5858,7 +5858,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A tickY mark that draws vertical tick marks.</p>
 <p>TickY marks are vertical lines typically used for marking positions along the y-axis or creating vertical reference lines.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_tick.py#L69">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_tick.py#L69">Source</a>
 </div>
 <div class="sourceCode" id="cb56"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tick_y(</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -5930,7 +5930,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A rect mark that draws axis-aligned rectangles.</p>
 <p>Both <em>x</em> and <em>y</em> should be quantitative or temporal; rect does not perform grouping, so use rectX or rectY for ordinal data.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb57"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rect(</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6046,7 +6046,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A rectX mark that draws axis-aligned rectangles.</p>
 <p>The <em>x</em> values should be quantitative or temporal, and the optional <em>y</em> values should be ordinal.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L104">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L104">Source</a>
 </div>
 <div class="sourceCode" id="cb58"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rect_x(</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6162,7 +6162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A rectY mark that draws axis-aligned rectangles.</p>
 <p>The <em>y</em> values should be quantitative or temporal, and the optional <em>x</em> values should be ordinal.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_rect.py#L192">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_rect.py#L192">Source</a>
 </div>
 <div class="sourceCode" id="cb59"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rect_y(</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6277,7 +6277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="text">text</h3>
 <p>A text mark that displays textual labels.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L18">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L18">Source</a>
 </div>
 <div class="sourceCode" id="cb60"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text(</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -6345,7 +6345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Like text, except that <strong>y</strong> defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <p>If an <strong>interval</strong> is specified, such as <em>day</em>, <strong>y</strong> is transformed to the middle of the interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L65">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L65">Source</a>
 </div>
 <div class="sourceCode" id="cb61"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_x(</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span>,</span>
@@ -6418,7 +6418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Like text, except that <strong>x</strong> defaults to the zero-based index of the data [0, 1, 2, …].</p>
 <p>If an <strong>interval</strong> is specified, such as <em>day</em>, <strong>x</strong> is transformed to the middle of the interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_text.py#L119">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_text.py#L119">Source</a>
 </div>
 <div class="sourceCode" id="cb62"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_y(</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span>,</span>
@@ -6491,7 +6491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The image mark displays raster images (PNG, JPEG, etc.) at specified positions and sizes. Images can be positioned using x/y coordinates, sized with width/height, and styled with various options including aspect ratio preservation and rendering modes.</p>
 <p>This mark is useful for: - Adding logos, icons, or other imagery to visualizations - Creating image-based scatter plots or dashboards - Displaying photographs or other raster content within plots</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_image.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_image.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb63"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> image(</span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6576,7 +6576,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a geo mark for rendering geographic data.</p>
 <p>The geo mark renders geographic data, typically GeoJSON objects, with support for map projections and geographic styling. It’s designed for displaying geographic features like countries, states, cities, or any spatial geometry.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L13">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L13">Source</a>
 </div>
 <div class="sourceCode" id="cb64"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> geo(</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6614,7 +6614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The graticule mark renders a 10° global graticule (coordinate grid) showing lines of longitude and latitude. This provides a reference grid for geographic visualizations and helps users understand the projection and scale.</p>
 <p>This mark is particularly useful for: - Adding coordinate reference lines to world maps - Showing distortion in map projections - Providing spatial reference for geographic data</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L77">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L77">Source</a>
 </div>
 <div class="sourceCode" id="cb65"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> graticule(</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[MarkOptions],</span>
@@ -6632,7 +6632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The sphere mark renders the outline of the sphere on the projection’s plane. This is typically used with spherical projections to show the boundary of the projected world. The sphere mark automatically generates the appropriate geometry for the current projection.</p>
 <p>This mark is particularly useful for: - Adding a border around world maps with spherical projections - Showing the extent of the projection - Creating a background for geographic visualizations</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_geo.py#L52">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_geo.py#L52">Source</a>
 </div>
 <div class="sourceCode" id="cb66"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sphere(</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[MarkOptions],</span>
@@ -6651,7 +6651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="mark">Mark</h3>
 <p>Plot mark (create marks using mark functions, e.g.&nbsp;<span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.mark.html#dot">dot()</a></span>, <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.mark.html#bar_x">bar_x()</a></span>, etc.).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L15">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_mark.py#L15">Source</a>
 </div>
 <div class="sourceCode" id="cb67"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Mark(Component)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6659,7 +6659,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="markoptions">MarkOptions</h3>
 <p>Shared options for all marks.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L8">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L8">Source</a>
 </div>
 <div class="sourceCode" id="cb68"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MarkOptions(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section class="level4">
@@ -6859,7 +6859,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="marks">Marks</h3>
 <p>Set of marks to add to a plot.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_mark.py#L74">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_mark.py#L74">Source</a>
 </div>
 <div class="sourceCode" id="cb69"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>Marks: TypeAlias <span class="op">=</span> Mark <span class="op">|</span> Sequence[Mark <span class="op">|</span> Sequence[Mark]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6867,7 +6867,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="title-1">Title</h3>
 <p>Plot title mark.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_title.py#L8">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_title.py#L8">Source</a>
 </div>
 <div class="sourceCode" id="cb70"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Title(Mark)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6875,7 +6875,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channel">Channel</h3>
 <p>Data channel for visualization.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L42">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L42">Source</a>
 </div>
 <div class="sourceCode" id="cb71"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>Channel: TypeAlias <span class="op">=</span> (</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">str</span> <span class="op">|</span> Transform <span class="op">|</span> Sequence[<span class="bu">int</span> <span class="op">|</span> <span class="bu">float</span> <span class="op">|</span> <span class="bu">bool</span> <span class="op">|</span> <span class="bu">str</span>] <span class="op">|</span> <span class="bu">int</span> <span class="op">|</span> <span class="bu">float</span> <span class="op">|</span> <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span></span>
@@ -6885,7 +6885,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channelspec">ChannelSpec</h3>
 <p>Data channel spec for visualization.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L80">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L80">Source</a>
 </div>
 <div class="sourceCode" id="cb72"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>ChannelSpec: TypeAlias <span class="op">=</span> Channel <span class="op">|</span> ChannelWithScale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6893,7 +6893,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channelintervalspec">ChannelIntervalSpec</h3>
 <p>In some contexts, when specifying a mark channel’s value, you can provide a {value, interval} object to specify an associated interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L100">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L100">Source</a>
 </div>
 <div class="sourceCode" id="cb73"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>ChannelIntervalSpec: TypeAlias <span class="op">=</span> ChannelSpec <span class="op">|</span> ChannelWithInterval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6901,7 +6901,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channelwithinterval">ChannelWithInterval</h3>
 <p>Channel with associated interval.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L93">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L93">Source</a>
 </div>
 <div class="sourceCode" id="cb74"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ChannelWithInterval(TypedDict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6909,7 +6909,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channelwithscale">ChannelWithScale</h3>
 <p>Channel with label and scale to override the scale that would normally be associated with the channel.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L56">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L56">Source</a>
 </div>
 <div class="sourceCode" id="cb75"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ChannelWithScale(TypedDict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -6917,7 +6917,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="channelname">ChannelName</h3>
 <p>Known channel names.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_channel.py#L7">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_channel.py#L7">Source</a>
 </div>
 <div class="sourceCode" id="cb76"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>ChannelName: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ariaLabel"</span>,</span>
@@ -6956,7 +6956,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="tipoptions">TipOptions</h3>
 <p>Options for the tip mark.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L214">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L214">Source</a>
 </div>
 <div class="sourceCode" id="cb77"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TipOptions(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section class="level4">
@@ -7016,7 +7016,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="tippointer">TipPointer</h3>
 <p>The pointer mode for the tip; corresponds to pointerX, pointerY, and pointer.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_options.py#L210">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_options.py#L210">Source</a>
 </div>
 <div class="sourceCode" id="cb78"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>TipPointer: TypeAlias <span class="op">=</span> Literal[<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"xy"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -7024,7 +7024,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="curve">Curve</h3>
 <p>The curve (interpolation) method for connecting adjacent points.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L7">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L7">Source</a>
 </div>
 <div class="sourceCode" id="cb79"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>Curve: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"basis"</span>,</span>
@@ -7053,7 +7053,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="symbol">Symbol</h3>
 <p>Symbol type for dot or density plot.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L45">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L45">Source</a>
 </div>
 <div class="sourceCode" id="cb80"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>Symbol: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"asterisk"</span>,</span>
@@ -7076,7 +7076,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="marker">Marker</h3>
 <p>Symbols used as plot markers.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L76">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L76">Source</a>
 </div>
 <div class="sourceCode" id="cb81"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>Marker: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"arrow"</span>,</span>
@@ -7101,7 +7101,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><em>random-walk</em> - apply a random walk from each pixel</li>
 </ul>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L32">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L32">Source</a>
 </div>
 <div class="sourceCode" id="cb82"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>Interpolate: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"none"</span>, <span class="st">"linear"</span>, <span class="st">"nearest"</span>, <span class="st">"barycentric"</span>, <span class="st">"random-walk"</span></span>
@@ -7111,7 +7111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="frameanchor">FrameAnchor</h3>
 <p>Defaults for <strong>x</strong> and <strong>y</strong> based on the plot’s frame.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L63">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L63">Source</a>
 </div>
 <div class="sourceCode" id="cb83"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>FrameAnchor: TypeAlias <span class="op">=</span> Literal[</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"middle"</span>,</span>
@@ -7129,7 +7129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="lineanchor">LineAnchor</h3>
 <p>The line anchor controls how text is aligned (typically vertically) relative to its anchor point.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L112">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L112">Source</a>
 </div>
 <div class="sourceCode" id="cb84"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>LineAnchor <span class="op">=</span> Literal[<span class="st">"top"</span>, <span class="st">"bottom"</span>, <span class="st">"middle"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -7146,7 +7146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>If no <strong>title</strong> was specified, if text requires truncation, a title containing the non-truncated text will be implicitly added.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L89">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L89">Source</a>
 </div>
 <div class="sourceCode" id="cb85"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>TextOverflow: TypeAlias <span class="op">=</span> (</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    Literal[</span>
@@ -7165,7 +7165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="textstyles">TextStyles</h3>
 <p>Text styling options.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/7e6c5188a59ac33eeb78737db9b1979fd2867a4a/src/inspect_viz/mark/_types.py#L116">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/mark/_types.py#L116">Source</a>
 </div>
 <div class="sourceCode" id="cb86"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TextStyles(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section class="level4">
