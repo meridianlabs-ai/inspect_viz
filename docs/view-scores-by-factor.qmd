@@ -1,6 +1,6 @@
 ---
 title: "Scores by Factor"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters: 
    - at: pre-ast
      type: json
@@ -16,7 +16,7 @@ The `scores_by_factor()` function renders a bar plot for comparing eval scores b
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_by_factor
+from inspect_viz.view import scores_by_factor
 
 evals = Data.from_file("evals-hint.parquet")
 scores_by_factor(evals, "task_arg_hint", ("No hint", "Hint"))

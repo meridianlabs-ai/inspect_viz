@@ -1,6 +1,6 @@
 ---
 title: "Scores Timeline"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters: 
    - at: pre-ast
      type: json
@@ -16,7 +16,7 @@ The `scores_timeline()` function plots eval scores by model, organization, and r
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_timeline
+from inspect_viz.view import scores_timeline
 
 evals = Data.from_file("benchmarks.parquet")
 scores_timeline(evals)

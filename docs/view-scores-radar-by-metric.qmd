@@ -1,6 +1,6 @@
 ---
 title: "Scores Radar By Metric"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters: 
    - at: pre-ast
      type: json
@@ -16,7 +16,7 @@ The `scores_radar_by_metric()`function renders a radar chart for comparing model
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_radar_by_metric
+from inspect_viz.view import scores_radar_by_metric
 
 evals = Data.from_file("writing_bench_radar.parquet")
 scores_radar_by_metric(evals)

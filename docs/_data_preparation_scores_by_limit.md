@@ -13,7 +13,7 @@ from inspect_ai.analysis import (
     EvalInfo, EvalModel, SampleSummary,
     log_viewer, model_info, prepare, samples_df
 )
-from inspect_viz.view.beta import scores_by_limit_df
+from inspect_viz.view import scores_by_limit_df
 
 df = samples_df(  # <1>
     [

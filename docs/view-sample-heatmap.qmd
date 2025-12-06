@@ -1,6 +1,6 @@
 ---
 title: "Sample Heatmap"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters: 
    - at: pre-ast
      type: json
@@ -16,7 +16,7 @@ The `sample_heatmap()`function renders a heatmap for viewing individual sample s
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import sample_heatmap
+from inspect_viz.view import sample_heatmap
 
 samples = Data.from_file("writing_bench_samples.parquet")
 sample_heatmap(

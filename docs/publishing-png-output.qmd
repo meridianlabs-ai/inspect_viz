@@ -31,7 +31,7 @@ When your plots are embedded in a notebook or website, use the global `output_fo
 
 ```{python}
 from inspect_viz import Data, options
-from inspect_viz.view.beta import scores_by_factor
+from inspect_viz.view import scores_by_factor
 
 # set 'png' as default output format # <1>
 options.output_format = "png"        # <1>

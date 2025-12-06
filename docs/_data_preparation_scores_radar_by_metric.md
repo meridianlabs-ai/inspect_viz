@@ -15,7 +15,7 @@ from inspect_ai.analysis import (
     model_info,
     prepare,
 )
-from inspect_viz.view.beta import scores_radar_by_metric_df
+from inspect_viz.view import scores_radar_by_metric_df
 
 
 df = evals_df("logs/writing_bench/")  # <1>

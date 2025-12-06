@@ -3,10 +3,6 @@ title: Views
 tbl-colwidths: [30,70]
 ---
 
-::: callout-note
-View functions are currently in beta and are exported from the **inspect_ai.view.beta** module. The beta module will be preserved after final release so that code written against it now will continue to work after the beta.
-:::
-
 Inspect Viz [Views](views.qmd) are pre-built plots that work with data created by the Inspect log [data frame](https://inspect.aisi.org.uk/dataframe.html) reading functions.
 
 {{< include _views.md >}}

@@ -9,7 +9,8 @@ from inspect_viz.mark._mark import Marks
 from inspect_viz.mark._title import Title
 from inspect_viz.plot._attributes import PlotAttributes
 from inspect_viz.plot._legend import Legend
-from inspect_viz.view.beta._heatmap import CellOptions, heatmap
+
+from ._heatmap import CellOptions, heatmap
 
 
 def sample_heatmap(

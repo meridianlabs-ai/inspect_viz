@@ -2,7 +2,7 @@ from typing import Literal, Union
 
 import pandas as pd
 import pytest
-from inspect_viz.view.beta import scores_radar_by_metric_df, scores_radar_by_task_df
+from inspect_viz.view import scores_radar_by_metric_df, scores_radar_by_task_df
 
 
 @pytest.fixture

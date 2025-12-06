@@ -10,13 +10,11 @@ This example illustrates the code behind the [`scores_radar_by_task()`](../../..
 
 ```{python}
 #| filename: Code
-from inspect_viz._core.data import Data
-from inspect_viz._core.selection import Selection
+from inspect_viz import Data, Selection
 from inspect_viz.mark import circle, line, text
-from inspect_viz.plot import plot
-from inspect_viz.plot._legend import legend
-from inspect_viz.view.beta import LabelStyles
-from inspect_viz.view.beta._scores_radar import (
+from inspect_viz.plot import legend, plot
+from inspect_viz.view import LabelStyles
+from inspect_viz.view._scores_radar import (
     axes_coordinates,
     grid_circles_coordinates,
     labels_coordinates,

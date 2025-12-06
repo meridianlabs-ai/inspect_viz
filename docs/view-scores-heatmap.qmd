@@ -1,6 +1,6 @@
 ---
 title: "Scores Heatmap"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters: 
    - at: pre-ast
      type: json
@@ -16,7 +16,7 @@ The `scores_heatmap()`function renders a heatmap for comparing eval scores.
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_heatmap
+from inspect_viz.view import scores_heatmap
 
 evals = Data.from_file("evals.parquet")
 scores_heatmap(evals, height=200)

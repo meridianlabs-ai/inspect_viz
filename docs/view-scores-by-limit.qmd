@@ -1,6 +1,6 @@
 ---
 title: "Scores by Limit"
-reference: "inspect_viz.view.beta"
+reference: "inspect_viz.view"
 filters:
    - at: pre-ast
      type: json
@@ -18,7 +18,7 @@ This visualization requires that you run your evaluation wiht a very high time o
 
 ```{python}
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_by_limit
+from inspect_viz.view import scores_by_limit
 
 evals = Data.from_file("swebench_token_limit.parquet")
 scores_by_limit(evals)

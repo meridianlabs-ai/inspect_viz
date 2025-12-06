@@ -15,7 +15,7 @@ from inspect_ai.analysis import (
     model_info,
     prepare,
 )
-from inspect_viz.view.beta import scores_radar_by_task_df
+from inspect_viz.view import scores_radar_by_task_df
 
 
 df = evals_df([  # <1>
