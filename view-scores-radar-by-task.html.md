@@ -10,7 +10,7 @@ tasks.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_radar_by_task
+from inspect_viz.view import scores_radar_by_task
 
 evals = Data.from_file("radar_by_task.parquet")
 scores_radar_by_task(evals)
@@ -63,7 +63,7 @@ from inspect_ai.analysis import (
     model_info,
     prepare,
 )
-from inspect_viz.view.beta import scores_radar_by_task_df
+from inspect_viz.view import scores_radar_by_task_df
 
 
 df = evals_df([
@@ -136,7 +136,7 @@ Provide an optional task name mapping for pretty task names in
 Creates a radar chart showing scores for multiple models across multiple
 tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -194,7 +194,7 @@ multiple models and tasks.
 This is useful for comparing the headline metrics of multiple models
 across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(

@@ -10,7 +10,7 @@ separate axis on the radar chart.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_radar_by_metric
+from inspect_viz.view import scores_radar_by_metric
 
 evals = Data.from_file("writing_bench_radar.parquet")
 scores_radar_by_metric(evals)
@@ -63,7 +63,7 @@ from inspect_ai.analysis import (
     model_info,
     prepare,
 )
-from inspect_viz.view.beta import scores_radar_by_metric_df
+from inspect_viz.view import scores_radar_by_metric_df
 
 
 df = evals_df("logs/writing_bench/")
@@ -128,7 +128,7 @@ metrics in a single task.
 This is useful for tasks with multiple metrics, where each metric is a
 separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -155,7 +155,7 @@ multiple metrics in a single task.
 This is useful for tasks with multiple metrics, where each metric is a
 separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(

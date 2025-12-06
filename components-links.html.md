@@ -118,7 +118,7 @@ so links appear automatically when using those functions. For example:
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_by_model
+from inspect_viz.view import scores_by_model
 
 evals = Data.from_file("agi-lsat-ar.parquet")
 scores_by_model(evals)

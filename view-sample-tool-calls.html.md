@@ -8,7 +8,7 @@ calls over evaluation turns for each sample.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import sample_tool_calls
+from inspect_viz.view import sample_tool_calls
 
 tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools)
@@ -65,7 +65,7 @@ usage).
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(

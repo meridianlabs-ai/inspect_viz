@@ -59,7 +59,7 @@ format. For example, the plot below is rendered as a static PNG graphic:
 
 ``` python
 from inspect_viz import Data, options
-from inspect_viz.view.beta import scores_by_factor
+from inspect_viz.view import scores_by_factor
 
 # set 'png' as default output format
 options.output_format = "png"

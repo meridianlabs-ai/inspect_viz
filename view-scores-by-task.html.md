@@ -8,7 +8,7 @@ scores.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_by_task
+from inspect_viz.view import scores_by_task
 
 evals = Data.from_file("evals.parquet")
 scores_by_task(evals)
@@ -59,7 +59,7 @@ plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By
 default, confidence intervals are also plotted (disable this with
 `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(

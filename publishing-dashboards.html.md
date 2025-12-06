@@ -44,7 +44,7 @@ from inspect_viz.input import select
 from inspect_viz.mark import dot
 from inspect_viz.plot import plot
 from inspect_viz.table import table, column
-from inspect_viz.view.beta import scores_timeline
+from inspect_viz.view import scores_timeline
 from inspect_viz.input import checkbox_group, select
 
 evals = Data.from_file("benchmarks.parquet")

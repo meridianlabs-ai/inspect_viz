@@ -9,7 +9,7 @@ along the other axis.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import sample_heatmap
+from inspect_viz.view import sample_heatmap
 
 samples = Data.from_file("writing_bench_samples.parquet")
 sample_heatmap(
@@ -65,7 +65,7 @@ isn’t prepared with `log_viewer()` and `model_info()`).
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_sample_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_heatmap.py#L16)
 
 ``` python
 def sample_heatmap(

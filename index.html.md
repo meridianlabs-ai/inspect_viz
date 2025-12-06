@@ -52,7 +52,7 @@ enables you to compare scores across models and a boolean factor:
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_by_factor
+from inspect_viz.view import scores_by_factor
 from inspect_viz.plot import legend
 
 evals = Data.from_file("evals-hint.parquet")
@@ -68,7 +68,7 @@ The [`sample_tool_calls()`](view-sample-tool-calls.qmd) view enables you
 to visualize tool calls by sample:
 
 ``` python
-from inspect_viz.view.beta import sample_tool_calls
+from inspect_viz.view import sample_tool_calls
 
 tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools, legend=legend("color", frame_anchor="bottom", border=False))
@@ -195,7 +195,7 @@ produced with `scores_by_model()` includes a link to the underlying logs
 in its tooltips:
 
 ``` python
-from inspect_viz.view.beta import scores_by_model
+from inspect_viz.view import scores_by_model
 scores_by_model(evals) # baseline=0.91
 ```
 

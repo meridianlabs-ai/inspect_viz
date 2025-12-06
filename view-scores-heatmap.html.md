@@ -8,7 +8,7 @@ scores.
 
 ``` python
 from inspect_viz import Data
-from inspect_viz.view.beta import scores_heatmap
+from inspect_viz.view import scores_heatmap
 
 evals = Data.from_file("evals.parquet")
 scores_heatmap(evals, height=200)
@@ -54,7 +54,7 @@ isn’t prepared with `log_viewer()` and `model_info()`).
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/43bc7cbad55804123a0150d2f5f083c28b44e0c1/src/inspect_viz/view/beta/_scores_heatmap.py#L15)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(
