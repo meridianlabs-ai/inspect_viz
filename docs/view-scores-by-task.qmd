@@ -1,12 +1,7 @@
 ---
 title: "Scores by Task"
+llms-description: Bar plot for comparing eval scores (with confidence intervals) across models and tasks.
 reference: "inspect_viz.view"
-filters: 
-   - at: pre-ast
-     type: json
-     path: reference/filter/filter.py
-   - at: pre-ast
-     path: reference/filter/post.lua
 datafile: "evals.parquet"
 ---
 

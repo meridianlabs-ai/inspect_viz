@@ -1,5 +1,6 @@
 ---
 title: Scores Heatmap
+llms-description: Heatmap with values for comparing scores across model and task.
 subtitle: "Dataset: [evals.parquet](evals.parquet)"
 ---
 

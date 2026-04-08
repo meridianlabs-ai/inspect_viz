@@ -1,145 +1,91 @@
 project:
-   type: website
-   resources: 
-      - llms.txt
-   pre-render: 
-      - reference/filter/sidebar.py
-   post-render:
-      - scripts/post-render.sh
+  type: meridianlabs-ai/inspect-docs
 
-metadata-files:
-  - reference/_sidebar.yml
-
-filters:
-  - at: pre-quarto
-    path: reference/filter/interlink.lua
+inspect-docs:
+  title: Inspect Viz
+  description: Data visualization for Inspect AI evaluations.
+  image: /inspect_viz.png
+  url: https://meridianlabs-ai.github.io/inspect_viz
+  module: inspect_viz
+  repo: meridianlabs-ai/inspect_viz
+  org: Meridian Labs
+  navigation:
+    - text: Getting Started
+      href: index.qmd
+      contents:
+        - text: Welcome
+          href: index.qmd
+        - text: LLM Assistance
+          href: llm-assistance.qmd
+    - text: Views
+      href: views.qmd
+      contents:
+        - href: view-scores-by-task.qmd
+        - href: view-scores-by-model.qmd
+        - href: view-scores-by-factor.qmd
+        - href: view-scores-by-limit.qmd
+        - href: view-scores-timeline.qmd
+        - href: view-scores-heatmap.qmd
+        - href: view-scores-radar-by-metric.qmd
+        - href: view-scores-radar-by-task.qmd
+        - href: view-sample-tool-calls.qmd
+        - href: view-sample-heatmap.qmd
+    - text: Components
+      contents:
+        - href: components-plots.qmd
+        - href: components-marks.qmd
+        - href: components-links.qmd
+        - href: components-tables.qmd
+        - href: components-inputs.qmd
+        - href: components-interactivity.qmd
+    - text: Publishing
+      href: publishing.qmd
+      contents:
+        - href: publishing-plots.qmd
+        - href: publishing-notebooks.qmd
+        - href: publishing-websites.qmd
+        - href: publishing-dashboards.qmd
+        - href: publishing-png-output.qmd
+    - text: Examples
+      href: examples/index.qmd
+      contents:
+        - text: Inspect
+          contents:
+            - href: examples/inspect/scores-by-task/index.qmd
+            - href: examples/inspect/scores-by-model/index.qmd
+            - href: examples/inspect/scores-by-factor/index.qmd
+            - href: examples/inspect/scores-by-limit/index.qmd
+            - href: examples/inspect/scores-timeline/index.qmd
+            - href: examples/inspect/scores-heatmap/index.qmd
+            - href: examples/inspect/scores-radar-by-metric/index.qmd
+            - href: examples/inspect/scores-radar-by-task/index.qmd
+            - href: examples/inspect/sample-tool-calls/index.qmd
+            - href: examples/inspect/sample-heatmap/index.qmd
+        - text: General
+          contents:
+            - href: examples/general/penguins/index.qmd
+            - href: examples/general/bias-parameter/index.qmd
+            - href: examples/general/seattle-weather/index.qmd
+            - href: examples/general/athletes-regression/index.qmd
+            - href: examples/general/athletes-errorbars/index.qmd
+  external_refs:
+    inspect_ai: https://inspect.aisi.org.uk
 
 website:
-   title: "Inspect Viz"
-   bread-crumbs: true
-   page-navigation: true
-   repo-url: https://github.com/meridianlabs-ai/inspect_viz
-   site-url: https://meridianlabs-ai.github.io/inspect_viz
-   repo-actions: [issue]
-   twitter-card:
-      title: "Inspect Viz"
-      description: "Data visualization for Inspect AI evaluations."
-      image: /inspect_viz.png
-      card-style: summary_large_image
-   open-graph: 
-      title: "Inspect Viz"
-      description: "Data visualization for Inspect AI evalutions"
-      image: /inspect_viz.png
-   navbar:
-      title: "Inspect Viz"
-      background: light
-      search: true
-      left:
-          - text: "Getting Started"
-            href: index.qmd
-          - text: "Views"
-            href: views.qmd
-          - text: "Components"
-            href: components-plots.qmd
-          - text: "Publishing"
-            href: publishing.qmd
-          - text: "Reference"
-            href: reference/index.qmd
-          - text: "Examples"
-            href: examples/index.qmd
-      right:
-          - icon: github
-            href: https://github.com/meridianlabs-ai/inspect_viz
-
-
-   sidebar:
-      - title: Main
-        style: docked
-        contents:
-           - text: Getting Started
-             contents:
-               - href: index.qmd
-                 text: Welcome
-               - href: llm-assistance.qmd
-                 text: "LLM Assistance"
-           - href: views.qmd
-             text: Views
-             contents:
-               - href: view-scores-by-task.qmd
-               - href: view-scores-by-model.qmd
-               - href: view-scores-by-factor.qmd
-               - href: view-scores-by-limit.qmd
-               - href: view-scores-timeline.qmd
-               - href: view-scores-heatmap.qmd
-               - href: view-scores-radar-by-metric.qmd
-               - href: view-scores-radar-by-task.qmd
-               - href: view-sample-tool-calls.qmd
-               - href: view-sample-heatmap.qmd
-           - text: Components
-             contents:
-               - href: components-plots.qmd
-               - href: components-marks.qmd
-               - href: components-links.qmd
-               - href: components-tables.qmd
-               - href: components-inputs.qmd
-               - href: components-interactivity.qmd
-           - text: Publishing
-             href: publishing.qmd
-             contents:
-               - href: publishing-plots.qmd
-               - href: publishing-notebooks.qmd
-               - href: publishing-websites.qmd
-               - href: publishing-dashboards.qmd
-               - href: publishing-png-output.qmd
-      - title: Examples
-        contents:
-          - href: examples/index.qmd
-            text: Examples
-          - section: Inspect
-            contents:
-              - href: examples/inspect/scores-by-task/index.qmd
-              - href: examples/inspect/scores-by-model/index.qmd
-              - href: examples/inspect/scores-by-factor/index.qmd
-              - href: examples/inspect/scores-by-limit/index.qmd
-              - href: examples/inspect/scores-timeline/index.qmd
-              - href: examples/inspect/scores-heatmap/index.qmd
-              - href: examples/inspect/scores-radar-by-metric/index.qmd
-              - href: examples/inspect/scores-radar-by-task/index.qmd
-              - href: examples/inspect/sample-tool-calls/index.qmd
-              - href: examples/inspect/sample-heatmap/index.qmd
-          - section: General
-            contents:
-              - href: examples/general/penguins/index.qmd
-              - href: examples/general/bias-parameter/index.qmd
-              - href: examples/general/seattle-weather/index.qmd
-              - href: examples/general/athletes-regression/index.qmd
-              - href: examples/general/athletes-errorbars/index.qmd
-   page-footer:
-      left:
-         - text: Meridian Labs
-           href: https://github.com/meridianlabs-ai/
-      center:
-         - text: Code
-           href: https://github.com/meridianlabs-ai/inspect_viz
-         - text: License
-           href: https://github.com/meridianlabs-ai/inspect_viz/blob/main/LICENSE
-         - text: Issues
-           href: https://github.com/meridianlabs-ai/inspect_viz/issues
-
-      right:
-         - icon: github
-           href: https://github.com/meridianlabs-ai/inspect_viz
-           aria-label: Inspect on GitHub
-
-format:
-   html:
-     theme: [cosmo, theme.scss]
-     toc: true
-     toc-depth: 3
-     code-overflow: wrap
-     code-annotations: select
-     fig-width: 8
-     fig-height: 4
+  navbar:
+    left:
+      - text: "Getting Started"
+        href: index.qmd
+      - text: "Views"
+        href: views.qmd
+      - text: "Components"
+        href: components-plots.qmd
+      - text: "Publishing"
+        href: publishing.qmd
+      - text: "Reference"
+        href: reference/index.qmd
+      - text: "Examples"
+        href: examples/index.qmd
 
 execute:
   daemon: false

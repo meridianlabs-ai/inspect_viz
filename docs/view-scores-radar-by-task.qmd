@@ -1,12 +1,7 @@
 ---
 title: "Scores Radar By Task"
+llms-description: Radar plot comparing multiple models across headline metrics from different evals.
 reference: "inspect_viz.view"
-filters: 
-   - at: pre-ast
-     type: json
-     path: reference/filter/filter.py
-   - at: pre-ast
-     path: reference/filter/post.lua
 datafile: "radar_by_task.parquet"
 ---
 

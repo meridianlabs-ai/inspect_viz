@@ -1,12 +1,7 @@
 ---
 title: "Sample Tool Calls"
+llms-description: Heat map visualising tool calls over evaluation turns.
 reference: "inspect_viz.view"
-filters:
-   - at: pre-ast
-     type: json
-     path: reference/filter/filter.py
-   - at: pre-ast
-     path: reference/filter/post.lua
 ---
 
 ## Overview

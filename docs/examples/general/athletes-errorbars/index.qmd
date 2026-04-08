@@ -1,5 +1,6 @@
 ---
 title: "Athletes (Error Bars)"
+llms-description: Error bars; text annotations; params, slider inputs.
 subtitle: "Dataset: [athletes.parquet](athletes.parquet)"
 ---
 

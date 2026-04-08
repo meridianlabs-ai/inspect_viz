@@ -1,5 +1,6 @@
 ---
-title: "inspect_viz.plot"
+reference: inspect_viz.plot
+description: Plot and legend creation.
 ---
 
 ## Plot

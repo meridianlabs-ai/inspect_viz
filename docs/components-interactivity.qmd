@@ -1,5 +1,6 @@
 ---
 title: Interactivty
+llms-description: How to create plot selections that enable filtering and cross-filtering of plot data based on inputs and interactors.
 ---
 
 ```{python}

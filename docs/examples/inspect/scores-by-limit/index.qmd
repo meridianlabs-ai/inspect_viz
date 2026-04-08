@@ -1,5 +1,6 @@
 ---
 title: "Scores by Limit"
+llms-description: Line plot for evaluating how a model's success rate changes as token or time limits increase.
 subtitle: "Dataset: [swebench_token_limit.parquet](swebench_token_limit.parquet)"
 datafile: "swebench_token_limit.parquet"
 ---

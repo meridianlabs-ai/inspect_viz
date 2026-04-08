@@ -1,5 +1,6 @@
 ---
 title: "Seattle Weather"
+llms-description: Dot plots; bar plots; color and radius channels; x-interval selections, interactive legend.
 subtitle: "Dataset: [seattle-weather.parquet](seattle-weather.parquet)"
 ---
 

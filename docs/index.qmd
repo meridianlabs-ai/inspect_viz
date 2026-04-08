@@ -1,5 +1,6 @@
 ---
 title: "Inspect Viz"
+llms-description: A high level overview of the entire library.
 subtitle: |
    Data visualization for [Inspect AI](https://inspect.aisi.org.uk/) large language model evalutions.
 citation:

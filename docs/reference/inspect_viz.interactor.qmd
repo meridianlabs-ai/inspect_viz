@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.interactor
+reference: inspect_viz.interactor
+description: Plot interactors for selection and navigation.
 ---
 
 ## Selection

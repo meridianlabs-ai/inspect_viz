@@ -45,12 +45,13 @@ dev = [
     "types-pillow",
 ]
 doc = [
-    "quarto-cli==1.7.31",
+    "quarto-cli>=1.9.36",
     "jupyter",
     "panflute",
     "markdown",
     "griffe",
     "pyyaml",
+    "types-PyYAML"
 ]
 
 [tool.hatch.build]

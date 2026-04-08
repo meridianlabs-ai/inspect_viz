@@ -1,5 +1,6 @@
 ---
-title: inspect_viz
+reference: inspect_viz
+description: Core API (data, components, params, selections).
 ---
 
 ## Core

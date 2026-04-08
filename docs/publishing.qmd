@@ -1,5 +1,6 @@
 ---
 title: Publishing
+llms-description: Overview of publishing visualizations as static images, notebooks, websites, and dashboards.
 ---
 
 There are several ways to publish Inspect Viz content, ranging from PNG images suitable for embedding in documents all the way up to notebooks, websites, and dashboards.

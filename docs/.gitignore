@@ -1,6 +1,6 @@
 /.quarto/
 /_site/
-*.quarto_ipynb
-
-
-**/*.quarto_ipynb
+/_include.yml
+/reference/refs*.json
+**/*.quarto_ipynb*
+**/*.excalidraw.svg

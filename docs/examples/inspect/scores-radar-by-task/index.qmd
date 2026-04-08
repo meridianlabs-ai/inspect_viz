@@ -1,5 +1,6 @@
 ---
 title: "Scores Radar By Task"
+llms-description: Radar plot comparing multiple models across headline metrics from different evals.
 subtitle: "Dataset: [radar_by_task.parquet](radar_by_task.parquet)"
 datafile: "radar_by_task.parquet"
 ---

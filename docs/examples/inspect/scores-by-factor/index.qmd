@@ -1,5 +1,6 @@
 ---
 title: Scores by Factor
+llms-description: Bar plot for comparing eval scores by model and a boolean factor (e.g. no hint vs. hint).
 subtitle: "Dataset: [evals.csv](evals.csv)"
 ---
 

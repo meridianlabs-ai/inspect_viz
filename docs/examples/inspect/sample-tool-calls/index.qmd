@@ -1,5 +1,6 @@
 ---
 title: "Sample Tool Calls"
+llms-description: Visualise tool usage over a series of turns.
 subtitle: "Dataset: [cybench_tools.parquet](cybench_tools.parquet)"
 ---
 

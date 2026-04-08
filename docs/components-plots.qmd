@@ -1,5 +1,6 @@
 ---
 title: "Plots"
+llms-description: In depth guide to creating plots.
 tbl-colwidths: [30,70]
 ---
 

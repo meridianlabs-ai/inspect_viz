@@ -1,7 +1,7 @@
 ---
 title: Inspect Viz Examples
 format: 
-   html: 
+   inspect-docs-html: 
       code-tools: false
       page-layout: article
 tbl-colwidths: [35,65]

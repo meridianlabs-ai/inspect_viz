@@ -1,5 +1,6 @@
 ---
 title: Scores by Task
+llms-description: Bar plot summarizing eval scores by model and task.
 subtitle: "Dataset: [evals.parquet](evals.parquet)"
 ---
 

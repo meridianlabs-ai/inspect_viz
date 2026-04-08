@@ -1,5 +1,6 @@
 ---
 title: "Athletes (Regression)"
+llms-description: Dot plots; regression lines; tables, filtering inputs, xy selections.
 subtitle: "Dataset: [athletes.parquet](athletes.parquet)"
 ---
 

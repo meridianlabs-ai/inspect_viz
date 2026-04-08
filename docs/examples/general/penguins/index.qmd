@@ -1,5 +1,6 @@
 ---
 title: "Penguins Explorer"
+llms-description: Dot plots, tables, color and symbol channels, filtering inputs.
 subtitle: "Dataset: [penguins.parquet](penguins.parquet)"
 ---
 

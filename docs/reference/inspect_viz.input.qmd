@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.input
+reference: inspect_viz.input
+description: Inputs for binding to parameters and selections.
 ---
 
 ### select

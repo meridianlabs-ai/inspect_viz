@@ -1,5 +1,6 @@
 ---
 title: Plots
+llms-description: Publishing standalone plots as PNG images or HTML snippets.
 tbl-colwidths: [30,70]
 ---
 

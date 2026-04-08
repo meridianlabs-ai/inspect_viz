@@ -1,5 +1,6 @@
 ---
 title: Inputs
+llms-description: How to use inputs (e.g. sliders, select boxes, etc.) to create interactive visualisations.
 ---
 
 Inputs are used to create interactive visualisations by targeting either `Param` values or `Selection` ranges. Available inputs include:

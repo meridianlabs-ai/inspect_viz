@@ -1,5 +1,6 @@
 ---
 title: Tables
+llms-description: How to create tables that display an interactive grid of data used in your visualization.
 ---
 
 Use tables to display an interactive grid of data used in your visualization. Tables support commonly used operations like sorting, filtering, pagination and a variety of other customization options.

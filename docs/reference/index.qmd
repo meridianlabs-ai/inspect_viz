@@ -1,41 +1,18 @@
 ---
-title: "Reference"
-tbl-colwidths: [25,75]
-page-layout: full
-toc-depth: 4
+title: Reference
 ---
 
-|  |  |
-|----|----|
-| [inspect_viz](inspect_viz.qmd) | Core API (data, components, params, selections) |
-| [inspect_viz.plot](inspect_viz.plot.qmd) | Plot and legend creation. |
-| [inspect_viz.view](inspect_viz.view.qmd) | Pre-built view functions. |
-| [inspect_viz.mark](inspect_viz.mark.qmd) | Plot marks (charts, annotations, etc.) |
-| [inspect_viz.interactor](inspect_viz.interactor.qmd) | Plot interactors for selection and navigation. |
-| [inspect_viz.transform](inspect_viz.transform.qmd) | Data transformers (aggregate, window, etc.) |
-| [inspect_viz.table](inspect_viz.transform.qmd) | Tabular data display. |
+### Python API
+
+| | |
+|---|---|
 | [inspect_viz.input](inspect_viz.input.qmd) | Inputs for binding to parameters and selections. |
+| [inspect_viz.interactor](inspect_viz.interactor.qmd) | Plot interactors for selection and navigation. |
 | [inspect_viz.layout](inspect_viz.layout.qmd) | Component layout functions. |
-
-: {.table-borderless}
-
-
-
-
-```{=html}
-<style>
-.table-borderless {
-    border-top: none;
-    border-bottom: none;
-}
-.table td {
-    padding-bottom: 0 !important;
-}
-a {
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
-</style>
-```
+| [inspect_viz.mark](inspect_viz.mark.qmd) | Plot marks (charts, annotations, etc.). |
+| [inspect_viz.plot](inspect_viz.plot.qmd) | Plot and legend creation. |
+| [inspect_viz](inspect_viz.qmd) | Core API (data, components, params, selections). |
+| [inspect_viz.table](inspect_viz.table.qmd) | Tabular data display. |
+| [inspect_viz.transform](inspect_viz.transform.qmd) | Data transformers (aggregate, window, etc.). |
+| [inspect_viz.view](inspect_viz.view.qmd) | Pre-built view functions for Inspect evaluation logs. |
+: {.borderless tbl-colwidths=[35,65]}

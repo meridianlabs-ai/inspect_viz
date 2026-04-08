@@ -1,5 +1,6 @@
 ---
 title: PNG Output
+llms-description: Rendering plots as PNG images within notebooks, websites, and dashboards.
 tbl-colwidths: [30,70]
 ---
 

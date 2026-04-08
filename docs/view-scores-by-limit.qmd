@@ -1,12 +1,7 @@
 ---
 title: "Scores by Limit"
+llms-description: Line plot showing success rate by token limit.
 reference: "inspect_viz.view"
-filters:
-   - at: pre-ast
-     type: json
-     path: reference/filter/filter.py
-   - at: pre-ast
-     path: reference/filter/post.lua
 datafile: "swebench_token_limit.parquet"
 ---
 

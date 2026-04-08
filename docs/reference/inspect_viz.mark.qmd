@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.mark
+reference: inspect_viz.mark
+description: Plot marks (charts, annotations, etc.).
 ---
 
 ## Basic

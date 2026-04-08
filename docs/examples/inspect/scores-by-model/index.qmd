@@ -1,5 +1,6 @@
 ---
 title: Scores by Model
+llms-description: Visualise model scores on a single evaluation, with one or more baselines.
 subtitle: "Dataset: [agi-lsat-ar.parquet](agi-lsat-ar.parquet)"
 ---
 

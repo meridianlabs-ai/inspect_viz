@@ -1,5 +1,6 @@
 ---
-title: "inspect_viz.view"
+reference: inspect_viz.view
+description: Pre-built view functions for Inspect evaluation logs.
 ---
 
 ## Scores

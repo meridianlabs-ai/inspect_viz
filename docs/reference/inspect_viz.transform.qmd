@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.transform
+reference: inspect_viz.transform
+description: Data transformers (aggregate, window, etc.).
 ---
 
 ## SQL

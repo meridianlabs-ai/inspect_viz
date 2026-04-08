@@ -1,5 +1,6 @@
 ---
 title: "Links"
+llms-description: How to direct links from visualizations to published Inspect log transcripts.
 ---
 
 ## Overview

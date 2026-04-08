@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.table
+reference: inspect_viz.table
+description: Tabular data display.
 ---
 
 ### table

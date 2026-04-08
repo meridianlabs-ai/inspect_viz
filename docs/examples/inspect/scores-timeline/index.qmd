@@ -1,5 +1,6 @@
 ---
 title: "Scores Timeline"
+llms-description: Dot plot of eval scores for various models, with release date on the x-axis.
 subtitle: "Data: [benchmarks.parquet](benchmarks.parquet)"
 resources:
    - import.py

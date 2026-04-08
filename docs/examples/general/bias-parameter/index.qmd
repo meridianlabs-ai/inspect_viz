@@ -1,5 +1,6 @@
 ---
 title: "Bias Parameter"
+llms-description: Area plots; slider inputs; channel expressions.
 subtitle: "Dataset: [seattle-weather.parquet](random-walk.parquet)"
 ---
 

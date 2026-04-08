@@ -1,25 +1,22 @@
-resources: 
-   - "*.parquet"
+resources:
+  - "*.parquet"
 
-execute: 
+execute:
   ipynb-shell-interactivity: all
 
 format:
-  html:
+  inspect-docs-html:
     page-layout: article
     fig-width: 7
     fig-height: 4
-    include-in-header: 
-       text: |
-          <style type="text/css">
-          .cell {
-            display: flex;
-            flex-direction: column-reverse;
-          }
-          .code-with-filename {
-            margin-top: 1em;
-          }
-          </style>
-
-
-
+    include-in-header:
+      text: |
+        <style type="text/css">
+        .cell {
+          display: flex;
+          flex-direction: column-reverse;
+        }
+        .code-with-filename {
+          margin-top: 1em;
+        }
+        </style>

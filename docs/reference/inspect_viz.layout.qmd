@@ -1,5 +1,6 @@
 ---
-title: inspect_viz.layout
+reference: inspect_viz.layout
+description: Component layout functions.
 ---
 
 ### hconcat

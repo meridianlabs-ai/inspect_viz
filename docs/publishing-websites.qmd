@@ -1,5 +1,6 @@
 ---
 title: Websites
+llms-description: Embed plots and tables in a larger website.
 ---
 
 ## Overview

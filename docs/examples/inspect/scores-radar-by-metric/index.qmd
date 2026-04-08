@@ -1,5 +1,6 @@
 ---
 title: "Scores Radar By Metric"
+llms-description: Radar plot for comparing model scores across multiple metrics from a single eval.
 subtitle: "Dataset: [writing_bench.parquet](writing_bench.parquet)"
 datafile: "writing_bench.parquet"
 ---

@@ -1,12 +1,7 @@
 ---
 title: "Scores Heatmap"
+llms-description: Heatmap with values for comparing scores across model and task.
 reference: "inspect_viz.view"
-filters: 
-   - at: pre-ast
-     type: json
-     path: reference/filter/filter.py
-   - at: pre-ast
-     path: reference/filter/post.lua
 datafile: "evals.parquet"
 ---
 

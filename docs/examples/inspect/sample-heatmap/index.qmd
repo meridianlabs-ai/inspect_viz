@@ -1,5 +1,6 @@
 ---
 title: Sample Heatmap
+llms-description: Heat map visualising sample scores.
 subtitle: "Dataset: [writing.parquet](writing.parquet)"
 ---
 
