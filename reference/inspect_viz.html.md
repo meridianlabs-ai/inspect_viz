@@ -1,5 +1,6 @@
 # inspect_viz
 
+Core API (data, components, params, selections).
 
 ## Core
 
@@ -7,9 +8,7 @@
 
 Data source for visualizations.
 
-Data sources can be created from any standard Python data frame
-(e.g. Pandas, Polars, etc.) or from a path pointing to a data file in a
-standard format (e.g. csv, parquet, etc.)
+Data sources can be created from any standard Python data frame (e.g. Pandas, Polars, etc.) or from a path pointing to a data file in a standard format (e.g. csv, parquet, etc.)
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L18)
 
@@ -25,8 +24,7 @@ Column names for data source.
 #### Methods
 
 from_dataframe  
-Create `Data` from a standard Python data frame (e.g. Pandas, Polars,
-PyArrow, etc.).
+Create [Data](../reference/inspect_viz.html.md#data) from a standard Python data frame (e.g. Pandas, Polars, PyArrow, etc.).
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L24)
 
@@ -39,7 +37,7 @@ def from_dataframe(cls, df: IntoDataFrame) -> "Data"
 Data frame to read.
 
 from_file  
-Create `Data` from a data file (e.g. csv, parquet, feather, etc.).
+Create [Data](../reference/inspect_viz.html.md#data) from a data file (e.g. csv, parquet, feather, etc.).
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L33)
 
@@ -49,18 +47,15 @@ def from_file(cls, file: Union[str, PathLike[str]]) -> "Data"
 ```
 
 `file` str \| PathLike\[str\]  
-File to read data from. Supported formats include csv, json, xslx,
-parquet, feather, sas7bdat, dta, and fwf.
+File to read data from. Supported formats include csv, json, xslx, parquet, feather, sas7bdat, dta, and fwf.
 
 ### Component
 
 Data visualization component (input, plot, mark, table, layout, etc.).
 
-Visualization components are Jupyter widgets that can be used in any
-notebook or Jupyter based publishing system.
+Visualization components are Jupyter widgets that can be used in any notebook or Jupyter based publishing system.
 
-See the documentation on inputs, plots, marks, and interactors for
-details on available components.
+See the documentation on inputs, plots, marks, and interactors for details on available components.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/component.py#L47)
 
@@ -90,8 +85,7 @@ class Selection(str)
 #### Methods
 
 intersect  
-Create a new Selection instance with an intersect (conjunction)
-resolution strategy.
+Create a new Selection instance with an intersect (conjunction) resolution strategy.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L27)
 
@@ -106,22 +100,16 @@ def intersect(
 ```
 
 `cross` bool  
-Boolean flag indicating cross-filtered resolution. If true, selection
-clauses will not be applied to the clients they are associated with.
+Boolean flag indicating cross-filtered resolution. If true, selection clauses will not be applied to the clients they are associated with.
 
 `empty` bool  
-Boolean flag indicating if a lack of clauses should correspond to an
-empty selection with no records. This setting determines the default
-selection state.
+Boolean flag indicating if a lack of clauses should correspond to an empty selection with no records. This setting determines the default selection state.
 
-`include` Union\[[Selection](inspect_viz.qmd#selection), list\[[Selection](inspect_viz.qmd#selection)\]\] \| None  
-Upstream selections whose clauses should be included as part of the new
-selection. Any clauses published to upstream selections will be relayed
-to the new selection.
+`include` Union\[[Selection](../reference/inspect_viz.html.md#selection), list\[[Selection](../reference/inspect_viz.html.md#selection)\]\] \| None  
+Upstream selections whose clauses should be included as part of the new selection. Any clauses published to upstream selections will be relayed to the new selection.
 
 union  
-Create a new Selection instance with a union (disjunction) resolution
-strategy.
+Create a new Selection instance with a union (disjunction) resolution strategy.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L43)
 
@@ -136,22 +124,16 @@ def union(
 ```
 
 `cross` bool  
-Boolean flag indicating cross-filtered resolution. If true, selection
-clauses will not be applied to the clients they are associated with.
+Boolean flag indicating cross-filtered resolution. If true, selection clauses will not be applied to the clients they are associated with.
 
 `empty` bool  
-Boolean flag indicating if a lack of clauses should correspond to an
-empty selection with no records. This setting determines the default
-selection state.
+Boolean flag indicating if a lack of clauses should correspond to an empty selection with no records. This setting determines the default selection state.
 
-`include` Union\[[Selection](inspect_viz.qmd#selection), list\[[Selection](inspect_viz.qmd#selection)\]\] \| None  
-Upstream selections whose clauses should be included as part of the new
-selection. Any clauses published to upstream selections will be relayed
-to the new selection.
+`include` Union\[[Selection](../reference/inspect_viz.html.md#selection), list\[[Selection](../reference/inspect_viz.html.md#selection)\]\] \| None  
+Upstream selections whose clauses should be included as part of the new selection. Any clauses published to upstream selections will be relayed to the new selection.
 
 single  
-Create a new Selection instance with a singular resolution strategy that
-keeps only the most recent selection clause.
+Create a new Selection instance with a singular resolution strategy that keeps only the most recent selection clause.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L59)
 
@@ -166,22 +148,16 @@ def single(
 ```
 
 `cross` bool  
-Boolean flag indicating cross-filtered resolution. If true, selection
-clauses will not be applied to the clients they are associated with.
+Boolean flag indicating cross-filtered resolution. If true, selection clauses will not be applied to the clients they are associated with.
 
 `empty` bool  
-Boolean flag indicating if a lack of clauses should correspond to an
-empty selection with no records. This setting determines the default
-selection state.
+Boolean flag indicating if a lack of clauses should correspond to an empty selection with no records. This setting determines the default selection state.
 
-`include` Union\[[Selection](inspect_viz.qmd#selection), list\[[Selection](inspect_viz.qmd#selection)\]\] \| None  
-Upstream selections whose clauses should be included as part of the new
-selection. Any clauses published to upstream selections will be relayed
-to the new selection.
+`include` Union\[[Selection](../reference/inspect_viz.html.md#selection), list\[[Selection](../reference/inspect_viz.html.md#selection)\]\] \| None  
+Upstream selections whose clauses should be included as part of the new selection. Any clauses published to upstream selections will be relayed to the new selection.
 
 crossfilter  
-Create a new Selection instance with a cross-filtered intersect
-resolution strategy.
+Create a new Selection instance with a cross-filtered intersect resolution strategy.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L75)
 
@@ -195,14 +171,10 @@ def crossfilter(
 ```
 
 `empty` bool  
-Boolean flag indicating if a lack of clauses should correspond to an
-empty selection with no records. This setting determines the default
-selection state.
+Boolean flag indicating if a lack of clauses should correspond to an empty selection with no records. This setting determines the default selection state.
 
-`include` Union\[[Selection](inspect_viz.qmd#selection), list\[[Selection](inspect_viz.qmd#selection)\]\] \| None  
-Upstream selections whose clauses should be included as part of the new
-selection. Any clauses published to upstream selections will be relayed
-to the new selection.
+`include` Union\[[Selection](../reference/inspect_viz.html.md#selection), list\[[Selection](../reference/inspect_viz.html.md#selection)\]\] \| None  
+Upstream selections whose clauses should be included as part of the new selection. Any clauses published to upstream selections will be relayed to the new selection.
 
 ### Param
 
@@ -219,7 +191,7 @@ class Param(str)
 `id` str  
 Unique id (automatically generated).
 
-`default` [ParamValue](inspect_viz.qmd#paramvalue)  
+`default` [ParamValue](../reference/inspect_viz.html.md#paramvalue)  
 Default value.
 
 ### ParamValue
@@ -253,12 +225,13 @@ Context manager for temporarily overriding global options.
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/_options.py#L29)
 
 ``` python
-@contextmanager
-def options_context(**kwargs: Unpack[OptionsArgs]) -> Iterator[None]
+def options_context(
+    *,
+    output_format: Literal['auto', 'js', 'png'],
+) -> Iterator[None]
 ```
 
-`**kwargs` Unpack\[OptionsArgs\]  
-Options to override within the context.
+`output_format` Literal\['auto', 'js', 'png'\]  
 
 ### Options
 
@@ -275,7 +248,4 @@ class Options(SimpleNamespace)
 `output_format` Literal\['auto', 'js', 'png'\]  
 Output format for components.
 
-Defaults to “auto”, which resolves to “js” (interactive plots and
-tables) in all contexts except Quarto PDF output (which uses “png”).
-Specify “png” to always write static PNG images instead (interactive
-features will be disabled in this case).
+Defaults to “auto”, which resolves to “js” (interactive plots and tables) in all contexts except Quarto PDF output (which uses “png”). Specify “png” to always write static PNG images instead (interactive features will be disabled in this case).

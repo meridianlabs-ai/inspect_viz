@@ -1,9 +1,8 @@
 # Bias Parameter
 
+Dataset: [seattle-weather.parquet](random-walk.parquet)
 
 Use the slider to create bias offsets for the y-axis.
-
-**Code**
 
 ``` python
 from inspect_viz import Data, Param

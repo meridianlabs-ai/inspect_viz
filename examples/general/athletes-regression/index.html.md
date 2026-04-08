@@ -1,11 +1,8 @@
 # Athletes (Regression)
 
+Dataset: [athletes.parquet](athletes.parquet)
 
-Use the drop downs to filter by sport or sex. Select a range on the plot
-to filter the table and see the regression lines for the selected range.
-Hover over the table to highlight the corresponding point on the plot.
-
-**Code**
+Use the drop downs to filter by sport or sex. Select a range on the plot to filter the table and see the regression lines for the selected range. Hover over the table to highlight the corresponding point on the plot.
 
 ``` python
 from inspect_viz import Data, Selection

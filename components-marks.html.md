@@ -1,33 +1,18 @@
 # Marks
 
-
 ## Overview
 
-*Marks* are graphical primitives, often with accompanying data
-transforms, that serve as chart layers. Marks accept a `Data` source
-(which are queried as required) and a set of supported options,
-including encoding *channels* (such as `x`, `y`, `fill`, and `stroke`)
-that can encode data *fields*.
+*Marks* are graphical primitives, often with accompanying data transforms, that serve as chart layers. Marks accept a [Data](reference/inspect_viz.html.md#data) source (which are queried as required) and a set of supported options, including encoding *channels* (such as `x`, `y`, `fill`, and `stroke`) that can encode data *fields*.
 
-A data field may be a column reference or query expression, including
-dynamic param values. Common expressions include aggregates (`count()`,
-`sum()`, `avg()`, `median()`, *etc.*), window functions, date functions,
-and a `bin()` transform.
+A data field may be a column reference or query expression, including dynamic param values. Common expressions include aggregates ([count()](reference/inspect_viz.transform.html.md#count), [sum()](reference/inspect_viz.transform.html.md#sum), [avg()](reference/inspect_viz.transform.html.md#avg), [median()](reference/inspect_viz.transform.html.md#median), *etc.*), window functions, date functions, and a [bin()](reference/inspect_viz.transform.html.md#bin) transform.
 
-Marks support dual modes of operation: if an explicit array of data
-values is provided instead of a backing `Data` reference, the values
-will be visualized without issuing any queries to the data. This
-functionality is particularly useful for adding manual annotations, such
-as custom rules or text labels.
+Marks support dual modes of operation: if an explicit array of data values is provided instead of a backing [Data](reference/inspect_viz.html.md#data) reference, the values will be visualized without issuing any queries to the data. This functionality is particularly useful for adding manual annotations, such as custom rules or text labels.
 
 ## Basic
 
-Basic marks, such as `dot()`, `bar_x()`, `bar_y()`, `rect()`, `cell()`,
-`text()`, `tick()`, `rule_x()`, and `rule_y()`, mirror their namesakes
-in [Observable Plot](https://observablehq.com/plot/).
+Basic marks, such as [dot()](reference/inspect_viz.mark.html.md#dot), [bar_x()](reference/inspect_viz.mark.html.md#bar_x), [bar_y()](reference/inspect_viz.mark.html.md#bar_y), [rect()](reference/inspect_viz.mark.html.md#rect), [cell()](reference/inspect_viz.mark.html.md#cell), [text()](reference/inspect_viz.mark.html.md#text), `tick()`, [rule_x()](reference/inspect_viz.mark.html.md#rule_x), and [rule_y()](reference/inspect_viz.mark.html.md#rule_y), mirror their namesakes in [Observable Plot](https://observablehq.com/plot/).
 
-For example, here is a plot with two marks. (a dot plot and a regression
-line):
+For example, here is a plot with two marks. (a dot plot and a regression line):
 
 ``` python
 from inspect_viz import Data
@@ -42,27 +27,18 @@ plot(
 )
 ```
 
-Variants such as `bar_x()` and `bar_y()` indicate spatial orientation
-and data type assumptions. `bar_y()` indicates vertical bars—continuous
-`y` over an ordinal `x` domain—whereas `rect_y()` indicates a continuous
-`x` domain.
+Variants such as [bar_x()](reference/inspect_viz.mark.html.md#bar_x) and [bar_y()](reference/inspect_viz.mark.html.md#bar_y) indicate spatial orientation and data type assumptions. [bar_y()](reference/inspect_viz.mark.html.md#bar_y) indicates vertical bars—continuous `y` over an ordinal `x` domain—whereas [rect_y()](reference/inspect_viz.mark.html.md#rect_y) indicates a continuous `x` domain.
 
-`Data` is backed by a DuckDB SQL database running in the web browser.
-Basic marks follow a straightforward query construction process:
+[Data](reference/inspect_viz.html.md#data) is backed by a DuckDB SQL database running in the web browser. Basic marks follow a straightforward query construction process:
 
 - Iterate over all encoding channels to build a `SELECT` query.
 - If no aggregates are encountered, query all fields directly.
-- If aggregates are present, include non-aggregate fields as `GROUP BY`
-  criteria.
+- If aggregates are present, include non-aggregate fields as `GROUP BY` criteria.
 - If provided, map filtering criteria to a SQL `WHERE` clause.
 
 ## Channels
 
-Marks are constructed by mapping *channels* to scales. Besides columns,
-other types of channel inputs include transforms (e.g. `count()`,
-`bin()`, `stddev()`, or even arbitrary `sql()` statements) as well as
-literal values (often used for `text()` annotations on plots or a
-`line()` drawn at an arbitrary location).
+Marks are constructed by mapping *channels* to scales. Besides columns, other types of channel inputs include transforms (e.g. [count()](reference/inspect_viz.transform.html.md#count), [bin()](reference/inspect_viz.transform.html.md#bin), [stddev()](reference/inspect_viz.transform.html.md#stddev), or even arbitrary [sql()](reference/inspect_viz.transform.html.md#sql) statements) as well as literal values (often used for [text()](reference/inspect_viz.mark.html.md#text) annotations on plots or a [line()](reference/inspect_viz.mark.html.md#line) drawn at an arbitrary location).
 
 Here are the scales which you will most commonly bind channels to:
 
@@ -78,8 +54,7 @@ Here are the scales which you will most commonly bind channels to:
 | `fill`   | Fill color for mark                                     |
 | `symbol` | Symbol used for mark                                    |
 
-In addition, many marks have scales to deal with ranges of x or y values
-(e.g. area marks, arrows, etc.):
+In addition, many marks have scales to deal with ranges of x or y values (e.g. area marks, arrows, etc.):
 
 | Scale | Description                  |
 |-------|------------------------------|
@@ -90,54 +65,16 @@ In addition, many marks have scales to deal with ranges of x or y values
 
 ## Connected
 
-The `area()` and `line()` marks connect consecutive sample points.
-Connected marks are treated similarly to basic marks, with one notable
-addition: the queries for spatially oriented marks (`area_y()`,
-`line_x()`) can apply [M4
-optimization](https://observablehq.com/@uwdata/m4-scalable-time-series-visualization).
-The query construction method uses plot width and data min/max
-information to determine the pixel resolution of the mark range. When
-the data points outnumber available pixels, M4 performs perceptually
-faithful pixel-aware binning of the series, limiting the number of drawn
-points. This optimisation offers dramatic data reductions for both
-single and multiple series.
+The [area()](reference/inspect_viz.mark.html.md#area) and [line()](reference/inspect_viz.mark.html.md#line) marks connect consecutive sample points. Connected marks are treated similarly to basic marks, with one notable addition: the queries for spatially oriented marks ([area_y()](reference/inspect_viz.mark.html.md#area_y), [line_x()](reference/inspect_viz.mark.html.md#line_x)) can apply [M4 optimization](https://observablehq.com/@uwdata/m4-scalable-time-series-visualization). The query construction method uses plot width and data min/max information to determine the pixel resolution of the mark range. When the data points outnumber available pixels, M4 performs perceptually faithful pixel-aware binning of the series, limiting the number of drawn points. This optimisation offers dramatic data reductions for both single and multiple series.
 
-Separately, a `regression_y()` mark is available for linear regression
-fits. Regression calculations and associated statistics are performed
-in-database in a single aggregate query. The mark then draws the
-regression line and optional confidence interval area.
+Separately, a [regression_y()](reference/inspect_viz.mark.html.md#regression_y) mark is available for linear regression fits. Regression calculations and associated statistics are performed in-database in a single aggregate query. The mark then draws the regression line and optional confidence interval area.
 
 ## Density
 
-The `density_y()` mark performs 1D kernel density estimation (KDE). The
-`density_y()` mark defaults to areas, but supports a `type` option to
-instead use lines, points, or other basic marks. The generated query
-performs *linear binning*, an alternative to standard binning that
-proportionally distributes the weight of a point between adjacent bins
-to provide greater accuracy for density estimation. The query uses
-subqueries for the “left” and “right” bins, then aggregates the results.
-The query result is a 1D grid of binned values which are then smoothed.
-As smoothing is performed in the browser, interactive bandwidth updates
-are processed immediately.
+The [density_y()](reference/inspect_viz.mark.html.md#density_y) mark performs 1D kernel density estimation (KDE). The [density_y()](reference/inspect_viz.mark.html.md#density_y) mark defaults to areas, but supports a `type` option to instead use lines, points, or other basic marks. The generated query performs *linear binning*, an alternative to standard binning that proportionally distributes the weight of a point between adjacent bins to provide greater accuracy for density estimation. The query uses subqueries for the “left” and “right” bins, then aggregates the results. The query result is a 1D grid of binned values which are then smoothed. As smoothing is performed in the browser, interactive bandwidth updates are processed immediately.
 
-The `density()`, `contour()`, `heatmap()`, and `raster()` marks compute
-densities over a 2D domain using either linear (default) or standard
-binning. Smoothing again is performed in browser; setting the
-`bandwidth` option to zero disables smoothing. The `contour()` mark then
-performs contour generation, whereas the `raster()` mark generates a
-coloured bitmap. The `heatmap()` mark is a convenient shortcut for a
-`raster()` that performs smoothing by default. Dynamic changes of
-bandwidth, contour thresholds, and color scales are handled immediately
-in browser.
+The [density()](reference/inspect_viz.mark.html.md#density), [contour()](reference/inspect_viz.mark.html.md#contour), [heatmap()](reference/inspect_viz.view.html.md#heatmap), and [raster()](reference/inspect_viz.mark.html.md#raster) marks compute densities over a 2D domain using either linear (default) or standard binning. Smoothing again is performed in browser; setting the `bandwidth` option to zero disables smoothing. The [contour()](reference/inspect_viz.mark.html.md#contour) mark then performs contour generation, whereas the [raster()](reference/inspect_viz.mark.html.md#raster) mark generates a coloured bitmap. The [heatmap()](reference/inspect_viz.view.html.md#heatmap) mark is a convenient shortcut for a [raster()](reference/inspect_viz.mark.html.md#raster) that performs smoothing by default. Dynamic changes of bandwidth, contour thresholds, and color scales are handled immediately in browser.
 
-The `hexbin()` mark pushes hexagonal binning and aggregation to the
-database. Color and size channels may be mapped to `count()` or other
-aggregates. Hexagon plotting symbols can be replaced by other basic
-marks (such as `text()`) via the `type` option.
+The [hexbin()](reference/inspect_viz.mark.html.md#hexbin) mark pushes hexagonal binning and aggregation to the database. Color and size channels may be mapped to [count()](reference/inspect_viz.transform.html.md#count) or other aggregates. Hexagon plotting symbols can be replaced by other basic marks (such as [text()](reference/inspect_viz.mark.html.md#text)) via the `type` option.
 
-The `dense_line()` mark creates a density map of line segments, rather
-than points. Line density estimation is pushed to the database. To
-ensure that steep lines are not over-represented, we approximate
-arc-length normalisation for each segment by normalising by the number
-of filled raster cells on a per-column basis. We then aggregate the
-resulting weights for all series to produce the line densities.
+The [dense_line()](reference/inspect_viz.mark.html.md#dense_line) mark creates a density map of line segments, rather than points. Line density estimation is pushed to the database. To ensure that steep lines are not over-represented, we approximate arc-length normalisation for each segment by normalising by the number of filled raster cells on a per-column basis. We then aggregate the resulting weights for all series to produce the line densities.

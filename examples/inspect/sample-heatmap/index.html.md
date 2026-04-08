@@ -1,13 +1,8 @@
 # Sample Heatmap
 
+Dataset: [writing.parquet](writing.parquet)
 
-This example illustrates the code behind the
-[`sample_heatmap()`](../../../view-sample-heatmap.qmd) pre-built view
-function. If you want to include this plot in your notebooks or websites
-you should start with that function rather than the lower-level code
-below.
-
-**Code**
+This example illustrates the code behind the [`sample_heatmap()`](../../../view-sample-heatmap.html.md) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
 
 ``` python
 from inspect_viz import Data
@@ -18,31 +13,31 @@ from inspect_ai.analysis import samples_df,SampleSummary, EvalModel
 from inspect_ai.analysis import prepare, model_info, log_viewer
 
 
-samples_data = Data.from_file("writing_bench_samples.parquet")
+samples_data = Data.from_file("writing_bench_samples.parquet") # <1>
 
-channels = {
-    "Model": "model_display_name",
-    "Score": "score_multi_scorer_wrapper",
-    "Log viewer": "log_viewer"
+channels = {                                # <2>
+    "Model": "model_display_name",          # <2>
+    "Score": "score_multi_scorer_wrapper",  # <2>
+    "Log viewer": "log_viewer"              # <2>
 }
 
 plot(
-    cell(
+    cell(                       # <3>                                  
         samples_data,
         x="id",
         y="model_display_name",
-        fill="score_multi_scorer_wrapper",
+        fill="score_multi_scorer_wrapper", # <4>
         channels=channels,
         tip=True,
         inset=1, 
         sort={
-            "y": {  "value": "fill",
-                    "reduce": "sum",
-                    "reverse": True
-                },
-            "x": {  "value": "fill",
-                    "reduce": "sum",
-                    "reverse": False
+            "y": {  "value": "fill",          # <5>
+                    "reduce": "sum",          # <5>
+                    "reverse": True           # <5>
+                },                            # <5>
+            "x": {  "value": "fill",          # <6>
+                    "reduce": "sum",          # <6>
+                    "reverse": False          # <6>
                 }
         }   
     ),
@@ -58,24 +53,9 @@ plot(
 )
 ```
 
-Line 9  
-Read the data (the parquet file was generated using `samples_df` with
-`SampleSummary` and `EvalModel` column definitions.)
-
-Lines 11-14  
-Channels are used to customize what is display in the tooltip for each
-cell.
-
-Line 18  
-Use a cell mark to create each colored cell.
-
-Line 22  
-The fill is used to compute the color for each cell.
-
-Lines 27-30  
-Sorts the y-axis by the total score for each model, with the highest
-score at the top.
-
-Lines 31-33  
-Sorts the x-axis by the total score for each question, witht he highest
-score at the right.
+1.  Read the data (the parquet file was generated using `samples_df` with `SampleSummary` and `EvalModel` column definitions.)
+2.  Channels are used to customize what is display in the tooltip for each cell.
+3.  Use a cell mark to create each colored cell.
+4.  The fill is used to compute the color for each cell.
+5.  Sorts the y-axis by the total score for each model, with the highest score at the top.
+6.  Sorts the x-axis by the total score for each question, witht he highest score at the right.

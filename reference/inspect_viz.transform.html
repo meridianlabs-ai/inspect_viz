@@ -2,13 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Data transformers (aggregate, window, etc.).">
 
 <title>inspect_viz.transform – Inspect Viz</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -66,18 +70,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../reference/inspect_viz.transform.qmd#sql" rel="next">
-<link href="../reference/inspect_viz.interactor.qmd#brush" rel="prev">
+<link href="../reference/inspect_viz.table.qmd#table" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-59dc61dbda01f0d41eb7d616beb363ad.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-e9314a38fe0d92f389e9ca157fc1aadb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -108,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <meta property="og:title" content="Inspect Viz">
-<meta property="og:description" content="Data visualization for Inspect AI evalutions">
+<meta property="og:description" content="Data visualization for Inspect AI evaluations.">
 <meta property="og:image" content="https://meridianlabs-ai.github.io/inspect_viz/inspect_viz.png">
 <meta property="og:site_name" content="Inspect Viz">
 <meta property="og:image:height" content="1122">
@@ -116,9 +119,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:title" content="Inspect Viz">
 <meta name="twitter:description" content="Data visualization for Inspect AI evaluations.">
 <meta name="twitter:image" content="https://meridianlabs-ai.github.io/inspect_viz/inspect_viz.png">
-<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="1122">
 <meta name="twitter:image-width" content="1620">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar docked nav-fixed quarto-light">
@@ -128,8 +131,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Inspect Viz</span>
     </a>
@@ -141,7 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Getting Started</span></a>
   </li>  
   <li class="nav-item">
@@ -157,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Publishing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../reference/index.html"> 
+    <a class="nav-link active" href="../reference/index.html" aria-current="page"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
@@ -182,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/inspect_viz.html">Python API</a></li><li class="breadcrumb-item"><a href="../reference/inspect_viz.transform.html">inspect_viz.transform</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/inspect_viz.input.html">Python API</a></li><li class="breadcrumb-item"><a href="../reference/inspect_viz.transform.html">inspect_viz.transform</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -192,10 +193,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
-      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -206,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.html" class="sidebar-item-text sidebar-link">
+            <a href="../reference/inspect_viz.input.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Python API</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -215,8 +212,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz</span></a>
+            <a href="../reference/inspect_viz.input.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.input</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -224,58 +221,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#data" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data</span></a>
+  <a href="../reference/inspect_viz.input.html#select" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">select</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#component" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Component</span></a>
+  <a href="../reference/inspect_viz.input.html#slider" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">slider</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#selection" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Selection</span></a>
+  <a href="../reference/inspect_viz.input.html#search" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">search</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#param" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Param</span></a>
+  <a href="../reference/inspect_viz.input.html#checkbox" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">checkbox</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#paramvalue" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ParamValue</span></a>
+  <a href="../reference/inspect_viz.input.html#radio_group" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">radio_group</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#options" class="sidebar-item-text sidebar-link">
- <span class="menu-text">options</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#options_context" class="sidebar-item-text sidebar-link">
- <span class="menu-text">options_context</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.html#options" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Options</span></a>
+  <a href="../reference/inspect_viz.input.html#checkbox_group" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">checkbox_group</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.view.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.view</span></a>
+            <a href="../reference/inspect_viz.interactor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.interactor</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -283,76 +268,124 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_by_task" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_by_task</span></a>
+  <a href="../reference/inspect_viz.interactor.html#interval_x" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interval_x</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_by_factor" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_by_factor</span></a>
+  <a href="../reference/inspect_viz.interactor.html#interval_y" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interval_y</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_timeline" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_timeline</span></a>
+  <a href="../reference/inspect_viz.interactor.html#interval_xy" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interval_xy</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_by_model" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_by_model</span></a>
+  <a href="../reference/inspect_viz.interactor.html#nearest_x" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nearest_x</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_heatmap" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_heatmap</span></a>
+  <a href="../reference/inspect_viz.interactor.html#nearest_y" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nearest_y</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_by_limit" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_by_limit</span></a>
+  <a href="../reference/inspect_viz.interactor.html#toggle" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toggle</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#scores_by_limit_df" class="sidebar-item-text sidebar-link">
- <span class="menu-text">scores_by_limit_df</span></a>
+  <a href="../reference/inspect_viz.interactor.html#toggle_x" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toggle_x</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#sample_tool_calls" class="sidebar-item-text sidebar-link">
- <span class="menu-text">sample_tool_calls</span></a>
+  <a href="../reference/inspect_viz.interactor.html#toggle_y" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toggle_y</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#sample_heatmap" class="sidebar-item-text sidebar-link">
- <span class="menu-text">sample_heatmap</span></a>
+  <a href="../reference/inspect_viz.interactor.html#toggle_color" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toggle_color</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#heatmap" class="sidebar-item-text sidebar-link">
- <span class="menu-text">heatmap</span></a>
+  <a href="../reference/inspect_viz.interactor.html#region" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">region</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.view.html#celloptions" class="sidebar-item-text sidebar-link">
- <span class="menu-text">CellOptions</span></a>
+  <a href="../reference/inspect_viz.interactor.html#highlight" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">highlight</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan_x" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan_x</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan_y" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan_y</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan_zoom" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan_zoom</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan_zoom_x" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan_zoom_x</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#pan_zoom_y" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pan_zoom_y</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#interactor" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interactor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.interactor.html#brush" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Brush</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.plot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.plot</span></a>
+            <a href="../reference/inspect_viz.layout.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.layout</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -360,98 +393,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#plot" class="sidebar-item-text sidebar-link">
- <span class="menu-text">plot</span></a>
+  <a href="../reference/inspect_viz.layout.html#hconcat" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">hconcat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#plotattributes" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PlotAttributes</span></a>
+  <a href="../reference/inspect_viz.layout.html#vconcat" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">vconcat</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#legend" class="sidebar-item-text sidebar-link">
- <span class="menu-text">legend</span></a>
+  <a href="../reference/inspect_viz.layout.html#hspace" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">hspace</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#legend" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Legend</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#to_html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">to_html</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#write_html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">write_html</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#write_png" class="sidebar-item-text sidebar-link">
- <span class="menu-text">write_png</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#plot_defaults" class="sidebar-item-text sidebar-link">
- <span class="menu-text">plot_defaults</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#plotdefaults" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PlotDefaults</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#positionscale" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PositionScale</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#projection" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Projection</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#continuousscale" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ContinuousScale</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#colorscale" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ColorScale</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#colorscheme" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ColorScheme</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#interpolate" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interpolate</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.plot.html#labelarrow" class="sidebar-item-text sidebar-link">
- <span class="menu-text">LabelArrow</span></a>
+  <a href="../reference/inspect_viz.layout.html#vspace" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">vspace</span></a>
   </div>
 </li>
       </ul>
@@ -985,8 +946,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.interactor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.interactor</span></a>
+            <a href="../reference/inspect_viz.plot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.plot</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -994,116 +955,174 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#interval_x" class="sidebar-item-text sidebar-link">
- <span class="menu-text">interval_x</span></a>
+  <a href="../reference/inspect_viz.plot.html#plot" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#interval_y" class="sidebar-item-text sidebar-link">
- <span class="menu-text">interval_y</span></a>
+  <a href="../reference/inspect_viz.plot.html#plotattributes" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PlotAttributes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#interval_xy" class="sidebar-item-text sidebar-link">
- <span class="menu-text">interval_xy</span></a>
+  <a href="../reference/inspect_viz.plot.html#legend" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">legend</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#nearest_x" class="sidebar-item-text sidebar-link">
- <span class="menu-text">nearest_x</span></a>
+  <a href="../reference/inspect_viz.plot.html#legend" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Legend</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#nearest_y" class="sidebar-item-text sidebar-link">
- <span class="menu-text">nearest_y</span></a>
+  <a href="../reference/inspect_viz.plot.html#to_html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">to_html</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#toggle" class="sidebar-item-text sidebar-link">
- <span class="menu-text">toggle</span></a>
+  <a href="../reference/inspect_viz.plot.html#write_html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">write_html</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#toggle_x" class="sidebar-item-text sidebar-link">
- <span class="menu-text">toggle_x</span></a>
+  <a href="../reference/inspect_viz.plot.html#write_png" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">write_png</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#toggle_y" class="sidebar-item-text sidebar-link">
- <span class="menu-text">toggle_y</span></a>
+  <a href="../reference/inspect_viz.plot.html#plot_defaults" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot_defaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#toggle_color" class="sidebar-item-text sidebar-link">
- <span class="menu-text">toggle_color</span></a>
+  <a href="../reference/inspect_viz.plot.html#plotdefaults" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PlotDefaults</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#region" class="sidebar-item-text sidebar-link">
- <span class="menu-text">region</span></a>
+  <a href="../reference/inspect_viz.plot.html#positionscale" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PositionScale</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#highlight" class="sidebar-item-text sidebar-link">
- <span class="menu-text">highlight</span></a>
+  <a href="../reference/inspect_viz.plot.html#projection" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Projection</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan</span></a>
+  <a href="../reference/inspect_viz.plot.html#continuousscale" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ContinuousScale</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan_x" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan_x</span></a>
+  <a href="../reference/inspect_viz.plot.html#colorscale" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ColorScale</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan_y" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan_y</span></a>
+  <a href="../reference/inspect_viz.plot.html#colorscheme" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ColorScheme</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan_zoom" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan_zoom</span></a>
+  <a href="../reference/inspect_viz.plot.html#interpolate" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interpolate</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan_zoom_x" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan_zoom_x</span></a>
+  <a href="../reference/inspect_viz.plot.html#labelarrow" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LabelArrow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../reference/inspect_viz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.html#data" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#pan_zoom_y" class="sidebar-item-text sidebar-link">
- <span class="menu-text">pan_zoom_y</span></a>
+  <a href="../reference/inspect_viz.html#component" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Component</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#interactor" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Interactor</span></a>
+  <a href="../reference/inspect_viz.html#selection" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Selection</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.interactor.html#brush" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Brush</span></a>
+  <a href="../reference/inspect_viz.html#param" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Param</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.html#paramvalue" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ParamValue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.html#options" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">options</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.html#options_context" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">options_context</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.html#options" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Options</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../reference/inspect_viz.table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.table</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.table.html#table" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">table</span></a>
   </div>
 </li>
       </ul>
@@ -1112,11 +1131,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="../reference/inspect_viz.transform.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">inspect_viz.transform</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/inspect_viz.transform.html#sql" class="sidebar-item-text sidebar-link">
@@ -1355,72 +1374,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.table</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.table.html#table" class="sidebar-item-text sidebar-link">
- <span class="menu-text">table</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.input.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.input</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#select" class="sidebar-item-text sidebar-link">
- <span class="menu-text">select</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#slider" class="sidebar-item-text sidebar-link">
- <span class="menu-text">slider</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#search" class="sidebar-item-text sidebar-link">
- <span class="menu-text">search</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#checkbox" class="sidebar-item-text sidebar-link">
- <span class="menu-text">checkbox</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#radio_group" class="sidebar-item-text sidebar-link">
- <span class="menu-text">radio_group</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.input.html#checkbox_group" class="sidebar-item-text sidebar-link">
- <span class="menu-text">checkbox_group</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="../reference/inspect_viz.layout.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">inspect_viz.layout</span></a>
+            <a href="../reference/inspect_viz.view.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">inspect_viz.view</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1428,26 +1383,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.layout.html#hconcat" class="sidebar-item-text sidebar-link">
- <span class="menu-text">hconcat</span></a>
+  <a href="../reference/inspect_viz.view.html#scores_by_task" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_by_task</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.layout.html#vconcat" class="sidebar-item-text sidebar-link">
- <span class="menu-text">vconcat</span></a>
+  <a href="../reference/inspect_viz.view.html#scores_by_factor" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_by_factor</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.layout.html#hspace" class="sidebar-item-text sidebar-link">
- <span class="menu-text">hspace</span></a>
+  <a href="../reference/inspect_viz.view.html#scores_timeline" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_timeline</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/inspect_viz.layout.html#vspace" class="sidebar-item-text sidebar-link">
- <span class="menu-text">vspace</span></a>
+  <a href="../reference/inspect_viz.view.html#scores_by_model" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_by_model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#scores_heatmap" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_heatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#scores_by_limit" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_by_limit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#scores_by_limit_df" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">scores_by_limit_df</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#sample_tool_calls" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sample_tool_calls</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#sample_heatmap" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">sample_heatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#heatmap" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">heatmap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/inspect_viz.view.html#celloptions" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CellOptions</span></a>
   </div>
 </li>
       </ul>
@@ -1460,7 +1457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="1">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -1519,16 +1516,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#windowoptions" id="toc-windowoptions" class="nav-link" data-scroll-target="#windowoptions">WindowOptions</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/meridianlabs-ai/inspect_viz/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/inspect_viz.html">Python API</a></li><li class="breadcrumb-item"><a href="../reference/inspect_viz.transform.html">inspect_viz.transform</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/inspect_viz.input.html">Python API</a></li><li class="breadcrumb-item"><a href="../reference/inspect_viz.transform.html">inspect_viz.transform</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">inspect_viz.transform</h1>
 </div>
 
+<div>
+  <div class="description">
+    Data transformers (aggregate, window, etc.).
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -1724,10 +1726,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_aggregate.py#L47">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> avg(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span> | <span class="element-type-name">None</span></span></dt>
 <dd>
@@ -1737,9 +1743,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1750,10 +1768,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_aggregate.py#L63">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span> | <span class="element-type-name">None</span></span></dt>
 <dd>
@@ -1763,9 +1785,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1777,9 +1811,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="bu">sum</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1789,9 +1827,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1803,9 +1853,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="bu">min</span>(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1815,9 +1869,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1829,9 +1895,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="bu">max</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1841,9 +1911,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1855,9 +1937,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> median(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1867,9 +1953,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1881,9 +1979,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mode(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1893,9 +1995,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1907,9 +2021,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1919,9 +2037,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1933,9 +2063,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1945,9 +2079,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1959,9 +2105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> product(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -1971,9 +2121,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -1986,9 +2148,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quantile(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    threshold: TransformArg,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2002,9 +2168,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2016,9 +2194,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stddev(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2028,9 +2210,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2042,9 +2236,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stddev_pop(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2054,9 +2252,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2068,9 +2278,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> variance(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2080,9 +2294,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2094,9 +2320,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> var_pop(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2106,9 +2336,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2122,8 +2364,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    col1: TransformArg,</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    col2: TransformArg,</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col1</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2137,9 +2383,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2153,8 +2411,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    col1: TransformArg,</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    col2: TransformArg,</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    distinct: <span class="bu">bool</span> <span class="op">|</span> <span class="va">None</span>,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col1</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2168,9 +2430,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Aggregate distinct.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2226,11 +2500,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L25">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> row_number(<span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> row_number(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2241,11 +2533,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L35">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rank(<span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rank(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2256,11 +2566,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L47">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense_rank(<span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense_rank(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2270,11 +2598,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L59">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> percent_rank(<span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> percent_rank(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2285,11 +2631,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L69">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cume_dist(<span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cume_dist(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2299,15 +2663,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L81">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_tile(num_buckets: <span class="bu">int</span>, <span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_tile(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    num_buckets: <span class="bu">int</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">num_buckets</code> <span class="element-type"><span class="element-type-name">int</span></span></dt>
 <dd>
 <p>Number of buckets.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2320,10 +2703,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lag(</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    offset: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1</span>,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    default: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    offset: <span class="bu">int</span> <span class="op">=</span> ...,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    default: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2337,9 +2724,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Default value if thre is no such row.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2352,10 +2751,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lead(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    offset: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1</span>,</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    default: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>options: Unpack[WindowOptions],</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    offset: <span class="bu">int</span> <span class="op">=</span> ...,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    default: TransformArg <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> ...,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2369,9 +2772,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Default value if thre is no such row.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2381,15 +2796,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L132">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first_value(col: TransformArg, <span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first_value(</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
 <p>Aggregate column to take first value from.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2399,15 +2833,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="source-link">
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L143">Source</a>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_value(col: TransformArg, <span class="op">**</span>options: Unpack[WindowOptions]) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_value(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
 <p>Aggregate column to take last value from.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2418,8 +2871,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L154">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nth_value(</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg, offset: <span class="bu">int</span>, <span class="op">**</span>options: Unpack[WindowOptions]</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    col: TransformArg,</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    offset: <span class="bu">int</span>,</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    orderby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    partitionby: <span class="bu">str</span> <span class="op">|</span> Param <span class="op">|</span> Sequence[<span class="bu">str</span> <span class="op">|</span> Param] <span class="op">=</span> ...,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    rows: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">range</span>: Sequence[<span class="bu">float</span> <span class="op">|</span> <span class="va">None</span>] <span class="op">|</span> Param <span class="op">=</span> ...,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Transform</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl>
 <dt><code class="ref-definition">col</code> <span class="element-type"><span class="element-type-name">TransformArg</span></span></dt>
 <dd>
@@ -2429,9 +2888,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <dd>
 <p>Offset for the nth row.</p>
 </dd>
-<dt><code class="ref-definition">**options</code> <span class="element-type"><span class="element-type-name">Unpack</span>[<span class="element-type-name"><a href="../reference/inspect_viz.transform.html#windowoptions">WindowOptions</a></span>]</span></dt>
+<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
 <dd>
-<p>Window transform options.</p>
+<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
+<dd>
+<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
+</dd>
+<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>window rows frame specification as an array or array-valued expression.</p>
+</dd>
+<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
+<dd>
+<p>Window range frame specification as an array or array-valued expression.</p>
 </dd>
 </dl>
 </section>
@@ -2453,33 +2924,80 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/transform/_window.py#L9">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> WindowOptions(TypedDict, total<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section class="level4">
-<h4 class="anchored" data-anchor-id="">Attributes</h4>
-<dl>
-<dt><code class="ref-definition">orderby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
-<dd>
-<p>One or more expressions by which to sort a windowed version of this aggregate function.</p>
-</dd>
-<dt><code class="ref-definition">partitionby</code> <span class="element-type"><span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span> | <span class="element-type-name">Sequence</span>[<span class="element-type-name">str</span> | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span>]</span></dt>
-<dd>
-<p>One or more expressions by which to partition a windowed version of this aggregate function.</p>
-</dd>
-<dt><code class="ref-definition">rows</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
-<dd>
-<p>window rows frame specification as an array or array-valued expression.</p>
-</dd>
-<dt><code class="ref-definition">range</code> <span class="element-type"><span class="element-type-name">Sequence</span>[<span class="element-type-name">float</span> | <span class="element-type-name">None</span>] | <span class="element-type-name"><a href="../reference/inspect_viz.html#param">Param</a></span></span></dt>
-<dd>
-<p>Window range frame specification as an array or array-valued expression.</p>
-</dd>
-</dl>
 
 
-</section>
 </section>
 </section>
 
 </main> <!-- /main -->
+<div id="copy-page-btn" class="btn-group" style="display:none;">
+  <button type="button" class="btn btn-sm btn-light" id="copy-page-action" title="Copy page as Markdown">
+    <i class="bi bi-clipboard"></i> Copy page
+  </button>
+  <button type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="visually-hidden">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" href="#" id="copy-page-md">
+      <i class="bi bi-clipboard"></i> Copy page as Markdown
+    </a></li>
+    <li><a class="dropdown-item" href="#" id="open-page-md">
+      <i class="bi bi-box-arrow-up-right"></i> Open Markdown
+    </a></li>
+  </ul>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var btn = document.getElementById("copy-page-btn");
+  var cachedMarkdown = null;
+
+  // Pre-fetch the .html.md content
+  fetch(mdUrl)
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      return res.text();
+    })
+    .then(function (text) {
+      cachedMarkdown = text;
+
+      // Relocate button into the .quarto-title div
+      var titleDiv = document.querySelector(".quarto-title");
+      if (titleDiv) {
+        titleDiv.appendChild(btn);
+        btn.style.display = "";
+      }
+    })
+    .catch(function () {
+      // No .html.md available — remove button entirely
+      btn.remove();
+    });
+
+  function copyMarkdown(e) {
+    e.preventDefault();
+    if (!cachedMarkdown) return;
+    navigator.clipboard.writeText(cachedMarkdown).then(function () {
+      // Brief visual feedback — lock width to prevent layout shift
+      var actionBtn = document.getElementById("copy-page-action");
+      var original = actionBtn.innerHTML;
+      actionBtn.style.minWidth = actionBtn.offsetWidth + "px";
+      actionBtn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+      setTimeout(function () {
+        actionBtn.innerHTML = original;
+        actionBtn.style.minWidth = "";
+      }, 1500);
+    });
+  }
+
+  document.getElementById("copy-page-action").addEventListener("click", copyMarkdown);
+  document.getElementById("copy-page-md").addEventListener("click", copyMarkdown);
+  document.getElementById("open-page-md").addEventListener("click", function (e) {
+    e.preventDefault();
+    window.open(mdUrl, "_blank");
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -2923,8 +3441,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../reference/inspect_viz.interactor.html#brush" class="pagination-link" aria-label="Brush">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Brush</span>
+      <a href="../reference/inspect_viz.table.html#table" class="pagination-link" aria-label="table">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">table</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -2939,7 +3457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="https://github.com/meridianlabs-ai/">
+    <a class="nav-link" href="https://github.com/meridianlabs-ai">
 <p>Meridian Labs</p>
 </a>
   </li>  
@@ -2947,11 +3465,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item">
-    <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz">
-<p>Code</p>
-</a>
-  </li>  
     <li class="nav-item">
     <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz/blob/main/LICENSE">
 <p>License</p>
@@ -2963,13 +3476,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </a>
   </li>  
 </ul>
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/meridianlabs-ai/inspect_viz/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz">
-<p>Code</p>
-</a>
+      <i class="bi bi-github" role="img" aria-label="Inspect Viz on GitHub">
+</i> 
+    </a>
   </li>  
 </ul>
     </div>

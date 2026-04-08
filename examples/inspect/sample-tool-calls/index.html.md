@@ -1,18 +1,10 @@
 # Sample Tool Calls
 
+Dataset: [cybench_tools.parquet](cybench_tools.parquet)
 
-This example illustrates the code behind the
-[`sample_tool_calls()`](../../../reference/inspect_viz.view.qmd#sample_tool_calls)
-pre-built view function. If you want to include this plot in your
-notebooks or websites you should start with that function rather than
-the lower-level code below.
+This example illustrates the code behind the [`sample_tool_calls()`](../../../reference/inspect_viz.view.html.md#sample_tool_calls) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
 
-The plot visualizes tool usage over a series of turns in a Cybench
-evaluation. We use a `cell()` mark to visualize tool use over messages
-in each sample of an evaluation. We note any limit that ended the sample
-using a `text()` mark on the right side of the frame.
-
-**Code**
+The plot visualizes tool usage over a series of turns in a Cybench evaluation. We use a `cell()` mark to visualize tool use over messages in each sample of an evaluation. We note any limit that ended the sample using a `text()` mark on the right side of the frame.
 
 ``` python
 from inspect_viz import Data
@@ -21,19 +13,19 @@ from inspect_viz.mark import cell, text
 from inspect_viz.transform import first
 
 # read data (see 'Data Preparation' below)
-data = Data.from_file("cybench_tools.parquet")
+data = Data.from_file("cybench_tools.parquet") # <1>
 
 tools = ["bash", "python", "submit"]
 
 plot(
-    cell(
+    cell( # <2>
         data,
         x="order",
         y="id",
         fill="tool_call_function"
-    ),
+    ), # <2>
     
-    text(
+    text( # <3>
         data, 
         text=first("limit"), 
         y="id",
@@ -41,40 +33,24 @@ plot(
         font_size=8, 
         font_weight=200,
         dx=50
-    ),
+    ),  # <3>
     legend=legend("color", frame_anchor="right"),
-    margin_top=0,
+    margin_top=0,   # <4>
     margin_left=20,
-    margin_right=100,
-    x_ticks=list(range(0, 400, 80)),
-    y_ticks=[],
-    x_label="Message",
-    y_label="Sample",
-    color_label="Tool",
-    color_domain=tools
+    margin_right=100,  # <4>
+    x_ticks=list(range(0, 400, 80)), # <5>
+    y_ticks=[], # <5>
+    x_label="Message", # <6>
+    y_label="Sample",  # <6>
+    color_label="Tool",  # <6>
+    color_domain=tools # <7>
 )
 ```
 
-Line 7  
-Read tool call data (see [Data
-Preparation](../../../view-sample-tool-calls.qmd#data-preparation) for
-details).
-
-Lines 12,17  
-`cell()` mark showing tool calls.
-
-Lines 19,27  
-`text()` mark showing whether the sample terminated due to a limit.
-
-Lines 29,31  
-Tweak the margins so the axis labels and text annotations appear
-correctly.
-
-Lines 32-33  
-Reduce the number of tick marks on the x-axis and eliminate y-ticks.
-
-Lines 34-36  
-Set some custom labels and ensure that tools follow our designed order.
-
-Line 37  
-Specify which tools we should show and in what order.
+1.  Read tool call data (see [Data Preparation](../../../view-sample-tool-calls.html.md#data-preparation) for details).
+2.  `cell()` mark showing tool calls.
+3.  `text()` mark showing whether the sample terminated due to a limit.
+4.  Tweak the margins so the axis labels and text annotations appear correctly.
+5.  Reduce the number of tick marks on the x-axis and eliminate y-ticks.
+6.  Set some custom labels and ensure that tools follow our designed order.
+7.  Specify which tools we should show and in what order.

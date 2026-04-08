@@ -1,5 +1,6 @@
 # inspect_viz.layout
 
+Component layout functions.
 
 ### hconcat
 
@@ -11,7 +12,7 @@ Horizontally concatenate components in a row layout.
 def hconcat(*component: Component) -> Component
 ```
 
-`*component` [Component](inspect_viz.qmd#component)  
+`*component` [Component](../reference/inspect_viz.html.md#component)  
 Components to concatenate.
 
 ### vconcat
@@ -24,7 +25,7 @@ Vertically concatenate components in a column layout.
 def vconcat(*component: Component) -> Component
 ```
 
-`*component` [Component](inspect_viz.qmd#component)  
+`*component` [Component](../reference/inspect_viz.html.md#component)  
 Components to concatenate.
 
 ### hspace
@@ -38,8 +39,7 @@ def hspace(hspace: float | str = 10) -> Component
 ```
 
 `hspace` float \| str  
-Amount of space. Number values indicate screen pixels. String values may
-use CSS units (em, pt, px, etc).
+Amount of space. Number values indicate screen pixels. String values may use CSS units (em, pt, px, etc).
 
 ### vspace
 
@@ -52,5 +52,4 @@ def vspace(vspace: float | str = 10) -> Component
 ```
 
 `vspace` float \| str  
-Amount of space. Number values indicate screen pixels. String values may
-use CSS units (em, pt, px, etc).
+Amount of space. Number values indicate screen pixels. String values may use CSS units (em, pt, px, etc).

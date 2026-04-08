@@ -1,20 +1,12 @@
 # Interactivty
 
-
 ## Overview
 
-Inspect Viz supports interactive filtering and cross-filtering of plot
-data based based on [Inputs](components-inputs.qmd) and
-[Interactors](#interactors). Filtering is done based on *Selections*:
-each `Data` table has a built-in selection and you can also create
-`Selection` instances for more sophisticated behaviors.
+Inspect Viz supports interactive filtering and cross-filtering of plot data based based on [Inputs](components-inputs.html.md) and [Interactors](#interactors). Filtering is done based on *Selections*: each [Data](reference/inspect_viz.html.md#data) table has a built-in selection and you can also create [Selection](reference/inspect_viz.html.md#selection) instances for more sophisticated behaviors.
 
 ## Filtering
 
-The most straightforward usage of selections is adding inputs which
-filter the data displayed in a plot. This filtering uses the *built in*
-selection of `Data` instances. For example, here we add a `select()`
-input to enable filtering by species:
+The most straightforward usage of selections is adding inputs which filter the data displayed in a plot. This filtering uses the *built in* selection of [Data](reference/inspect_viz.html.md#data) instances. For example, here we add a [select()](reference/inspect_viz.input.html.md#select) input to enable filtering by species:
 
 ``` python
 from inspect_viz import Data
@@ -25,52 +17,31 @@ from inspect_viz.layout import vconcat
 
 penguins = Data.from_file("penguins.parquet")
 
-vconcat(
-   select(penguins, label="Species", column="species"),
+vconcat( # <1> 
+   select(penguins, label="Species", column="species"),  # <2>
    plot(
-      dot(penguins, x="body_mass", y="flipper_length",
+      dot(penguins, x="body_mass", y="flipper_length",  # <3> 
           stroke="species", symbol="species"),
       legend="symbol",
-      color_domain="fixed"
+      color_domain="fixed"       # <4>
    )
 )
 ```
 
-Line 9  
-`vconcat()` function stacks the select input on top of the plot.
-
-Line 10  
-Select input bound to “species” column.
-
-Line 12  
-Use of `penguins` in both `select()` and `plot()` automatically binds to
-default selection for the penguins `Data` object.
-
-Line 15  
-Fixed color domain ensures that species colors remain the same even when
-filtered.
+1.  [vconcat()](reference/inspect_viz.layout.html.md#vconcat) function stacks the select input on top of the plot.
+2.  Select input bound to “species” column.
+3.  Use of `penguins` in both [select()](reference/inspect_viz.input.html.md#select) and [plot()](reference/inspect_viz.plot.html.md#plot) automatically binds to default selection for the penguins [Data](reference/inspect_viz.html.md#data) object.
+4.  Fixed color domain ensures that species colors remain the same even when filtered.
 
 ### Fixed Domain
 
-The example agove introduces an important concept when dealing with
-selections and filtering: `"fixed"` scale domains (in this case
-`color_domain="fixed"`). Fixed scale domains instruct a plot to first
-calculate a scale domain in a data-driven manner, but then keep that
-domain fixed across subsequent updates.
+The example agove introduces an important concept when dealing with selections and filtering: `"fixed"` scale domains (in this case `color_domain="fixed"`). Fixed scale domains instruct a plot to first calculate a scale domain in a data-driven manner, but then keep that domain fixed across subsequent updates.
 
-Fixed domains enable stable configurations without requiring a
-hard-wired domain to be known in advance, preventing disorienting scale
-domain “jumps” that hamper comparison across filter interactions.
-Several of the examples below will use `"fixed"` domains to provide this
-stability across interactions.
+Fixed domains enable stable configurations without requiring a hard-wired domain to be known in advance, preventing disorienting scale domain “jumps” that hamper comparison across filter interactions. Several of the examples below will use `"fixed"` domains to provide this stability across interactions.
 
 ## Params
 
-As illustrated above, inputs can be used to filter dataset selections.
-Inputs can also be used to set `Param` values that make various aspects
-of plots dynamic. For example, here is a density plot of flight delays
-which uses a `slider()` input to vary the amount of smooth ing by
-setting the kernel bandwidth:
+As illustrated above, inputs can be used to filter dataset selections. Inputs can also be used to set [Param](reference/inspect_viz.html.md#param) values that make various aspects of plots dynamic. For example, here is a density plot of flight delays which uses a [slider()](reference/inspect_viz.input.html.md#slider) input to vary the amount of smooth ing by setting the kernel bandwidth:
 
 ``` python
 from inspect_viz import Param
@@ -79,16 +50,16 @@ from inspect_viz.mark import density_y
 
 flights = Data.from_file("flights.parquet")
 
-bandwidth = Param(0.1)
+bandwidth = Param(0.1) # <1> 
 
 vconcat(
    slider(
-      label="Bandwidth (σ)", target=bandwidth,
+      label="Bandwidth (σ)", target=bandwidth, # <2>
       min=0.1, max=100, step=0.1
    ),
    plot(
       density_y(
-         flights, x="delay", fill="steelblue", bandwidth=bandwidth
+         flights, x="delay", fill="steelblue", bandwidth=bandwidth # <3>
       ),
       x_domain="fixed",
       y_axis=None,
@@ -97,35 +68,19 @@ vconcat(
 )
 ```
 
-Line 7  
-Create a `bandwidth` parameter with a default value of 0.1.
-
-Line 11  
-Bind the `slider()` to the `bandwidth` parameter.
-
-Line 16  
-Apply the `bandwidth` to the plot (plot automatically redraws when the
-bandwidth changes).
+1.  Create a `bandwidth` parameter with a default value of 0.1.
+2.  Bind the [slider()](reference/inspect_viz.input.html.md#slider) to the `bandwidth` parameter.
+3.  Apply the `bandwidth` to the plot (plot automatically redraws when the bandwidth changes).
 
 ## Interactors
 
-*Interactors* imbue plots with interactive behavior. Most interactors
-listen to input events from rendered plot SVG elements to update bound
-[*selections*](reference/inspect_viz.qmd#selection). Interactors take
-facets into account to properly handle input events across subplots.
+*Interactors* imbue plots with interactive behavior. Most interactors listen to input events from rendered plot SVG elements to update bound [*selections*](reference/inspect_viz.html.md#selection). Interactors take facets into account to properly handle input events across subplots.
 
 ### Interval
 
-The `interval_x()` and `interval_y()` interactors create 1D interval
-brushes. The `interval_xy()` interactor creates a 2D brush. Interval
-interactors accept a `pixel_size` parameter that sets the brush
-resolution: values may snap to a grid whose bins are larger than screen
-pixels and this can be leveraged to optimize query latency.
+The [interval_x()](reference/inspect_viz.interactor.html.md#interval_x) and [interval_y()](reference/inspect_viz.interactor.html.md#interval_y) interactors create 1D interval brushes. The [interval_xy()](reference/inspect_viz.interactor.html.md#interval_xy) interactor creates a 2D brush. Interval interactors accept a `pixel_size` parameter that sets the brush resolution: values may snap to a grid whose bins are larger than screen pixels and this can be leveraged to optimize query latency.
 
-For example, below we stack two plots vertically, a `dot()` plot along
-with a `bar_x()` plot that counts the `sex` column. We then add an
-`interval_x()` interactor that enables us to filter the dataset using
-selections on the dot plot.
+For example, below we stack two plots vertically, a [dot()](reference/inspect_viz.mark.html.md#dot) plot along with a [bar_x()](reference/inspect_viz.mark.html.md#bar_x) plot that counts the `sex` column. We then add an [interval_x()](reference/inspect_viz.interactor.html.md#interval_x) interactor that enables us to filter the dataset using selections on the dot plot.
 
 ``` python
 from inspect_viz import Data, Selection
@@ -136,70 +91,45 @@ from inspect_viz.transform import count
 
 athletes = Data.from_file("athletes.parquet")
 
-range = Selection.intersect()
+range = Selection.intersect() # <1>
 
 vconcat(
    plot(
       dot(athletes, x="weight", y="height", fill="sex", opacity=0.1),
       regression_y(athletes, x="weight", y="height", stroke="sex"),
       interval_x(
-         target=range,
-         brush=Brush(fill="none", stroke="#888")
+         target=range, # <2>
+         brush=Brush(fill="none", stroke="#888") # <3>
       ),
       legend="color"
    ),
    plot(
       bar_x(
-         athletes, filter_by=range,
+         athletes, filter_by=range,  # <4>
          x=count(), y="sex", fill="sex"
       ), 
       y_label=None,
       height=150,
-      x_domain="fixed"
+      x_domain="fixed" # <5>
    )
 )
 ```
 
-Line 9  
-A `Selection` is a means of filtering datasets based on interactions.
-Here we use an “intersect” selection for application of a simple filter
-from dot plot to bar plot.
+1.  A [Selection](reference/inspect_viz.html.md#selection) is a means of filtering datasets based on interactions. Here we use an “intersect” selection for application of a simple filter from dot plot to bar plot.
+2.  The `range` selection is set via the [interval_x()](reference/inspect_viz.interactor.html.md#interval_x) interactor (which enables using the mouse to select an x-range).
+3.  The [Brush](reference/inspect_viz.interactor.html.md#brush) defines the color of the interactor (in this case `#888`, a medium-gray).
+4.  The `range` selection is consumed using the `filter_by` parameter.
+5.  We set the `x_domain` for the bar plot to “fixed” so that the scale doesn’t change as the dataset is filtered.
 
-Line 16  
-The `range` selection is set via the `interval_x()` interactor (which
-enables using the mouse to select an x-range).
-
-Line 17  
-The `Brush` defines the color of the interactor (in this case `#888`, a
-medium-gray).
-
-Line 23  
-The `range` selection is consumed using the `filter_by` parameter.
-
-Line 28  
-We set the `x_domain` for the bar plot to “fixed” so that the scale
-doesn’t change as the dataset is filtered.
-
-Try using the mouse to brush over regions on the dot plot—the bar plot
-will update accordingly.
+Try using the mouse to brush over regions on the dot plot—the bar plot will update accordingly.
 
 ### Toggle
 
-The `toggle()` interactor selects individual points (e.g., by click or
-shift-click) and generates a selection clause over specified fields of
-those points. Directives such as `toggle_color()`, `toggle_x()`, and
-`toggle_y()` simplify specification of which channel fields are included
-in the resulting predicates.
+The [toggle()](reference/inspect_viz.interactor.html.md#toggle) interactor selects individual points (e.g., by click or shift-click) and generates a selection clause over specified fields of those points. Directives such as [toggle_color()](reference/inspect_viz.interactor.html.md#toggle_color), [toggle_x()](reference/inspect_viz.interactor.html.md#toggle_x), and [toggle_y()](reference/inspect_viz.interactor.html.md#toggle_y) simplify specification of which channel fields are included in the resulting predicates.
 
-The `highlight()` interactor updates the rendered state of a
-visualization in response to a Selection. Non-selected points are set to
-translucent, neutral gray, or other specified visual properties.
-Selected points maintain normal encodings.
+The [highlight()](reference/inspect_viz.interactor.html.md#highlight) interactor updates the rendered state of a visualization in response to a Selection. Non-selected points are set to translucent, neutral gray, or other specified visual properties. Selected points maintain normal encodings.
 
-This example demonstrates using the `toggle_y()` and `highlight()`
-interactors to render a bar chart that can be clicked to select a subset
-of points on the dot plot above it. The dot plot legend also targets the
-same the selection to make itself interactive.
+This example demonstrates using the [toggle_y()](reference/inspect_viz.interactor.html.md#toggle_y) and [highlight()](reference/inspect_viz.interactor.html.md#highlight) interactors to render a bar chart that can be clicked to select a subset of points on the dot plot above it. The dot plot legend also targets the same the selection to make itself interactive.
 
 ``` python
 from inspect_viz import Data, Selection
@@ -211,20 +141,20 @@ from inspect_viz.transform import count, date_month_day
 
 seattle = Data.from_file("seattle-weather.parquet")
 
-weather = Selection.single()
+weather = Selection.single() # <1> 
 
 vconcat(
     plot(
         dot(
             data=seattle,
-            filter_by=weather,
+            filter_by=weather, # <2> 
             x=date_month_day("date"),
             y="temp_max",
             fill="weather",
             fill_opacity=0.7,
-            r="precipitation",
+            r="precipitation", # <3> 
         ),
-        legend=legend("color", target=weather),
+        legend=legend("color", target=weather), # <4>
         x_tick_format="%b",
         color_domain="fixed",
         r_domain="fixed", 
@@ -232,8 +162,8 @@ vconcat(
     ),
     plot(
         bar_x(seattle, x=count(), y="weather", fill="weather"),
-        toggle_y(target=weather),
-        highlight(by=weather),
+        toggle_y(target=weather),  # <5> 
+        highlight(by=weather), # <6>
         x_domain="fixed",
         y_label=None,
         height=200
@@ -241,42 +171,22 @@ vconcat(
 )
 ```
 
-Line 10  
-Single selection (filter out all other points).
+1.  Single selection (filter out all other points).
+2.  Dot plot should filter by the selection.
+3.  Show precipitation level using dot radius.
+4.  Clicks on the legend target the same selection
+5.  [toggle_y()](reference/inspect_viz.interactor.html.md#toggle_y) interactor to filter by weather.
+6.  [highlight()](reference/inspect_viz.interactor.html.md#highlight) interactor to fade out unselected bars.
 
-Line 16  
-Dot plot should filter by the selection.
-
-Line 21  
-Show precipitation level using dot radius.
-
-Line 23  
-Clicks on the legend target the same selection
-
-Line 31  
-`toggle_y()` interactor to filter by weather.
-
-Line 32  
-`highlight()` interactor to fade out unselected bars.
-
-Try clicking either the legend or the bar plot elements to filter the
-dot plot.
+Try clicking either the legend or the bar plot elements to filter the dot plot.
 
 ## Crossfilter
 
-In many cases you’ll want to have an input or interactor that both
-consumes and produces the same selection (i.e. filtered based on
-interactions with other inputs or interactors, but also able to provide
-its own filtering).
+In many cases you’ll want to have an input or interactor that both consumes and produces the same selection (i.e. filtered based on interactions with other inputs or interactors, but also able to provide its own filtering).
 
 ### Inputs
 
-This example demonstrates crossfiltering across
-[inputs](reference/inspect_viz.input.qmd). We plot shot types taken
-during the 2023 WNBA season, providing a `select()` input that filters
-by team, and another `select()` input that filters by player (which in
-turn is also filtered by the currently selected team). Click on the
-numbers at right for additional explanation of the code.
+This example demonstrates crossfiltering across [inputs](reference/inspect_viz.input.html.md). We plot shot types taken during the 2023 WNBA season, providing a [select()](reference/inspect_viz.input.html.md#select) input that filters by team, and another [select()](reference/inspect_viz.input.html.md#select) input that filters by player (which in turn is also filtered by the currently selected team). Click on the numbers at right for additional explanation of the code.
 
 ``` python
 from inspect_viz import Data, Selection
@@ -288,17 +198,17 @@ from inspect_viz.transform import count
 
 shots = Data.from_file("wnba-shots-2023.parquet")
 
-filter = Selection.crossfilter()
+filter = Selection.crossfilter()            # <1>
 
 vconcat(
    hconcat(
       select(
          shots, label="Team", column="team_name", 
-         target=filter
+         target=filter                      # <2>
       ),
       select(
          shots, label="Athlete", column="athlete_name", 
-         filter_by=filter, target=filter
+         filter_by=filter, target=filter    # <3>
       )
    ),
    plot(
@@ -307,43 +217,22 @@ vconcat(
          x=count(), y="category", fill="category"
       ),
       y_label=None,
-      color_domain="fixed",
-      y_domain=["Jump", "Layup", "Hook"],
+      color_domain="fixed",                # <4>
+      y_domain=["Jump", "Layup", "Hook"],  # <4>
       height=200,
       margin_left=60
    )
 )
 ```
 
-Line 10  
-Create a crossfilter selection, which enables inputs to both consume and
-produce the same selection (conditioning their available choices on
-other inputs).
-
-Line 16  
-The team select box targets the `filter` selection (filtering both the
-choices in the athelte select box and what is displayed in the plot).
-
-Line 20  
-The athlete select box is both *filtered by* and targets the `filter`
-selection, enabling it to both confine itself to the selected team as
-well as filter what is displayed in the plot.
-
-Lines 29-30  
-As different teams and players are selected, the y-axis may take on
-differnet values and ordering. These options ensure that the y-axis
-remains stable across selections.
+1.  Create a crossfilter selection, which enables inputs to both consume and produce the same selection (conditioning their available choices on other inputs).
+2.  The team select box targets the `filter` selection (filtering both the choices in the athelte select box and what is displayed in the plot).
+3.  The athlete select box is both *filtered by* and targets the `filter` selection, enabling it to both confine itself to the selected team as well as filter what is displayed in the plot.
+4.  As different teams and players are selected, the y-axis may take on differnet values and ordering. These options ensure that the y-axis remains stable across selections.
 
 ### Interactors
 
-This example demonstrates crossfiltering across plot
-[interactors](reference/inspect_viz.interactor.qmd). We plot histograms
-showing arrival delay and departure time for flights. When you select a
-range in one plot, the other plot updates to show only the data within
-that selection—and vice versa. This bidirectional filtering is achieved
-using `Selection.crossfilter()`, which ensures each plot’s selection
-affects all other plots except itself. Click on the numbers at right for
-additional explanation of the code.
+This example demonstrates crossfiltering across plot [interactors](reference/inspect_viz.interactor.html.md). We plot histograms showing arrival delay and departure time for flights. When you select a range in one plot, the other plot updates to show only the data within that selection—and vice versa. This bidirectional filtering is achieved using `Selection.crossfilter()`, which ensures each plot’s selection affects all other plots except itself. Click on the numbers at right for additional explanation of the code.
 
 ``` python
 from inspect_viz import Data, Selection
@@ -355,18 +244,18 @@ from inspect_viz.interactor import interval_x
 
 flights = Data.from_file("flights.parquet")
 
-brush = Selection.crossfilter()
+brush = Selection.crossfilter() # <1>
 
-def flights_plot(x, label):
+def flights_plot(x, label):    # <2>
    return plot(
       rect_y(
          flights, filter_by=brush, 
          x=bin(x), y=count(), fill="steelblue"
       ),
-      interval_x(target=brush),
+      interval_x(target=brush),   # <3>
       height=200,
       x_label=label,
-      x_domain="fixed",
+      x_domain="fixed",   # <4>
       y_tick_format="s"
    )
 
@@ -376,20 +265,9 @@ vconcat(
 )
 ```
 
-Line 10  
-Create a crossfilter selection, which ensures each plot’s selection
-affects all other plots except itself.
-
-Line 12  
-Our two plots are identical save for the `x` value and the `x_label` so
-factor out into a function.
-
-Line 18  
-The `interval_x()` interactor enables horizontal selection (targeting
-the crossfiltering `brush`).
-
-Line 21  
-Use a `"fixed"` domain so that the x-axis remains stable even when being
-filtered.
+1.  Create a crossfilter selection, which ensures each plot’s selection affects all other plots except itself.
+2.  Our two plots are identical save for the `x` value and the `x_label` so factor out into a function.
+3.  The [interval_x()](reference/inspect_viz.interactor.html.md#interval_x) interactor enables horizontal selection (targeting the crossfiltering `brush`).
+4.  Use a `"fixed"` domain so that the x-axis remains stable even when being filtered.
 
 Try selecting a horizontal range on either or both of the bar plots.

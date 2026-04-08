@@ -1,14 +1,10 @@
 # Tables
 
-
-Use tables to display an interactive grid of data used in your
-visualization. Tables support commonly used operations like sorting,
-filtering, pagination and a variety of other customization options.
+Use tables to display an interactive grid of data used in your visualization. Tables support commonly used operations like sorting, filtering, pagination and a variety of other customization options.
 
 ## Basics
 
-In its most simple form, the `table()` function will display the
-contents of the `Data` provided. For example, the following:
+In its most simple form, the [table()](reference/inspect_viz.table.html.md#table) function will display the contents of the [Data](reference/inspect_viz.html.md#data) provided. For example, the following:
 
 ``` python
 from inspect_viz import Data
@@ -18,11 +14,9 @@ penguins = Data.from_file("penguins.parquet")
 table(penguins)
 ```
 
-results in a table displaying all the columns and rows in the penguins
-dataset:
+results in a table displaying all the columns and rows in the penguins dataset:
 
-In addition to providing the base `Data` for the table, you may also
-select which columns are displayed:
+In addition to providing the base [Data](reference/inspect_viz.html.md#data) for the table, you may also select which columns are displayed:
 
 ``` python
 from inspect_viz import Data
@@ -36,10 +30,7 @@ table(penguins, columns=[
     "body_mass"])
 ```
 
-Tables have a number of global options for configuring the behavior, but
-also have many options specific to one or more columns. To specify
-column level options, using the `column` function in the list of columns
-rather than simply passing the column name:
+Tables have a number of global options for configuring the behavior, but also have many options specific to one or more columns. To specify column level options, using the `column` function in the list of columns rather than simply passing the column name:
 
 ``` python
 from inspect_viz import Data
@@ -55,10 +46,7 @@ table(penguins, columns=[
 
 ### Size
 
-By default, tables will have a height which matches the size of their
-content and a width which files their container (with a default maximum
-size of 500px). You can explicitly provide a height and width value in
-pixels for the table if you’d like the table to be a specific size:
+By default, tables will have a height which matches the size of their content and a width which files their container (with a default maximum size of 500px). You can explicitly provide a height and width value in pixels for the table if you’d like the table to be a specific size:
 
 ``` python
 from inspect_viz import Data
@@ -68,17 +56,11 @@ penguins = Data.from_file("penguins.parquet")
 table(penguins, height=200, width=550)
 ```
 
-You can use `max_width` to constrain the maximum width of the table in
-pixels. It will still attempt to fill its container, but it’s width will
-not exceed the `max_width`.
+You can use `max_width` to constrain the maximum width of the table in pixels. It will still attempt to fill its container, but it’s width will not exceed the `max_width`.
 
 ## Columns
 
-When providing column data for a table, you can provide a list of
-columns names from your Data to be displayed. You can also use the
-`column` function to provide additional options for each column. For
-example, to customize the string that is displayed in the header for the
-column, using the `label` option like:
+When providing column data for a table, you can provide a list of columns names from your Data to be displayed. You can also use the `column` function to provide additional options for each column. For example, to customize the string that is displayed in the header for the column, using the `label` option like:
 
 ``` python
 from inspect_viz import Data
@@ -94,9 +76,7 @@ table(penguins, columns=[
 
 ### Width
 
-If no explicit column size is provided, the width of each column is an
-equal share of the available space. You can specify the width of columns
-either using an explicit pixel size:
+If no explicit column size is provided, the width of each column is an equal share of the available space. You can specify the width of columns either using an explicit pixel size:
 
 ``` python
 from inspect_viz import Data
@@ -110,9 +90,7 @@ table(penguins, width=370, columns=[
     column("body_mass", width=100)])
 ```
 
-or using `flex` for some or all of the columns. Flex sizing works by
-dividing the remaining space in the grid among all flex columns in
-proportion to their flex value.
+or using `flex` for some or all of the columns. Flex sizing works by dividing the remaining space in the grid among all flex columns in proportion to their flex value.
 
 ``` python
 from inspect_viz import Data
@@ -126,15 +104,11 @@ table(penguins, width=550, columns=[
     column("body_mass", flex=1)])
 ```
 
-You can also use `max_width` to set a maximum width for a column or
-`min_width` to set a minimum width for a column. This will be used to
-provide caps on width when columns are being sized automatically using
-flex sizing.
+You can also use `max_width` to set a maximum width for a column or `min_width` to set a minimum width for a column. This will be used to provide caps on width when columns are being sized automatically using flex sizing.
 
 ### Alignment
 
-You can control the alignment of the values within each columns header
-and body using the `align` and `header_align` options. For example:
+You can control the alignment of the values within each columns header and body using the `align` and `header_align` options. For example:
 
 ``` python
 from inspect_viz import Data
@@ -150,11 +124,7 @@ table(penguins, columns=[
 
 ### Formatting
 
-You can control the formatting of each cell’s value using the `format`
-option. The `format` option accepts a
-[d3-format](https://d3js.org/d3-format) string for numeric values and a
-[d3-time-format](https://d3js.org/d3-time-format) string for date values
-to define how the value will be formatted.
+You can control the formatting of each cell’s value using the `format` option. The `format` option accepts a [d3-format](https://d3js.org/d3-format) string for numeric values and a [d3-time-format](https://d3js.org/d3-time-format) string for date values to define how the value will be formatted.
 
 ``` python
 table(penguins, columns=[
@@ -170,10 +140,7 @@ Default formats for values are as follows:
 
 ### Text Wrapping
 
-You can control the text wrapping behavior of the values within each
-columns header and body using the `wrap_text` and `header_wrap_text`
-options. This is most frequently paired with `auto_height` to create
-rows with automatic heights which wrap text. For example:
+You can control the text wrapping behavior of the values within each columns header and body using the `wrap_text` and `header_wrap_text` options. This is most frequently paired with `auto_height` to create rows with automatic heights which wrap text. For example:
 
 ``` python
 table(penguins, columns=[
@@ -187,10 +154,7 @@ table(penguins, columns=[
 
 ### Height
 
-By default, each row of the the table, including the header row, is 29px
-tall. You can set an explicit row size for the body of the table using
-the `row_height` argument. Set the header’s row height using the
-`header_height` argument:
+By default, each row of the the table, including the header row, is 29px tall. You can set an explicit row size for the body of the table using the `row_height` argument. Set the header’s row height using the `header_height` argument:
 
 ``` python
 from inspect_viz import Data
@@ -202,11 +166,7 @@ table(penguins, header_height=60, row_height=50)
 
 ### Auto Height
 
-In addition to explicitly providing the heights for rows, you can also
-allow the content to determine the height of the row. To do this,
-configure one or more column with `auto_height`. The height of the row
-will then be determined using the largest height required to display the
-content of any columns with the `auto_height` option.
+In addition to explicitly providing the heights for rows, you can also allow the content to determine the height of the row. To do this, configure one or more column with `auto_height`. The height of the row will then be determined using the largest height required to display the content of any columns with the `auto_height` option.
 
 ``` python
 table(penguins, width=550, columns=[
@@ -216,26 +176,19 @@ table(penguins, width=550, columns=[
     column("body_mass", flex=1)])
 ```
 
-You can also use the `header_auto_height` option to specify columns that
-will automatically size the header row height.
+You can also use the `header_auto_height` option to specify columns that will automatically size the header row height.
 
 ## Sorting
 
-Each column in the table is sortable by clicking on the header for the
-column you’d like to sort. Each click toggles between the sorting
-ascending, sorting descending, and not sorting. Holding `shift` while
-clicking will add the clicked column as a secondary sort, preserving any
-other sorts that have already been specified.
+Each column in the table is sortable by clicking on the header for the column you’d like to sort. Each click toggles between the sorting ascending, sorting descending, and not sorting. Holding `shift` while clicking will add the clicked column as a secondary sort, preserving any other sorts that have already been specified.
 
-You can disable sorting for the entire table using the `sorting`
-argument:
+You can disable sorting for the entire table using the `sorting` argument:
 
 ``` python
 table(penguins, sorting=False)
 ```
 
-You can control whether individual columns can be sorted using the
-`sortable` option for `column`:
+You can control whether individual columns can be sorted using the `sortable` option for `column`:
 
 ``` python
 table(penguins, columns=[
@@ -247,17 +200,13 @@ table(penguins, columns=[
 
 ## Filtering
 
-Each column of the table is filterable by clicking the filter icon in
-the header of the column. Depending upon the type of data in the column,
-different filtering options will be presented to the user. To disable
-filtering for a table, use `filtering`:
+Each column of the table is filterable by clicking the filter icon in the header of the column. Depending upon the type of data in the column, different filtering options will be presented to the user. To disable filtering for a table, use `filtering`:
 
 ``` python
 table(penguins, filtering=False)
 ```
 
-You can control whether individual columns can be filtered using the
-`filterable` option for `column`:
+You can control whether individual columns can be filtered using the `filterable` option for `column`:
 
 ``` python
 table(penguins, columns=[
@@ -269,10 +218,7 @@ table(penguins, columns=[
 
 #### Filter Location
 
-You can control where in the table filters appear by passing other
-`header` or `row` as the value for filter. `header` places in the filter
-as buttons in the header row next to the header text. `row` creates\` a
-separate row with inline filter UI for filtering columns. For example:
+You can control where in the table filters appear by passing other `header` or `row` as the value for filter. `header` places in the filter as buttons in the header row next to the header text. `row` creates\` a separate row with inline filter UI for filtering columns. For example:
 
 ``` python
 table(penguins, filtering='row')
@@ -280,16 +226,13 @@ table(penguins, filtering='row')
 
 ## Resizing
 
-Each column of the table may be resized by the user by clicking and
-dragging the separator between columns in the header row. To make the
-table columns not resizable, use the `resizing` option:
+Each column of the table may be resized by the user by clicking and dragging the separator between columns in the header row. To make the table columns not resizable, use the `resizing` option:
 
 ``` python
 table(penguins, resizing=False)
 ```
 
-You can control whether individual columns can be resized using the
-`resizable` option for `column`:
+You can control whether individual columns can be resized using the `resizable` option for `column`:
 
 ``` python
 table(penguins, columns=[
@@ -301,10 +244,7 @@ table(penguins, columns=[
 
 ## Pagination
 
-When configured, tables can display pages of items with pagination
-controls at the bottom of the table rather than display all the items in
-a scrollable body. To enable pagination, simply provide the pagination
-argument to the `table`:
+When configured, tables can display pages of items with pagination controls at the bottom of the table rather than display all the items in a scrollable body. To enable pagination, simply provide the pagination argument to the `table`:
 
 ``` python
 from inspect_viz.table import column, table
@@ -317,9 +257,7 @@ table(penguins,
       pagination=True)
 ```
 
-By default, the table will automatically set the page size to use the
-available space in the table without scrolling. You can also explicitly
-choose page size and page size options:
+By default, the table will automatically set the page size to use the available space in the table without scrolling. You can also explicitly choose page size and page size options:
 
 ``` python
 from inspect_viz.table import column, table, Pagination
@@ -334,10 +272,7 @@ table(penguins,
 
 ## Grouping
 
-When displaying tabular data, it can be useful to group the data by
-specific fields. For example, to display a table with the average
-attributes of male and female penguins based upon their species, you can
-using grouping function for some columns:
+When displaying tabular data, it can be useful to group the data by specific fields. For example, to display a table with the average attributes of male and female penguins based upon their species, you can using grouping function for some columns:
 
 ``` python
 from inspect_viz.transform import avg, count
@@ -349,15 +284,11 @@ table(penguins,
         column(avg("flipper_length"))])
 ```
 
-When providing transforms to apply to columns (e.g. `avg`, `sum`),
-columns without aggregating transforms will be treated as columns to
-group by. So in the above example, the table is grouped by `species`
-displaying the rest of the values using their aggregate values.
+When providing transforms to apply to columns (e.g. `avg`, `sum`), columns without aggregating transforms will be treated as columns to group by. So in the above example, the table is grouped by `species` displaying the rest of the values using their aggregate values.
 
 ## Literal Data
 
-You can also pass literal values (an `int | float | bool`) as a column
-by passing one or more values as the `column` itself. For example:
+You can also pass literal values (an `int | float | bool`) as a column by passing one or more values as the `column` itself. For example:
 
 ``` python
 table(penguins, 
@@ -368,26 +299,15 @@ table(penguins,
         column("flipper_length")])
 ```
 
-If a single value is passed, that value will be repeated for every row
-in the dataset. If a list of values is passed, each row will increment
-through the list and include the value from the row index. If the list
-is shorter than the dataset, values will be repeated by repeatedly
-iterating through the list.
+If a single value is passed, that value will be repeated for every row in the dataset. If a list of values is passed, each row will increment through the list and include the value from the row index. If the list is shorter than the dataset, values will be repeated by repeatedly iterating through the list.
 
 ## Selection
 
-By default, the table will display the selection provided by the data
-source. If you’d like, you can provide an alternative selection by using
-`filter_by`.
+By default, the table will display the selection provided by the data source. If you’d like, you can provide an alternative selection by using `filter_by`.
 
 #### Targeting Selections
 
-It can be useful to use selected rows within a table to target a
-selection to be used elsewhere (for example, in highlighting points
-within a dot plot). To do this, use the `target` option to select the
-output selection. This will cause a selection clause of the form column
-IN (rows) to be added to the selection for each currently selected table
-row.
+It can be useful to use selected rows within a table to target a selection to be used elsewhere (for example, in highlighting points within a dot plot). To do this, use the `target` option to select the output selection. This will cause a selection clause of the form column IN (rows) to be added to the selection for each currently selected table row.
 
 For example:
 
@@ -396,10 +316,7 @@ table(penguins,
       target=selection)
 ```
 
-You can use the `select` option to control how selection works within
-the table. By default, `select` is set to `single_row` which will allow
-selection of one row at a time by clicking the row. Other options are
-listed below:
+You can use the `select` option to control how selection works within the table. By default, `select` is set to `single_row` which will allow selection of one row at a time by clicking the row. Other options are listed below:
 
 | Option | Action |
 |----|----|
@@ -411,14 +328,9 @@ listed below:
 
 ## Appearance
 
-Tables have a minimal default appearance using the [AG
-Grid](https://www.ag-grid.com/javascript-data-grid/themes/) `Balham`
-theme. If the table is being displayed in a
-[Quarto](https://www.quarto.org) page or dashboard, it will
-automatically inherit the theme of the page on which it is hosted.
+Tables have a minimal default appearance using the [AG Grid](https://www.ag-grid.com/javascript-data-grid/themes/) `Balham` theme. If the table is being displayed in a [Quarto](https://www.quarto.org) page or dashboard, it will automatically inherit the theme of the page on which it is hosted.
 
-You can customize most aspects of the table appearance using the `style`
-argument like:
+You can customize most aspects of the table appearance using the `style` argument like:
 
 ``` python
 from inspect_viz.table import column, table, Pagination, TableStyle
@@ -436,10 +348,7 @@ table(penguins,
 
 ### Color
 
-Using the three following basic color options will provide new colors
-for the table (with the overall colors of the table derived from these
-three themes). Each of these colors accepts a `css` color value (for
-example a hex color string or a named value like `red`).
+Using the three following basic color options will provide new colors for the table (with the overall colors of the table derived from these three themes). Each of these colors accepts a `css` color value (for example a hex color string or a named value like `red`).
 
 | Option | Target |
 |----|----|
@@ -447,9 +356,7 @@ example a hex color string or a named value like `red`).
 | `foreground_color` | The foreground color used for values within cells. |
 | `accent_color` | Accent color used for things like selection and highlights. |
 
-In addition to the previous basic options, you can do further
-customization of the colors by passing a `css` color value to the
-following:
+In addition to the previous basic options, you can do further customization of the colors by passing a `css` color value to the following:
 
 | Option | Target |
 |----|----|
@@ -460,8 +367,7 @@ following:
 
 ### Fonts
 
-You can control the fonts used by the table by passing a `css`
-`font-family` value in the following options:
+You can control the fonts used by the table by passing a `css` `font-family` value in the following options:
 
 | Option               | Target                                               |
 |----------------------|------------------------------------------------------|
@@ -471,8 +377,7 @@ You can control the fonts used by the table by passing a `css`
 
 ### Border
 
-You can control the border of the table using the following border
-options:
+You can control the border of the table using the following border options:
 
 | Options         | Target                                             |
 |-----------------|----------------------------------------------------|
@@ -482,13 +387,9 @@ options:
 
 ### Spacing
 
-The `spacing` options controls how tightly data and UI elements are
-packed together in the table. All the padding within in the table is
-defined relative to this value, so changing this value will affect the
-spacing of everything in the table.
+The `spacing` options controls how tightly data and UI elements are packed together in the table. All the padding within in the table is defined relative to this value, so changing this value will affect the spacing of everything in the table.
 
-By default, tables have `4` pixels of spacing. To change this value,
-pass the number of pixels like so:
+By default, tables have `4` pixels of spacing. To change this value, pass the number of pixels like so:
 
 ``` python
 table(penguins, 

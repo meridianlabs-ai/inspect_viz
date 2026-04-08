@@ -1,5 +1,6 @@
 # inspect_viz.interactor
 
+Plot interactors for selection and navigation.
 
 ## Selection
 
@@ -19,26 +20,19 @@ def interval_x(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form `field BETWEEN lo AND hi` is
-added for the currently selected interval \[lo, hi\].
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `field BETWEEN lo AND hi` is added for the currently selected interval \[lo, hi\].
 
 `field` str \| None  
-The name of the field (database column) over which the interval
-selection should be defined. If unspecified, the channel field of the
-first valid prior mark definition is used.
+The name of the field (database column) over which the interval selection should be defined. If unspecified, the channel field of the first valid prior mark definition is used.
 
 `pixel_size` float \| None  
-The size of an interative pixel (default `1`). Larger pixel sizes reduce
-the brush resolution, which can reduce the size of pre-aggregated
-materialized views.
+The size of an interative pixel (default `1`). Larger pixel sizes reduce the brush resolution, which can reduce the size of pre-aggregated materialized views.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
-`brush` [Brush](inspect_viz.interactor.qmd#brush) \| None  
+`brush` [Brush](../reference/inspect_viz.interactor.html.md#brush) \| None  
 CSS styles for the brush (SVG `rect`) element.
 
 ### interval_y
@@ -57,32 +51,24 @@ def interval_y(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form `field BETWEEN lo AND hi` is
-added for the currently selected interval \[lo, hi\].
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `field BETWEEN lo AND hi` is added for the currently selected interval \[lo, hi\].
 
 `field` str \| None  
-The name of the field (database column) over which the interval
-selection should be defined. If unspecified, the channel field of the
-first valid prior mark definition is used.
+The name of the field (database column) over which the interval selection should be defined. If unspecified, the channel field of the first valid prior mark definition is used.
 
 `pixel_size` float \| None  
-The size of an interative pixel (default `1`). Larger pixel sizes reduce
-the brush resolution, which can reduce the size of pre-aggregated
-materialized views.
+The size of an interative pixel (default `1`). Larger pixel sizes reduce the brush resolution, which can reduce the size of pre-aggregated materialized views.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
-`brush` [Brush](inspect_viz.interactor.qmd#brush) \| None  
+`brush` [Brush](../reference/inspect_viz.interactor.html.md#brush) \| None  
 CSS styles for the brush (SVG `rect`) element.
 
 ### interval_xy
 
-Select a continuous 2D interval selection over the `x` and `y` scale
-domains.
+Select a continuous 2D interval selection over the `x` and `y` scale domains.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/interactor/_interactors.py#L91)
 
@@ -97,32 +83,22 @@ def interval_xy(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(xfield BETWEEN x1 AND x2) AND (yfield BETWEEN y1 AND y2)` is added for
-the currently selected intervals.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(xfield BETWEEN x1 AND x2) AND (yfield BETWEEN y1 AND y2)` is added for the currently selected intervals.
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the interval selection should be defined. If unspecified, the `x`
-channel field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the interval selection should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the interval selection should be defined. If unspecified, the `y`
-channel field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the interval selection should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 `pixel_size` float \| None  
-The size of an interative pixel (default `1`). Larger pixel sizes reduce
-the brush resolution, which can reduce the size of pre-aggregated
-materialized views.
+The size of an interative pixel (default `1`). Larger pixel sizes reduce the brush resolution, which can reduce the size of pre-aggregated materialized views.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
-`brush` [Brush](inspect_viz.interactor.qmd#brush) \| None  
+`brush` [Brush](../reference/inspect_viz.interactor.html.md#brush) \| None  
 CSS styles for the brush (SVG `rect`) element.
 
 ### nearest_x
@@ -140,28 +116,17 @@ def nearest_x(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form `field = value` is added for
-the currently nearest value.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `field = value` is added for the currently nearest value.
 
 `channels` list\[str\] \| None  
-The encoding channels whose domain values should be selected. For
-example, a setting of `['color']` selects the data value backing the
-color channel, whereas `['x', 'z']` selects both x and z channel domain
-values. If unspecified, the selected channels default to match the
-current pointer settings: a `nearestX` interactor selects the `['x']`
-channels, while a `nearest` interactor selects the `['x', 'y']`
-channels.
+The encoding channels whose domain values should be selected. For example, a setting of `['color']` selects the data value backing the color channel, whereas `['x', 'z']` selects both x and z channel domain values. If unspecified, the selected channels default to match the current pointer settings: a `nearestX` interactor selects the `['x']` channels, while a `nearest` interactor selects the `['x', 'y']` channels.
 
 `fields` list\[str\] \| None  
-The fields (database column names) to use in generated selection clause
-predicates. If unspecified, the fields backing the selected *channels*
-in the first valid prior mark definition are used by default.
+The fields (database column names) to use in generated selection clause predicates. If unspecified, the fields backing the selected *channels* in the first valid prior mark definition are used by default.
 
 `max_radius` float \| None  
-The maximum radius of a nearest selection (default 40). Marks with
-(x, y) coordinates outside this radius will not be selected as nearest
-points.
+The maximum radius of a nearest selection (default 40). Marks with (x, y) coordinates outside this radius will not be selected as nearest points.
 
 ### nearest_y
 
@@ -178,28 +143,17 @@ def nearest_y(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form `field = value` is added for
-the currently nearest value.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `field = value` is added for the currently nearest value.
 
 `channels` list\[str\] \| None  
-The encoding channels whose domain values should be selected. For
-example, a setting of `['color']` selects the data value backing the
-color channel, whereas `['x', 'z']` selects both x and z channel domain
-values. If unspecified, the selected channels default to match the
-current pointer settings: a `nearestX` interactor selects the `['x']`
-channels, while a `nearest` interactor selects the `['x', 'y']`
-channels.
+The encoding channels whose domain values should be selected. For example, a setting of `['color']` selects the data value backing the color channel, whereas `['x', 'z']` selects both x and z channel domain values. If unspecified, the selected channels default to match the current pointer settings: a `nearestX` interactor selects the `['x']` channels, while a `nearest` interactor selects the `['x', 'y']` channels.
 
 `fields` list\[str\] \| None  
-The fields (database column names) to use in generated selection clause
-predicates. If unspecified, the fields backing the selected *channels*
-in the first valid prior mark definition are used by default.
+The fields (database column names) to use in generated selection clause predicates. If unspecified, the fields backing the selected *channels* in the first valid prior mark definition are used by default.
 
 `max_radius` float \| None  
-The maximum radius of a nearest selection (default 40). Marks with
-(x, y) coordinates outside this radius will not be selected as nearest
-points.
+The maximum radius of a nearest selection (default 40). Marks with (x, y) coordinates outside this radius will not be selected as nearest points.
 
 ### toggle
 
@@ -215,24 +169,18 @@ def toggle(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(field = value1) OR (field = value2) ...` is added for the currently
-selected values.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
 
 `channels` list\[str\]  
-The encoding channels over which to select values. For a selected mark,
-selection clauses will cover the backing data fields for each channel.
+The encoding channels over which to select values. For a selected mark, selection clauses will cover the backing data fields for each channel.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
 ### toggle_x
 
-Select individal values in the `x` scale domain. Clicking or touching a
-mark toggles its selection status.
+Select individal values in the `x` scale domain. Clicking or touching a mark toggles its selection status.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/interactor/_interactors.py#L183)
 
@@ -243,15 +191,11 @@ def toggle_x(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(field = value1) OR (field = value2) ...` is added for the currently
-selected values.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
 ### toggle_y
 
@@ -266,20 +210,15 @@ def toggle_y(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(field = value1) OR (field = value2) ...` is added for the currently
-selected values.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
 ### toggle_color
 
-Select individal values in the `color` scale domain. Clicking or
-touching a mark toggles its selection status.
+Select individal values in the `color` scale domain. Clicking or touching a mark toggles its selection status.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/interactor/_interactors.py#L205)
 
@@ -290,15 +229,11 @@ def toggle_color(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(field = value1) OR (field = value2) ...` is added for the currently
-selected values.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
 ### region
 
@@ -315,30 +250,23 @@ def region(
 ) -> Interactor
 ```
 
-`target` [Selection](inspect_viz.qmd#selection)  
-The target selection. A clause of the form
-`(field = value1) OR (field = value2) ...` is added for the currently
-selected values.
+`target` [Selection](../reference/inspect_viz.html.md#selection)  
+The target selection. A clause of the form `(field = value1) OR (field = value2) ...` is added for the currently selected values.
 
 `channels` list\[str\]  
-The encoding channels over which to select values (e.g. “x”, “y”,
-“color”, etc.). For a selected mark, selection clauses will cover the
-backing data fields for each channel.
+The encoding channels over which to select values (e.g. “x”, “y”, “color”, etc.). For a selected mark, selection clauses will cover the backing data fields for each channel.
 
 `peers` bool \| None  
-A flag indicating if peer (sibling) marks are excluded when
-cross-filtering (default `true`). If set, peer marks will not be
-filtered by this interactor’s selection in cross-filtering setups.
+A flag indicating if peer (sibling) marks are excluded when cross-filtering (default `true`). If set, peer marks will not be filtered by this interactor’s selection in cross-filtering setups.
 
-`brush` [Brush](inspect_viz.interactor.qmd#brush) \| None  
+`brush` [Brush](../reference/inspect_viz.interactor.html.md#brush) \| None  
 CSS styles for the brush (SVG `rect`) element.
 
 ### highlight
 
-Highlight individual visualized data points based on a `Selection`.
+Highlight individual visualized data points based on a [Selection](../reference/inspect_viz.html.md#selection).
 
-Selected values keep their normal appearance. Unselected values are
-deemphasized.
+Selected values keep their normal appearance. Unselected values are deemphasized.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/interactor/_interactors.py#L17)
 
@@ -353,27 +281,23 @@ def highlight(
 ) -> Interactor
 ```
 
-`by` [Selection](inspect_viz.qmd#selection)  
+`by` [Selection](../reference/inspect_viz.html.md#selection)  
 The input selection. Unselected marks are deemphasized.
 
 `opacity` float \| None  
-The overall opacity of deemphasized marks. By default the opacity is set
-to 0.2.
+The overall opacity of deemphasized marks. By default the opacity is set to 0.2.
 
 `fill_opacity` float \| None  
-The fill opacity of deemphasized marks. By default the fill opacity is
-unchanged.
+The fill opacity of deemphasized marks. By default the fill opacity is unchanged.
 
 `stroke_opacity` float \| None  
-The stroke opacity of deemphasized marks. By default the stroke opacity
-is unchanged.
+The stroke opacity of deemphasized marks. By default the stroke opacity is unchanged.
 
 `fill` str \| None  
 The fill color of deemphasized marks. By default the fill is unchanged.
 
 `stroke` str \| None  
-The stroke color of deemphasized marks. By default the stroke is
-unchanged.
+The stroke color of deemphasized marks. By default the stroke is unchanged.
 
 ## Navigation
 
@@ -392,25 +316,17 @@ def pan(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ### pan_x
 
@@ -427,25 +343,17 @@ def pan_x(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ### pan_y
 
@@ -462,25 +370,17 @@ def pan_y(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ### pan_zoom
 
@@ -497,25 +397,17 @@ def pan_zoom(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ### pan_zoom_x
 
@@ -532,25 +424,17 @@ def pan_zoom_x(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ### pan_zoom_y
 
@@ -567,32 +451,23 @@ def pan_zoom_y(
 ) -> Interactor
 ```
 
-`x` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `x` domain. A clause of the form
-`field BETWEEN x1 AND x2` is added for the current pan/zom interval
-\[x1, x2\].
+`x` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `x` domain. A clause of the form `field BETWEEN x1 AND x2` is added for the current pan/zom interval \[x1, x2\].
 
-`y` [Selection](inspect_viz.qmd#selection) \| None  
-The output selection for the `y` domain. A clause of the form
-`field BETWEEN y1 AND y2` is added for the current pan/zom interval
-\[y1, y2\].
+`y` [Selection](../reference/inspect_viz.html.md#selection) \| None  
+The output selection for the `y` domain. A clause of the form `field BETWEEN y1 AND y2` is added for the current pan/zom interval \[y1, y2\].
 
 `xfield` str \| None  
-The name of the field (database column) over which the `x`-component of
-the pan/zoom interval should be defined. If unspecified, the `x` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `x`-component of the pan/zoom interval should be defined. If unspecified, the `x` channel field of the first valid prior mark definition is used.
 
 `yfield` str \| None  
-The name of the field (database column) over which the `y`-component of
-the pan/zoom interval should be defined. If unspecified, the `y` channel
-field of the first valid prior mark definition is used.
+The name of the field (database column) over which the `y`-component of the pan/zoom interval should be defined. If unspecified, the `y` channel field of the first valid prior mark definition is used.
 
 ## Types
 
 ### Interactor
 
-Interactors imbue plots with interactive behavior, such as selecting or
-highlighting values, and panning or zooming the display.
+Interactors imbue plots with interactive behavior, such as selecting or highlighting values, and panning or zooming the display.
 
 [Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/interactor/_interactors.py#L9)
 
@@ -609,23 +484,3 @@ Brush options.
 ``` python
 class Brush(TypedDict, total=False)
 ```
-
-#### Attributes
-
-`fill` str  
-The fill color of the brush rectangle.
-
-`fill_opacity` float  
-The fill opacity of the brush rectangle.
-
-`opacity` float  
-The overall opacity of the brush rectangle.
-
-`stroke` str  
-The stroke color of the brush rectangle.
-
-`stroke_dasharray` str  
-The stroke dash array of the brush rectangle.
-
-`stroke_opacity` float  
-The stroke opacity of the brush rectangle.
