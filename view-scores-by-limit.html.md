@@ -67,7 +67,7 @@ Visualizes success rate as a function of a resource limit (time, tokens).
 
 Model success rate is plotted as a function of the time, tokens, or other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -1147,7 +1147,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(

@@ -14,7 +14,7 @@ Select inputs have a `target` which is either a [Param](../reference/inspect_viz
 
 The intitial selected value will be “All” when `target` is a [Selection](../reference/inspect_viz.html.md#selection) (indicating select all records) and the param value when `target` is a [Param](../reference/inspect_viz.html.md#param).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_select.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_select.py#L10)
 
 ``` python
 def select(
@@ -68,7 +68,7 @@ Width in pixels (defaults to 150).
 
 Select input widget.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_slider.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_slider.py#L10)
 
 ``` python
 def slider(
@@ -128,7 +128,7 @@ The width of the slider in screen pixels (defaults to 200)
 
 Text search input widget
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_search.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_search.py#L10)
 
 ``` python
 def search(
@@ -180,7 +180,7 @@ Checkboxes have a `target` which is either a [Param](../reference/inspect_viz.ht
 
 The `values` tuple enables you to determine what value is communicated to the target for checked and unchecked states (by default, this is `True` and `False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_checkbox.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_checkbox.py#L8)
 
 ``` python
 def checkbox(
@@ -222,7 +222,7 @@ Radio groups have a `target` which is either a [Param](../reference/inspect_viz.
 
 The intitial selected value will be “All” when `target` is a [Selection](../reference/inspect_viz.html.md#selection) (indicating select all records) and the param value when `target` is a [Param](../reference/inspect_viz.html.md#param).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_radio_group.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_radio_group.py#L8)
 
 ``` python
 def radio_group(
@@ -270,7 +270,7 @@ Checkbox groups have a `target` which is either a [Param](../reference/inspect_v
 
 The intitial selected values will be empty when `target` is a [Selection](../reference/inspect_viz.html.md#selection) (indicating select all records) and the param value(s) when `target` is a [Param](../reference/inspect_viz.html.md#param) (param values should be an array with one or more checkbox values).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_checkbox_group.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_checkbox_group.py#L8)
 
 ``` python
 def checkbox_group(

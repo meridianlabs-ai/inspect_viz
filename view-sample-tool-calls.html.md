@@ -56,7 +56,7 @@ Note that the trimming of columns is particularly important because Inspect Viz 
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(

@@ -6,7 +6,7 @@ Component layout functions.
 
 Horizontally concatenate components in a row layout.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/layout/_concat.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/layout/_concat.py#L16)
 
 ``` python
 def hconcat(*component: Component) -> Component
@@ -19,7 +19,7 @@ Components to concatenate.
 
 Vertically concatenate components in a column layout.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/layout/_concat.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/layout/_concat.py#L6)
 
 ``` python
 def vconcat(*component: Component) -> Component
@@ -32,7 +32,7 @@ Components to concatenate.
 
 Horizontal space to place between widgets.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/layout/_space.py#L4)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/layout/_space.py#L4)
 
 ``` python
 def hspace(hspace: float | str = 10) -> Component
@@ -45,7 +45,7 @@ Amount of space. Number values indicate screen pixels. String values may use CSS
 
 Veritcal space to place between widgets.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/layout/_space.py#L13)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/layout/_space.py#L13)
 
 ``` python
 def vspace(vspace: float | str = 10) -> Component

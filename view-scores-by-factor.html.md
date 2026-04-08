@@ -39,7 +39,7 @@ You should also ensure that your evals data frame has a boolean field correspond
 
 Summarize eval scores with a factor of variation (e.g ‘No hint’ vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(

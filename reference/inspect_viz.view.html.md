@@ -10,7 +10,7 @@ Bar plot for comparing eval scores.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -1078,7 +1078,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Summarize eval scores with a factor of variation (e.g ‘No hint’ vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -2158,7 +2158,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -3260,7 +3260,7 @@ Bar plot for comparing the scores of different models on a single evaluation.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “model_display_name” (`y`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -4336,7 +4336,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(
@@ -5418,7 +5418,7 @@ Visualizes success rate as a function of a resource limit (time, tokens).
 
 Model success rate is plotted as a function of the time, tokens, or other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -6498,7 +6498,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(
@@ -6531,7 +6531,7 @@ The number of points to use when sampling the limit range (defaults to 100).
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -7603,7 +7603,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_sample_heatmap.py#L16)
 
 ``` python
 def sample_heatmap(
@@ -8685,7 +8685,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Creates a heatmap plot of arbitrary data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_heatmap.py#L32)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_heatmap.py#L32)
 
 ``` python
 def heatmap(
@@ -9771,7 +9771,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Cell options for the heatmap.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_heatmap.py#L22)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_heatmap.py#L22)
 
 ``` python
 class CellOptions(TypedDict, total=False)

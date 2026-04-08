@@ -42,7 +42,7 @@ Bar plot for comparing the scores of different models on a single evaluation.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “model_display_name” (`y`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(

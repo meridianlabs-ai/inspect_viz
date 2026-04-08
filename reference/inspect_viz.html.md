@@ -10,7 +10,7 @@ Data source for visualizations.
 
 Data sources can be created from any standard Python data frame (e.g. Pandas, Polars, etc.) or from a path pointing to a data file in a standard format (e.g. csv, parquet, etc.)
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/data.py#L18)
 
 ``` python
 class Data
@@ -26,7 +26,7 @@ Column names for data source.
 from_dataframe  
 Create [Data](../reference/inspect_viz.html.md#data) from a standard Python data frame (e.g. Pandas, Polars, PyArrow, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L24)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/data.py#L24)
 
 ``` python
 @classmethod
@@ -39,7 +39,7 @@ Data frame to read.
 from_file  
 Create [Data](../reference/inspect_viz.html.md#data) from a data file (e.g. csv, parquet, feather, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/data.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/data.py#L33)
 
 ``` python
 @classmethod
@@ -57,7 +57,7 @@ Visualization components are Jupyter widgets that can be used in any notebook or
 
 See the documentation on inputs, plots, marks, and interactors for details on available components.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/component.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/component.py#L47)
 
 ``` python
 class Component(AnyWidget)
@@ -76,7 +76,7 @@ Selection types include:
 - `Selection.single()` for a single clause only
 - `Selection.crossfilter()` for a cross-filtered intersection
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/selection.py#L10)
 
 ``` python
 class Selection(str)
@@ -87,7 +87,7 @@ class Selection(str)
 intersect  
 Create a new Selection instance with an intersect (conjunction) resolution strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/selection.py#L27)
 
 ``` python
 @classmethod
@@ -111,7 +111,7 @@ Upstream selections whose clauses should be included as part of the new selectio
 union  
 Create a new Selection instance with a union (disjunction) resolution strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L43)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/selection.py#L43)
 
 ``` python
 @classmethod
@@ -135,7 +135,7 @@ Upstream selections whose clauses should be included as part of the new selectio
 single  
 Create a new Selection instance with a singular resolution strategy that keeps only the most recent selection clause.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L59)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/selection.py#L59)
 
 ``` python
 @classmethod
@@ -159,7 +159,7 @@ Upstream selections whose clauses should be included as part of the new selectio
 crossfilter  
 Create a new Selection instance with a cross-filtered intersect resolution strategy.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/selection.py#L75)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/selection.py#L75)
 
 ``` python
 @classmethod
@@ -180,7 +180,7 @@ Upstream selections whose clauses should be included as part of the new selectio
 
 Parameter that can be bound from inputs.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/param.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/param.py#L16)
 
 ``` python
 class Param(str)
@@ -198,7 +198,7 @@ Default value.
 
 Type alias for parameter values (scalar or sequence of scalars).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/param.py#L10)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/param.py#L10)
 
 ``` python
 ParamValue: TypeAlias = (
@@ -212,7 +212,7 @@ ParamValue: TypeAlias = (
 
 Inspect Viz global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/_options.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/_options.py#L25)
 
 ``` python
 options: Options = Options(output_format="auto")
@@ -222,7 +222,7 @@ options: Options = Options(output_format="auto")
 
 Context manager for temporarily overriding global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/_options.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/_options.py#L29)
 
 ``` python
 def options_context(
@@ -237,7 +237,7 @@ def options_context(
 
 Inspect Viz global options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/_core/_options.py#L12)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/_core/_options.py#L12)
 
 ``` python
 class Options(SimpleNamespace)

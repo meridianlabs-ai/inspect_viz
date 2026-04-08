@@ -85,7 +85,7 @@ df.to_parquet("radar_by_task.parquet")
 
 Creates a radar chart showing scores for multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -1139,7 +1139,7 @@ Creates a dataframe for a radar chart showing headline metrics across multiple m
 
 This is useful for comparing the headline metrics of multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(

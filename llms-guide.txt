@@ -566,7 +566,7 @@ Bar plot for comparing eval scores.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -1679,7 +1679,7 @@ Bar plot for comparing the scores of different models on a single evaluation.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “model_display_name” (`y`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -2797,7 +2797,7 @@ You should also ensure that your evals data frame has a boolean field correspond
 
 Summarize eval scores with a factor of variation (e.g ‘No hint’ vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -3947,7 +3947,7 @@ Visualizes success rate as a function of a resource limit (time, tokens).
 
 Model success rate is plotted as a function of the time, tokens, or other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -5027,7 +5027,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(
@@ -5105,7 +5105,7 @@ When multiple organizations exist, clicking on the legend for an organization wi
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -6251,7 +6251,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(
@@ -7410,7 +7410,7 @@ Creates a radar chart showing scores for multiple models across multiple metrics
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -7435,7 +7435,7 @@ Creates a dataframe for a radar chart showing multiple models across multiple me
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(
@@ -7558,7 +7558,7 @@ df.to_parquet("radar_by_task.parquet")
 
 Creates a radar chart showing scores for multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -8612,7 +8612,7 @@ Creates a dataframe for a radar chart showing headline metrics across multiple m
 
 This is useful for comparing the headline metrics of multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(
@@ -8706,7 +8706,7 @@ Note that the trimming of columns is particularly important because Inspect Viz 
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -9835,7 +9835,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/view/_sample_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_sample_heatmap.py#L16)
 
 ``` python
 def sample_heatmap(

@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e9314a38fe0d92f389e9ca157fc1aadb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ab1bf0485cdc037c1916ce67db55c611.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -1505,7 +1505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Select inputs have a <code>target</code> which is either a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span> or <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span>. In the latter case, the <code>field</code> parameter determines the data column name to use within generated selection clause predicates (defaulting to <code>column</code>). If no <code>target</code> is specified then the data source’s selection is used as the target.</p>
 <p>The intitial selected value will be “All” when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span> (indicating select all records) and the param value when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span>.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_select.py#L10">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_select.py#L10">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1569,7 +1569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="slider">slider</h3>
 <p>Select input widget.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_slider.py#L10">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_slider.py#L10">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slider(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1641,7 +1641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="search">search</h3>
 <p>Text search input widget</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_search.py#L10">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_search.py#L10">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -1700,7 +1700,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Checkboxes have a <code>target</code> which is either a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span> or <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span>. In the latter case, the <code>field</code> parameter determines the data column name to use within generated selection clause predicates (defaulting to <code>column</code>). If no <code>target</code> is specified then the data source’s selection is used as the target.</p>
 <p>The <code>values</code> tuple enables you to determine what value is communicated to the target for checked and unchecked states (by default, this is <code>True</code> and <code>False</code>).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_checkbox.py#L8">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_checkbox.py#L8">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> checkbox(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1745,7 +1745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Radio groups have a <code>target</code> which is either a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span> or <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span>. In the latter case, the <code>field</code> parameter determines the data column name to use within generated selection clause predicates (defaulting to <code>column</code>). If no <code>target</code> is specified then the data source’s selection is used as the target.</p>
 <p>The intitial selected value will be “All” when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span> (indicating select all records) and the param value when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span>.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_radio_group.py#L8">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_radio_group.py#L8">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> radio_group(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -1797,7 +1797,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Checkbox groups have a <code>target</code> which is either a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span> or <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span>. In the latter case, the <code>field</code> parameter determines the data column name to use within generated selection clause predicates (defaulting to <code>column</code>). If no <code>target</code> is specified then the data source’s selection is used as the target.</p>
 <p>The intitial selected values will be empty when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#selection">Selection</a></span> (indicating select all records) and the param value(s) when <code>target</code> is a <span class="element-type-name ref-interlink"><a href="../reference/inspect_viz.html#param">Param</a></span> (param values should be an array with one or more checkbox values).</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/b7ff86f26d2b0701b70fdc5c3a024ac7d7f5473e/src/inspect_viz/input/_checkbox_group.py#L8">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/input/_checkbox_group.py#L8">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> checkbox_group(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    data: Data <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
@@ -2380,6 +2380,16 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
+    <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz">
+<p>Code</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz/blob/main/CHANGELOG.md">
+<p>Changelog</p>
+</a>
+  </li>  
+    <li class="nav-item">
     <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz/blob/main/LICENSE">
 <p>License</p>
 </a>
@@ -2394,7 +2404,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz">
+    <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz/">
       <i class="bi bi-github" role="img" aria-label="Inspect Viz on GitHub">
 </i> 
     </a>
