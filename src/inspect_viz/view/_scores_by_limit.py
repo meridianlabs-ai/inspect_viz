@@ -72,11 +72,11 @@ def scores_by_limit_df(
     # compute the total tokens
     if limit == "total_tokens":
         df["total_tokens"] = df.apply(
-            lambda x: json.loads(x["model_usage"])
-            .get(x["model"], {})
-            .get("total_tokens", {})
-            if pd.notnull(x["model_usage"])
-            else None,
+            lambda x: (
+                json.loads(x["model_usage"]).get(x["model"], {}).get("total_tokens", {})
+                if pd.notnull(x["model_usage"])
+                else None
+            ),
             axis=1,
         )
 
