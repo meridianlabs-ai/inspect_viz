@@ -43,7 +43,7 @@ class Legend(Component):
         config["_frame_anchor"] = frame_anchor or "right"
 
         # forward super to config
-        super().__init__(legend_config | config)
+        super().__init__({**legend_config, **config})
 
     @property
     def frame_anchor(self) -> FrameAnchor:

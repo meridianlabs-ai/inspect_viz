@@ -11,7 +11,7 @@ class Interactor(Component):
 
     def __init__(self, select: str, config: dict[str, JsonValue]) -> None:
         interactor: dict[str, JsonValue] = {"select": select}
-        super().__init__(interactor | config)
+        super().__init__({**interactor, **config})
 
 
 def highlight(
