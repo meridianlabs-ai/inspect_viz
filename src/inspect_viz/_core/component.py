@@ -1,4 +1,6 @@
 import base64
+import json
+import secrets
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal, cast
@@ -10,7 +12,12 @@ from pydantic_core import to_json, to_jsonable_python
 
 from .._util.constants import WIDGETS_DIR
 from .._util.marshall import dict_remove_none
-from .._util.platform import quarto_png, running_in_colab, running_in_quarto
+from .._util.platform import (
+    quarto_execute_info,
+    quarto_png,
+    running_in_colab,
+    running_in_quarto,
+)
 from ._options import options
 from .data import Data
 from .param import Param as VizParam
@@ -143,7 +150,106 @@ class Component(AnyWidget):
         if not self.spec:
             self.spec = self._create_spec()
 
+        # In Quarto render, emit pure text/html so Quarto does not detect a
+        # Jupyter widget MIME and auto-inject the ~3.5 MB embed-amd.js bundle.
+        # Live-kernel / notebook / Colab paths keep the standard anywidget
+        # widget-view+json output.
+        if running_in_quarto():
+            return {"text/html": self._quarto_html()}, {}
+
         return super()._repr_mimebundle_(**kwargs)
+
+    # Per-document state: only the first widget on a given document carries
+    # the full ESM + CSS; subsequent widgets reference them by DOM id.
+    _quarto_assets_embedded_for_doc: "str | None" = None
+
+    def _quarto_html(self) -> str:
+        """Self-contained HTML output for a single widget under Quarto render.
+
+        The first widget on each document inlines the widget ESM (our
+        `mosaic.js` bundle) and the merged CSS inside `<script id="iv-esm">`
+        and `<style id="iv-css">` blocks. Subsequent widgets reference those
+        by id, so the ESM text appears once per page instead of once per
+        widget. Each widget carries a small bootstrap that builds a minimal
+        model shim over its state (`spec`, `tables`) and calls `render()`.
+        """
+        widget_id = f"iv-{secrets.token_hex(8)}"
+
+        info = quarto_execute_info()
+        doc_path = info["document-path"] if info else ""
+        include_assets = Component._quarto_assets_embedded_for_doc != doc_path
+        if include_assets:
+            Component._quarto_assets_embedded_for_doc = doc_path
+
+        # Normalise `tables`: URL strings pass through; bytes get base64-
+        # encoded for inlining. The bootstrap decodes to DataView at load.
+        tables_payload: dict[str, JsonValue] = {}
+        for name, val in self.tables.items():
+            if isinstance(val, bytes):
+                tables_payload[name] = {
+                    "__iv_bytes__": True,
+                    "data": base64.b64encode(val).decode("ascii"),
+                }
+            else:
+                tables_payload[name] = val
+
+        state_json = json.dumps(
+            {"spec": self.spec, "tables": tables_payload},
+            separators=(",", ":"),
+        ).replace("</", "<\\/")
+
+        assets = ""
+        if include_assets:
+            esm_text = _escape_script_content(
+                (WIDGETS_DIR / "mosaic.js").read_text()
+            )
+            css_text = _escape_script_content(Component._css or "")
+            assets_parts = []
+            if css_text.strip():
+                assets_parts.append(
+                    f'<style id="iv-css">{css_text}</style>'
+                )
+            assets_parts.append(
+                f'<script id="iv-esm" type="text/plain">{esm_text}</script>'
+            )
+            assets = "".join(assets_parts)
+
+        bootstrap = f"""<script type="module">
+(() => {{
+  const state = {state_json};
+  for (const k in state.tables) {{
+    const v = state.tables[k];
+    if (v && typeof v === 'object' && v.__iv_bytes__) {{
+      const bin = atob(v.data);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      state.tables[k] = new DataView(bytes.buffer);
+    }}
+  }}
+  const el = document.getElementById({json.dumps(widget_id)});
+  const model = {{
+    get: k => state[k], set: () => {{}}, on: () => {{}}, off: () => {{}},
+    save_changes: () => {{}}, send: () => {{}}, widget_manager: null,
+  }};
+  window.__inspectVizHost = window.__inspectVizHost || (async () => {{
+    const esmEl = document.getElementById('iv-esm');
+    if (!esmEl) throw new Error('inspect-viz ESM block not found');
+    const url = URL.createObjectURL(new Blob([esmEl.textContent], {{type:'text/javascript'}}));
+    const mod = await import(url);
+    URL.revokeObjectURL(url);
+    return typeof mod.default === 'function' ? await mod.default() : mod.default;
+  }})();
+  window.__inspectVizHost
+    .then(w => w.render({{model, el}}))
+    .catch(e => console.error('inspect-viz render failed', e));
+}})();
+</script>"""
+
+        return (
+            f'{assets}'
+            f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected"></div>'
+            f'{bootstrap}'
+        )
 
     _esm = WIDGETS_DIR / "mosaic.js"
     _css: str = ""
@@ -174,6 +280,16 @@ class Component(AnyWidget):
 
         # to json
         return to_json(spec, exclude_none=True).decode()
+
+
+def _escape_script_content(text: str) -> str:
+    r"""Escape ``</`` sequences so they don't close an enclosing tag.
+
+    HTML parsers look for the literal ``</`` bytes when scanning for the end
+    of a ``<script>`` or ``<style>`` block. Replacing ``</`` with ``<\/`` is
+    safe inside both JavaScript and JSON bodies.
+    """
+    return text.replace("</", "<\\/")
 
 
 def all_tables(*, collect: bool) -> dict[str, bytes | str]:
