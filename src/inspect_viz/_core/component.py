@@ -136,9 +136,16 @@ class Component(AnyWidget):
             else:
                 return None
 
-        # standard js output
-        else:
-            return self._mimebundle(collect=running_in_quarto(), **kwargs)
+        # Quarto HTML render: emit pure text/html so Quarto does not detect a
+        # Jupyter widget MIME and auto-inject the ~3.5 MB embed-amd.js bundle.
+        if running_in_quarto():
+            self.tables = all_tables(collect=True)
+            if not self.spec:
+                self.spec = self._create_spec()
+            return {"text/html": self._quarto_html()}, {}
+
+        # Notebook / Colab / live-kernel: standard anywidget output.
+        return self._mimebundle(collect=False, **kwargs)
 
     def _mimebundle(
         self, *, collect: bool, **kwargs: Any
@@ -150,41 +157,50 @@ class Component(AnyWidget):
         if not self.spec:
             self.spec = self._create_spec()
 
-        # In Quarto render, emit pure text/html so Quarto does not detect a
-        # Jupyter widget MIME and auto-inject the ~3.5 MB embed-amd.js bundle.
-        # Live-kernel / notebook / Colab paths keep the standard anywidget
-        # widget-view+json output.
-        if running_in_quarto():
-            return {"text/html": self._quarto_html()}, {}
-
         return super()._repr_mimebundle_(**kwargs)
 
     # Per-document state: only the first widget on a given document carries
     # the full ESM + CSS; subsequent widgets reference them by DOM id.
     _quarto_assets_embedded_for_doc: "str | None" = None
 
-    def _quarto_html(self) -> str:
-        """Self-contained HTML output for a single widget under Quarto render.
+    def _quarto_html(
+        self, tables_override: dict[str, bytes] | None = None
+    ) -> str:
+        """Self-contained HTML output for a single widget.
+
+        Used for two paths:
+        - Quarto HTML render (`tables_override=None`): `self.tables` carries
+          URL strings pointing to `site_data/immutable/<hash>.arrow` assets.
+        - PNG / `to_html` (`tables_override={name: bytes}`): bytes get
+          base64-inlined so Playwright can render in a file:// context.
 
         The first widget on each document inlines the widget ESM (our
-        `mosaic.js` bundle) and the merged CSS inside `<script id="iv-esm">`
-        and `<style id="iv-css">` blocks. Subsequent widgets reference those
-        by id, so the ESM text appears once per page instead of once per
-        widget. Each widget carries a small bootstrap that builds a minimal
-        model shim over its state (`spec`, `tables`) and calls `render()`.
+        `mosaic.js` bundle) and merged CSS inside `<script id="iv-esm">`
+        and `<style id="iv-css">` blocks. Subsequent widgets reference them
+        by id so the ESM text appears once per page.
         """
         widget_id = f"iv-{secrets.token_hex(8)}"
 
-        info = quarto_execute_info()
-        doc_path = info["document-path"] if info else ""
-        include_assets = Component._quarto_assets_embedded_for_doc != doc_path
-        if include_assets:
-            Component._quarto_assets_embedded_for_doc = doc_path
+        # PNG / to_html paths bypass the per-doc dedup — each invocation
+        # is a fresh, self-contained snippet and needs its own assets block.
+        if tables_override is not None:
+            include_assets = True
+        else:
+            info = quarto_execute_info()
+            doc_path = info["document-path"] if info else ""
+            include_assets = Component._quarto_assets_embedded_for_doc != doc_path
+            if include_assets:
+                Component._quarto_assets_embedded_for_doc = doc_path
 
         # Normalise `tables`: URL strings pass through; bytes get base64-
         # encoded for inlining. The bootstrap decodes to DataView at load.
+        tables_source: dict[str, bytes | str] = (
+            cast(dict[str, bytes | str], tables_override)
+            if tables_override is not None
+            else self.tables
+        )
         tables_payload: dict[str, JsonValue] = {}
-        for name, val in self.tables.items():
+        for name, val in tables_source.items():
             if isinstance(val, bytes):
                 tables_payload[name] = {
                     "__iv_bytes__": True,
@@ -204,7 +220,15 @@ class Component(AnyWidget):
                 (WIDGETS_DIR / "mosaic.js").read_text()
             )
             css_text = _escape_script_content(Component._css or "")
+
             assets_parts = []
+            # Preload the DuckDB-WASM EH binary so its fetch overlaps with
+            # everything else on the page. On warm cache it's a no-op; on
+            # cold visits it shaves an RTT off DuckDB init.
+            assets_parts.append(
+                '<link rel="preload" as="fetch" crossorigin '
+                'href="https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm">'
+            )
             if css_text.strip():
                 assets_parts.append(
                     f'<style id="iv-css">{css_text}</style>'

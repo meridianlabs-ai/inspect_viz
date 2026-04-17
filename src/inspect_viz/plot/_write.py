@@ -1,77 +1,52 @@
-import json
 import subprocess
 import sys
 import tempfile
 from contextlib import asynccontextmanager
 from io import BytesIO
 from pathlib import Path
-from textwrap import dedent
 from typing import Any, AsyncIterator
 
-import ipywidgets  # type: ignore
-from ipywidgets.embed import embed_data, escape_script  # type: ignore
 from PIL import Image, ImageChops, ImageOps
 from typing_extensions import overload
 
+from inspect_viz._core.data import Data
 from inspect_viz._util._async import current_async_backend, run_coroutine
 
 from .. import Component
 
 
 def to_html(component: Component, dependencies: bool = True) -> str:
-    """Genreate an HTML snippet for a plot or other component.
+    """Generate a self-contained HTML snippet for a plot or other component.
+
+    The returned snippet embeds the inspect-viz widget ESM plus a small
+    bootstrap inline — no external Jupyter-widget (`embed-amd.js`,
+    `requirejs`, `jquery`) dependencies. Suitable for Playwright headless
+    rendering (`write_png`) and general embedding.
 
     Args:
-       component: Compontent to export.
-       dependencies: Include JavaScript dependencies required for Jupyter widget rendering.
-          Dependencies should only be included once per web-page, so if you already have
-          them on a page you might want to disable including them when generating HTML.
+       component: Component to export.
+       dependencies: Accepted for backward compatibility; the returned
+          snippet is always self-contained, so this parameter has no
+          effect.
     """
-    # realize the widget data and state
+    del dependencies  # snippet is always self-contained
+
+    # Populate widget state (tables + spec).
     component._mimebundle(collect=False)
-    widget_data = embed_data(views=[component], drop_defaults=False)
-    widget_state = escape_script(json.dumps(widget_data["manager_state"], indent=2))
 
-    # create views
-    widget_view_template = dedent("""
-    <script type="application/vnd.jupyter.widget-view+json">
-    {view_spec}
-    </script>
-    """)
-    widget_views = "\n".join(
-        widget_view_template.format(view_spec=escape_script(json.dumps(view_spec)))
-        for view_spec in widget_data["view_specs"]
+    # Under Quarto render, `_mimebundle` set tables to URL strings pointing
+    # at `site_data/immutable/*.arrow` — unreachable from a Playwright
+    # file:// temp page. Force inline-bytes for every tracked Data so the
+    # snippet renders in isolation.
+    tables_bytes: dict[str, bytes] = {
+        data.table: data._data for data in Data._get_all() if data._data
+    }
+    snippet = component._quarto_html(tables_override=tables_bytes)
+    return (
+        "<!doctype html><html><head>"
+        '<meta charset="utf-8">'
+        f"</head><body>{snippet}</body></html>"
     )
-
-    # create runtime dependencies
-    html_manager_version = ipywidgets._version.__html_manager_version__
-    jupyter_dependencies = (
-        dedent(f"""
-
-    <!--[jupyter_widget_dependencies]-->
-    <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@{html_manager_version}/dist/embed-amd.js" crossorigin="anonymous"></script>
-    <!--[/jupyter_widget_dependencies]-->
-    """)
-        if dependencies
-        else ""
-    )
-
-    return HTML_SNIPPET_TEMPLATE.format(
-        dependencies=jupyter_dependencies,
-        widget_state=widget_state,
-        widget_views=widget_views,
-    )
-
-
-HTML_SNIPPET_TEMPLATE = """
-<div>{dependencies}
-<script type="application/vnd.jupyter.widget-state+json">
-{widget_state}
-</script>
-{widget_views}
-</div>
-"""
 
 
 def write_html(

@@ -82,8 +82,11 @@ class Data:
                 immutable_dir.mkdir(parents=True, exist_ok=True)
                 file_path.write_bytes(raw_bytes)
             self._data_url = f"{url_prefix}{filename}"
-            # drop bytes — URL is all the client needs
-            self._data = b""
+            # NOTE: keep `self._data` populated even when a URL is written.
+            # The Quarto render path prefers `_data_url` over the bytes
+            # (see `_get_data` / `_collect_data`), so the bytes are never
+            # embedded in the HTML — but the in-process PNG path needs them
+            # to inline data into a Playwright-renderable snippet.
 
         # track whether we have been collected
         self._collected = False
