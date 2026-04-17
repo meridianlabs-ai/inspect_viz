@@ -1521,6 +1521,85 @@ function throttle2(func, wait, options = {}) {
 }
 
 // js/context/duckdb.ts
+var WASM_CACHE_DB = "inspect-viz";
+var WASM_CACHE_STORE = "wasm-modules";
+function openWasmCacheDb() {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error("indexedDB.open timeout")),
+      1e3
+    );
+    const req = indexedDB.open(WASM_CACHE_DB, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(WASM_CACHE_STORE);
+    req.onsuccess = () => {
+      clearTimeout(timer);
+      resolve(req.result);
+    };
+    req.onerror = () => {
+      clearTimeout(timer);
+      reject(req.error);
+    };
+  });
+}
+function idbGet(db, key) {
+  return new Promise((resolve, reject) => {
+    const req = db.transaction(WASM_CACHE_STORE, "readonly").objectStore(WASM_CACHE_STORE).get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function idbPut(db, key, value) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(WASM_CACHE_STORE, "readwrite");
+    tx.objectStore(WASM_CACHE_STORE).put(value, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+function withTimeout(p, ms, label) {
+  return Promise.race([
+    p,
+    new Promise(
+      (_, reject) => setTimeout(() => reject(new Error(`${label} timeout`)), ms)
+    )
+  ]);
+}
+function idbAvailable() {
+  try {
+    const proto = typeof location !== "undefined" ? location.protocol : "";
+    if (proto === "file:") return false;
+    return typeof indexedDB !== "undefined";
+  } catch {
+    return false;
+  }
+}
+async function getOrCompileWasmModule(url) {
+  let db;
+  if (idbAvailable()) {
+    try {
+      db = await withTimeout(openWasmCacheDb(), 1e3, "IDB open");
+      const cached = await withTimeout(
+        idbGet(db, url),
+        1e3,
+        "IDB get"
+      );
+      if (cached) return cached;
+    } catch {
+    }
+  }
+  const resp = await fetch(url);
+  let mod;
+  try {
+    mod = await WebAssembly.compileStreaming(resp.clone());
+  } catch {
+    mod = await WebAssembly.compile(await resp.arrayBuffer());
+  }
+  if (db) {
+    withTimeout(idbPut(db, url, mod), 2e3, "IDB put").catch(() => {
+    });
+  }
+  return mod;
+}
 async function initDuckdb() {
   const JSDELIVR_BUNDLES = getJsDelivrBundles();
   const bundle = await selectBundle(JSDELIVR_BUNDLES);
@@ -1532,6 +1611,18 @@ async function initDuckdb() {
   const worker = new Worker(worker_url);
   const logger = new ConsoleLogger(LogLevel.WARNING);
   const db = new AsyncDuckDB(logger, worker);
+  if (idbAvailable()) {
+    try {
+      const mainModule = await getOrCompileWasmModule(bundle.mainModule);
+      await db.instantiate(
+        mainModule,
+        bundle.pthreadWorker
+      );
+      URL.revokeObjectURL(worker_url);
+      return { db, worker };
+    } catch {
+    }
+  }
   await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
   URL.revokeObjectURL(worker_url);
   return { db, worker };
