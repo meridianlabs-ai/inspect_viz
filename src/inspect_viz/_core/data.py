@@ -1,3 +1,4 @@
+import hashlib
 import os
 from os import PathLike
 from typing import Any, Union, cast
@@ -11,6 +12,7 @@ from pydantic import JsonValue
 from shortuuid import uuid
 
 from .._util.instances import get_instances, track_instance
+from .._util.platform import quarto_immutable_target, running_in_quarto
 from .param import Param
 from .selection import Selection
 
@@ -53,13 +55,35 @@ class Data:
         # convert to narwhals
         self._ndf = nw.from_native(data)
 
-        # create buffer
+        # serialize to an uncompressed Arrow IPC stream. DuckDB-WASM's Arrow
+        # build does not include zstd/lz4 codecs, so stream-level compression
+        # isn't available; we rely on HTTP transport compression for the
+        # external-file path and the raw layout suffices for inline transport.
         reader = pa.ipc.RecordBatchStreamReader.from_stream(self._ndf)
         table = reader.read_all()
         buffer = pa.BufferOutputStream()
-        with pa.RecordBatchStreamWriter(buffer, table.schema) as writer:
+        with pa.ipc.RecordBatchStreamWriter(buffer, table.schema) as writer:
             writer.write_table(table)
-        self._data: bytes = buffer.getvalue().to_pybytes()
+        raw_bytes = buffer.getvalue().to_pybytes()
+
+        # Under Quarto static render, write bytes to a content-hashed file
+        # under the project's `<output-dir>/site_data/immutable/` (shared
+        # across all docs in the site) and ship only a URL. Outside Quarto
+        # keep bytes inline for live-kernel binary-buffer transport.
+        self._data_url: str | None = None
+        self._data: bytes = raw_bytes
+        target = quarto_immutable_target() if running_in_quarto() else None
+        if target is not None:
+            immutable_dir, url_prefix = target
+            digest = hashlib.sha256(raw_bytes).hexdigest()[:16]
+            filename = f"{digest}.arrow"
+            file_path = immutable_dir / filename
+            if not file_path.exists():
+                immutable_dir.mkdir(parents=True, exist_ok=True)
+                file_path.write_bytes(raw_bytes)
+            self._data_url = f"{url_prefix}{filename}"
+            # drop bytes — URL is all the client needs
+            self._data = b""
 
         # track whether we have been collected
         self._collected = False
@@ -92,15 +116,17 @@ class Data:
     def _plot_from(self, filter_by: Selection | None = None) -> dict[str, JsonValue]:
         return {"from": self.table, "filterBy": filter_by or f"${self.selection.id}"}
 
-    def _get_data(self) -> bytes:
-        return self._data
+    def _get_data(self) -> bytes | str:
+        return self._data_url if self._data_url is not None else self._data
 
-    def _collect_data(self) -> bytes:
+    def _collect_data(self) -> bytes | str:
         if not self._collected:
             self._collected = True
-            return self._data
+            return self._get_data()
         else:
-            return bytes()
+            # sibling widgets get an empty payload and waitForTable on the
+            # client side; shape must match the normal payload shape
+            return "" if self._data_url is not None else b""
 
     def __str__(self) -> str:
         lines = [

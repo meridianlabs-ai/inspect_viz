@@ -17,31 +17,34 @@ from .param import Param as VizParam
 from .selection import Selection as VizSelection
 
 
-class TablesData(traitlets.TraitType[dict[str, str], dict[str, str | bytes]]):
+class TablesData(
+    traitlets.TraitType[dict[str, bytes | str], dict[str, bytes | str]]
+):
     """Custom traitlet for handling multiple table/data pairs.
 
-    Accepts a dict of {table_name: bytes_data} and serializes it as JSON
-    with base64-encoded data values for transmission to the frontend.
+    Each value is either bytes (shipped as a binary buffer via ipywidgets'
+    comm layer — no base64) or a URL string pointing to a Quarto
+    `site_data/immutable/` asset the browser will fetch.
     """
 
-    info_text = "a dict of table names to data bytes"
+    info_text = "a dict of table names to data bytes or URL strings"
 
-    def validate(self, obj: Any, value: Any) -> dict[str, str]:
+    def validate(self, obj: Any, value: Any) -> dict[str, bytes | str]:
         if not isinstance(value, dict):
             self.error(obj, value)
 
-        # Convert bytes values to base64 strings for JSON serialization
-        serialized = {}
+        normalized: dict[str, bytes | str] = {}
         for key, data in value.items():
             if isinstance(data, bytes):
-                serialized[key] = base64.b64encode(data).decode("utf-8")
+                normalized[key] = data
+            elif isinstance(data, (bytearray, memoryview)):
+                normalized[key] = bytes(data)
             elif isinstance(data, str):
-                # Already base64 encoded
-                serialized[key] = data
+                normalized[key] = data
             else:
                 self.error(obj, value)
 
-        return serialized
+        return normalized
 
 
 class Component(AnyWidget):
@@ -173,17 +176,19 @@ class Component(AnyWidget):
         return to_json(spec, exclude_none=True).decode()
 
 
-def all_tables(*, collect: bool) -> dict[str, str | bytes]:
-    all_data: dict[str, str | bytes] = {}
+def all_tables(*, collect: bool) -> dict[str, bytes | str]:
+    all_data: dict[str, bytes | str] = {}
     for data in Data._get_all():
         all_data[data.table] = data._collect_data() if collect else data._get_data()
     return all_data
 
 
-def all_tables_empty() -> dict[str, str | bytes]:
-    all_data: dict[str, str | bytes] = {}
+def all_tables_empty() -> dict[str, bytes | str]:
+    all_data: dict[str, bytes | str] = {}
     for data in Data._get_all():
-        all_data[data.table] = bytes()
+        # match the payload shape: URL-backed → empty string, bytes-backed → empty bytes
+        payload = data._get_data()
+        all_data[data.table] = "" if isinstance(payload, str) else b""
     return all_data
 
 

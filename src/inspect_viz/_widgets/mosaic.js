@@ -1559,15 +1559,20 @@ async function waitForTable(conn, table, { interval = 250 } = {}) {
 // js/util/errors.ts
 function initializeErrorHandling(ctx, worker) {
   window.addEventListener("error", (event) => {
+    if (event.error == null) return;
     ctx.recordUnhandledError(errorInfo(event.error));
   });
   window.addEventListener("unhandledrejection", (event) => {
+    if (event.reason == null) return;
     ctx.recordUnhandledError(errorInfo(event.reason));
   });
-  worker.addEventListener("message", (event) => {
-    if (event.data.type === "ERROR") {
-      ctx.recordUnhandledError(errorInfo(event.data.data.message));
-    }
+  worker.addEventListener("error", (event) => {
+    const details = event.error ?? event.message;
+    if (details == null) return;
+    ctx.recordUnhandledError(errorInfo(details));
+  });
+  worker.addEventListener("messageerror", () => {
+    ctx.recordUnhandledError(errorInfo("worker message deserialization error"));
   });
 }
 function errorInfo(error) {
@@ -2769,7 +2774,13 @@ async function render({ model, el }) {
   const ctx = await vizContext(plotDefaultsAst.plotDefaults);
   applyTickFormatting(spec);
   const tables = model.get("tables") || {};
-  await syncTables(ctx, tables);
+  try {
+    await syncTables(ctx, tables);
+  } catch (e) {
+    console.error(e);
+    el.innerHTML = errorAsHTML(errorInfo(e));
+    return;
+  }
   el.classList.add("mosaic-widget");
   const renderOptions = renderSetup(el);
   const inputs = new Set(Object.keys(INPUTS));
@@ -2820,19 +2831,54 @@ async function render({ model, el }) {
     };
   }
 }
-async function syncTables(ctx, tables) {
-  for (const [tableName, base64Data] of Object.entries(tables)) {
-    if (base64Data) {
-      const binaryString = atob(base64Data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      await ctx.insertTable(tableName, bytes);
-    } else {
-      await ctx.waitForTable(tableName);
+var SITE_DATA_CACHE = "site_data/v1";
+async function fetchCachedBytes(url) {
+  const supportsCache = typeof caches !== "undefined";
+  let resp;
+  let cache;
+  if (supportsCache) {
+    try {
+      cache = await caches.open(SITE_DATA_CACHE);
+      resp = await cache.match(url);
+    } catch {
     }
   }
+  if (!resp) {
+    resp = await fetch(url, { cache: "force-cache" });
+    if (!resp.ok) {
+      throw new Error(`fetch ${url}: ${resp.status} ${resp.statusText}`);
+    }
+    if (cache) {
+      try {
+        await cache.put(url, resp.clone());
+      } catch {
+      }
+    }
+  }
+  return new Uint8Array(await resp.arrayBuffer());
+}
+async function syncTables(ctx, tables) {
+  await Promise.all(
+    Object.entries(tables).map(async ([tableName, val]) => {
+      if (typeof val === "string") {
+        if (val.length === 0) {
+          await ctx.waitForTable(tableName);
+          return;
+        }
+        const bytes = await fetchCachedBytes(val);
+        await ctx.insertTable(tableName, bytes);
+      } else if (val && val.byteLength > 0) {
+        const bytes = new Uint8Array(
+          val.buffer,
+          val.byteOffset,
+          val.byteLength
+        );
+        await ctx.insertTable(tableName, bytes);
+      } else {
+        await ctx.waitForTable(tableName);
+      }
+    })
+  );
 }
 function renderSetup(containerEl) {
   const widgetEl = containerEl.closest(".widget-subarea");

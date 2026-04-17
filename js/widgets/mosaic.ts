@@ -21,7 +21,9 @@ import { applyTickFormatting } from '../plot/ticks';
 import { installLegendHandler, legendPaddingRegion } from '../plot/legend';
 
 interface MosaicProps {
-    tables: Record<string, string>;
+    // Each value is either a DataView (inline binary-buffer transport) or a
+    // URL string pointing to a pre-written immutable `.arrow` asset.
+    tables: Record<string, DataView | string>;
     spec: string;
 }
 
@@ -38,8 +40,15 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     applyTickFormatting(spec);
 
     // insert/wait for tables to be ready
-    const tables: Record<string, string> = model.get('tables') || {};
-    await syncTables(ctx, tables);
+    const tables: Record<string, DataView | string> =
+        model.get('tables') || {};
+    try {
+        await syncTables(ctx, tables);
+    } catch (e: unknown) {
+        console.error(e);
+        el.innerHTML = errorAsHTML(errorInfo(e));
+        return;
+    }
 
     // render mosaic spec
     el.classList.add('mosaic-widget');
@@ -113,24 +122,71 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     }
 }
 
-// insert/wait for tables to be ready
-async function syncTables(ctx: VizContext, tables: Record<string, string>) {
-    for (const [tableName, base64Data] of Object.entries(tables)) {
-        if (base64Data) {
-            // decode base64 to bytes
-            const binaryString = atob(base64Data);
-            const bytes = new Uint8Array(binaryString.length);
-            for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
+// Named Cache API store for immutable `.arrow` assets. URLs are
+// content-addressed so cache entries never go stale; persists across reloads
+// within the origin. Browsers may evict under storage pressure — a miss just
+// re-fetches, so it is safe.
+const SITE_DATA_CACHE = 'site_data/v1';
 
-            // insert table into context
-            await ctx.insertTable(tableName, bytes);
-        } else {
-            // wait for table if no data provided
-            await ctx.waitForTable(tableName);
+async function fetchCachedBytes(url: string): Promise<Uint8Array> {
+    // `caches` is unavailable in a few older/embedded contexts — fall back
+    // cleanly to a normal fetch in that case.
+    const supportsCache = typeof caches !== 'undefined';
+    let resp: Response | undefined;
+    let cache: Cache | undefined;
+    if (supportsCache) {
+        try {
+            cache = await caches.open(SITE_DATA_CACHE);
+            resp = await cache.match(url);
+        } catch {
+            // ignore — fall through to network fetch
         }
     }
+    if (!resp) {
+        resp = await fetch(url, { cache: 'force-cache' });
+        if (!resp.ok) {
+            throw new Error(`fetch ${url}: ${resp.status} ${resp.statusText}`);
+        }
+        if (cache) {
+            try {
+                await cache.put(url, resp.clone());
+            } catch {
+                // storage full, cross-origin, etc. — not fatal
+            }
+        }
+    }
+    return new Uint8Array(await resp.arrayBuffer());
+}
+
+// insert/wait for tables to be ready; fetches for one widget run in parallel
+async function syncTables(
+    ctx: VizContext,
+    tables: Record<string, DataView | string>
+) {
+    await Promise.all(
+        Object.entries(tables).map(async ([tableName, val]) => {
+            if (typeof val === 'string') {
+                if (val.length === 0) {
+                    // sibling widget is shipping the data; wait for it
+                    await ctx.waitForTable(tableName);
+                    return;
+                }
+                const bytes = await fetchCachedBytes(val);
+                await ctx.insertTable(tableName, bytes);
+            } else if (val && val.byteLength > 0) {
+                // inline binary-buffer path: wrap DataView as a Uint8Array (no copy)
+                const bytes = new Uint8Array(
+                    val.buffer,
+                    val.byteOffset,
+                    val.byteLength
+                );
+                await ctx.insertTable(tableName, bytes);
+            } else {
+                // empty buffer → another widget is shipping the data
+                await ctx.waitForTable(tableName);
+            }
+        })
+    );
 }
 
 interface RenderOptions {

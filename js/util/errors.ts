@@ -3,19 +3,30 @@ import { VizContext } from '../context';
 export function initializeErrorHandling(ctx: VizContext, worker: Worker): void {
     // unhandled exceptions
     window.addEventListener('error', event => {
+        // Some third-party code (notably inside DuckDB-WASM's worker bridge)
+        // emits error events with no `.error` — ignore those. Without this
+        // guard they'd surface as bogus "null" overlays on plot divs that are
+        // only momentarily empty during Mosaic's async render.
+        if (event.error == null) return;
         ctx.recordUnhandledError(errorInfo(event.error));
     });
 
     // unhandled promise rejections
     window.addEventListener('unhandledrejection', event => {
+        if (event.reason == null) return;
         ctx.recordUnhandledError(errorInfo(event.reason));
     });
 
-    // web worker errors
-    worker.addEventListener('message', event => {
-        if (event.data.type === 'ERROR') {
-            ctx.recordUnhandledError(errorInfo(event.data.data.message));
-        }
+    // worker-level uncaught errors (NOT per-request RPC error responses,
+    // which are already consumed by the duckdb-wasm client to reject the
+    // corresponding query promise).
+    worker.addEventListener('error', event => {
+        const details = event.error ?? event.message;
+        if (details == null) return;
+        ctx.recordUnhandledError(errorInfo(details));
+    });
+    worker.addEventListener('messageerror', () => {
+        ctx.recordUnhandledError(errorInfo('worker message deserialization error'));
     });
 }
 
