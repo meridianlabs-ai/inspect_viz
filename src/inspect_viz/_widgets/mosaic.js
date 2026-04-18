@@ -1775,6 +1775,10 @@ var VizContext = class extends InstantiateContext {
    * Like `collectUnhandledError`, but exits early when `isResolved()` becomes
    * true — used by the per-empty-plot error display so a successful render
    * doesn't keep us polling for an error that won't arrive.
+   *
+   * Polls at 25ms (vs the 100ms used by `collectUnhandledError`) because
+   * the success-case latency between Mosaic populating a div and us
+   * noticing is on the user-perceived critical path.
    */
   async collectUnhandledErrorUntil(isResolved, wait = 1e3) {
     const startTime = Date.now();
@@ -1783,7 +1787,7 @@ var VizContext = class extends InstantiateContext {
       if (this.unhandledErrors_.length > 0) {
         return this.unhandledErrors_.shift();
       }
-      await sleep(100);
+      await sleep(25);
     }
     return void 0;
   }
