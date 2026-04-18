@@ -1,4 +1,4 @@
-# Notebooks
+# Notebooks – Inspect Viz
 
 ## Overview
 
@@ -22,7 +22,7 @@ quarto render notebook.ipynb --to html --execute
 
 This will create an HTML file named “notebook.html” and a directory named “notebook_files” alongside the “notebook.ipynb”.
 
-> **IMPORTANT:**
+> **IMPORTANT: Important**
 >
 > The `--execute` flag is required to ensure that all Inspect Viz outputs are properly rendered (as some notebook front ends like VS Code don’t properly cache Jupyter Widget outputs).
 
@@ -70,7 +70,7 @@ jupyter nbconvert --to html --execute notebook.ipynb
 
 This will create an HTML file named “notebook.html” alongside the “notebook.ipynb”.
 
-> **IMPORTANT:**
+> **IMPORTANT: Important**
 >
 > The `--execute` flag is required to ensure that all Inspect Viz outputs are properly rendered (as some notebook front ends like VS Code don’t properly cache Jupyter Widget outputs).
 

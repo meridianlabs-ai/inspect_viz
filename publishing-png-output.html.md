@@ -1,8 +1,8 @@
-# PNG Output
+# PNG Output – Inspect Viz
 
 ## Overview
 
-When publishing a [notebook](publishing-notebooks.html.md), [website](publishing-websites.html.md), or [dashboard](publishing-dashboards.html.md), Inspect Viz plots are rendered by default as Jupyter Widgets that use JavaScript to provide various interactive features (tooltips, filtering, brushing, etc.). While this is the recommended way to publish Inspect Viz content, you can also choose to render content as static PNG images.
+When publishing a [notebook](./publishing-notebooks.html.md), [website](./publishing-websites.html.md), or [dashboard](./publishing-dashboards.html.md), Inspect Viz plots are rendered by default as Jupyter Widgets that use JavaScript to provide various interactive features (tooltips, filtering, brushing, etc.). While this is the recommended way to publish Inspect Viz content, you can also choose to render content as static PNG images.
 
 You might want do this if you are creating an Office or PDF document from a notebook, or want plots in a dashboard to be available even when disconnected from the Internet. Note however that rendering plots as PNG images does take longer than the native JavaScript output format, and that interactive features are not available in this mode.
 
@@ -17,7 +17,7 @@ playwright install
 
 ## Standalone
 
-Use the [write_png()](reference/inspect_viz.plot.html.md#write_png) function to save a stanalone PNG version of any plot. For example:
+Use the [write_png()](./reference/inspect_viz.plot.html.md#write_png) function to save a stanalone PNG version of any plot. For example:
 
 ``` python
 from inspect_viz import Data
@@ -44,19 +44,20 @@ When your plots are embedded in a notebook or website, use the global `output_fo
 from inspect_viz import Data, options
 from inspect_viz.view import scores_by_factor
 
-# set 'png' as default output format # <1>
-options.output_format = "png"        # <1>
+1# set 'png' as default output format
+options.output_format = "png"
 
 # render plot
 evals = Data.from_file("evals-hint.parquet")
 scores_by_factor(evals, "task_arg_hint", ("No hint", "Hint"))
 ```
 
-1.  Set the global `options.output_format` option to render all plots in a notebook or Quarto document as static PNG images.
+1  
+Set the global `options.output_format` option to render all plots in a notebook or Quarto document as static PNG images.
 
-![](publishing-png-output_files/figure-html/cell-2-output-1.png)
+[![](publishing-png-output_files/figure-html/cell-2-output-1.png)](publishing-png-output_files/figure-html/cell-2-output-1.png)
 
-You can also do this for a single plot or set of plots using [options_context()](reference/inspect_viz.html.md#options_context):
+You can also do this for a single plot or set of plots using [options_context()](./reference/inspect_viz.html.md#options_context):
 
 ``` python
 from inspect_viz import options_context

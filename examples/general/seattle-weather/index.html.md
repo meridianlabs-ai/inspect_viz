@@ -1,8 +1,8 @@
-# Seattle Weather
-
-Dataset: [seattle-weather.parquet](seattle-weather.parquet)
+# Seattle Weather – Inspect Viz
 
 Select a horizontal range on the dot pot to filter the contents of the bar plot. Click the legend or the bar plot to filter by weather conditions.
+
+    Code
 
 ``` python
 from inspect_viz import Data, Selection

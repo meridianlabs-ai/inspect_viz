@@ -1,6 +1,6 @@
-# Plots
+# Plots – Inspect Viz
 
-A [plot()](reference/inspect_viz.plot.html.md#plot) produces a single visualisation and consists of one or more *marks*—graphical primitives such as bars, areas, and lines—which serve as chart layers. Each plot has a dedicated set of encoding *channels* with named *scale* mappings such as `x`, `y`, `color`, `opacity`, etc.
+A [plot()](./reference/inspect_viz.plot.html.md#plot) produces a single visualisation and consists of one or more *marks*—graphical primitives such as bars, areas, and lines—which serve as chart layers. Each plot has a dedicated set of encoding *channels* with named *scale* mappings such as `x`, `y`, `color`, `opacity`, etc.
 
 Below we’ll describe the core semantics of plots and the various ways you can customize them.
 
@@ -16,18 +16,23 @@ from inspect_viz.mark import dot
 penguins = Data.from_file("penguins.parquet")
 
 plot(
-    dot(penguins, x="body_mass", y="flipper_length",  # <1>
-        stroke="species", symbol="species"),   # <1>
-    legend="symbol",  # <2>
-    grid=True,  # <3>
-    width=700,  # <3>
-    height=400  # <3>
+1    dot(penguins, x="body_mass", y="flipper_length",
+        stroke="species", symbol="species"),
+2    legend="symbol",
+3    grid=True,
+    width=700,
+    height=400
 )
 ```
 
-1.  [dot()](reference/inspect_viz.mark.html.md#dot) mark for a simple dot plot, using a distinct `stroke` and `symbol` to denote the “species” column.
-2.  Legend in the default location, keyed by `symbol`.
-3.  Additional attributes that affect plot size and appearance.
+1  
+[dot()](./reference/inspect_viz.mark.html.md#dot) mark for a simple dot plot, using a distinct `stroke` and `symbol` to denote the “species” column.
+
+2  
+Legend in the default location, keyed by `symbol`.
+
+3  
+Additional attributes that affect plot size and appearance.
 
 ## Facets
 
@@ -42,7 +47,7 @@ evals = Data.from_file("evals.parquet")
 
 plot(
     bar_y( 
-        evals, x="model", fx="task_name",  # <1>
+1        evals, x="model", fx="task_name",
         y="score_headline_value",
         fill="model",
         tip=True,
@@ -53,20 +58,27 @@ plot(
             "Log Viewer": "log_viewer"
         }
     ),
-    legend=legend("color", frame_anchor="bottom"),  # <2>
-    x_label=None, x_ticks=[], fx_label=None,  # <3>
-    y_label="score", y_domain=[0, 1.0]  # <4>
+2    legend=legend("color", frame_anchor="bottom"),
+3    x_label=None, x_ticks=[], fx_label=None,
+4    y_label="score", y_domain=[0, 1.0]
 )
 ```
 
-1.  Add an x-facet (“task_name”) using the `fx` option.
-2.  Define legend using [legend()](reference/inspect_viz.plot.html.md#legend) function (to enable setting `location` and other options).
-3.  Remove default x labeling as it is handled by the legend.
-4.  Tweak y-axis with shorter label and ensure that it goes all the way up to 1.0.
+1  
+Add an x-facet (“task_name”) using the `fx` option.
+
+2  
+Define legend using [legend()](./reference/inspect_viz.plot.html.md#legend) function (to enable setting `location` and other options).
+
+3  
+Remove default x labeling as it is handled by the legend.
+
+4  
+Tweak y-axis with shorter label and ensure that it goes all the way up to 1.0.
 
 ## Marks
 
-The plots above use only a single mark ([dot()](reference/inspect_viz.mark.html.md#dot) and [bar_y()](reference/inspect_viz.mark.html.md#bar_y) respectively). More sophisticated plots are often constructed with multiple marks. For example, here is a plot that adds a regression line mark do a standard dot plot:
+The plots above use only a single mark ([dot()](./reference/inspect_viz.mark.html.md#dot) and [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) respectively). More sophisticated plots are often constructed with multiple marks. For example, here is a plot that adds a regression line mark do a standard dot plot:
 
 ``` python
 from inspect_viz import Data
@@ -76,26 +88,29 @@ from inspect_viz.plot import plot
 athletes = Data.from_file("athletes.parquet")
 
 plot(
-    dot(  # <1>
+1    dot(
         athletes,
         x="weight", y="height",
         fill="sex", opacity=0.1
-    ), # <1>
-    regression_y(  # <2>
+    ),
+2    regression_y(
         athletes, 
         x="weight", y="height", 
         stroke="sex"
-    ), # <2>
+    ),
     legend="color"
 )
 ```
 
-1.  Use `fill` to distinguish male and female athletes; use `opacity` to deal with a large density of data points.
-2.  Use `stroke` to ensure that male and female athletes each get their own regression line.
+1  
+Use `fill` to distinguish male and female athletes; use `opacity` to deal with a large density of data points.
+
+2  
+Use `stroke` to ensure that male and female athletes each get their own regression line.
 
 ## Tooltips
 
-Tooltips enable you to provide additional details when the user hovers their mouse over various regions of the plot. Tooltips are enabled automatically for dot marks ([dot()](reference/inspect_viz.mark.html.md#dot), [dot_x()](reference/inspect_viz.mark.html.md#dot_x), [dot_y()](reference/inspect_viz.mark.html.md#dot_y), [circle()](reference/inspect_viz.mark.html.md#circle), and [hexagon()](reference/inspect_viz.mark.html.md#hexagon)) and cell marks ([cell()](reference/inspect_viz.mark.html.md#cell), [cell_x()](reference/inspect_viz.mark.html.md#cell_x), etc.) and can be enabled with `tip=True` for other marks. For example:
+Tooltips enable you to provide additional details when the user hovers their mouse over various regions of the plot. Tooltips are enabled automatically for dot marks ([dot()](./reference/inspect_viz.mark.html.md#dot), [dot_x()](./reference/inspect_viz.mark.html.md#dot_x), [dot_y()](./reference/inspect_viz.mark.html.md#dot_y), [circle()](./reference/inspect_viz.mark.html.md#circle), and [hexagon()](./reference/inspect_viz.mark.html.md#hexagon)) and cell marks ([cell()](./reference/inspect_viz.mark.html.md#cell), [cell_x()](./reference/inspect_viz.mark.html.md#cell_x), etc.) and can be enabled with `tip=True` for other marks. For example:
 
 ``` python
 plot(
@@ -103,7 +118,7 @@ plot(
         evals, x="model", fx="task_name",
         y="score_headline_value",
         fill="model",
-        tip=True # <1>
+1        tip=True
     ),
     legend=legend("color", frame_anchor="bottom"),
     x_label=None, x_ticks=[], fx_label=None,
@@ -111,9 +126,10 @@ plot(
 )
 ```
 
-1.  Add `tip=True` to enable tooltips for marks where they are not automatically enabled.
+1  
+Add `tip=True` to enable tooltips for marks where they are not automatically enabled.
 
-![](tooltip-basic.png)
+[![](tooltip-basic.png)](tooltip-basic.png)
 
 Note that tooltips can interfere with plot interactions—for example, if your bar plot was clickable to drive selections in other plots you would not want to specify `tip=True`.
 
@@ -135,20 +151,21 @@ plot(
         y="score_headline_value",
         fill="model",
         tip=True,
-        channels={ # <1>
+1        channels={
             "Task": "task_name", 
             "Model": "model",
             "Score": "score_headline_value",
             "Log Viewer": "log_viewer"
-        } # <1>
+        }
     ),
     ...
 )
 ```
 
-1.  The `channels` option maps labels to columns in the underlying data—all defined `channels` will appear in the tooltip. URL values are automatically turned into links as shown here.
+1  
+The `channels` option maps labels to columns in the underlying data—all defined `channels` will appear in the tooltip. URL values are automatically turned into links as shown here.
 
-![](tooltip-channels.png)
+[![](tooltip-channels.png)](tooltip-channels.png)
 
 ## Titles
 
@@ -163,7 +180,7 @@ plot(
 )
 ```
 
-If you have facet labels on the top of the x-axis, you may need to provide some additional `top_margin` for the `title` so that it is placed above the facet labels. Use the [title()](reference/inspect_viz.mark.html.md#title) function to customize this:
+If you have facet labels on the top of the x-axis, you may need to provide some additional `top_margin` for the `title` so that it is placed above the facet labels. Use the [title()](./reference/inspect_viz.mark.html.md#title) function to customize this:
 
 ``` python
 from inspect_viz.mark import title
@@ -175,7 +192,7 @@ plot(
 )
 ```
 
-You can also customize the font size, weight, and family using the [title()](reference/inspect_viz.mark.html.md#title) function.
+You can also customize the font size, weight, and family using the [title()](./reference/inspect_viz.mark.html.md#title) function.
 
 ## Axes
 
@@ -307,7 +324,7 @@ plot(
 )
 ```
 
-Below we’ll describe the options used to position and style legends. See the [legend()](reference/inspect_viz.plot.html.md#legend) function documentation for details on all legend options.
+Below we’ll describe the options used to position and style legends. See the [legend()](./reference/inspect_viz.plot.html.md#legend) function documentation for details on all legend options.
 
 ### Positioning
 
@@ -320,7 +337,7 @@ For example, to place the legend inset in the top left, you could write:
 legend("color", frame_anchor="top-left", inset=20)
 ```
 
-![](legend-basic.png)
+[![](legend-basic.png)](legend-basic.png)
 
 ### Legend Style
 
@@ -332,7 +349,7 @@ legend("color", border="blue", background="white")
 
 ### Multiple Legends
 
-You may can pass multiple legends (strings like “color” or calls to [legend()](reference/inspect_viz.plot.html.md#legend)) to the [plot()](reference/inspect_viz.plot.html.md#plot) funciton. Each may be positioned independently using `frame_anchor` and `inset`, or if they share a position, the legends will be merged into a container in that location.
+You may can pass multiple legends (strings like “color” or calls to [legend()](./reference/inspect_viz.plot.html.md#legend)) to the [plot()](./reference/inspect_viz.plot.html.md#plot) funciton. Each may be positioned independently using `frame_anchor` and `inset`, or if they share a position, the legends will be merged into a container in that location.
 
 For example, the following adds two legends in the same container in the default position ( right of the plot):
 
@@ -346,13 +363,13 @@ plot(
 )
 ```
 
-![](legend-multiple.png)
+[![](legend-multiple.png)](legend-multiple.png)
 
 ### Interactions
 
-Legends also act as interactors, taking a bound [Selection](reference/inspect_viz.html.md#selection) as a `target` parameter. For example, discrete legends use the logic of the `toggle` interactor to enable point selections. Two-way binding is supported for Selections using *single* resolution, enabling legends and other interactors to share state.
+Legends also act as interactors, taking a bound [Selection](./reference/inspect_viz.html.md#selection) as a `target` parameter. For example, discrete legends use the logic of the `toggle` interactor to enable point selections. Two-way binding is supported for Selections using *single* resolution, enabling legends and other interactors to share state.
 
-See the docs on [Toggle](components-interactivity.html.md#toggle) interactors for an example of an interactive legend.
+See the docs on [Toggle](./components-interactivity.html.md#toggle) interactors for an example of an interactive legend.
 
 ### Legend Name
 
@@ -360,7 +377,7 @@ The `name` directive gives a `plot` a unique name. A standalone legend can refer
 
 ## Baselines
 
-Baselines can be including `baseline()` marks in the plot definition (or by including them in the `marks` option of pre-built [views](views.html.md)).
+Baselines can be including `baseline()` marks in the plot definition (or by including them in the `marks` option of pre-built [views](./views.html.md)).
 
 For example, here we add a baseline with the median weight from the athletes data:
 
@@ -375,7 +392,7 @@ plot(
 )
 ```
 
-If you have a simple static baseline, you may simply provide the value, along with other options to customize the label, position, and other attributes of the baseline. You can also use a tranformation function like [median()](reference/inspect_viz.transform.html.md#median) to define baselines:
+If you have a simple static baseline, you may simply provide the value, along with other options to customize the label, position, and other attributes of the baseline. You can also use a tranformation function like [median()](./reference/inspect_viz.transform.html.md#median) to define baselines:
 
 ``` python
 from inspect_viz.mark import title
@@ -410,7 +427,7 @@ plot(
 
 ## Colors
 
-Use the `color_scheme` option to the [plot()](reference/inspect_viz.plot.html.md#plot) function to pick a theme (see the [ColorScheme](reference/inspect_viz.plot.html.md#colorscheme) reference for available schemes). Use the `color_range` option to specify an explicit set of colors. For example, here we use the “tableau10” `color_scheme`:
+Use the `color_scheme` option to the [plot()](./reference/inspect_viz.plot.html.md#plot) function to pick a theme (see the [ColorScheme](./reference/inspect_viz.plot.html.md#colorscheme) reference for available schemes). Use the `color_range` option to specify an explicit set of colors. For example, here we use the “tableau10” `color_scheme`:
 
 ``` python
 plot(
@@ -428,7 +445,7 @@ plot(
 
 ## Data
 
-In the examples above we made [Data](reference/inspect_viz.html.md#data) available by reading from a parquet file. We can also read data from any Python Data Frame (e.g. Pandas, Polars, PyArrow, etc.). For example:
+In the examples above we made [Data](./reference/inspect_viz.html.md#data) available by reading from a parquet file. We can also read data from any Python Data Frame (e.g. Pandas, Polars, PyArrow, etc.). For example:
 
 ``` python
 import pandas as pd
@@ -442,15 +459,15 @@ df = pd.read_parquet("penguins.parquet")
 penguins = Data.from_dataframe(df)
 ```
 
-You might wonder why is there a special [Data](reference/inspect_viz.html.md#data) class in Inspect Viz rather than using data frames directly? This is because Inpsect Viz is an interactive system where data can be dynamically filtered and transformed as part of plotting—the [Data](reference/inspect_viz.html.md#data) therefore needs to be sent to the web browser rather than remaining only in the Python session. This has a couple of important implications:
+You might wonder why is there a special [Data](./reference/inspect_viz.html.md#data) class in Inspect Viz rather than using data frames directly? This is because Inpsect Viz is an interactive system where data can be dynamically filtered and transformed as part of plotting—the [Data](./reference/inspect_viz.html.md#data) therefore needs to be sent to the web browser rather than remaining only in the Python session. This has a couple of important implications:
 
-1.  Data transformations should be done using standard Python Data Frame operations *prior* to reading into [Data](reference/inspect_viz.html.md#data) for Inspect Viz.
+1.  Data transformations should be done using standard Python Data Frame operations *prior* to reading into [Data](./reference/inspect_viz.html.md#data) for Inspect Viz.
 
-2.  Since [Data](reference/inspect_viz.html.md#data) is embedded in the web page, you will want to filter it down to only the columns required for plotting (as you don’t want the additional columns making the web page larger than is necessary).
+2.  Since [Data](./reference/inspect_viz.html.md#data) is embedded in the web page, you will want to filter it down to only the columns required for plotting (as you don’t want the additional columns making the web page larger than is necessary).
 
 ### Selections
 
-One other important thing to understand is that [Data](reference/inspect_viz.html.md#data) has a built in *selection* which is used in filtering operations on the client. This means that if you want your inputs and plots to stay synchoronized, you should pass the same [Data](reference/inspect_viz.html.md#data) instance to all of them (i.e. import into [Data](reference/inspect_viz.html.md#data) once and then share that reference). For example:
+One other important thing to understand is that [Data](./reference/inspect_viz.html.md#data) has a built in *selection* which is used in filtering operations on the client. This means that if you want your inputs and plots to stay synchoronized, you should pass the same [Data](./reference/inspect_viz.html.md#data) instance to all of them (i.e. import into [Data](./reference/inspect_viz.html.md#data) once and then share that reference). For example:
 
 ``` python
 from inspect_viz import Data
@@ -475,7 +492,7 @@ vconcat(
 
 ## SQL
 
-You can use the [sql()](reference/inspect_viz.transform.html.md#sql) transform function to dynamically compute the values of channels within plots. For example, here we dynamically add a `bias` parameter to a column:
+You can use the [sql()](./reference/inspect_viz.transform.html.md#sql) transform function to dynamically compute the values of channels within plots. For example, here we dynamically add a `bias` parameter to a column:
 
 ``` python
 from inspect_viz import Data, Param
@@ -546,13 +563,13 @@ In some cases you may have timeseries data which you’d like to reduce across m
 
 |  |  |
 |----|----|
-| [date_day()](reference/inspect_viz.transform.html.md#date_day) | Transform a Date value to a day of the month for cyclic comparison. Year and month values are collapsed to enable comparison over days only. |
-| [date_month()](reference/inspect_viz.transform.html.md#date_month) | Transform a Date value to a month boundary for cyclic comparison. Year values are collapsed to enable comparison over months only. |
+| [date_day()](./reference/inspect_viz.transform.html.md#date_day) | Transform a Date value to a day of the month for cyclic comparison. Year and month values are collapsed to enable comparison over days only. |
+| [date_month()](./reference/inspect_viz.transform.html.md#date_month) | Transform a Date value to a month boundary for cyclic comparison. Year values are collapsed to enable comparison over months only. |
 | `date_day_month()` | Map date/times to a month and day value, all within the same year for comparison. |
 
 ## Attributes
 
-*Attributes* are plot-level settings such as `width`, `height`, margins, and scale options (e.g., `x_domain`, `color_range`, `y_tick_format`). Attributes may be [Param](reference/inspect_viz.html.md#param)-valued, in which case a plot updates upon param changes.
+*Attributes* are plot-level settings such as `width`, `height`, margins, and scale options (e.g., `x_domain`, `color_range`, `y_tick_format`). Attributes may be [Param](./reference/inspect_viz.html.md#param)-valued, in which case a plot updates upon param changes.
 
 Some of the more useful plot attribues include:
 
@@ -570,4 +587,4 @@ Some of the more useful plot attribues include:
 
 - `r` (radius) scale settings (e.g. `r_domain`, `r_range`, `r_label`, etc.)
 
-See [PlotAttributes](reference/inspect_viz.plot.html.md#plotattributes) for documentation on all available plot attributes.
+See [PlotAttributes](./reference/inspect_viz.plot.html.md#plotattributes) for documentation on all available plot attributes.

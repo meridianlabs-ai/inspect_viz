@@ -1,4 +1,4 @@
-# LLM Assistance
+# LLM Assistance – Inspect Viz
 
 ## Overview
 
@@ -117,7 +117,7 @@ To register an Inspect Viz MDP server with Claude Desktop, do the following:
 
 4.  Restart Claude Desktop. If you go to `Settings/Developer` you should see something like the following:
 
-    ![](claude-desktop-mcp.png)
+    [![](claude-desktop-mcp.png)](claude-desktop-mcp.png)
 
 ## Cursor IDE
 

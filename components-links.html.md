@@ -1,4 +1,4 @@
-# Links
+# Links – Inspect Viz
 
 ## Overview
 
@@ -10,7 +10,7 @@ The basic steps required for creating links to logs from visualizations are:
 
 2.  Read logs into a data frame using the [log dataframe](https://inspect.aisi.org.uk/dataframe.html) functions, then ammend the data frame with log viewer URLs that point to the published bundle (we’ll cover how to do this below).
 
-3.  Include the log viewer URLs as a custom channels on your plot [marks](components-marks.html.md) as appropriate. The link will be available within the [tooltip](components-plots.html.md#tooltips) for your mark.
+3.  Include the log viewer URLs as a custom channels on your plot [marks](./components-marks.html.md) as appropriate. The link will be available within the [tooltip](./components-plots.html.md#tooltips) for your mark.
 
 ## Step 1: Publish Logs
 
@@ -63,7 +63,7 @@ plot(
     bar_y( 
         evals, x="model", fx="task_name",
         y="score_headline_value",
-        channels={ "Log Viewer": "log_viewer" }, # <1>
+1        channels={ "Log Viewer": "log_viewer" },
         fill="model",
     ),
     legend=legend("color", frame_anchor="bottom"),
@@ -72,11 +72,12 @@ plot(
 )
 ```
 
-1.  Add Log Viewer channel mapped to the `log_viewer` column created with the [prepare()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare) function above.
+1  
+Add Log Viewer channel mapped to the `log_viewer` column created with the [prepare()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare) function above.
 
 ### Built-In Views
 
-The built-in [Views](views.html.md) already support the `log_viewer` column, so links appear automatically when using those functions. For example:
+The built-in [Views](./views.html.md) already support the `log_viewer` column, so links appear automatically when using those functions. For example:
 
 ``` python
 from inspect_viz import Data

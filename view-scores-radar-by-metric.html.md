@@ -1,4 +1,4 @@
-# Scores Radar By Metric
+# Scores Radar By Metric – Inspect Viz
 
 ## Overview
 
@@ -38,35 +38,46 @@ from inspect_ai.analysis import (
 from inspect_viz.view import scores_radar_by_metric_df
 
 
-df = evals_df("logs/writing_bench/")  # <1>
+1df = evals_df("logs/writing_bench/")
 
-df = scores_radar_by_metric_df(  # <2>
-    df,  # <2>
-    scorer="multi_scorer_wrapper",  # <3>
-    metrics=[  # <4>
-        "Abstract",  # <4>
-        "Introduction",  # <4>
-        "Experiments",  # <4>
-        "Literature Review",  # <4>
-        "Paper Outline",  # <4>
-    ],  # <4>
-    normalization="percentile",  # <5>
+2df = scores_radar_by_metric_df(
+    df,
+3    scorer="multi_scorer_wrapper",
+4    metrics=[
+        "Abstract",
+        "Introduction",
+        "Experiments",
+        "Literature Review",
+        "Paper Outline",
+    ],
+5    normalization="percentile",
 )
 
-df = prepare(df, [  # <6>
-    model_info(),  # <6>
-    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })  # <6>
-])  # <6>
+6df = prepare(df, [
+    model_info(),
+    log_viewer("eval", { "logs": "https://samples.meridianlabs.ai/" })
+])
 
 df.to_parquet("writing_bench_radar.parquet")
 ```
 
-1.  Read the evals data into a dataframe.
-2.  Convert the dataframe into a `scores_radar_by_metric()` specific dataframe.
-3.  A task might have multiple scorers, specify the scorer which you want to plot. The function only supports plotting one scorer at a time. The scorer name should correspond to columns in `df` named `score_{scorer}_{metric}`.
-4.  Specify a list of metrics to plot on the radar chart. If unspecified, all metrics from a scorer will be plotted. Metric names in the list should correspond to columns in `df` named `score_{scorer}_{metric}`.
-5.  Choose an optional normalization method to scale the raw scores. Available options: `"percentile"` (computes percentile rank, useful for identifying consistently strong performers), `"min_max"` (scales scores between min-max values, sensitive to outliers), or `"absolute"` (default, no normalization, may result in incomprehensible charts if metrics have different scales).
-6.  Add pretty model names and log links to the dataframe using [prepare()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare).
+1  
+Read the evals data into a dataframe.
+
+2  
+Convert the dataframe into a `scores_radar_by_metric()` specific dataframe.
+
+3  
+A task might have multiple scorers, specify the scorer which you want to plot. The function only supports plotting one scorer at a time. The scorer name should correspond to columns in `df` named `score_{scorer}_{metric}`.
+
+4  
+Specify a list of metrics to plot on the radar chart. If unspecified, all metrics from a scorer will be plotted. Metric names in the list should correspond to columns in `df` named `score_{scorer}_{metric}`.
+
+5  
+Choose an optional normalization method to scale the raw scores. Available options: `"percentile"` (computes percentile rank, useful for identifying consistently strong performers), `"min_max"` (scales scores between min-max values, sensitive to outliers), or `"absolute"` (default, no normalization, may result in incomprehensible charts if metrics have different scales).
+
+6  
+Add pretty model names and log links to the dataframe using [prepare()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#prepare).
 
 ## Function Reference
 
@@ -76,7 +87,7 @@ Creates a radar chart showing scores for multiple models across multiple metrics
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -86,8 +97,8 @@ def scores_radar_by_metric(
 ) -> Component
 ```
 
-`data` [Data](reference/inspect_viz.html.md#data)  
-A [Data](reference/inspect_viz.html.md#data) object prepared using the `scores_radar_by_metric_df` function.
+`data` [Data](./reference/inspect_viz.html.md#data)  
+A [Data](./reference/inspect_viz.html.md#data) object prepared using the `scores_radar_by_metric_df` function.
 
 `label` str  
 Name of field holding the axes labels (defaults to “metric”).
@@ -101,7 +112,7 @@ Creates a dataframe for a radar chart showing multiple models across multiple me
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/view/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(
@@ -134,4 +145,4 @@ Optional min-max domain to use for the normalization. Only used if normalization
 
 ## Implementation
 
-The [Scores Radar By Metric](examples/inspect/scores-radar-by-metric/index.html.md) example demonstrates how this view was implemented using lower level plotting components.
+The [Scores Radar By Metric](./examples/inspect/scores-radar-by-metric/index.html.md) example demonstrates how this view was implemented using lower level plotting components.

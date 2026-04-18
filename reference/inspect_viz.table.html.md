@@ -1,12 +1,10 @@
-# inspect_viz.table
-
-Tabular data display.
+# inspect_viz.table – Inspect Viz
 
 ### table
 
 Tabular display of data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/3bd2ebf265e271209a81bcaf0bca12c3a765297d/src/inspect_viz/table/_table.py#L243)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/table/_table.py#L243)
 
 ``` python
 def table(

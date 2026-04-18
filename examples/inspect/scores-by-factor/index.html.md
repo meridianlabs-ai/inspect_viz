@@ -1,8 +1,8 @@
-# Scores by Factor
+# Scores by Factor – Inspect Viz
 
-Dataset: [evals.csv](evals.csv)
+This example illustrates the code behind the [scores_by_factor()](../../../view-scores-by-factor.html.md) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
 
-This example illustrates the code behind the [`scores_by_factor()`](../../../view-scores-by-factor.html.md) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
+    Code
 
 ``` python
 from inspect_viz import Data
@@ -13,8 +13,8 @@ from inspect_viz.transform import ci_bounds, sql
 evals = Data.from_file("evals.csv")
 
 # factor colors/labels
-fx_colors = ["#3266ae", "#a6c0e5"] # <1>
-fx_labels = ["No hint", "Hint"] # <1>
+1fx_colors = ["#3266ae", "#a6c0e5"]
+fx_labels = ["No hint", "Hint"]
 
 # confidence interval tranforms
 ci_lower, ci_upper = ci_bounds(
@@ -24,16 +24,16 @@ ci_lower, ci_upper = ci_bounds(
 )
 
 # compute plot height (65 pixels per model)
-height = 65 * len(evals.column_unique("model_display_name")) # <2>
+2height = 65 * len(evals.column_unique("model_display_name"))
 
 plot(
-    frame("left", inset_top=5, inset_bottom=5),  # <3>
+3    frame("left", inset_top=5, inset_bottom=5),
     rule_y(
         evals,
         x="score_headline_value",
         y="task_arg_hint",
         fy="model_display_name",
-        sort={"fy": "-x"}, # <4>
+4        sort={"fy": "-x"},
         stroke=sql(f"IF(NOT task_arg_hint, '{fx_labels[0]}', '{fx_labels[1]}')"), 
         stroke_width=3,
         stroke_linecap="round",
@@ -48,34 +48,51 @@ plot(
     ),
     rule_y(
         evals,
-        x1=ci_lower,  # <5>
-        x2=ci_upper,  # <5>
+5        x1=ci_lower,
+        x2=ci_upper,
         y="task_arg_hint",
         fy="model_display_name",
         stroke=f"{fx_colors[0]}20",
         stroke_width=15,
     ),
-    legend=legend("color", target=evals.selection),  # <6>
+6    legend=legend("color", target=evals.selection),
     x_label="Score",
-    y_label=None, # <7>
-    y_ticks=[],  # <7>
-    y_tick_size=0, # <7>
+7    y_label=None,
+    y_ticks=[],
+    y_tick_size=0,
     fy_label=None,
     fy_axis="left",
-    color_domain=fx_labels,  # <8>
-    color_range=fx_colors,   # <8>
+8    color_domain=fx_labels,
+    color_range=fx_colors,
     margin_top=0,
-    margin_left=100, # <9>
+9    margin_left=100,
     height=height
 )
 ```
 
-1.  Factors need to define a dark/light color and labels for the their `False` and `True` states.
-2.  Compute plot height based on number of unique models.
-3.  Sets off each model with their own horizonal axis line.
-4.  Order models on y axis from highest to lowest score.
-5.  Confidence interval using specified stderr column.
-6.  Clickable legend to filter view by factor value.
-7.  Y-axis labels and ticks already covered by factor and `frame()`.
-8.  Map legend and colors map to factor.
-9.  Leave room for model names.
+1  
+Factors need to define a dark/light color and labels for the their `False` and `True` states.
+
+2  
+Compute plot height based on number of unique models.
+
+3  
+Sets off each model with their own horizonal axis line.
+
+4  
+Order models on y axis from highest to lowest score.
+
+5  
+Confidence interval using specified stderr column.
+
+6  
+Clickable legend to filter view by factor value.
+
+7  
+Y-axis labels and ticks already covered by factor and [frame()](../../../reference/inspect_viz.mark.html.md#frame).
+
+8  
+Map legend and colors map to factor.
+
+9  
+Leave room for model names.

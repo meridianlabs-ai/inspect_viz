@@ -1,10 +1,10 @@
-# Tables
+# Tables – Inspect Viz
 
 Use tables to display an interactive grid of data used in your visualization. Tables support commonly used operations like sorting, filtering, pagination and a variety of other customization options.
 
 ## Basics
 
-In its most simple form, the [table()](reference/inspect_viz.table.html.md#table) function will display the contents of the [Data](reference/inspect_viz.html.md#data) provided. For example, the following:
+In its most simple form, the [table()](./reference/inspect_viz.table.html.md#table) function will display the contents of the [Data](./reference/inspect_viz.html.md#data) provided. For example, the following:
 
 ``` python
 from inspect_viz import Data
@@ -16,7 +16,7 @@ table(penguins)
 
 results in a table displaying all the columns and rows in the penguins dataset:
 
-In addition to providing the base [Data](reference/inspect_viz.html.md#data) for the table, you may also select which columns are displayed:
+In addition to providing the base [Data](./reference/inspect_viz.html.md#data) for the table, you may also select which columns are displayed:
 
 ``` python
 from inspect_viz import Data

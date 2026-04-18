@@ -1,4 +1,4 @@
-# Websites
+# Websites – Inspect Viz
 
 ## Overview
 
@@ -6,7 +6,7 @@ If you want to publish one or more plots as part of a website there are a couple
 
 1.  Use a Jupyter-based website publishing system that supports interactive Jupyter Widgets (e.g. [Quarto](https://quarto.org)).
 
-2.  Use the [to_html()](reference/inspect_viz.plot.html.md#to_html) function to create embeddable HTML fragments for your plots and embed them in any website.
+2.  Use the [to_html()](./reference/inspect_viz.plot.html.md#to_html) function to create embeddable HTML fragments for your plots and embed them in any website.
 
 We’ll cover both of these approaches below.
 
@@ -18,46 +18,51 @@ The [Quarto](https://quarto.org) publishing system can create websites that incl
 pip install quarto-cli
 ```
 
-Quarto is a markdown-based publishing system that enables you to embed executable Python blocks whose output is included in the published website. For instance, Here is the source code for the [Bias Parameter](examples/general/bias-parameter/index.html.md) example:
+Quarto is a markdown-based publishing system that enables you to embed executable Python blocks whose output is included in the published website. For instance, Here is the source code for the [Bias Parameter](./examples/general/bias-parameter/index.html.md) example:
 
 ```` python
 ---
 title: "Bias Parameter"
-echo: false # <1>
+1echo: false
 ---
 
 Use the slider to create bias offsets for the y-axis.
 
-```{{python}} # <2>
-from inspect_viz import Data, Param # <2>
-from inspect_viz.input import slider # <2>
-from inspect_viz.mark import area_y # <2>
-from inspect_viz.plot import plot # <2>
-from inspect_viz.transform import sql # <2>
- # <2>
-random_walk = Data.from_file("random-walk.parquet") # <2>
-bias = Param(0) # <2>
-``` # <2>
+2```{python}
+from inspect_viz import Data, Param
+from inspect_viz.input import slider
+from inspect_viz.mark import area_y
+from inspect_viz.plot import plot
+from inspect_viz.transform import sql
 
-```{{python}} 
+random_walk = Data.from_file("random-walk.parquet")
+bias = Param(0)
+```
+
+```{python} 
 slider(label="Bias", target=bias, min=0, max=1000, step=1, value=100)
 ```
 
-```{{python}} 
+```{python} 
 plot(area_y(random_walk, x="t", y=sql(f"v + {bias}"), fill="steelblue"))
 ```
 ````
 
-1.  We specify `echo: false` to prevent display of code blocks.
-2.  Markdown code blocks decorated with `{python}` are executed.
+1  
+We specify `echo: false` to prevent display of code blocks.
+
+2  
+Markdown code blocks decorated with `{python}` are executed.
 
 Here is what the page looks like when rendered on the website (it’s a screenshot so you won’t be able to use the slider!):
 
-![](bias-parameter.png)
+[![](bias-parameter.png)](bias-parameter.png)
 
 ### Notebook Execution
 
 When using Inspect Viz with Quarto Websites you should always add the following configuration to your `_quarto.yml` to specify that notebooks should be fully executed when rendered:
+
+    _quarto.yml
 
 ``` yaml
 execute: 
@@ -70,7 +75,7 @@ The website was created with Quarto and includes many live Inspect Viz plots and
 
 The documentation on [Quarto Websites](https://quarto.org/docs/websites/) includes a tutorial and many additional details on creating, customizing, and publishing websites.
 
-[Quarto Dashboards](publishing-dashboards.html.md) are a special type of Quarto website optimized for displaying many plots and tables together, so are also worth considering.
+[Quarto Dashboards](./publishing-dashboards.html.md) are a special type of Quarto website optimized for displaying many plots and tables together, so are also worth considering.
 
 ## HTML Fragments
 
@@ -78,7 +83,7 @@ If you are working with an existing website or with another website publishing s
 
 ### Single Plot
 
-To create a standalone snippet which you can include in any website, use the [write_html()](reference/inspect_viz.plot.html.md#write_html) function:
+To create a standalone snippet which you can include in any website, use the [write_html()](./reference/inspect_viz.plot.html.md#write_html) function:
 
 ``` python
 from inspect_viz import Data
@@ -99,7 +104,7 @@ write_html("penguins.html", pl)
 
 ### Multiple Plots
 
-If you want to include multiple plots on a page, you might find it more convenient to call the [to_html()](reference/inspect_viz.plot.html.md#to_html) function as part of your website generation process. The returned HTML includes the Jupyter Widget runtime dependencies, so if you have multiple plots you’ll instead want to include these dependencies once in the `<head>` of your document and the create HTML snippets without the dependencies.
+If you want to include multiple plots on a page, you might find it more convenient to call the [to_html()](./reference/inspect_viz.plot.html.md#to_html) function as part of your website generation process. The returned HTML includes the Jupyter Widget runtime dependencies, so if you have multiple plots you’ll instead want to include these dependencies once in the `<head>` of your document and the create HTML snippets without the dependencies.
 
 Here is the dependencies code that you should place in the `<head>` tag:
 
@@ -108,7 +113,7 @@ Here is the dependencies code that you should place in the `<head>` tag:
 <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js" crossorigin="anonymous"></script>
 ```
 
-Then, specify `dependencies=False` when you call [to_html()](reference/inspect_viz.plot.html.md#to_html) to get only the plot and not the dependencies scripts which are already in your `<head>` tag:
+Then, specify `dependencies=False` when you call [to_html()](./reference/inspect_viz.plot.html.md#to_html) to get only the plot and not the dependencies scripts which are already in your `<head>` tag:
 
 ``` python
 from inspect_viz.plot import to_html

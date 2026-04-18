@@ -79,7 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ab1bf0485cdc037c1916ce67db55c611.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -166,6 +169,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./CHANGELOG.html"> 
+<span class="menu-text">Changelog</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/meridianlabs-ai/inspect_viz"> <i class="bi bi-github" role="img">
 </i> 
@@ -559,31 +566,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <a href="https://quarto.org">Quarto</a> publishing system can create websites that include dynamic output from Python code, including interactve Jupyter Widgets like the ones created by Inspect Viz. To install the <code>quarto-cli</code> Python package:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install quarto-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Quarto is a markdown-based publishing system that enables you to embed executable Python blocks whose output is included in the published website. For instance, Here is the source code for the <a href="./examples/general/bias-parameter/index.html">Bias Parameter</a> example:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2" data-llms-code-original="---
-title: &quot;Bias Parameter&quot;
-echo: false # <1>
----
-
-Use the slider to create bias offsets for the y-axis.
-
-```{{python}} # <2>
-from inspect_viz import Data, Param # <2>
-from inspect_viz.input import slider # <2>
-from inspect_viz.mark import area_y # <2>
-from inspect_viz.plot import plot # <2>
-from inspect_viz.transform import sql # <2>
- # <2>
-random_walk = Data.from_file(&quot;random-walk.parquet&quot;) # <2>
-bias = Param(0) # <2>
-``` # <2>
-
-```{{python}} 
-slider(label=&quot;Bias&quot;, target=bias, min=0, max=1000, step=1, value=100)
-```
-
-```{{python}} 
-plot(area_y(random_walk, x=&quot;t&quot;, y=sql(f&quot;v + {bias}&quot;), fill=&quot;steelblue&quot;))
-```"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="op">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="op">---</span></span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>title: <span class="st">"Bias Parameter"</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>echo: false</span>
 <span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a><span class="op">---</span></span>
@@ -619,7 +602,7 @@ plot(area_y(random_walk, x=&quot;t&quot;, y=sql(f&quot;v + {bias}&quot;), fill=&
 </dd>
 </dl>
 <p>Here is what the page looks like when rendered on the website (it’s a screenshot so you won’t be able to use the slider!):</p>
-<p><img src="bias-parameter.png" class="border img-fluid"></p>
+<p><a href="bias-parameter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="bias-parameter.png" class="border img-fluid"></a></p>
 <section id="notebook-execution" class="level3">
 <h3 class="anchored" data-anchor-id="notebook-execution">Notebook Execution</h3>
 <p>When using Inspect Viz with Quarto Websites you should always add the following configuration to your <code>_quarto.yml</code> to specify that notebooks should be fully executed when rendered:</p>
@@ -1253,6 +1236,38 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

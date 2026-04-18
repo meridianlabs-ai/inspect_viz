@@ -1,4 +1,4 @@
-# Dashboards
+# Dashboards – Inspect Viz
 
 ## Overview
 
@@ -12,7 +12,9 @@
 
 ## Example
 
-Here is the [Scores Timeline](examples/inspect/scores-timeline/index.html.md) example from this repository re-written as a dashboard (this is a live dashboard embedded as an iframe):
+Here is the [Scores Timeline](./examples/inspect/scores-timeline/index.html.md) example from this repository re-written as a dashboard (this is a live dashboard embedded as an iframe):
+
+[Capabilities Timeline](#)
 
 Expand ![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtOyIgYXJpYS1oaWRkZW49InRydWUiIHJvbGU9ImltZyI+PHBhdGggZD0iTTIwIDVDMjAgNC40IDE5LjYgNCAxOSA0SDEzQzEyLjQgNCAxMiAzLjYgMTIgM0MxMiAyLjQgMTIuNCAyIDEzIDJIMjFDMjEuNiAyIDIyIDIuNCAyMiAzVjExQzIyIDExLjYgMjEuNiAxMiAyMSAxMkMyMC40IDEyIDIwIDExLjYgMjAgMTFWNVpNNCAxOUM0IDE5LjYgNC40IDIwIDUgMjBIMTFDMTEuNiAyMCAxMiAyMC40IDEyIDIxQzEyIDIxLjYgMTEuNiAyMiAxMSAyMkgzQzIuNCAyMiAyIDIxLjYgMiAyMVYxM0MyIDEyLjQgMi40IDEyIDMgMTJDMy42IDEyIDQgMTIuNCA0IDEzVjE5WiIgLz48L3N2Zz4=)
 
@@ -92,6 +94,8 @@ table(
 ## Notebook Execution
 
 When using Inspect Viz with Quarto Websites you should always add the following configuration to your `_quarto.yml` to specify that notebooks should be fully executed when rendered:
+
+    _quarto.yml
 
 ``` yaml
 execute: 

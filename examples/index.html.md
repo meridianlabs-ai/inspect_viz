@@ -1,4 +1,4 @@
-# Inspect Viz Examples
+# Inspect Viz Examples – Inspect Viz
 
 These examples demonstrate various plotting and interactivity features. If you are just beginning to use Inspect Viz you review the [Getting Started](../index.html.md) article before exploring these examples.
 

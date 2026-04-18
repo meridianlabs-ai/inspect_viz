@@ -1,8 +1,8 @@
-# Penguins Explorer
-
-Dataset: [penguins.parquet](penguins.parquet)
+# Penguins Explorer – Inspect Viz
 
 Use the species drop down to see only points for a particular species. Use the x and y drop downs to explore differnet variables.
+
+    Code
 
 ``` python
 from inspect_viz import Data, Param
