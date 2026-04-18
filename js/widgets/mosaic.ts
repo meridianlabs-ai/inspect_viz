@@ -315,15 +315,21 @@ async function astToDOM(ast: SpecNode, ctx: InstantiateContext) {
 }
 
 async function displayUnhandledErrors(ctx: VizContext, widgetEl: HTMLElement) {
-    // empty plot divs indicate a possible unhandled error, look for these
-    // and then attempt to collect and display unhandled errors
+    // empty plot divs indicate a possible unhandled error: poll for an
+    // unhandled error per div, but short-circuit as soon as the div
+    // populates (the common case — Mosaic's async query resolved). All
+    // empty divs share a single 1s budget via Promise.all.
     const emptyPlotDivs = widgetEl.querySelectorAll('div.plot:empty');
-    for (const emptyDiv of emptyPlotDivs) {
-        const error = await ctx.collectUnhandledError();
-        if (error) {
-            displayRenderError(error, emptyDiv as HTMLElement);
-        }
-    }
+    await Promise.all(
+        Array.from(emptyPlotDivs).map(async (emptyDiv) => {
+            const error = await ctx.collectUnhandledErrorUntil(
+                () => emptyDiv.children.length > 0
+            );
+            if (error) {
+                displayRenderError(error, emptyDiv as HTMLElement);
+            }
+        })
+    );
 }
 
 export default { render };

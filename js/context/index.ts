@@ -58,6 +58,28 @@ class VizContext extends InstantiateContext {
         return undefined;
     }
 
+    /**
+     * Like `collectUnhandledError`, but exits early when `isResolved()` becomes
+     * true — used by the per-empty-plot error display so a successful render
+     * doesn't keep us polling for an error that won't arrive.
+     */
+    async collectUnhandledErrorUntil(
+        isResolved: () => boolean,
+        wait: number = 1000
+    ): Promise<ErrorInfo | undefined> {
+        const startTime = Date.now();
+        // Order matters: check the predicate first so a div that's already
+        // populated returns immediately on the first iteration.
+        while (Date.now() - startTime < wait) {
+            if (isResolved()) return undefined;
+            if (this.unhandledErrors_.length > 0) {
+                return this.unhandledErrors_.shift();
+            }
+            await sleep(100);
+        }
+        return undefined;
+    }
+
     clearUnhandledErrors() {
         this.unhandledErrors_ = [];
     }

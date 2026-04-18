@@ -1771,6 +1771,22 @@ var VizContext = class extends InstantiateContext {
     }
     return void 0;
   }
+  /**
+   * Like `collectUnhandledError`, but exits early when `isResolved()` becomes
+   * true — used by the per-empty-plot error display so a successful render
+   * doesn't keep us polling for an error that won't arrive.
+   */
+  async collectUnhandledErrorUntil(isResolved, wait = 1e3) {
+    const startTime = Date.now();
+    while (Date.now() - startTime < wait) {
+      if (isResolved()) return void 0;
+      if (this.unhandledErrors_.length > 0) {
+        return this.unhandledErrors_.shift();
+      }
+      await sleep(100);
+    }
+    return void 0;
+  }
   clearUnhandledErrors() {
     this.unhandledErrors_ = [];
   }
@@ -2953,12 +2969,16 @@ async function astToDOM(ast, ctx) {
 }
 async function displayUnhandledErrors(ctx, widgetEl) {
   const emptyPlotDivs = widgetEl.querySelectorAll("div.plot:empty");
-  for (const emptyDiv of emptyPlotDivs) {
-    const error = await ctx.collectUnhandledError();
-    if (error) {
-      displayRenderError(error, emptyDiv);
-    }
-  }
+  await Promise.all(
+    Array.from(emptyPlotDivs).map(async (emptyDiv) => {
+      const error = await ctx.collectUnhandledErrorUntil(
+        () => emptyDiv.children.length > 0
+      );
+      if (error) {
+        displayRenderError(error, emptyDiv);
+      }
+    })
+  );
 }
 var mosaic_default = { render };
 export {
