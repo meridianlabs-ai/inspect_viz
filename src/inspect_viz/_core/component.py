@@ -163,6 +163,87 @@ class Component(AnyWidget):
     # the full ESM + CSS; subsequent widgets reference them by DOM id.
     _quarto_assets_embedded_for_doc: "str | None" = None
 
+    def _placeholder_info(self) -> dict[str, Any] | None:
+        """Info for constructing a loading placeholder, or None to skip.
+
+        Returns `{"w": int, "h": int, "legend_kind": str}` where `legend_kind`
+        is one of `"none"`, `"inset"`, `"horizontal"`, `"vertical"`. The
+        placeholder DOM mirrors the plot's eventual layout so the browser can
+        compute the right height from the widget's actual column width.
+
+        Returns None for non-plot widgets (inputs, tables, standalone legends),
+        specs we can't classify, and for Quarto dashboard output (where
+        `responsiveSpec` resizes plots to the card's actual dimensions).
+        """
+        info = quarto_execute_info()
+        if info is not None:
+            try:
+                if info["format"]["identifier"]["base-format"] == "dashboard":
+                    return None
+            except (KeyError, TypeError):
+                pass
+
+        try:
+            spec = json.loads(self.spec) if isinstance(self.spec, str) else None
+        except json.JSONDecodeError:
+            return None
+        if not isinstance(spec, dict):
+            return None
+
+        # Find the plot node and enumerate legend siblings (if any).
+        plot_node: dict[str, Any] | None = None
+        siblings: list[dict[str, Any]] = []
+        if "plot" in spec:
+            plot_node = spec
+        else:
+            for key in ("hconcat", "vconcat"):
+                items = spec.get(key)
+                if (
+                    isinstance(items, list)
+                    and len(items) >= 1
+                    and isinstance(items[0], dict)
+                    and "plot" in items[0]
+                ):
+                    plot_node = items[0]
+                    siblings = [s for s in items[1:] if isinstance(s, dict)]
+                    break
+
+        if plot_node is None:
+            return None
+
+        w = plot_node.get("width")
+        h = plot_node.get("height")
+        if not w or not h:
+            defaults = spec.get("plotDefaults")
+            if isinstance(defaults, dict):
+                w = w if w else defaults.get("width")
+                h = h if h else defaults.get("height")
+        if not w or not h:
+            return None
+
+        # Classify the most-space-intrusive legend sibling.
+        legend_kind = "none"
+        rank = {"none": 0, "inset": 1, "vertical": 2, "horizontal": 3}
+        for sib in siblings:
+            if "legend" not in sib:
+                continue
+            anchor = sib.get("_frame_anchor") or ""
+            if anchor in ("left", "right"):
+                kind = "horizontal"
+            elif anchor in ("top", "bottom"):
+                kind = "vertical"
+            else:
+                # corners or missing — legend is absolutely positioned, no
+                # external flex space needed
+                kind = "inset"
+            if rank[kind] > rank[legend_kind]:
+                legend_kind = kind
+
+        try:
+            return {"w": int(w), "h": int(h), "legend_kind": legend_kind}
+        except (TypeError, ValueError):
+            return None
+
     def _quarto_html(
         self, tables_override: dict[str, bytes] | None = None
     ) -> str:
@@ -231,6 +312,17 @@ class Component(AnyWidget):
             )
             assets = "".join(assets_parts)
 
+        # Reserve placeholder space so the plot doesn't "snap in" when it
+        # finishes loading. The placeholder DOM mirrors the plot's eventual
+        # layout (flex row/column with plot + optional legend sibling) so the
+        # browser computes a height that matches the rendered SVG's height at
+        # the current column width. The bootstrap then pins that height as
+        # `min-height` on the widget div so Mosaic's `innerHTML = ''` inside
+        # `render()` doesn't collapse the widget while the SVG is being built.
+        # A MutationObserver clears the pin on SVG insertion.
+        placeholder_info = self._placeholder_info()
+        placeholder_inner = _placeholder_inner_html(placeholder_info)
+
         bootstrap = f"""<script type="module">
 (() => {{
   const state = {state_json};
@@ -256,6 +348,19 @@ class Component(AnyWidget):
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   }})();
+  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {{
+    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
+    // can't collapse the widget during the async render window.
+    const pinH = el.clientHeight;
+    if (pinH > 0) el.style.minHeight = pinH + 'px';
+    const observer = new MutationObserver(() => {{
+      if (el.querySelector('svg')) {{
+        el.style.minHeight = '';
+        observer.disconnect();
+      }}
+    }});
+    observer.observe(el, {{ childList: true, subtree: true }});
+  }}
   window.__inspectVizHost
     .then(w => w.render({{model, el}}))
     .catch(e => console.error('inspect-viz render failed', e));
@@ -264,7 +369,7 @@ class Component(AnyWidget):
 
         return (
             f'{assets}'
-            f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected"></div>'
+            f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected">{placeholder_inner}</div>'
             f'{bootstrap}'
         )
 
@@ -297,6 +402,63 @@ class Component(AnyWidget):
 
         # to json
         return to_json(spec, exclude_none=True).decode()
+
+
+# Per-kind flex-basis estimates for external legends. Tuned against an
+# observed horizontal-legend page (557 px widget, 451 px plot, 55 px legend +
+# 51 px flex gap = 106 px → round up to 110 px). Vertical legends add roughly
+# one line of labels plus padding. If legends in practice differ from these
+# estimates by ±30 px the placeholder will over/under-reserve by ~15 px,
+# which is an acceptable layout-shift budget.
+_HORIZONTAL_LEGEND_PX = 110
+_VERTICAL_LEGEND_PX = 35
+
+
+def _placeholder_inner_html(info: dict[str, Any] | None) -> str:
+    """Build the responsive placeholder DOM that goes inside the widget div.
+
+    Shapes by legend kind:
+
+    - `"none"` / `"inset"`: a single `aspect-ratio` child that sizes itself
+      from the widget's width (plot fills widget, no legend sibling space).
+    - `"horizontal"`: a flex row with a `flex:1` aspect-ratio plot sibling +
+      a fixed-width legend spacer; widget height = plot-placeholder height.
+    - `"vertical"`: a flex column with an aspect-ratio plot sibling + a
+      fixed-height legend spacer; widget height = plot + spacer.
+
+    Each aspect-ratio plot child also has `max-width: {specW}px` so the
+    placeholder stops growing at the plot's natural (spec) width — mirroring
+    Observable Plot's output which uses `max-width: 100%` on an SVG whose
+    width attribute is the spec width. Without this cap, on wide columns
+    our placeholder would keep growing even though the rendered plot caps
+    at its spec dimensions.
+
+    Every element is tagged with `data-iv-placeholder` so the bootstrap can
+    detect whether a placeholder is present.
+    """
+    if info is None:
+        return ""
+    w, h = info["w"], info["h"]
+    kind = info["legend_kind"]
+    plot_style = f"aspect-ratio:{w} / {h};max-width:{w}px"
+    if kind == "horizontal":
+        return (
+            '<div data-iv-placeholder="1" '
+            'style="display:flex;align-items:flex-start">'
+            f'<div style="flex:1 1 0;min-width:0;{plot_style}"></div>'
+            f'<div style="flex:0 0 {_HORIZONTAL_LEGEND_PX}px"></div>'
+            '</div>'
+        )
+    if kind == "vertical":
+        return (
+            '<div data-iv-placeholder="1" '
+            'style="display:flex;flex-direction:column">'
+            f'<div style="{plot_style}"></div>'
+            f'<div style="flex:0 0 {_VERTICAL_LEGEND_PX}px"></div>'
+            '</div>'
+        )
+    # "none" or "inset" — single aspect-ratio child fills widget width
+    return f'<div data-iv-placeholder="1" style="{plot_style}"></div>'
 
 
 def _escape_script_content(text: str) -> str:
