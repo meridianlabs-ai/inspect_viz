@@ -343,16 +343,16 @@ class Component(AnyWidget):
   }})();
   if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {{
     // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window.
+    // can't collapse the widget during the async render window. The pin is
+    // a floor (min-height), not a cap: if the final rendered content is
+    // taller, the widget grows naturally; if shorter, the pin holds at the
+    // reserved height so content below stays put. The widget div already
+    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
+    // / 0.5 rem margin-bottom are baked into the document flow before the
+    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
+    // becomes a no-op and no layout shift occurs when it runs.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
-    const observer = new MutationObserver(() => {{
-      if (el.querySelector('svg')) {{
-        el.style.minHeight = '';
-        observer.disconnect();
-      }}
-    }});
-    observer.observe(el, {{ childList: true, subtree: true }});
   }}
   window.__inspectVizHost
     .then(w => w.render({{model, el}}))
@@ -362,7 +362,7 @@ class Component(AnyWidget):
 
         return (
             f'{assets}'
-            f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected">{placeholder_inner}</div>'
+            f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected mosaic-widget">{placeholder_inner}</div>'
             f'{bootstrap}'
         )
 
@@ -413,9 +413,9 @@ _VERTICAL_LEGEND_PX = 35
 #     16 px font × 1.5 line-height + 12 px vertical padding + 2 px border.
 #   - `.mosaic-widget label { margin-bottom: 10px }` in `mosaic.css` adds
 #     another 10 px below each label.
-# Total ≈ 48 px. We use 46 to stay slightly conservative (forward drift when
-# the plot loads, never reverse-snap).
-_INPUT_ROW_PX = 46
+# Total ≈ 48 px. The release logic uses a tolerance window so being within
+# a few px of final height doesn't hold the pin longer than needed.
+_INPUT_ROW_PX = 48
 
 # Default vspace height if a `vspace()` entry's `vspace` value can't be
 # parsed as an integer (matches the helper's own default).
