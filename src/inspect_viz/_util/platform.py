@@ -91,9 +91,7 @@ def quarto_immutable_target() -> tuple[Path, str] | None:
         if rel_parent is not None:
             output_dir_name = _quarto_project_output_dir(project_dir)
             if output_dir_name is not None:
-                absolute_dir = (
-                    project_dir / output_dir_name / "site_data" / "immutable"
-                )
+                absolute_dir = project_dir / output_dir_name / "site_data" / "immutable"
                 prefix = "../" * len(rel_parent.parts)
                 return absolute_dir, f"{prefix}site_data/immutable/"
 
@@ -103,9 +101,7 @@ def quarto_immutable_target() -> tuple[Path, str] | None:
     return absolute_dir, f"{stem}_files/site_data/immutable/"
 
 
-_QUARTO_OUTPUT_DIR_RE = re.compile(
-    r"^\s*output-dir:\s*(.+?)\s*$", re.MULTILINE
-)
+_QUARTO_OUTPUT_DIR_RE = re.compile(r"^\s*output-dir:\s*(.+?)\s*$", re.MULTILINE)
 _QUARTO_BOOK_TYPE_RE = re.compile(r"^\s*type:\s*book\b", re.MULTILINE)
 
 

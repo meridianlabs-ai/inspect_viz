@@ -24,9 +24,7 @@ from .param import Param as VizParam
 from .selection import Selection as VizSelection
 
 
-class TablesData(
-    traitlets.TraitType[dict[str, bytes | str], dict[str, bytes | str]]
-):
+class TablesData(traitlets.TraitType[dict[str, bytes | str], dict[str, bytes | str]]):
     """Custom traitlet for handling multiple table/data pairs.
 
     Each value is either bytes (shipped as a binary buffer via ipywidgets'
@@ -237,9 +235,7 @@ class Component(AnyWidget):
         except (TypeError, ValueError):
             return None
 
-    def _quarto_html(
-        self, tables_override: dict[str, bytes] | None = None
-    ) -> str:
+    def _quarto_html(self, tables_override: dict[str, bytes] | None = None) -> str:
         """Self-contained HTML output for a single widget.
 
         Used for two paths:
@@ -290,16 +286,12 @@ class Component(AnyWidget):
 
         assets = ""
         if include_assets:
-            esm_text = _escape_script_content(
-                (WIDGETS_DIR / "mosaic.js").read_text()
-            )
+            esm_text = _escape_script_content((WIDGETS_DIR / "mosaic.js").read_text())
             css_text = _escape_script_content(Component._css or "")
 
             assets_parts = []
             if css_text.strip():
-                assets_parts.append(
-                    f'<style id="iv-css">{css_text}</style>'
-                )
+                assets_parts.append(f'<style id="iv-css">{css_text}</style>')
             assets_parts.append(
                 f'<script id="iv-esm" type="text/plain">{esm_text}</script>'
             )
@@ -361,9 +353,9 @@ class Component(AnyWidget):
 </script>"""
 
         return (
-            f'{assets}'
+            f"{assets}"
             f'<div id="{widget_id}" class="lm-Widget jupyter-widgets-disconnected mosaic-widget">{placeholder_inner}</div>'
-            f'{bootstrap}'
+            f"{bootstrap}"
         )
 
     _esm = WIDGETS_DIR / "mosaic.js"
@@ -545,7 +537,7 @@ def _placeholder_inner_html(info: dict[str, Any] | None) -> str:
             '<div style="display:flex;align-items:flex-start">'
             f'<div style="flex:1 1 0;min-width:0;{plot_aspect}"></div>'
             f'<div style="flex:0 0 {_HORIZONTAL_LEGEND_PX}px"></div>'
-            '</div>'
+            "</div>"
         )
         outer_max = w + _HORIZONTAL_LEGEND_PX
     else:
@@ -569,24 +561,23 @@ def _placeholder_inner_html(info: dict[str, Any] | None) -> str:
         return (
             '<div data-iv-placeholder="1" '
             f'style="{plot_aspect};max-width:{w}px;position:relative">'
-            f'{shimmer}</div>'
+            f"{shimmer}</div>"
             if kind != "horizontal"
-            else
-            '<div data-iv-placeholder="1" '
+            else '<div data-iv-placeholder="1" '
             f'style="display:flex;align-items:flex-start;'
             f'max-width:{outer_max}px;position:relative">'
             f'<div style="flex:1 1 0;min-width:0;{plot_aspect}"></div>'
             f'<div style="flex:0 0 {_HORIZONTAL_LEGEND_PX}px"></div>'
-            f'{shimmer}'
-            '</div>'
+            f"{shimmer}"
+            "</div>"
         )
 
     return (
         '<div data-iv-placeholder="1" '
         f'style="display:flex;flex-direction:column;'
         f'max-width:{outer_max}px;position:relative">'
-        f'{prefix}{plot_row}{vertical_legend}{suffix}{shimmer}'
-        '</div>'
+        f"{prefix}{plot_row}{vertical_legend}{suffix}{shimmer}"
+        "</div>"
     )
 
 
