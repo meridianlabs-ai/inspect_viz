@@ -440,25 +440,43 @@ def _placeholder_inner_html(info: dict[str, Any] | None) -> str:
         return ""
     w, h = info["w"], info["h"]
     kind = info["legend_kind"]
-    plot_style = f"aspect-ratio:{w} / {h};max-width:{w}px"
+    # Inner plot cell: aspect-ratio governs height; `max-width` on the outer
+    # container (below) caps total width to the plot's spec size on wide
+    # columns, matching Observable Plot's `max-width:100%` behaviour.
+    plot_inner = f"aspect-ratio:{w} / {h}"
+    shimmer = '<div class="iv-loading"></div>'
+
+    # The shimmer is a sibling of the plot/legend cells (not nested inside
+    # either) with `position:absolute;inset:0`, so it covers the full
+    # plot + legend area — which `position:relative` on the outer
+    # container bounds it to.
     if kind == "horizontal":
+        outer_max = w + _HORIZONTAL_LEGEND_PX
         return (
             '<div data-iv-placeholder="1" '
-            'style="display:flex;align-items:flex-start">'
-            f'<div style="flex:1 1 0;min-width:0;{plot_style}"></div>'
+            f'style="display:flex;align-items:flex-start;'
+            f'max-width:{outer_max}px;position:relative">'
+            f'<div style="flex:1 1 0;min-width:0;{plot_inner}"></div>'
             f'<div style="flex:0 0 {_HORIZONTAL_LEGEND_PX}px"></div>'
+            f'{shimmer}'
             '</div>'
         )
     if kind == "vertical":
         return (
             '<div data-iv-placeholder="1" '
-            'style="display:flex;flex-direction:column">'
-            f'<div style="{plot_style}"></div>'
+            f'style="display:flex;flex-direction:column;'
+            f'max-width:{w}px;position:relative">'
+            f'<div style="{plot_inner}"></div>'
             f'<div style="flex:0 0 {_VERTICAL_LEGEND_PX}px"></div>'
+            f'{shimmer}'
             '</div>'
         )
-    # "none" or "inset" — single aspect-ratio child fills widget width
-    return f'<div data-iv-placeholder="1" style="{plot_style}"></div>'
+    # "none" or "inset" — single aspect-ratio root with shimmer inside
+    return (
+        '<div data-iv-placeholder="1" '
+        f'style="{plot_inner};max-width:{w}px;position:relative">'
+        f'{shimmer}</div>'
+    )
 
 
 def _escape_script_content(text: str) -> str:

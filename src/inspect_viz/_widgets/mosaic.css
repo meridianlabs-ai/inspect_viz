@@ -81,3 +81,41 @@ label>input[type="range"] {
 .vscode-dark .mosaic-widget {
     color: rgb(52, 58, 64);
 }
+
+/* Loading shimmer for the plot-placeholder (lives inside the aspect-ratio
+   child of the placeholder so it's bounded to the plot area). Mosaic's
+   `el.innerHTML = ''` inside render() removes the placeholder & shimmer
+   together — no JS cleanup needed. */
+.iv-loading {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 0, 0, 0.04) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    /* Shimmer begins immediately; empirically every real system (including
+       top-spec laptops on warm cache) hits render times well above 400 ms,
+       so delaying the shimmer just adds dead air at the start. The 300 ms
+       fade-in keeps it from snapping on. */
+    opacity: 0;
+    animation:
+        iv-shimmer 2s 0s infinite linear,
+        iv-fade 300ms 0s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes iv-shimmer {
+    from { background-position: 100% 0; }
+    to { background-position: -100% 0; }
+}
+
+@keyframes iv-fade {
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .iv-loading { animation: none; }
+}
