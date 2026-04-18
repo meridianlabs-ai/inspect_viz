@@ -40,8 +40,7 @@ async function render({ model, el }: RenderProps<MosaicProps>) {
     applyTickFormatting(spec);
 
     // insert/wait for tables to be ready
-    const tables: Record<string, DataView | string> =
-        model.get('tables') || {};
+    const tables: Record<string, DataView | string> = model.get('tables') || {};
     try {
         await syncTables(ctx, tables);
     } catch (e: unknown) {
@@ -159,10 +158,7 @@ async function fetchCachedBytes(url: string): Promise<Uint8Array> {
 }
 
 // insert/wait for tables to be ready; fetches for one widget run in parallel
-async function syncTables(
-    ctx: VizContext,
-    tables: Record<string, DataView | string>
-) {
+async function syncTables(ctx: VizContext, tables: Record<string, DataView | string>) {
     await Promise.all(
         Object.entries(tables).map(async ([tableName, val]) => {
             if (typeof val === 'string') {
@@ -175,11 +171,7 @@ async function syncTables(
                 await ctx.insertTable(tableName, bytes);
             } else if (val && val.byteLength > 0) {
                 // inline binary-buffer path: wrap DataView as a Uint8Array (no copy)
-                const bytes = new Uint8Array(
-                    val.buffer,
-                    val.byteOffset,
-                    val.byteLength
-                );
+                const bytes = new Uint8Array(val.buffer, val.byteOffset, val.byteLength);
                 await ctx.insertTable(tableName, bytes);
             } else {
                 // empty buffer → another widget is shipping the data
@@ -321,10 +313,8 @@ async function displayUnhandledErrors(ctx: VizContext, widgetEl: HTMLElement) {
     // empty divs share a single 1s budget via Promise.all.
     const emptyPlotDivs = widgetEl.querySelectorAll('div.plot:empty');
     await Promise.all(
-        Array.from(emptyPlotDivs).map(async (emptyDiv) => {
-            const error = await ctx.collectUnhandledErrorUntil(
-                () => emptyDiv.children.length > 0
-            );
+        Array.from(emptyPlotDivs).map(async emptyDiv => {
+            const error = await ctx.collectUnhandledErrorUntil(() => emptyDiv.children.length > 0);
             if (error) {
                 displayRenderError(error, emptyDiv as HTMLElement);
             }
