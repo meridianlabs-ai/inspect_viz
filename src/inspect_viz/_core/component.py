@@ -222,13 +222,6 @@ class Component(AnyWidget):
             css_text = _escape_script_content(Component._css or "")
 
             assets_parts = []
-            # Preload the DuckDB-WASM EH binary so its fetch overlaps with
-            # everything else on the page. On warm cache it's a no-op; on
-            # cold visits it shaves an RTT off DuckDB init.
-            assets_parts.append(
-                '<link rel="preload" as="fetch" crossorigin '
-                'href="https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/dist/duckdb-eh.wasm">'
-            )
             if css_text.strip():
                 assets_parts.append(
                     f'<style id="iv-css">{css_text}</style>'
