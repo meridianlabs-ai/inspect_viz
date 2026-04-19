@@ -44,7 +44,7 @@ When multiple organizations exist, clicking on the legend for an organization wi
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(

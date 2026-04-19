@@ -142,6 +142,8 @@ The `range` selection is consumed using the `filter_by` parameter.
 5  
 We set the `x_domain` for the bar plot to “fixed” so that the scale doesn’t change as the dataset is filtered.
 
+![](components-interactivity_files/placeholder/b8ddad4893ed9341.png)
+
 Try using the mouse to brush over regions on the dot plot—the bar plot will update accordingly.
 
 ### Toggle
@@ -209,6 +211,8 @@ Clicks on the legend target the same selection
 
 6  
 [highlight()](./reference/inspect_viz.interactor.html.md#highlight) interactor to fade out unselected bars.
+
+![](components-interactivity_files/placeholder/1c0e48119fad2f25.png)
 
 Try clicking either the legend or the bar plot elements to filter the dot plot.
 
@@ -315,5 +319,7 @@ The [interval_x()](./reference/inspect_viz.interactor.html.md#interval_x) intera
 
 4  
 Use a `"fixed"` domain so that the x-axis remains stable even when being filtered.
+
+![](components-interactivity_files/placeholder/896b583426756ece.png)
 
 Try selecting a horizontal range on either or both of the bar plots.

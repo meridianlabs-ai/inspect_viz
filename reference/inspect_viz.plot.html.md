@@ -6,7 +6,7 @@
 
 Create a plot.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_plot.py#L21)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_plot.py#L21)
 
 ``` python
 def plot(
@@ -1066,7 +1066,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Plot attributes.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L155)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L155)
 
 ``` python
 class PlotAttributes(TypedDict, total=False)
@@ -1078,7 +1078,7 @@ class PlotAttributes(TypedDict, total=False)
 
 Create a legend.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_legend.py#L54)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_legend.py#L54)
 
 ``` python
 def legend(
@@ -1166,7 +1166,7 @@ The background color for the legend. Pass ‘True’ to use the default backgrou
 
 Plot legend (create legends using the [legend()](../reference/inspect_viz.plot.html.md#legend) function).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_legend.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_legend.py#L11)
 
 ``` python
 class Legend(Component)
@@ -1185,10 +1185,15 @@ Generate a self-contained HTML snippet for a plot or other component.
 
 The returned snippet embeds the inspect-viz widget ESM plus a small bootstrap inline — no external Jupyter-widget (`embed-amd.js`, `requirejs`, `jquery`) dependencies. Suitable for Playwright headless rendering (`write_png`) and general embedding.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_write.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_write.py#L31)
 
 ``` python
-def to_html(component: Component, dependencies: bool = True) -> str
+def to_html(
+    component: Component,
+    dependencies: bool = True,
+    *,
+    extra_head: str = "",
+) -> str
 ```
 
 `component` [Component](../reference/inspect_viz.html.md#component)  
@@ -1197,11 +1202,14 @@ Component to export.
 `dependencies` bool  
 Accepted for backward compatibility; the returned snippet is always self-contained, so this parameter has no effect.
 
+`extra_head` str  
+Optional HTML to inject inside the document `<head>` (e.g. a `<style>` block setting the page font so the rendered plot inherits it).
+
 ### write_html
 
 Write an HTML file for a plot or other component.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_write.py#L52)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_write.py#L74)
 
 ``` python
 def write_html(
@@ -1222,7 +1230,7 @@ Include JavaScript dependencies required for Jupyter widget rendering. Dependenc
 
 Export a plot or table to a PNG.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_write.py#L80)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_write.py#L102)
 
 ``` python
 def write_png(
@@ -1250,7 +1258,7 @@ Set global plot defaults.
 
 Note that this function should be called once at the outset (subsequent calls to it do not reset the defaults).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_defaults.py#L42)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_defaults.py#L42)
 
 ``` python
 def plot_defaults(
@@ -1292,7 +1300,7 @@ Default options for plots.
 
 Use the [plot_defaults()](../reference/inspect_viz.plot.html.md#plot_defaults) function to set global defaults for plot options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_defaults.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_defaults.py#L9)
 
 ``` python
 class PlotDefaults(PlotAttributes, total=False)
@@ -1328,7 +1336,7 @@ The outer height of the plot in pixels, including margins. The default depends o
 
 How a scale encodes abstract data, say by applying a mathematical transformation.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L7)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L7)
 
 ``` python
 PositionScale: TypeAlias = Literal[
@@ -1355,7 +1363,7 @@ Built-in projection types.
 
 Named projections are scaled and translated to fit the **domain** to the plot’s frame (minus insets).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L25)
 
 ``` python
 Projection: TypeAlias = Literal[
@@ -1382,7 +1390,7 @@ Projection: TypeAlias = Literal[
 
 Continuous scaling transformations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L48)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L48)
 
 ``` python
 ContinuousScale: TypeAlias = Literal[
@@ -1401,7 +1409,7 @@ ContinuousScale: TypeAlias = Literal[
 
 Color scale tranformations.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L60)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L60)
 
 ``` python
 ColorScale: TypeAlias = Literal[
@@ -1432,7 +1440,7 @@ ColorScale: TypeAlias = Literal[
 
 Color schemes.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L84)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L84)
 
 ``` python
 ColorScheme: TypeAlias = Literal[
@@ -1485,7 +1493,7 @@ ColorScheme: TypeAlias = Literal[
 
 How to interpolate color range values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L130)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L130)
 
 ``` python
 Interpolate: TypeAlias = Literal[
@@ -1501,7 +1509,7 @@ Interpolate: TypeAlias = Literal[
 
 Whether to apply a directional arrow to an axis scale label.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/plot/_attributes.py#L140)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/plot/_attributes.py#L140)
 
 ``` python
 LabelArrow = (

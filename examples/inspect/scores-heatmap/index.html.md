@@ -58,3 +58,5 @@ Place the value as text centered in the cell.
 
 6  
 Remove plot padding so the inset along controls spacing between cells.
+
+![](index_files/placeholder/7e77bdc59870fbc5.png)

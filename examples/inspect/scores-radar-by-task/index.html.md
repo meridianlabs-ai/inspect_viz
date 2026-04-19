@@ -134,6 +134,8 @@ plot(
 11  
 **Legend** draws a legend for the model selection.
 
+![](index_files/placeholder/47c02208cc7ac4a9.png)
+
 ## Data Preparation
 
 The data dataset for this example was created using the `scores_radar_by_task_df()` function, which reads evals metadata, scales scores by percentile ranks or min-max normalization, and computes coordinates for the radar chart.

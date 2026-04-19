@@ -65,9 +65,13 @@ When using Inspect Viz with Quarto Websites you should always add the following 
     _quarto.yml
 
 ``` yaml
-execute: 
+execute:
   enabled: true
 ```
+
+### PNG Fallback
+
+For sites that need to remain readable when the JavaScript pipeline fails (e.g. restrictive corporate networks that block the jsDelivr CDN), Inspect Viz can embed a static PNG behind each interactive plot as a fallback. The recommended way to enable this is via a [Quarto profile](https://quarto.org/docs/projects/profiles.html) so dev iteration (`quarto preview`) stays fast and only your production builds — `quarto render --profile publish` or `quarto publish --profile publish` — pay the per-plot Playwright cost. See [PNG Output → PNG Fallback](./publishing-png-output.html.md#png-fallback) for the full setup.
 
 ### Learning More
 

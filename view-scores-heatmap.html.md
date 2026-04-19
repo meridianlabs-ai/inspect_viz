@@ -12,6 +12,8 @@ evals = Data.from_file("evals.parquet")
 scores_heatmap(evals, height=200)
 ```
 
+![](view-scores-heatmap_files/placeholder/97559e02f53807b9.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -39,7 +41,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(

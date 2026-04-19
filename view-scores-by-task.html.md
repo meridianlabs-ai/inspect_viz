@@ -12,6 +12,8 @@ evals = Data.from_file("evals.parquet")
 scores_by_task(evals)
 ```
 
+![](view-scores-by-task_files/placeholder/7194617527e820cb.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -41,7 +43,7 @@ Bar plot for comparing eval scores.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(

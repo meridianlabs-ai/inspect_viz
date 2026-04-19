@@ -520,6 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#quarto-websites" id="toc-quarto-websites" class="nav-link" data-scroll-target="#quarto-websites">Quarto Websites</a>
   <ul class="collapse">
   <li><a href="#notebook-execution" id="toc-notebook-execution" class="nav-link" data-scroll-target="#notebook-execution">Notebook Execution</a></li>
+  <li><a href="#png-fallback" id="toc-png-fallback" class="nav-link" data-scroll-target="#png-fallback">PNG Fallback</a></li>
   <li><a href="#learning-more" id="toc-learning-more" class="nav-link" data-scroll-target="#learning-more">Learning More</a></li>
   </ul></li>
   <li><a href="#html-fragments" id="toc-html-fragments" class="nav-link" data-scroll-target="#html-fragments">HTML Fragments</a>
@@ -610,9 +611,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-with-filename-file">
 <pre><strong>_quarto.yml</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="_quarto.yml"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span><span class="at"> </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="_quarto.yml"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="png-fallback" class="level3">
+<h3 class="anchored" data-anchor-id="png-fallback">PNG Fallback</h3>
+<p>For sites that need to remain readable when the JavaScript pipeline fails (e.g.&nbsp;restrictive corporate networks that block the jsDelivr CDN), Inspect Viz can embed a static PNG behind each interactive plot as a fallback. The recommended way to enable this is via a <a href="https://quarto.org/docs/projects/profiles.html">Quarto profile</a> so dev iteration (<code>quarto preview</code>) stays fast and only your production builds — <code>quarto render --profile publish</code> or <code>quarto publish --profile publish</code> — pay the per-plot Playwright cost. See <a href="./publishing-png-output.html#png-fallback">PNG Output → PNG Fallback</a> for the full setup.</p>
 </section>
 <section id="learning-more" class="level3">
 <h3 class="anchored" data-anchor-id="learning-more">Learning More</h3>

@@ -564,7 +564,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="filtering" class="level2">
 <h2 class="anchored" data-anchor-id="filtering">Filtering</h2>
 <p>The most straightforward usage of selections is adding inputs which filter the data displayed in a plot. This filtering uses the <em>built in</em> selection of <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#data">Data</a></span> instances. For example, here we add a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> input to enable filtering by species:</p>
-<div id="ef76a27e" class="cell" data-execution_count="2">
+<div id="8332f5bf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.plot <span class="im">import</span> plot</span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.mark <span class="im">import</span> dot</span>
@@ -632,6 +632,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 .mosaic-widget {
     margin-top: 10px;
     margin-bottom: 0.5rem;
+}
+
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
 }
 
 .mosaic-widget label {
@@ -725,6 +735,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -5008,9 +5055,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-9f9c5314c18c4ab3" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:878px;position:relative"><div style="flex:0 0 48px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-748fb06c43e38549" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:878px;position:relative"><div style="flex:0 0 48px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Species\",\"from\":\"CthNsBWjUr27fLAVNxpwUR\",\"as\":\"$selection_CthNsBWjUr27fLAVNxpwUR\",\"column\":\"species\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"CthNsBWjUr27fLAVNxpwUR\",\"filterBy\":\"$selection_CthNsBWjUr27fLAVNxpwUR\"},\"x\":{\"column\":\"body_mass\"},\"y\":{\"column\":\"flipper_length\"},\"symbol\":\"species\",\"tip\":{\"lineWidth\":1000000000},\"stroke\":\"species\"}],\"width\":768,\"height\":384,\"colorDomain\":\"Fixed\",\"name\":\"plot_KBw3GsRsuQQhPNosouF88m\"},{\"legend\":\"symbol\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_KBw3GsRsuQQhPNosouF88m\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Species\",\"from\":\"bKJKK9N6Drf3eLCFnzgkgH\",\"as\":\"$selection_bKJKK9N6Drf3eLCFnzgkgH\",\"column\":\"species\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"bKJKK9N6Drf3eLCFnzgkgH\",\"filterBy\":\"$selection_bKJKK9N6Drf3eLCFnzgkgH\"},\"x\":{\"column\":\"body_mass\"},\"y\":{\"column\":\"flipper_length\"},\"symbol\":\"species\",\"tip\":{\"lineWidth\":1000000000},\"stroke\":\"species\"}],\"width\":768,\"height\":384,\"colorDomain\":\"Fixed\",\"name\":\"plot_CgxkBhYhbw6frWC3CKBX8L\"},{\"legend\":\"symbol\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_CgxkBhYhbw6frWC3CKBX8L\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5020,7 +5067,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-9f9c5314c18c4ab3");
+  const el = document.getElementById("iv-748fb06c43e38549");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5033,21 +5080,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5062,7 +5126,7 @@ export {
 <section id="params" class="level2">
 <h2 class="anchored" data-anchor-id="params">Params</h2>
 <p>As illustrated above, inputs can be used to filter dataset selections. Inputs can also be used to set <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span> values that make various aspects of plots dynamic. For example, here is a density plot of flight delays which uses a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#slider">slider()</a></span> input to vary the amount of smooth ing by setting the kernel bandwidth:</p>
-<div id="d460b931" class="cell" data-execution_count="3">
+<div id="207d6910" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Param</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> slider</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.mark <span class="im">import</span> density_y</span>
@@ -5102,9 +5166,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div id="iv-e0eb5903a79ebcb7" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:768px;position:relative"><div style="flex:0 0 48px"></div><div style="aspect-ratio:768 / 250"></div><div class="iv-loading"></div></div></div><script type="module">
+<div id="iv-edf229a0b9948c72" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:768px;position:relative"><div style="flex:0 0 48px"></div><div style="aspect-ratio:768 / 250"></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"input\":\"slider\",\"select\":\"point\",\"min\":0.1,\"max\":100,\"step\":0.1,\"width\":150,\"label\":\"Bandwidth (\u03c3)\",\"as\":\"$param_mHFs4No5sEY3X8Dq3eydvC\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"densityY\",\"data\":{\"from\":\"Ldtta8Gfj5FCnF3FwTDx9Y\",\"filterBy\":\"$selection_Ldtta8Gfj5FCnF3FwTDx9Y\"},\"x\":{\"column\":\"delay\"},\"bandwidth\":\"$param_mHFs4No5sEY3X8Dq3eydvC\",\"fill\":\"steelblue\"}],\"width\":768,\"height\":250,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_mHFs4No5sEY3X8Dq3eydvC\":{\"select\":\"value\",\"value\":0.1},\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"},\"selection_Ldtta8Gfj5FCnF3FwTDx9Y\":{\"select\":\"intersect\"}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"","Ldtta8Gfj5FCnF3FwTDx9Y":"site_data/immutable/ea6e89d8bdbf484e.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"input\":\"slider\",\"select\":\"point\",\"min\":0.1,\"max\":100,\"step\":0.1,\"width\":150,\"label\":\"Bandwidth (\u03c3)\",\"as\":\"$param_Jv4LZbWXRiPM5PGYzFsBVR\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"densityY\",\"data\":{\"from\":\"9XxAtGdnUSYdoeaRjzhsrM\",\"filterBy\":\"$selection_9XxAtGdnUSYdoeaRjzhsrM\"},\"x\":{\"column\":\"delay\"},\"bandwidth\":\"$param_Jv4LZbWXRiPM5PGYzFsBVR\",\"fill\":\"steelblue\"}],\"width\":768,\"height\":250,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_Jv4LZbWXRiPM5PGYzFsBVR\":{\"select\":\"value\",\"value\":0.1},\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"},\"selection_9XxAtGdnUSYdoeaRjzhsrM\":{\"select\":\"intersect\"}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"","9XxAtGdnUSYdoeaRjzhsrM":"site_data/immutable/ea6e89d8bdbf484e.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5114,7 +5178,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-e0eb5903a79ebcb7");
+  const el = document.getElementById("iv-edf229a0b9948c72");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5127,21 +5191,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5155,7 +5236,7 @@ export {
 <h3 class="anchored" data-anchor-id="interval">Interval</h3>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#interval_x">interval_x()</a></span> and <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#interval_y">interval_y()</a></span> interactors create 1D interval brushes. The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#interval_xy">interval_xy()</a></span> interactor creates a 2D brush. Interval interactors accept a <code>pixel_size</code> parameter that sets the brush resolution: values may snap to a grid whose bins are larger than screen pixels and this can be leveraged to optimize query latency.</p>
 <p>For example, below we stack two plots vertically, a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.mark.html#dot">dot()</a></span> plot along with a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.mark.html#bar_x">bar_x()</a></span> plot that counts the <code>sex</code> column. We then add an <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#interval_x">interval_x()</a></span> interactor that enables us to filter the dataset using selections on the dot plot.</p>
-<div id="8b06f99b" class="cell" data-execution_count="4">
+<div id="fc740047" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data, Selection</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.interactor <span class="im">import</span> Brush, interval_x</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.plot <span class="im">import</span> plot</span>
@@ -5211,9 +5292,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div id="iv-1858fcdb2f002ef2" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:878px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+<div id="iv-75b79db57819a934" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:896px"><img class="iv-png-fallback" src="components-interactivity_files/placeholder/b8ddad4893ed9341.png" width="896" height="534" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"hDNWUHN7c4CENkDbrrppHX\",\"filterBy\":\"$selection_hDNWUHN7c4CENkDbrrppHX\"},\"x\":{\"column\":\"weight\"},\"y\":{\"column\":\"height\"},\"tip\":{\"lineWidth\":1000000000},\"fill\":\"sex\",\"opacity\":0.1},{\"mark\":\"regressionY\",\"data\":{\"from\":\"hDNWUHN7c4CENkDbrrppHX\",\"filterBy\":\"$selection_hDNWUHN7c4CENkDbrrppHX\"},\"x\":{\"column\":\"weight\"},\"y\":{\"column\":\"height\"},\"stroke\":\"sex\"},{\"select\":\"intervalX\",\"as\":\"$selection_LhUQYNNiPDiuT8RYokLPcM\",\"brush\":{\"fill\":\"none\",\"stroke\":\"#888\"}}],\"width\":768,\"height\":384,\"name\":\"plot_Rs8FWW8RnuHQaYJmzt7b2y\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_Rs8FWW8RnuHQaYJmzt7b2y\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"hDNWUHN7c4CENkDbrrppHX\",\"filterBy\":\"$selection_LhUQYNNiPDiuT8RYokLPcM\"},\"x\":{\"count\":null},\"y\":{\"column\":\"sex\"},\"fill\":\"sex\"}],\"yLabel\":null,\"width\":768,\"height\":150,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_mHFs4No5sEY3X8Dq3eydvC\":{\"select\":\"value\",\"value\":0.1},\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"},\"selection_Ldtta8Gfj5FCnF3FwTDx9Y\":{\"select\":\"intersect\"},\"selection_hDNWUHN7c4CENkDbrrppHX\":{\"select\":\"intersect\"},\"selection_LhUQYNNiPDiuT8RYokLPcM\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"","Ldtta8Gfj5FCnF3FwTDx9Y":"","hDNWUHN7c4CENkDbrrppHX":"site_data/immutable/39b7ce22ee3296b8.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"fr2KmBd2GseyctHmWSYZzY\",\"filterBy\":\"$selection_fr2KmBd2GseyctHmWSYZzY\"},\"x\":{\"column\":\"weight\"},\"y\":{\"column\":\"height\"},\"tip\":{\"lineWidth\":1000000000},\"fill\":\"sex\",\"opacity\":0.1},{\"mark\":\"regressionY\",\"data\":{\"from\":\"fr2KmBd2GseyctHmWSYZzY\",\"filterBy\":\"$selection_fr2KmBd2GseyctHmWSYZzY\"},\"x\":{\"column\":\"weight\"},\"y\":{\"column\":\"height\"},\"stroke\":\"sex\"},{\"select\":\"intervalX\",\"as\":\"$selection_LUaavCGK4HFXCx2pVf5rED\",\"brush\":{\"fill\":\"none\",\"stroke\":\"#888\"}}],\"width\":768,\"height\":384,\"name\":\"plot_88s36jqrjkRwpj9Sfskm8D\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_88s36jqrjkRwpj9Sfskm8D\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"fr2KmBd2GseyctHmWSYZzY\",\"filterBy\":\"$selection_LUaavCGK4HFXCx2pVf5rED\"},\"x\":{\"count\":null},\"y\":{\"column\":\"sex\"},\"fill\":\"sex\"}],\"yLabel\":null,\"width\":768,\"height\":150,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_Jv4LZbWXRiPM5PGYzFsBVR\":{\"select\":\"value\",\"value\":0.1},\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"},\"selection_9XxAtGdnUSYdoeaRjzhsrM\":{\"select\":\"intersect\"},\"selection_fr2KmBd2GseyctHmWSYZzY\":{\"select\":\"intersect\"},\"selection_LUaavCGK4HFXCx2pVf5rED\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"site_data/immutable/8ea74d883f698cd8.arrow","9XxAtGdnUSYdoeaRjzhsrM":"site_data/immutable/ea6e89d8bdbf484e.arrow","fr2KmBd2GseyctHmWSYZzY":"site_data/immutable/39b7ce22ee3296b8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5223,7 +5304,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-1858fcdb2f002ef2");
+  const el = document.getElementById("iv-75b79db57819a934");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5236,21 +5317,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5263,7 +5361,7 @@ export {
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#toggle">toggle()</a></span> interactor selects individual points (e.g., by click or shift-click) and generates a selection clause over specified fields of those points. Directives such as <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#toggle_color">toggle_color()</a></span>, <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#toggle_x">toggle_x()</a></span>, and <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#toggle_y">toggle_y()</a></span> simplify specification of which channel fields are included in the resulting predicates.</p>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#highlight">highlight()</a></span> interactor updates the rendered state of a visualization in response to a Selection. Non-selected points are set to translucent, neutral gray, or other specified visual properties. Selected points maintain normal encodings.</p>
 <p>This example demonstrates using the <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#toggle_y">toggle_y()</a></span> and <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.interactor.html#highlight">highlight()</a></span> interactors to render a bar chart that can be clicked to select a subset of points on the dot plot above it. The dot plot legend also targets the same the selection to make itself interactive.</p>
-<div id="98f31b67" class="cell" data-execution_count="5">
+<div id="746554e6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data, Selection</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.interactor <span class="im">import</span> highlight, toggle_y</span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.plot <span class="im">import</span> legend, plot</span>
@@ -5330,9 +5428,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<div id="iv-5714360aa7858e3f" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:878px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+<div id="iv-b4afe174d12cef7c" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:896px"><img class="iv-png-fallback" src="components-interactivity_files/placeholder/1c0e48119fad2f25.png" width="896" height="584" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"j8voUCZAtWkjZXQWKMXDuT\",\"filterBy\":\"$selection_VJ2Ws9FDHn2gK5kYbMVSYs\"},\"x\":{\"dateMonthDay\":\"date\"},\"y\":{\"column\":\"temp_max\"},\"r\":\"precipitation\",\"tip\":{\"lineWidth\":1000000000},\"fill\":\"weather\",\"fillOpacity\":0.7}],\"width\":768,\"height\":384,\"xTickFormat\":\"%b\",\"colorDomain\":\"Fixed\",\"rDomain\":\"Fixed\",\"rRange\":[2,10],\"name\":\"plot_7Ras5PC2NfFTHdqZE6pMQ4\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_VJ2Ws9FDHn2gK5kYbMVSYs\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_7Ras5PC2NfFTHdqZE6pMQ4\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"j8voUCZAtWkjZXQWKMXDuT\",\"filterBy\":\"$selection_j8voUCZAtWkjZXQWKMXDuT\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"weather\"},{\"select\":\"toggleY\",\"as\":\"$selection_VJ2Ws9FDHn2gK5kYbMVSYs\"},{\"select\":\"highlight\",\"by\":\"$selection_VJ2Ws9FDHn2gK5kYbMVSYs\"}],\"yLabel\":null,\"width\":768,\"height\":200,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_mHFs4No5sEY3X8Dq3eydvC\":{\"select\":\"value\",\"value\":0.1},\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"},\"selection_Ldtta8Gfj5FCnF3FwTDx9Y\":{\"select\":\"intersect\"},\"selection_hDNWUHN7c4CENkDbrrppHX\":{\"select\":\"intersect\"},\"selection_LhUQYNNiPDiuT8RYokLPcM\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_j8voUCZAtWkjZXQWKMXDuT\":{\"select\":\"intersect\"},\"selection_VJ2Ws9FDHn2gK5kYbMVSYs\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"","Ldtta8Gfj5FCnF3FwTDx9Y":"","hDNWUHN7c4CENkDbrrppHX":"","j8voUCZAtWkjZXQWKMXDuT":"site_data/immutable/7f3dc8a58f9ef7c9.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"TaDByCmBPjFTgcX5DMNMAd\",\"filterBy\":\"$selection_Nsjj8nZNwgHxUt7ckZQyFU\"},\"x\":{\"dateMonthDay\":\"date\"},\"y\":{\"column\":\"temp_max\"},\"r\":\"precipitation\",\"tip\":{\"lineWidth\":1000000000},\"fill\":\"weather\",\"fillOpacity\":0.7}],\"width\":768,\"height\":384,\"xTickFormat\":\"%b\",\"colorDomain\":\"Fixed\",\"rDomain\":\"Fixed\",\"rRange\":[2,10],\"name\":\"plot_ST6aPtBFXexUYcJCxe38Sj\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_Nsjj8nZNwgHxUt7ckZQyFU\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_ST6aPtBFXexUYcJCxe38Sj\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"TaDByCmBPjFTgcX5DMNMAd\",\"filterBy\":\"$selection_TaDByCmBPjFTgcX5DMNMAd\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"weather\"},{\"select\":\"toggleY\",\"as\":\"$selection_Nsjj8nZNwgHxUt7ckZQyFU\"},{\"select\":\"highlight\",\"by\":\"$selection_Nsjj8nZNwgHxUt7ckZQyFU\"}],\"yLabel\":null,\"width\":768,\"height\":200,\"xDomain\":\"Fixed\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_Jv4LZbWXRiPM5PGYzFsBVR\":{\"select\":\"value\",\"value\":0.1},\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"},\"selection_9XxAtGdnUSYdoeaRjzhsrM\":{\"select\":\"intersect\"},\"selection_fr2KmBd2GseyctHmWSYZzY\":{\"select\":\"intersect\"},\"selection_LUaavCGK4HFXCx2pVf5rED\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_TaDByCmBPjFTgcX5DMNMAd\":{\"select\":\"intersect\"},\"selection_Nsjj8nZNwgHxUt7ckZQyFU\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"site_data/immutable/8ea74d883f698cd8.arrow","9XxAtGdnUSYdoeaRjzhsrM":"site_data/immutable/ea6e89d8bdbf484e.arrow","fr2KmBd2GseyctHmWSYZzY":"site_data/immutable/39b7ce22ee3296b8.arrow","TaDByCmBPjFTgcX5DMNMAd":"site_data/immutable/7f3dc8a58f9ef7c9.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5342,7 +5440,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-5714360aa7858e3f");
+  const el = document.getElementById("iv-b4afe174d12cef7c");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5355,21 +5453,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5384,7 +5499,7 @@ export {
 <section id="inputs" class="level3">
 <h3 class="anchored" data-anchor-id="inputs">Inputs</h3>
 <p>This example demonstrates crossfiltering across <a href="./reference/inspect_viz.input.html">inputs</a>. We plot shot types taken during the 2023 WNBA season, providing a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> input that filters by team, and another <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> input that filters by player (which in turn is also filtered by the currently selected team). Click on the numbers at right for additional explanation of the code.</p>
-<div id="fc482998" class="cell" data-execution_count="6">
+<div id="de28f864" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data, Selection</span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> select</span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.layout <span class="im">import</span> vconcat, hconcat</span>
@@ -5440,9 +5555,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<div id="iv-b74b6bce8dc93e4a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="aspect-ratio:768 / 200;max-width:768px;position:relative"><div class="iv-loading"></div></div></div><script type="module">
+<div id="iv-7b4888d87ff46299" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="aspect-ratio:768 / 200;max-width:768px;position:relative"><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Team\",\"from\":\"ayLq7FnTgvCUvcMznJJBUW\",\"as\":\"$selection_f8HmemzmwDc47HqeNWKLep\",\"column\":\"team_name\"},{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Athlete\",\"from\":\"ayLq7FnTgvCUvcMznJJBUW\",\"as\":\"$selection_f8HmemzmwDc47HqeNWKLep\",\"column\":\"athlete_name\",\"filterBy\":\"$selection_f8HmemzmwDc47HqeNWKLep\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"ayLq7FnTgvCUvcMznJJBUW\",\"filterBy\":\"$selection_f8HmemzmwDc47HqeNWKLep\"},\"x\":{\"count\":null},\"y\":{\"column\":\"category\"},\"fill\":\"category\"}],\"yLabel\":null,\"width\":768,\"height\":200,\"colorDomain\":\"Fixed\",\"yDomain\":[\"Jump\",\"Layup\",\"Hook\"],\"marginLeft\":60}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_mHFs4No5sEY3X8Dq3eydvC\":{\"select\":\"value\",\"value\":0.1},\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"},\"selection_Ldtta8Gfj5FCnF3FwTDx9Y\":{\"select\":\"intersect\"},\"selection_hDNWUHN7c4CENkDbrrppHX\":{\"select\":\"intersect\"},\"selection_LhUQYNNiPDiuT8RYokLPcM\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_j8voUCZAtWkjZXQWKMXDuT\":{\"select\":\"intersect\"},\"selection_VJ2Ws9FDHn2gK5kYbMVSYs\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_ayLq7FnTgvCUvcMznJJBUW\":{\"select\":\"intersect\"},\"selection_f8HmemzmwDc47HqeNWKLep\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"","Ldtta8Gfj5FCnF3FwTDx9Y":"","hDNWUHN7c4CENkDbrrppHX":"","j8voUCZAtWkjZXQWKMXDuT":"","ayLq7FnTgvCUvcMznJJBUW":"site_data/immutable/4425bd3adebe0c4d.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Team\",\"from\":\"nEjHNCFzLNDHh47bvuMzda\",\"as\":\"$selection_2Fnn4hdTwjVgEHjDLf2LCz\",\"column\":\"team_name\"},{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Athlete\",\"from\":\"nEjHNCFzLNDHh47bvuMzda\",\"as\":\"$selection_2Fnn4hdTwjVgEHjDLf2LCz\",\"column\":\"athlete_name\",\"filterBy\":\"$selection_2Fnn4hdTwjVgEHjDLf2LCz\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"nEjHNCFzLNDHh47bvuMzda\",\"filterBy\":\"$selection_2Fnn4hdTwjVgEHjDLf2LCz\"},\"x\":{\"count\":null},\"y\":{\"column\":\"category\"},\"fill\":\"category\"}],\"yLabel\":null,\"width\":768,\"height\":200,\"colorDomain\":\"Fixed\",\"yDomain\":[\"Jump\",\"Layup\",\"Hook\"],\"marginLeft\":60}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_Jv4LZbWXRiPM5PGYzFsBVR\":{\"select\":\"value\",\"value\":0.1},\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"},\"selection_9XxAtGdnUSYdoeaRjzhsrM\":{\"select\":\"intersect\"},\"selection_fr2KmBd2GseyctHmWSYZzY\":{\"select\":\"intersect\"},\"selection_LUaavCGK4HFXCx2pVf5rED\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_TaDByCmBPjFTgcX5DMNMAd\":{\"select\":\"intersect\"},\"selection_Nsjj8nZNwgHxUt7ckZQyFU\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_nEjHNCFzLNDHh47bvuMzda\":{\"select\":\"intersect\"},\"selection_2Fnn4hdTwjVgEHjDLf2LCz\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"","9XxAtGdnUSYdoeaRjzhsrM":"","fr2KmBd2GseyctHmWSYZzY":"","TaDByCmBPjFTgcX5DMNMAd":"","nEjHNCFzLNDHh47bvuMzda":"site_data/immutable/4425bd3adebe0c4d.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5452,7 +5567,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b74b6bce8dc93e4a");
+  const el = document.getElementById("iv-7b4888d87ff46299");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5465,21 +5580,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5489,7 +5621,7 @@ export {
 <section id="interactors-1" class="level3">
 <h3 class="anchored" data-anchor-id="interactors-1">Interactors</h3>
 <p>This example demonstrates crossfiltering across plot <a href="./reference/inspect_viz.interactor.html">interactors</a>. We plot histograms showing arrival delay and departure time for flights. When you select a range in one plot, the other plot updates to show only the data within that selection—and vice versa. This bidirectional filtering is achieved using <code>Selection.crossfilter()</code>, which ensures each plot’s selection affects all other plots except itself. Click on the numbers at right for additional explanation of the code.</p>
-<div id="bca3223e" class="cell" data-execution_count="7">
+<div id="15d8b700" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data, Selection</span>
 <span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.mark <span class="im">import</span> rect_y</span>
 <span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.layout <span class="im">import</span> vconcat</span>
@@ -5539,9 +5671,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div id="iv-7100c9fa09f0f177" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="aspect-ratio:768 / 200;max-width:768px;position:relative"><div class="iv-loading"></div></div></div><script type="module">
+<div id="iv-31b4915576f2a581" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:768px"><img class="iv-png-fallback" src="components-interactivity_files/placeholder/896b583426756ece.png" width="768" height="400" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"rectY\",\"data\":{\"from\":\"TuM7nZKRW6Xfn5rwZXTjSH\",\"filterBy\":\"$selection_D6WP3QA756XKnngM8MBYd7\"},\"x\":{\"bin\":\"delay\"},\"y\":{\"count\":null},\"fill\":\"steelblue\"},{\"select\":\"intervalX\",\"as\":\"$selection_D6WP3QA756XKnngM8MBYd7\"}],\"xLabel\":\"Arrival Delay (min)\",\"width\":768,\"height\":200,\"xDomain\":\"Fixed\",\"yTickFormat\":\"s\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"rectY\",\"data\":{\"from\":\"TuM7nZKRW6Xfn5rwZXTjSH\",\"filterBy\":\"$selection_D6WP3QA756XKnngM8MBYd7\"},\"x\":{\"bin\":\"time\"},\"y\":{\"count\":null},\"fill\":\"steelblue\"},{\"select\":\"intervalX\",\"as\":\"$selection_D6WP3QA756XKnngM8MBYd7\"}],\"xLabel\":\"Departure Time (hour)\",\"width\":768,\"height\":200,\"xDomain\":\"Fixed\",\"yTickFormat\":\"s\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_mHFs4No5sEY3X8Dq3eydvC\":{\"select\":\"value\",\"value\":0.1},\"selection_CthNsBWjUr27fLAVNxpwUR\":{\"select\":\"intersect\"},\"selection_Ldtta8Gfj5FCnF3FwTDx9Y\":{\"select\":\"intersect\"},\"selection_hDNWUHN7c4CENkDbrrppHX\":{\"select\":\"intersect\"},\"selection_LhUQYNNiPDiuT8RYokLPcM\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_j8voUCZAtWkjZXQWKMXDuT\":{\"select\":\"intersect\"},\"selection_VJ2Ws9FDHn2gK5kYbMVSYs\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_ayLq7FnTgvCUvcMznJJBUW\":{\"select\":\"intersect\"},\"selection_f8HmemzmwDc47HqeNWKLep\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false},\"selection_TuM7nZKRW6Xfn5rwZXTjSH\":{\"select\":\"intersect\"},\"selection_D6WP3QA756XKnngM8MBYd7\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false}}}","tables":{"CthNsBWjUr27fLAVNxpwUR":"","Ldtta8Gfj5FCnF3FwTDx9Y":"","hDNWUHN7c4CENkDbrrppHX":"","j8voUCZAtWkjZXQWKMXDuT":"","ayLq7FnTgvCUvcMznJJBUW":"","TuM7nZKRW6Xfn5rwZXTjSH":"site_data/immutable/ea6e89d8bdbf484e.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"rectY\",\"data\":{\"from\":\"fAimG6GaUoLvCSnsTwmRAU\",\"filterBy\":\"$selection_DhpBkCwgUq7Luf5NWrzazd\"},\"x\":{\"bin\":\"delay\"},\"y\":{\"count\":null},\"fill\":\"steelblue\"},{\"select\":\"intervalX\",\"as\":\"$selection_DhpBkCwgUq7Luf5NWrzazd\"}],\"xLabel\":\"Arrival Delay (min)\",\"width\":768,\"height\":200,\"xDomain\":\"Fixed\",\"yTickFormat\":\"s\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"rectY\",\"data\":{\"from\":\"fAimG6GaUoLvCSnsTwmRAU\",\"filterBy\":\"$selection_DhpBkCwgUq7Luf5NWrzazd\"},\"x\":{\"bin\":\"time\"},\"y\":{\"count\":null},\"fill\":\"steelblue\"},{\"select\":\"intervalX\",\"as\":\"$selection_DhpBkCwgUq7Luf5NWrzazd\"}],\"xLabel\":\"Departure Time (hour)\",\"width\":768,\"height\":200,\"xDomain\":\"Fixed\",\"yTickFormat\":\"s\"}]}],\"plotDefaults\":{\"width\":800,\"height\":500},\"params\":{\"param_Jv4LZbWXRiPM5PGYzFsBVR\":{\"select\":\"value\",\"value\":0.1},\"selection_bKJKK9N6Drf3eLCFnzgkgH\":{\"select\":\"intersect\"},\"selection_9XxAtGdnUSYdoeaRjzhsrM\":{\"select\":\"intersect\"},\"selection_fr2KmBd2GseyctHmWSYZzY\":{\"select\":\"intersect\"},\"selection_LUaavCGK4HFXCx2pVf5rED\":{\"select\":\"intersect\",\"cross\":false,\"empty\":false},\"selection_TaDByCmBPjFTgcX5DMNMAd\":{\"select\":\"intersect\"},\"selection_Nsjj8nZNwgHxUt7ckZQyFU\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_nEjHNCFzLNDHh47bvuMzda\":{\"select\":\"intersect\"},\"selection_2Fnn4hdTwjVgEHjDLf2LCz\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false},\"selection_fAimG6GaUoLvCSnsTwmRAU\":{\"select\":\"intersect\"},\"selection_DhpBkCwgUq7Luf5NWrzazd\":{\"select\":\"crossfilter\",\"cross\":true,\"empty\":false}}}","tables":{"bKJKK9N6Drf3eLCFnzgkgH":"site_data/immutable/8ea74d883f698cd8.arrow","9XxAtGdnUSYdoeaRjzhsrM":"site_data/immutable/ea6e89d8bdbf484e.arrow","fr2KmBd2GseyctHmWSYZzY":"site_data/immutable/39b7ce22ee3296b8.arrow","TaDByCmBPjFTgcX5DMNMAd":"site_data/immutable/7f3dc8a58f9ef7c9.arrow","nEjHNCFzLNDHh47bvuMzda":"site_data/immutable/4425bd3adebe0c4d.arrow","fAimG6GaUoLvCSnsTwmRAU":"site_data/immutable/ea6e89d8bdbf484e.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5551,7 +5683,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-7100c9fa09f0f177");
+  const el = document.getElementById("iv-31b4915576f2a581");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5564,21 +5696,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>

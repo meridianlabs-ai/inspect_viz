@@ -6,7 +6,7 @@
 
 Select a continuous 1D interval selection over the `x` scale domain.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L56)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L56)
 
 ``` python
 def interval_x(
@@ -37,7 +37,7 @@ CSS styles for the brush (SVG `rect`) element.
 
 Select a continuous 1D interval selection over the `y` scale domain.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L123)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L123)
 
 ``` python
 def interval_y(
@@ -68,7 +68,7 @@ CSS styles for the brush (SVG `rect`) element.
 
 Select a continuous 2D interval selection over the `x` and `y` scale domains.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L91)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L91)
 
 ``` python
 def interval_xy(
@@ -103,7 +103,7 @@ CSS styles for the brush (SVG `rect`) element.
 
 Select values from the mark closest to the pointer *x* location.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L227)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L227)
 
 ``` python
 def nearest_x(
@@ -130,7 +130,7 @@ The maximum radius of a nearest selection (default 40). Marks with (x, y) coordi
 
 Select values from the mark closest to the pointer *y* location.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L253)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L253)
 
 ``` python
 def nearest_y(
@@ -157,7 +157,7 @@ The maximum radius of a nearest selection (default 40). Marks with (x, y) coordi
 
 Select individal values.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L158)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L158)
 
 ``` python
 def toggle(
@@ -180,7 +180,7 @@ A flag indicating if peer (sibling) marks are excluded when cross-filtering (def
 
 Select individal values in the `x` scale domain. Clicking or touching a mark toggles its selection status.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L183)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L183)
 
 ``` python
 def toggle_x(
@@ -199,7 +199,7 @@ A flag indicating if peer (sibling) marks are excluded when cross-filtering (def
 
 Toggle interactor over the `"y"` encoding channel only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L307)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L307)
 
 ``` python
 def toggle_y(
@@ -218,7 +218,7 @@ A flag indicating if peer (sibling) marks are excluded when cross-filtering (def
 
 Select individal values in the `color` scale domain. Clicking or touching a mark toggles its selection status.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L205)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L205)
 
 ``` python
 def toggle_color(
@@ -237,7 +237,7 @@ A flag indicating if peer (sibling) marks are excluded when cross-filtering (def
 
 Select aspects of individual marks within a 2D range.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L279)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L279)
 
 ``` python
 def region(
@@ -266,7 +266,7 @@ Highlight individual visualized data points based on a [Selection](../reference/
 
 Selected values keep their normal appearance. Unselected values are deemphasized.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L17)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L17)
 
 ``` python
 def highlight(
@@ -303,7 +303,7 @@ The stroke color of deemphasized marks. By default the stroke is unchanged.
 
 Pan a plot along both the `x` and `y` scales.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L328)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L328)
 
 ``` python
 def pan(
@@ -330,7 +330,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Pan a plot along the `x` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L353)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L353)
 
 ``` python
 def pan_x(
@@ -357,7 +357,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Pan a plot along the `y` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L378)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L378)
 
 ``` python
 def pan_y(
@@ -384,7 +384,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Pan and zoom a plot along both the `x` and `y` scales.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L403)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L403)
 
 ``` python
 def pan_zoom(
@@ -411,7 +411,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Pan and zoom a plot along the `x` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L428)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L428)
 
 ``` python
 def pan_zoom_x(
@@ -438,7 +438,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Pan and zoom a plot along the `y` scale only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L453)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L453)
 
 ``` python
 def pan_zoom_y(
@@ -467,7 +467,7 @@ The name of the field (database column) over which the `y`-component of the pan/
 
 Interactors imbue plots with interactive behavior, such as selecting or highlighting values, and panning or zooming the display.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_interactors.py#L9)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_interactors.py#L9)
 
 ``` python
 class Interactor(Component)
@@ -477,7 +477,7 @@ class Interactor(Component)
 
 Brush options.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/interactor/_brush.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/interactor/_brush.py#L6)
 
 ``` python
 class Brush(TypedDict, total=False)

@@ -12,6 +12,8 @@ tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools)
 ```
 
+![](view-sample-tool-calls_files/placeholder/8646ba3b2e9a7b3f.png)
+
 ## Data Preparation
 
 To create the plot we read a raw messages data frame from an eval log using the [messages_df()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#messages_df) function, then filter down to just the fields we require for visualization:
@@ -56,7 +58,7 @@ Note that the trimming of columns is particularly important because Inspect Viz 
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(

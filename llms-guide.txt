@@ -5,15 +5,17 @@
 
 # Inspect Viz
 
+[![](images/scores_by_task.png)](images/scores_by_task.png)
+
+[![](images/scores_by_model.png)](images/scores_by_model.png)
+
+[![](images/scores_timeline_gpqa.png)](images/scores_timeline_gpqa.png)
+
 ## Welcome
 
 Welcome to Inspect Viz, a data visualisation library for [Inspect AI](https://inspect.aisi.org.uk/). Inspect Viz provides flexible tools for creating high quality interactive visualisations from Inspect evaluations.
 
-Here’s an Inspect Viz plot created with the [scores_timeline()](./view-scores-timeline.html.md) function that compares benchmarks scores over time[^1]:
-
-Use the filters to switch benchmarks and restrict to models from various organization(s). Hover over the points to get additional details on them or view the underlying Inspect log for the evals.
-
-## Installation
+### Installation
 
 First, install the `inspect_viz` package as follows:
 
@@ -31,7 +33,11 @@ Inspect Viz plots are interactive Jupyter Widgets and can be authored in variety
 
 See the article on [LLM Assistance](./llm-assistance.html.md) for best practices on using language models to help with creating plots. See the articles on [Publishing](./publishing.html.md) for details on including plots in documents as static images or within websites and dashboards as interactive widgets.
 
-## Views
+## Interactive Plots
+
+Interactivity is built in. The [scores_timeline()](./view-scores-timeline.html.md) view, for example, lets visitors filter by benchmark and organization and hover for tooltips that link to the underlying Inspect logs[^1]:
+
+## Standard Views
 
 Inspect Viz [Views](./views.html.md) are pre-built plots that work with data created by the Inspect log [data frame](https://inspect.aisi.org.uk/dataframe.html) reading functions. For example, the [scores_by_factor()](./view-scores-by-factor.html.md) view enables you to compare scores across models and a boolean factor:
 
@@ -49,6 +55,19 @@ scores_by_factor(
 )
 ```
 
+![](index_files/placeholder/036f1fe383c72b8a.png)
+
+The [scores_by_task()](./view-scores-by-task.html.md) view enables you to compare scores across models on each evaluation task:
+
+``` python
+from inspect_viz.view import scores_by_task
+
+evals = Data.from_file("evals.parquet")
+scores_by_task(evals)
+```
+
+![](index_files/placeholder/7194617527e820cb.png)
+
 The [sample_tool_calls()](./view-sample-tool-calls.html.md) view enables you to visualize tool calls by sample:
 
 ``` python
@@ -57,6 +76,8 @@ from inspect_viz.view import sample_tool_calls
 tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools, legend=legend("color", frame_anchor="bottom", border=False))
 ```
+
+![](index_files/placeholder/10ca97b0d604fd5f.png)
 
 \` Available views include:
 
@@ -73,7 +94,7 @@ sample_tool_calls(tools, legend=legend("color", frame_anchor="bottom", border=Fa
 | [sample_tool_calls()](./view-sample-tool-calls.html.md) | Heat map visualising tool calls over evaluation turns. |
 | [sample_heatmap()](./view-sample-heatmap.html.md) | Heat map visualising sample scores. |
 
-## Plots
+## Custom Plots
 
 While pre-built views are useful, you also may want to create your own custom plots. Plots in `inspect_viz` are composed of one or more [marks](./reference/inspect_viz.mark.html.md), which can do either higher level plotting (e.g. [dot()](./reference/inspect_viz.mark.html.md#dot), [bar_x()](./reference/inspect_viz.mark.html.md#bar_x), [bar_y()](./reference/inspect_viz.mark.html.md#bar_y), [area()](./reference/inspect_viz.mark.html.md#area), [heatmap()](./reference/inspect_viz.view.html.md#heatmap), etc.) or lower level drawing on tπhe plot canvas (e.g. [text()](./reference/inspect_viz.mark.html.md#text), [image()](./reference/inspect_viz.mark.html.md#image), [arrow()](./reference/inspect_viz.mark.html.md#arrow), etc.)
 
@@ -127,6 +148,8 @@ Add a `legend` to the plot as a key to our color mappings.
 6  
 Ensure that the y-axis goes from 0 to 1.
 
+![](index_files/placeholder/f8426b5c1a460496.png)
+
 ### Bar Plot
 
 Here is a simple horizontal bar plot that counts the number of each species:
@@ -157,7 +180,9 @@ Sort the bars by score (descending).
 2  
 Y-axis is labeled with model names so remove default label and ensure it has enough margin.
 
-## Links
+![](index_files/placeholder/64535b6ae3d05554.png)
+
+## Log File Links
 
 Inspect Viz supports creating direct links from visualizations to published Inspect log transcripts. Links can be made at the eval level, or to individual samples, messages, or events. For example, this plot produced with [scores_by_model()](./reference/inspect_viz.view.html.md#scores_by_model) includes a link to the underlying logs in its tooltips:
 
@@ -166,51 +191,11 @@ from inspect_viz.view import scores_by_model
 scores_by_model(evals) # baseline=0.91
 ```
 
+![](index_files/placeholder/9d7c0d52e5e189b8.png)
+
 The pre-built [Views](./views.html.md) all support linking when a `log_viewer` column is available in the dataset. To learn more about ammending datasets with viewer URLs as well as adding linking support to your own plots see the article on [Links](./components-links.html.md).
 
-## Filters
-
-Use [inputs](./reference/inspect_viz.input.html.md) to enable filtering datasets and dynamically updating plots. For example, if we had multiple benchmarks available for a scores timeline, we could add a [select()](./reference/inspect_viz.input.html.md#select) input for choosing between them:
-
-``` python
-from inspect_viz.input import select
-from inspect_viz.layout import vconcat
-
-benchmarks = Data.from_file("benchmarks.parquet")
-
-vconcat(
-    select(
-        benchmarks, 
-        label="Benchmark", 
-        column="task_name", 
-        value="auto"
-    ),
-    plot(
-        dot( 
-            benchmarks, 
-            x="model_release_date", 
-            y="score_headline_value",
-            fill="model_organization_name",
-        ),
-        legend="color", 
-        grid=True,
-        x_label="Release Date",
-        y_label="Score",
-        y_domain=[0,1.0],  
-        color_domain="fixed"
-    )
-)
-```
-
-We’ve introduced a few new things here:
-
-1.  The [vconcat()](./reference/inspect_viz.layout.html.md#vconcat) function from the [layout](./reference/inspect_viz.layout.html.md) module lets us stack inputs on top of our plot.
-
-2.  The [select()](./reference/inspect_viz.input.html.md#select) function from the [input](./reference/inspect_viz.input.html.md) module binds a select box to the `task_name` column.
-
-3.  The `color_domain="fixed"` argument to [plot()](./reference/inspect_viz.plot.html.md#plot) indicates that we want to preserve model organization colors even when the plot is filtered.
-
-## Marks
+## Combining Marks
 
 So far the plots we’ve created include only a single [mark](./reference/inspect_viz.mark.html.md), however many of the more interesting plots you’ll create will include multiple marks.
 
@@ -244,9 +229,11 @@ plot(
 )
 ```
 
+![](index_files/placeholder/910de665db59fe12.png)
+
 Marks can be used to draw dots, lines, bars, cells, arrows, text, and images on a plot.
 
-## Data
+## Data Sources
 
 In the examples above we made [Data](./reference/inspect_viz.html.md#data) available by reading from a parquet file. We can also read data from any Python Data Frame (e.g. Pandas, Polars, PyArrow, etc.). For example:
 
@@ -293,7 +280,49 @@ vconcat(
 )
 ```
 
-## Tables
+## Data Filtering
+
+Use [inputs](./reference/inspect_viz.input.html.md) to enable filtering datasets and dynamically updating plots. For example, if we had multiple benchmarks available for a scores timeline, we could add a [select()](./reference/inspect_viz.input.html.md#select) input for choosing between them:
+
+``` python
+from inspect_viz.input import select
+from inspect_viz.layout import vconcat
+
+benchmarks = Data.from_file("benchmarks.parquet")
+
+vconcat(
+    select(
+        benchmarks, 
+        label="Benchmark", 
+        column="task_name", 
+        value="auto"
+    ),
+    plot(
+        dot( 
+            benchmarks, 
+            x="model_release_date", 
+            y="score_headline_value",
+            fill="model_organization_name",
+        ),
+        legend="color", 
+        grid=True,
+        x_label="Release Date",
+        y_label="Score",
+        y_domain=[0,1.0],  
+        color_domain="fixed"
+    )
+)
+```
+
+We’ve introduced a few new things here:
+
+1.  The [vconcat()](./reference/inspect_viz.layout.html.md#vconcat) function from the [layout](./reference/inspect_viz.layout.html.md) module lets us stack inputs on top of our plot.
+
+2.  The [select()](./reference/inspect_viz.input.html.md#select) function from the [input](./reference/inspect_viz.input.html.md) module binds a select box to the `task_name` column.
+
+3.  The `color_domain="fixed"` argument to [plot()](./reference/inspect_viz.plot.html.md#plot) indicates that we want to preserve model organization colors even when the plot is filtered.
+
+## Data Tables
 
 You can also display data in a tabular layout using the [table()](./reference/inspect_viz.table.html.md#table) function:
 
@@ -353,7 +382,7 @@ For attribution, please cite this work as:
 
 Labs, Meridian. 2025. *Inspect Viz: Data Visualization for Inspect AI Large Language Model Evalutions*. Released August. <https://github.com/meridianlabs-ai/inspect_viz>.
 
-[^1]: This plot was inspired by and includes data from the [Epoch AI](https://epoch.ai/data/ai-benchmarking-dashboard) Benchmarking Hub
+[^1]: This plot was inspired by and includes data from the [Epoch AI](https://epoch.ai/data/ai-benchmarking-dashboard) Benchmarking Hub.
 
 
 # LLM Assistance – Inspect Viz
@@ -549,6 +578,8 @@ evals = Data.from_file("evals.parquet")
 scores_by_task(evals)
 ```
 
+![](view-scores-by-task_files/placeholder/7194617527e820cb.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -578,7 +609,7 @@ Bar plot for comparing eval scores.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(
@@ -1662,6 +1693,8 @@ evals = Data.from_file("agi-lsat-ar.parquet")
 scores_by_model(evals, marks=baseline(0.697, label="Human"))
 ```
 
+![](view-scores-by-model_files/placeholder/641e3e25e0133dc2.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -1691,7 +1724,7 @@ Bar plot for comparing the scores of different models on a single evaluation.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “model_display_name” (`y`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_model.py#L19)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_model.py#L19)
 
 ``` python
 def scores_by_model(
@@ -2782,6 +2815,8 @@ evals = Data.from_file("evals-hint.parquet")
 scores_by_factor(evals, "task_arg_hint", ("No hint", "Hint"))
 ```
 
+![](view-scores-by-factor_files/placeholder/fa17a6fdeb303a2f.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -2809,7 +2844,7 @@ You should also ensure that your evals data frame has a boolean field correspond
 
 Summarize eval scores with a factor of variation (e.g ‘No hint’ vs. ‘Hint’).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_factor.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_factor.py#L16)
 
 ``` python
 def scores_by_factor(
@@ -3906,6 +3941,8 @@ evals = Data.from_file("swebench_token_limit.parquet")
 scores_by_limit(evals)
 ```
 
+![](view-scores-by-limit_files/placeholder/3114a9dd3d1f843f.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -3966,7 +4003,7 @@ Visualizes success rate as a function of a resource limit (time, tokens).
 
 Model success rate is plotted as a function of the time, tokens, or other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -5046,7 +5083,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(
@@ -5124,7 +5161,7 @@ When multiple organizations exist, clicking on the legend for an organization wi
 
 Eval scores by model, organization, and release date.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_timeline.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_timeline.py#L29)
 
 ``` python
 def scores_timeline(
@@ -6243,6 +6280,8 @@ evals = Data.from_file("evals.parquet")
 scores_heatmap(evals, height=200)
 ```
 
+![](view-scores-heatmap_files/placeholder/97559e02f53807b9.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -6270,7 +6309,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(
@@ -7365,6 +7404,8 @@ evals = Data.from_file("writing_bench_radar.parquet")
 scores_radar_by_metric(evals)
 ```
 
+![](view-scores-radar-by-metric_files/placeholder/be99cbf2da1399ff.png)
+
 The scores plotted on this radar chart have been normalized using percentile ranking, which means each score represents the model’s relative performance compared to all other models in the dataset. Specifically, a score of 0.5 indicates that the model performed better than 50% of the other models. Absolute scores are displayed in the tooltips.
 
 You can use `scores_radar_by_metric_df()` to produce data with min-max normalization, omit normalization entirely, or invert the scores for metrics where lower scores are better.
@@ -7440,7 +7481,7 @@ Creates a radar chart showing scores for multiple models across multiple metrics
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -7465,7 +7506,7 @@ Creates a dataframe for a radar chart showing multiple models across multiple me
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(
@@ -7514,6 +7555,8 @@ from inspect_viz.view import scores_radar_by_task
 evals = Data.from_file("radar_by_task.parquet")
 scores_radar_by_task(evals)
 ```
+
+![](view-scores-radar-by-task_files/placeholder/3d2c5ba7257e8554.png)
 
 The scores plotted on this radar chart have been normalized using percentile ranking, which means each score represents the model’s relative performance compared to all other models in the dataset. Specifically, a score of 0.5 indicates that the model performed better than 50% of the other models. Absolute scores are displayed in the tooltips.
 
@@ -7601,7 +7644,7 @@ Provide an optional task name mapping for pretty task names in [prepare()](https
 
 Creates a radar chart showing scores for multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -8655,7 +8698,7 @@ Creates a dataframe for a radar chart showing headline metrics across multiple m
 
 This is useful for comparing the headline metrics of multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(
@@ -8705,6 +8748,8 @@ tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools)
 ```
 
+![](view-sample-tool-calls_files/placeholder/8646ba3b2e9a7b3f.png)
+
 ## Data Preparation
 
 To create the plot we read a raw messages data frame from an eval log using the [messages_df()](https://inspect.aisi.org.uk/reference/inspect_ai.analysis.html#messages_df) function, then filter down to just the fields we require for visualization:
@@ -8749,7 +8794,7 @@ Note that the trimming of columns is particularly important because Inspect Viz 
 
 Heat map visualising tool calls over evaluation turns.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_sample_tool_calls.py#L18)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_sample_tool_calls.py#L18)
 
 ``` python
 def sample_tool_calls(
@@ -9840,6 +9885,8 @@ sample_heatmap(
 )
 ```
 
+![](view-sample-heatmap_files/placeholder/2809ff4deb1e7425.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -9878,7 +9925,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_sample_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_sample_heatmap.py#L16)
 
 ``` python
 def sample_heatmap(
@@ -10995,6 +11042,8 @@ Legend in the default location, keyed by `symbol`.
 3  
 Additional attributes that affect plot size and appearance.
 
+![](components-plots_files/placeholder/a4429dc68cbcb5d5.png)
+
 ## Facets
 
 Plots support faceting of the `x` and `y` dimensions, producing associated `fx` and `fy` scales. For example, here we compare model performance on several tasks. The `task_name` is the `fx` scale, resulting in a separate grouping of bars for each task:
@@ -11037,6 +11086,8 @@ Remove default x labeling as it is handled by the legend.
 4  
 Tweak y-axis with shorter label and ensure that it goes all the way up to 1.0.
 
+![](components-plots_files/placeholder/7c6410107bb1ad2b.png)
+
 ## Marks
 
 The plots above use only a single mark ([dot()](./reference/inspect_viz.mark.html.md#dot) and [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) respectively). More sophisticated plots are often constructed with multiple marks. For example, here is a plot that adds a regression line mark do a standard dot plot:
@@ -11068,6 +11119,8 @@ Use `fill` to distinguish male and female athletes; use `opacity` to deal with a
 
 2  
 Use `stroke` to ensure that male and female athletes each get their own regression line.
+
+![](components-plots_files/placeholder/f3bea12fbd71828b.png)
 
 ## Tooltips
 
@@ -11140,6 +11193,8 @@ plot(
     legend="color"
 )
 ```
+
+![](components-plots_files/placeholder/52e428efddb50050.png)
 
 If you have facet labels on the top of the x-axis, you may need to provide some additional `top_margin` for the `title` so that it is placed above the facet labels. Use the [title()](./reference/inspect_viz.mark.html.md#title) function to customize this:
 
@@ -11353,6 +11408,8 @@ plot(
 )
 ```
 
+![](components-plots_files/placeholder/f652656b3112b901.png)
+
 If you have a simple static baseline, you may simply provide the value, along with other options to customize the label, position, and other attributes of the baseline. You can also use a tranformation function like [median()](./reference/inspect_viz.transform.html.md#median) to define baselines:
 
 ``` python
@@ -11404,7 +11461,9 @@ plot(
 )
 ```
 
-## Data
+![](components-plots_files/placeholder/97caa3e217e913fa.png)
+
+## Data Sources
 
 In the examples above we made [Data](./reference/inspect_viz.html.md#data) available by reading from a parquet file. We can also read data from any Python Data Frame (e.g. Pandas, Polars, PyArrow, etc.). For example:
 
@@ -11580,6 +11639,8 @@ plot(
 )
 ```
 
+![](components-marks_files/placeholder/c86e1ceb604e0c54.png)
+
 Variants such as [bar_x()](./reference/inspect_viz.mark.html.md#bar_x) and [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) indicate spatial orientation and data type assumptions. [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) indicates vertical bars—continuous `y` over an ordinal `x` domain—whereas [rect_y()](./reference/inspect_viz.mark.html.md#rect_y) indicates a continuous `x` domain.
 
 [Data](./reference/inspect_viz.html.md#data) is backed by a DuckDB SQL database running in the web browser. Basic marks follow a straightforward query construction process:
@@ -11721,6 +11782,8 @@ from inspect_viz.view import scores_by_model
 evals = Data.from_file("agi-lsat-ar.parquet")
 scores_by_model(evals)
 ```
+
+![](components-links_files/placeholder/9d7c0d52e5e189b8.png)
 
 If you mouse over the bars you will see a log viewer link which you can click to navigate to the log.
 
@@ -12420,6 +12483,8 @@ The `range` selection is consumed using the `filter_by` parameter.
 5  
 We set the `x_domain` for the bar plot to “fixed” so that the scale doesn’t change as the dataset is filtered.
 
+![](components-interactivity_files/placeholder/b8ddad4893ed9341.png)
+
 Try using the mouse to brush over regions on the dot plot—the bar plot will update accordingly.
 
 ### Toggle
@@ -12487,6 +12552,8 @@ Clicks on the legend target the same selection
 
 6  
 [highlight()](./reference/inspect_viz.interactor.html.md#highlight) interactor to fade out unselected bars.
+
+![](components-interactivity_files/placeholder/1c0e48119fad2f25.png)
 
 Try clicking either the legend or the bar plot elements to filter the dot plot.
 
@@ -12593,6 +12660,8 @@ The [interval_x()](./reference/inspect_viz.interactor.html.md#interval_x) intera
 
 4  
 Use a `"fixed"` domain so that the x-axis remains stable even when being filtered.
+
+![](components-interactivity_files/placeholder/896b583426756ece.png)
 
 Try selecting a horizontal range on either or both of the bar plots.
 
@@ -12878,9 +12947,13 @@ When using Inspect Viz with Quarto Websites you should always add the following 
     _quarto.yml
 
 ``` yaml
-execute: 
+execute:
   enabled: true
 ```
+
+### PNG Fallback
+
+For sites that need to remain readable when the JavaScript pipeline fails (e.g. restrictive corporate networks that block the jsDelivr CDN), Inspect Viz can embed a static PNG behind each interactive plot as a fallback. The recommended way to enable this is via a [Quarto profile](https://quarto.org/docs/projects/profiles.html) so dev iteration (`quarto preview`) stays fast and only your production builds — `quarto render --profile publish` or `quarto publish --profile publish` — pay the per-plot Playwright cost. See [PNG Output → PNG Fallback](./publishing-png-output.html.md#png-fallback) for the full setup.
 
 ### Learning More
 
@@ -13125,6 +13198,46 @@ with options_context(output_format="png"):
 
 Note that when rendering a PDF document with Quarto, the output format is automatically set to “png” (as PDFs can’t ever include interactive JavaScript content).
 
+## PNG Fallback
+
+Inspect Viz plots can also be rendered in a hybrid mode where a static PNG is embedded as a fallback and the interactive widget is overlaid on top once the JavaScript pipeline loads. If anything in the pipeline fails — for example, the user is on a restrictive network that blocks the jsDelivr CDN, or DuckDB-WASM can’t initialize — the PNG remains visible and the page stays readable.
+
+This is especially valuable for sites that need to degrade gracefully in corporate networks, archival contexts, or offline viewing.
+
+### Enabling Fallback
+
+The hybrid mode is opt-in. The cleanest way to enable it for production renders — without affecting `quarto preview` / dev iteration — is via a [Quarto profile](https://quarto.org/docs/projects/profiles.html) that sets the `INSPECT_VIZ_OUTPUT_FORMAT` environment variable.
+
+Add an `_environment-publish` file at the root of your Quarto project:
+
+    _environment-publish
+
+``` bash
+INSPECT_VIZ_OUTPUT_FORMAT=js+png
+```
+
+Then activate the `publish` profile when you’re ready to ship. The `--profile` flag works for both `quarto render` (build locally) and `quarto publish` (build + deploy):
+
+``` bash
+# build the site locally
+quarto render --profile publish
+
+# build and deploy in one step (Quarto Pub, GitHub Pages, Netlify, etc.)
+quarto publish --profile publish
+```
+
+During `quarto preview` (or a plain `quarto render` / `quarto publish` with no profile) the env var isn’t applied, so no PNG fallbacks are generated and dev iteration stays fast. Only your published build pays the per-plot Playwright cost.
+
+You can also enable it ad-hoc with the env var directly:
+
+``` bash
+INSPECT_VIZ_OUTPUT_FORMAT=js+png quarto render
+```
+
+Or programmatically in a notebook / document with `options.output_format = "js+png"` or `options_context(output_format="js+png")`.
+
+Widgets that contain inputs (tables, selects, checkbox groups, etc.) are skipped — a static picture of an interactive control isn’t a useful fallback — and those widgets render with the standard loading shimmer.
+
 
 # Inspect Viz Examples – Inspect Viz
 
@@ -13204,6 +13317,8 @@ We don’t need an explicit “model” or “task_name” label as they are obv
 4  
 Ensure that y-axis shows the full range of scores (by default it caps at the maximum).
 
+![](index_files/placeholder/ddb3f8ac4f5f2fdb.png)
+
 #### Confidence Interval
 
 Here we add a confidence interval for each reported score by adding a [rule_x()](../../../reference/inspect_viz.mark.html.md#rule_x) mark. Note that we derive the confidence interval transforms using the [ci_bounds()](../../../reference/inspect_viz.transform.html.md#ci_bounds) function.
@@ -13250,6 +13365,8 @@ Use the [ci_bounds()](../../../reference/inspect_viz.transform.html.md#ci_bounds
 
 2  
 Draw the confidence interval using a [rule_x()](../../../reference/inspect_viz.mark.html.md#rule_x) mark.
+
+![](index_files/placeholder/e6fcd17dcb0ff9b1.png)
 
 
 # Scores by Model – Inspect Viz
@@ -13320,6 +13437,8 @@ Ensure there is room for model names in the left margin.
 
 6  
 Ensure that the x axis always goes to 1.0 (even if scores are below that).
+
+![](index_files/placeholder/733afa29806bdae1.png)
 
 
 # Scores by Factor – Inspect Viz
@@ -13420,6 +13539,8 @@ Map legend and colors map to factor.
 
 9  
 Leave room for model names.
+
+![](index_files/placeholder/5eb7616c0020d319.png)
 
 
 # Scores by Limit – Inspect Viz
@@ -13530,6 +13651,8 @@ plot(
 
 11  
 **Size**: default width is 700px; height defaults to the golden ratio (`width / 1.618`).
+
+![](index_files/placeholder/bb6ad4768e70f657.png)
 
 ## Data Preparation
 
@@ -13774,6 +13897,8 @@ Place the value as text centered in the cell.
 6  
 Remove plot padding so the inset along controls spacing between cells.
 
+![](index_files/placeholder/7e77bdc59870fbc5.png)
+
 
 # Scores Radar By Metric – Inspect Viz
 
@@ -13909,6 +14034,8 @@ plot(
 
 11  
 **Legend** draws a legend for the model selection.
+
+![](index_files/placeholder/119c7a7e3ae8bca6.png)
 
 ## Data Preparation
 
@@ -14112,6 +14239,8 @@ plot(
 11  
 **Legend** draws a legend for the model selection.
 
+![](index_files/placeholder/47c02208cc7ac4a9.png)
+
 ## Data Preparation
 
 The data dataset for this example was created using the `scores_radar_by_task_df()` function, which reads evals metadata, scales scores by percentile ranks or min-max normalization, and computes coordinates for the radar chart.
@@ -14261,6 +14390,8 @@ Set some custom labels and ensure that tools follow our designed order.
 7  
 Specify which tools we should show and in what order.
 
+![](index_files/placeholder/860035736da6bfa0.png)
+
 
 # Sample Heatmap – Inspect Viz
 
@@ -14334,6 +14465,8 @@ Sorts the y-axis by the total score for each model, with the highest score at th
 
 6  
 Sorts the x-axis by the total score for each question, witht he highest score at the right.
+
+![](index_files/placeholder/d344fad4988e3741.png)
 
 
 # Penguins Explorer – Inspect Viz
@@ -14456,6 +14589,8 @@ vconcat(
     )
 )
 ```
+
+![](index_files/placeholder/ab6ad4bce71a1998.png)
 
 
 # Athletes (Regression) – Inspect Viz

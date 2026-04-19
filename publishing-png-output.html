@@ -519,6 +519,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#standalone" id="toc-standalone" class="nav-link" data-scroll-target="#standalone">Standalone</a></li>
   <li><a href="#embedded" id="toc-embedded" class="nav-link" data-scroll-target="#embedded">Embedded</a></li>
+  <li><a href="#png-fallback" id="toc-png-fallback" class="nav-link" data-scroll-target="#png-fallback">PNG Fallback</a>
+  <ul class="collapse">
+  <li><a href="#enabling-fallback" id="toc-enabling-fallback" class="nav-link" data-scroll-target="#enabling-fallback">Enabling Fallback</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -576,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="embedded" class="level2">
 <h2 class="anchored" data-anchor-id="embedded">Embedded</h2>
 <p>When your plots are embedded in a notebook or website, use the global <code>output_format</code> option to specify that you’d like to render them in PNG format. For example, the plot below is rendered as a static PNG graphic:</p>
-<div id="753a5a2c" class="cell" data-execution_count="1">
+<div id="54211080" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data, options</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.view <span class="im">import</span> scores_by_factor</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -597,7 +601,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <figure class="figure">
-<p><a href="publishing-png-output_files/figure-html/cell-2-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="publishing-png-output_files/figure-html/cell-2-output-1.png" width="847" height="375" class="figure-img"></a></p>
+<p><a href="publishing-png-output_files/figure-html/cell-2-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="publishing-png-output_files/figure-html/cell-2-output-1.png" width="917" height="406" class="figure-img"></a></p>
 </figure>
 </div>
 </div>
@@ -608,8 +612,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> options_context(output_format<span class="op">=</span><span class="st">"png"</span>):</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plot code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Note that when rendering a PDF document with Quarto, the output format is automatically set to “png” (as PDFs can’t ever include interactive JavaScript content).</p>
+</section>
+<section id="png-fallback" class="level2">
+<h2 class="anchored" data-anchor-id="png-fallback">PNG Fallback</h2>
+<p>Inspect Viz plots can also be rendered in a hybrid mode where a static PNG is embedded as a fallback and the interactive widget is overlaid on top once the JavaScript pipeline loads. If anything in the pipeline fails — for example, the user is on a restrictive network that blocks the jsDelivr CDN, or DuckDB-WASM can’t initialize — the PNG remains visible and the page stays readable.</p>
+<p>This is especially valuable for sites that need to degrade gracefully in corporate networks, archival contexts, or offline viewing.</p>
+<section id="enabling-fallback" class="level3">
+<h3 class="anchored" data-anchor-id="enabling-fallback">Enabling Fallback</h3>
+<p>The hybrid mode is opt-in. The cleanest way to enable it for production renders — without affecting <code>quarto preview</code> / dev iteration — is via a <a href="https://quarto.org/docs/projects/profiles.html">Quarto profile</a> that sets the <code>INSPECT_VIZ_OUTPUT_FORMAT</code> environment variable.</p>
+<p>Add an <code>_environment-publish</code> file at the root of your Quarto project:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>_environment-publish</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="_environment-publish"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">INSPECT_VIZ_OUTPUT_FORMAT</span><span class="op">=</span>js+png</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then activate the <code>publish</code> profile when you’re ready to ship. The <code>--profile</code> flag works for both <code>quarto render</code> (build locally) and <code>quarto publish</code> (build + deploy):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build the site locally</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render <span class="at">--profile</span> publish</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># build and deploy in one step (Quarto Pub, GitHub Pages, Netlify, etc.)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish <span class="at">--profile</span> publish</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>During <code>quarto preview</code> (or a plain <code>quarto render</code> / <code>quarto publish</code> with no profile) the env var isn’t applied, so no PNG fallbacks are generated and dev iteration stays fast. Only your published build pays the per-plot Playwright cost.</p>
+<p>You can also enable it ad-hoc with the env var directly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">INSPECT_VIZ_OUTPUT_FORMAT</span><span class="op">=</span>js+png <span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or programmatically in a notebook / document with <code>options.output_format = "js+png"</code> or <code>options_context(output_format="js+png")</code>.</p>
+<p>Widgets that contain inputs (tables, selects, checkbox groups, etc.) are skipped — a static picture of an interactive control isn’t a useful fallback — and those widgets render with the standard loading shimmer.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

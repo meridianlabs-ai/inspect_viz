@@ -547,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Select a horizontal range on the dot pot to filter the contents of the bar plot. Click the legend or the bar plot to filter by weather conditions.</p>
-<div id="e71bbca2" class="cell" data-execution_count="1">
+<div id="556fa70e" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -634,6 +634,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 .mosaic-widget {
     margin-top: 10px;
     margin-bottom: 0.5rem;
+}
+
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
 }
 
 .mosaic-widget label {
@@ -727,6 +737,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -5010,9 +5057,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-680101b85417eb68" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:782px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:672 / 384"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-65421703326986f0" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:800px"><img class="iv-png-fallback" src="index_files/placeholder/ab6ad4bce71a1998.png" width="800" height="584" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"853Z8aQeBP4YYHWrFFy5Lm\",\"filterBy\":\"$selection_SXbAJCeVmDQ2NHaqu4fqkN\"},\"x\":{\"dateMonthDay\":\"date\"},\"y\":{\"column\":\"temp_max\"},\"r\":\"precipitation\",\"tip\":{\"lineWidth\":1000000000},\"fill\":\"weather\",\"fillOpacity\":0.7},{\"select\":\"intervalX\",\"as\":\"$selection_62g9XppN2Ma2HRDmw6weV5\",\"brush\":{\"fill\":\"none\",\"stroke\":\"#888\"}},{\"select\":\"highlight\",\"by\":\"$selection_62g9XppN2Ma2HRDmw6weV5\",\"fill\":\"#ccc\",\"fillOpacity\":0.2}],\"width\":672,\"height\":384,\"xyDomain\":\"Fixed\",\"xTickFormat\":\"%b\",\"rDomain\":\"Fixed\",\"rRange\":[2,10],\"name\":\"plot_C8w4pUkHHcbucJUtqgrWxC\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_SXbAJCeVmDQ2NHaqu4fqkN\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_C8w4pUkHHcbucJUtqgrWxC\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"853Z8aQeBP4YYHWrFFy5Lm\",\"filterBy\":\"$selection_853Z8aQeBP4YYHWrFFy5Lm\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"#ccc\",\"fillOpacity\":0.2},{\"mark\":\"barX\",\"data\":{\"from\":\"853Z8aQeBP4YYHWrFFy5Lm\",\"filterBy\":\"$selection_62g9XppN2Ma2HRDmw6weV5\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"weather\"},{\"select\":\"toggleY\",\"as\":\"$selection_SXbAJCeVmDQ2NHaqu4fqkN\"},{\"select\":\"highlight\",\"by\":\"$selection_SXbAJCeVmDQ2NHaqu4fqkN\"}],\"yLabel\":null,\"width\":672,\"height\":200,\"xDomain\":\"Fixed\",\"yDomain\":[\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"]}]}],\"plotDefaults\":{\"width\":700,\"height\":450,\"colorDomain\":[\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"],\"colorRange\":[\"#e7ba52\",\"#a7a7a7\",\"#aec7e8\",\"#1f77b4\",\"#9467bd\"]},\"params\":{\"selection_853Z8aQeBP4YYHWrFFy5Lm\":{\"select\":\"intersect\"},\"selection_62g9XppN2Ma2HRDmw6weV5\":{\"select\":\"intersect\"},\"selection_SXbAJCeVmDQ2NHaqu4fqkN\":{\"select\":\"single\"}}}","tables":{"853Z8aQeBP4YYHWrFFy5Lm":"../../../site_data/immutable/7f3dc8a58f9ef7c9.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"W6FmBnEW4tEGm6oJiyamkr\",\"filterBy\":\"$selection_cn6ahoXEpVHgy2kzeDFBV8\"},\"x\":{\"dateMonthDay\":\"date\"},\"y\":{\"column\":\"temp_max\"},\"r\":\"precipitation\",\"tip\":{\"lineWidth\":1000000000},\"fill\":\"weather\",\"fillOpacity\":0.7},{\"select\":\"intervalX\",\"as\":\"$selection_mEzJ2hGqFYfWyhs86PL4s4\",\"brush\":{\"fill\":\"none\",\"stroke\":\"#888\"}},{\"select\":\"highlight\",\"by\":\"$selection_mEzJ2hGqFYfWyhs86PL4s4\",\"fill\":\"#ccc\",\"fillOpacity\":0.2}],\"width\":672,\"height\":384,\"xyDomain\":\"Fixed\",\"xTickFormat\":\"%b\",\"rDomain\":\"Fixed\",\"rRange\":[2,10],\"name\":\"plot_JTDp7rovFudKfiewKUSa8M\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_cn6ahoXEpVHgy2kzeDFBV8\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_JTDp7rovFudKfiewKUSa8M\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"barX\",\"data\":{\"from\":\"W6FmBnEW4tEGm6oJiyamkr\",\"filterBy\":\"$selection_W6FmBnEW4tEGm6oJiyamkr\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"#ccc\",\"fillOpacity\":0.2},{\"mark\":\"barX\",\"data\":{\"from\":\"W6FmBnEW4tEGm6oJiyamkr\",\"filterBy\":\"$selection_mEzJ2hGqFYfWyhs86PL4s4\"},\"x\":{\"count\":null},\"y\":{\"column\":\"weather\"},\"fill\":\"weather\"},{\"select\":\"toggleY\",\"as\":\"$selection_cn6ahoXEpVHgy2kzeDFBV8\"},{\"select\":\"highlight\",\"by\":\"$selection_cn6ahoXEpVHgy2kzeDFBV8\"}],\"yLabel\":null,\"width\":672,\"height\":200,\"xDomain\":\"Fixed\",\"yDomain\":[\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"]}]}],\"plotDefaults\":{\"width\":700,\"height\":450,\"colorDomain\":[\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"],\"colorRange\":[\"#e7ba52\",\"#a7a7a7\",\"#aec7e8\",\"#1f77b4\",\"#9467bd\"]},\"params\":{\"selection_W6FmBnEW4tEGm6oJiyamkr\":{\"select\":\"intersect\"},\"selection_mEzJ2hGqFYfWyhs86PL4s4\":{\"select\":\"intersect\"},\"selection_cn6ahoXEpVHgy2kzeDFBV8\":{\"select\":\"single\"}}}","tables":{"W6FmBnEW4tEGm6oJiyamkr":"../../../site_data/immutable/7f3dc8a58f9ef7c9.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5022,7 +5069,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-680101b85417eb68");
+  const el = document.getElementById("iv-65421703326986f0");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5035,21 +5082,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>

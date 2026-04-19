@@ -548,7 +548,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This example illustrates the code behind the <a href="../../../reference/inspect_viz.view.html#sample_tool_calls"><span class="element-type-name ref-interlink"><span>sample_tool_calls()</span></span></a> pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.</p>
 <p>The plot visualizes tool usage over a series of turns in a Cybench evaluation. We use a <span class="element-type-name ref-interlink"><a href="../../../reference/inspect_viz.mark.html#cell">cell()</a></span> mark to visualize tool use over messages in each sample of an evaluation. We note any limit that ended the sample using a <span class="element-type-name ref-interlink"><a href="../../../reference/inspect_viz.mark.html#text">text()</a></span> mark on the right side of the frame.</p>
-<div id="fc64b52a" class="cell" data-execution_count="1">
+<div id="6bfe6ba1" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -656,6 +656,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     margin-bottom: 0.5rem;
 }
 
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
+}
+
 .mosaic-widget label {
     display: inline-flex;
     align-items: center;
@@ -747,6 +757,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -5030,9 +5077,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-7dbb4a31c2e44c0a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:782px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:672 / 384"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-d2ebbbd7258fda51" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:802px"><img class="iv-png-fallback" src="index_files/placeholder/860035736da6bfa0.png" width="802" height="384" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"cell\",\"data\":{\"from\":\"fo3KYMCYtquNxMaQrUEK65\",\"filterBy\":\"$selection_fo3KYMCYtquNxMaQrUEK65\"},\"x\":{\"column\":\"order\"},\"y\":{\"column\":\"id\"},\"tip\":{\"lineWidth\":1000000000},\"fill\":\"tool_call_function\"},{\"mark\":\"text\",\"data\":{\"from\":\"fo3KYMCYtquNxMaQrUEK65\",\"filterBy\":\"$selection_fo3KYMCYtquNxMaQrUEK65\"},\"y\":{\"column\":\"id\"},\"text\":{\"first\":\"limit\"},\"frameAnchor\":\"right\",\"fontSize\":8,\"fontWeight\":200,\"dx\":50}],\"xLabel\":\"Message\",\"yLabel\":\"Sample\",\"width\":672,\"height\":384,\"marginTop\":0,\"marginLeft\":20,\"marginRight\":100,\"xTicks\":[0,80,160,240,320],\"yTicks\":[],\"colorLabel\":\"Tool\",\"colorDomain\":[\"bash\",\"python\",\"submit\"],\"name\":\"plot_gSBKtb3uVVbL2iqhWSYSK2\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_gSBKtb3uVVbL2iqhWSYSK2\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_fo3KYMCYtquNxMaQrUEK65\":{\"select\":\"intersect\"}}}","tables":{"fo3KYMCYtquNxMaQrUEK65":"../../../site_data/immutable/bb02d9614b92f789.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"cell\",\"data\":{\"from\":\"bYChfh998hvrZnJw8FbrUN\",\"filterBy\":\"$selection_bYChfh998hvrZnJw8FbrUN\"},\"x\":{\"column\":\"order\"},\"y\":{\"column\":\"id\"},\"tip\":{\"lineWidth\":1000000000},\"fill\":\"tool_call_function\"},{\"mark\":\"text\",\"data\":{\"from\":\"bYChfh998hvrZnJw8FbrUN\",\"filterBy\":\"$selection_bYChfh998hvrZnJw8FbrUN\"},\"y\":{\"column\":\"id\"},\"text\":{\"first\":\"limit\"},\"frameAnchor\":\"right\",\"fontSize\":8,\"fontWeight\":200,\"dx\":50}],\"xLabel\":\"Message\",\"yLabel\":\"Sample\",\"width\":672,\"height\":384,\"marginTop\":0,\"marginLeft\":20,\"marginRight\":100,\"xTicks\":[0,80,160,240,320],\"yTicks\":[],\"colorLabel\":\"Tool\",\"colorDomain\":[\"bash\",\"python\",\"submit\"],\"name\":\"plot_QfohjZkkSeVCehcQVfhBo9\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_QfohjZkkSeVCehcQVfhBo9\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_bYChfh998hvrZnJw8FbrUN\":{\"select\":\"intersect\"}}}","tables":{"bYChfh998hvrZnJw8FbrUN":"../../../site_data/immutable/bb02d9614b92f789.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5042,7 +5089,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-7dbb4a31c2e44c0a");
+  const el = document.getElementById("iv-d2ebbbd7258fda51");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5055,21 +5102,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>

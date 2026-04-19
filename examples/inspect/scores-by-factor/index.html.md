@@ -96,3 +96,5 @@ Map legend and colors map to factor.
 
 9  
 Leave room for model names.
+
+![](index_files/placeholder/5eb7616c0020d319.png)

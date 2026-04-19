@@ -549,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.view.html#scores_timeline">scores_timeline()</a></span> function plots eval scores by model, organization, and release date<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
-<div id="ddffe40b" class="cell" data-execution_count="1">
+<div id="11c54249" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.view <span class="im">import</span> scores_timeline</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -585,6 +585,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 .mosaic-widget {
     margin-top: 10px;
     margin-bottom: 0.5rem;
+}
+
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
 }
 
 .mosaic-widget label {
@@ -678,6 +688,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -4961,9 +5008,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-29e1b3fc5e276d42" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:878px;position:relative"><div style="flex:0 0 106px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-19ce92b27379d672" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:878px;position:relative"><div style="flex:0 0 106px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:768 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"auto\",\"width\":370,\"label\":\"Eval: \",\"from\":\"Pk9pBy3RVmACbKSUfyiaUK\",\"as\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\",\"column\":\"task_name\"},{\"input\":\"checkbox_group\",\"from\":\"Pk9pBy3RVmACbKSUfyiaUK\",\"as\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\",\"column\":\"model_organization_name\"},{\"vspace\":10},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"Pk9pBy3RVmACbKSUfyiaUK\",\"filterBy\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"r\":3,\"tip\":{\"lineWidth\":1000000000},\"fill\":\"model_organization_name\",\"channels\":{\"Organization\":\"model_organization_name\",\"Model\":\"model_display_name\",\"Release Date\":\"model_release_date\",\"Scorer\":\"score_headline_name\",\"Score\":\"score_headline_value\",\"Stderr\":\"score_headline_stderr\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Organization\\\": \\\"model_organization_name\\\", \\\"Model\\\": \\\"model_display_name\\\", \\\"Release Date\\\": \\\"model_release_date\\\", \\\"Scorer\\\": \\\"score_headline_name\\\", \\\"Score\\\": \\\"score_headline_value\\\", \\\"Stderr\\\": \\\"score_headline_stderr\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"text\",\"data\":{\"from\":\"Pk9pBy3RVmACbKSUfyiaUK\",\"filterBy\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"text\":{\"column\":\"model_display_name\"},\"frameAnchor\":\"right\",\"lineAnchor\":\"middle\",\"filter\":\"frontier\",\"dx\":-4,\"fill\":\"model_organization_name\",\"channels\":{\"_shift_overlapping_text\":[true]}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"Pk9pBy3RVmACbKSUfyiaUK\",\"filterBy\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"stroke\":\"model_organization_name\",\"strokeOpacity\":0.4}],\"xLabel\":\"Release Date\",\"yLabel\":\"Score\",\"width\":768,\"height\":384,\"xDomain\":\"Fixed\",\"yDomain\":[0,1.0],\"yInsetTop\":10,\"colorLabel\":\"Organizations\",\"colorDomain\":\"Fixed\",\"grid\":true,\"xTickFormat\":\"%b. %Y\",\"name\":\"plot_MkLd6qzqm3jxDPK2r7UkfL\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_Pk9pBy3RVmACbKSUfyiaUK\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_MkLd6qzqm3jxDPK2r7UkfL\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_Pk9pBy3RVmACbKSUfyiaUK\":{\"select\":\"intersect\"}}}","tables":{"Pk9pBy3RVmACbKSUfyiaUK":"site_data/immutable/f7efa16e90a255dc.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"auto\",\"width\":370,\"label\":\"Eval: \",\"from\":\"J9o3ryqvoZ3EsiLdyTCZGA\",\"as\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\",\"column\":\"task_name\"},{\"input\":\"checkbox_group\",\"from\":\"J9o3ryqvoZ3EsiLdyTCZGA\",\"as\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\",\"column\":\"model_organization_name\"},{\"vspace\":10},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"J9o3ryqvoZ3EsiLdyTCZGA\",\"filterBy\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"r\":3,\"tip\":{\"lineWidth\":1000000000},\"fill\":\"model_organization_name\",\"channels\":{\"Organization\":\"model_organization_name\",\"Model\":\"model_display_name\",\"Release Date\":\"model_release_date\",\"Scorer\":\"score_headline_name\",\"Score\":\"score_headline_value\",\"Stderr\":\"score_headline_stderr\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Organization\\\": \\\"model_organization_name\\\", \\\"Model\\\": \\\"model_display_name\\\", \\\"Release Date\\\": \\\"model_release_date\\\", \\\"Scorer\\\": \\\"score_headline_name\\\", \\\"Score\\\": \\\"score_headline_value\\\", \\\"Stderr\\\": \\\"score_headline_stderr\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"text\",\"data\":{\"from\":\"J9o3ryqvoZ3EsiLdyTCZGA\",\"filterBy\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"text\":{\"column\":\"model_display_name\"},\"frameAnchor\":\"right\",\"lineAnchor\":\"middle\",\"filter\":\"frontier\",\"dx\":-4,\"fill\":\"model_organization_name\",\"channels\":{\"_shift_overlapping_text\":[true]}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"J9o3ryqvoZ3EsiLdyTCZGA\",\"filterBy\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\"},\"x\":{\"column\":\"model_release_date\"},\"y\":{\"column\":\"score_headline_value\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"stroke\":\"model_organization_name\",\"strokeOpacity\":0.4}],\"xLabel\":\"Release Date\",\"yLabel\":\"Score\",\"width\":768,\"height\":384,\"xDomain\":\"Fixed\",\"yDomain\":[0,1.0],\"yInsetTop\":10,\"colorLabel\":\"Organizations\",\"colorDomain\":\"Fixed\",\"grid\":true,\"xTickFormat\":\"%b. %Y\",\"name\":\"plot_UsA25JBNPdyyxvqdFGjgCA\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_J9o3ryqvoZ3EsiLdyTCZGA\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_UsA25JBNPdyyxvqdFGjgCA\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_J9o3ryqvoZ3EsiLdyTCZGA\":{\"select\":\"intersect\"}}}","tables":{"J9o3ryqvoZ3EsiLdyTCZGA":"site_data/immutable/f7efa16e90a255dc.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -4973,7 +5020,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-29e1b3fc5e276d42");
+  const el = document.getElementById("iv-19ce92b27379d672");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -4986,21 +5033,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5035,7 +5099,7 @@ export {
 <h2 data-reference="scores_timeline" class="anchored" data-anchor-id="function-reference">Function Reference</h2>
 <p>Eval scores by model, organization, and release date.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_timeline.py#L29">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_timeline.py#L29">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_timeline(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>

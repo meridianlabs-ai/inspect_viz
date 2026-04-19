@@ -12,6 +12,8 @@ evals = Data.from_file("radar_by_task.parquet")
 scores_radar_by_task(evals)
 ```
 
+![](view-scores-radar-by-task_files/placeholder/3d2c5ba7257e8554.png)
+
 The scores plotted on this radar chart have been normalized using percentile ranking, which means each score represents the model’s relative performance compared to all other models in the dataset. Specifically, a score of 0.5 indicates that the model performed better than 50% of the other models. Absolute scores are displayed in the tooltips.
 
 You can use `scores_radar_by_task_df()` to produce data with min-max normalization, omit normalization entirely, or invert the scores for tasks where lower scores are better.
@@ -98,7 +100,7 @@ Provide an optional task name mapping for pretty task names in [prepare()](https
 
 Creates a radar chart showing scores for multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L277)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L277)
 
 ``` python
 def scores_radar_by_task(
@@ -1152,7 +1154,7 @@ Creates a dataframe for a radar chart showing headline metrics across multiple m
 
 This is useful for comparing the headline metrics of multiple models across multiple tasks.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L33)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L33)
 
 ``` python
 def scores_radar_by_task_df(

@@ -546,7 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Confidence intervals of Olympic athlete heights, in meters. Data are batched into groups of 10 samples per sport. Use the samples slider to see how the intervals update as the sample size increases (as in <a href="https://en.wikipedia.org/wiki/Online_aggregation">online aggregation</a>). For each sport, the numbers on the right show the maximum number of athletes in the full dataset.</p>
-<div id="57e71d4b" class="cell" data-execution_count="1">
+<div id="99cb69d7" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -635,6 +635,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 .mosaic-widget {
     margin-top: 10px;
     margin-bottom: 0.5rem;
+}
+
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
 }
 
 .mosaic-widget label {
@@ -728,6 +738,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -5011,9 +5058,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-64963f07e57ac753" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:672px;position:relative"><div style="aspect-ratio:672 / 384"></div><div style="flex:0 0 35px"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-0596c07d208ec0f2" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:672px;position:relative"><div style="aspect-ratio:672 / 384"></div><div style="flex:0 0 35px"></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"input\":\"slider\",\"select\":\"interval\",\"value\":[0,20],\"step\":10,\"width\":150,\"label\":\"Samples\",\"from\":\"69NgMYqNiFVfnHeZvzyRVA\",\"as\":\"$selection_8WX4zVbCm9F2UsRpm3pfok\",\"column\":\"batch\"},{\"input\":\"slider\",\"select\":\"point\",\"value\":0.95,\"min\":0.5,\"max\":0.999,\"step\":0.001,\"width\":150,\"label\":\"Conf.\",\"as\":\"$param_G32bLGH4PLkLQtnYb2qtHr\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"errorbarX\",\"data\":{\"from\":\"69NgMYqNiFVfnHeZvzyRVA\",\"filterBy\":\"$selection_8WX4zVbCm9F2UsRpm3pfok\"},\"x\":{\"column\":\"height\"},\"y\":{\"column\":\"sport\"},\"ci\":\"$param_G32bLGH4PLkLQtnYb2qtHr\",\"marker\":\"tick\",\"stroke\":\"sex\",\"strokeWidth\":1,\"sort\":{\"y\":\"-x\"}},{\"mark\":\"text\",\"data\":{\"from\":\"69NgMYqNiFVfnHeZvzyRVA\",\"filterBy\":\"$selection_69NgMYqNiFVfnHeZvzyRVA\"},\"y\":{\"column\":\"sport\"},\"text\":{\"count\":null},\"frameAnchor\":\"right\",\"dx\":25,\"fontSize\":8,\"fill\":\"#999\"}],\"yLabel\":null,\"width\":672,\"height\":384,\"xDomain\":[1.5,2.1],\"yDomain\":\"Fixed\",\"yGrid\":true,\"marginTop\":0,\"marginLeft\":105,\"name\":\"plot_i3tZGyNGDSrE4GUcD5nNuX\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_i3tZGyNGDSrE4GUcD5nNuX\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_G32bLGH4PLkLQtnYb2qtHr\":{\"select\":\"value\",\"value\":0.95},\"selection_69NgMYqNiFVfnHeZvzyRVA\":{\"select\":\"intersect\"},\"selection_8WX4zVbCm9F2UsRpm3pfok\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"69NgMYqNiFVfnHeZvzyRVA":"../../../site_data/immutable/d4ff5fea36b27bcf.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"hconcat\":[{\"input\":\"slider\",\"select\":\"interval\",\"value\":[0,20],\"step\":10,\"width\":150,\"label\":\"Samples\",\"from\":\"dAyy8zYb2FJ9WxuaqMiV4M\",\"as\":\"$selection_di8ENDEu462j82C8jZaww3\",\"column\":\"batch\"},{\"input\":\"slider\",\"select\":\"point\",\"value\":0.95,\"min\":0.5,\"max\":0.999,\"step\":0.001,\"width\":150,\"label\":\"Conf.\",\"as\":\"$param_Eh2LYBrBVJqgUgh36cHeZG\"}]},{\"hconcat\":[{\"plot\":[{\"mark\":\"errorbarX\",\"data\":{\"from\":\"dAyy8zYb2FJ9WxuaqMiV4M\",\"filterBy\":\"$selection_di8ENDEu462j82C8jZaww3\"},\"x\":{\"column\":\"height\"},\"y\":{\"column\":\"sport\"},\"ci\":\"$param_Eh2LYBrBVJqgUgh36cHeZG\",\"marker\":\"tick\",\"stroke\":\"sex\",\"strokeWidth\":1,\"sort\":{\"y\":\"-x\"}},{\"mark\":\"text\",\"data\":{\"from\":\"dAyy8zYb2FJ9WxuaqMiV4M\",\"filterBy\":\"$selection_dAyy8zYb2FJ9WxuaqMiV4M\"},\"y\":{\"column\":\"sport\"},\"text\":{\"count\":null},\"frameAnchor\":\"right\",\"dx\":25,\"fontSize\":8,\"fill\":\"#999\"}],\"yLabel\":null,\"width\":672,\"height\":384,\"xDomain\":[1.5,2.1],\"yDomain\":\"Fixed\",\"yGrid\":true,\"marginTop\":0,\"marginLeft\":105,\"name\":\"plot_TheGbobRkQDKNGpGtEfgQY\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_TheGbobRkQDKNGpGtEfgQY\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_Eh2LYBrBVJqgUgh36cHeZG\":{\"select\":\"value\",\"value\":0.95},\"selection_dAyy8zYb2FJ9WxuaqMiV4M\":{\"select\":\"intersect\"},\"selection_di8ENDEu462j82C8jZaww3\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"dAyy8zYb2FJ9WxuaqMiV4M":"../../../site_data/immutable/d4ff5fea36b27bcf.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5023,7 +5070,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-64963f07e57ac753");
+  const el = document.getElementById("iv-0596c07d208ec0f2");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5036,21 +5083,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>

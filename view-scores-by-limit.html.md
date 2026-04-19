@@ -14,6 +14,8 @@ evals = Data.from_file("swebench_token_limit.parquet")
 scores_by_limit(evals)
 ```
 
+![](view-scores-by-limit_files/placeholder/3114a9dd3d1f843f.png)
+
 ## Data Preparation
 
 Above we read the data for the plot from a parquet file. This file was in turn created by:
@@ -74,7 +76,7 @@ Visualizes success rate as a function of a resource limit (time, tokens).
 
 Model success rate is plotted as a function of the time, tokens, or other resource limit.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_limit.py#L157)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_limit.py#L157)
 
 ``` python
 def scores_by_limit(
@@ -1154,7 +1156,7 @@ Insets the left edge of the projection by the specified number of pixels. A posi
 
 Prepares a dataframe for plotting success rate as a function of a resource limit (time, tokens).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_by_limit.py#L27)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_limit.py#L27)
 
 ``` python
 def scores_by_limit_df(

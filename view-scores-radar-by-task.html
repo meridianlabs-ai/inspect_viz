@@ -552,7 +552,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>The <code>scores_radar_by_task()</code>function renders a radar chart for comparing headline metrics from different tasks across multiple models. This is useful for comparing the relative performance of models across different tasks.</p>
-<div id="89d9d6d1" class="cell" data-execution_count="1">
+<div id="9170d2c8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.view <span class="im">import</span> scores_radar_by_task</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -588,6 +588,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 .mosaic-widget {
     margin-top: 10px;
     margin-bottom: 0.5rem;
+}
+
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
 }
 
 .mosaic-widget label {
@@ -681,6 +691,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -4964,9 +5011,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-b71f2a035d364427" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:510px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:400 / 400"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-7e6fe7012f0a9842" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:640px"><img class="iv-png-fallback" src="view-scores-radar-by-task_files/placeholder/3d2c5ba7257e8554.png" width="640" height="400" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"T69WgWfT3bAHqDv8CH85gW\",\"filterBy\":\"$selection_T69WgWfT3bAHqDv8CH85gW\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"UjDVZ9ZBrfQWip3UmkqHqn\",\"filterBy\":\"$selection_UjDVZ9ZBrfQWip3UmkqHqn\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"cqfB6dvE5QmeEgNGRG62Dm\",\"filterBy\":\"$selection_cqfB6dvE5QmeEgNGRG62Dm\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"kPkrqfTkLzkrETWpZYJqma\",\"filterBy\":\"$selection_kPkrqfTkLzkrETWpZYJqma\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"JendiYC4nt7QgucUiaXpbZ\",\"filterBy\":\"$selection_JendiYC4nt7QgucUiaXpbZ\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#999\"},{\"mark\":\"line\",\"data\":{\"from\":\"cDbvhWJVgqUkqnoBiHEBF5\",\"filterBy\":\"$selection_cDbvhWJVgqUkqnoBiHEBF5\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#ddd\"},{\"mark\":\"line\",\"data\":{\"from\":\"ENhG96ZsGqAhvfTyd9zpsD\",\"filterBy\":\"$selection_jJfaahARRLnX9yAYWRVT3F\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"curve\":\"linear-closed\",\"fill\":\"model_display_name\",\"fillOpacity\":0.1},{\"mark\":\"line\",\"data\":{\"from\":\"ENhG96ZsGqAhvfTyd9zpsD\",\"filterBy\":\"$selection_ELqjJAw8ZV7jnYatkFvKAv\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Model\":\"model_display_name\",\"Score\":\"value\",\"Scaled Score\":\"value_scaled\",\"Metric\":\"metric\",\"Scorer\":\"scorer\",\"Task\":\"task_display_name\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Score\\\": \\\"value\\\", \\\"Scaled Score\\\": \\\"value_scaled\\\", \\\"Metric\\\": \\\"metric\\\", \\\"Scorer\\\": \\\"scorer\\\", \\\"Task\\\": \\\"task_display_name\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"line\",\"data\":{\"from\":\"ENhG96ZsGqAhvfTyd9zpsD\",\"filterBy\":\"$selection_ENhG96ZsGqAhvfTyd9zpsD\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"strokeOpacity\":0.4,\"tip\":false},{\"mark\":\"circle\",\"data\":{\"from\":\"ENhG96ZsGqAhvfTyd9zpsD\",\"filterBy\":\"$selection_ELqjJAw8ZV7jnYatkFvKAv\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"r\":4,\"tip\":false,\"fill\":\"model_display_name\",\"stroke\":\"white\"},{\"mark\":\"text\",\"data\":{\"from\":\"dxbc7XSSTFcPYiNSzG8jKH\",\"filterBy\":\"$selection_dxbc7XSSTFcPYiNSzG8jKH\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"MWyU3SZrHM2xCgEojgqCPf\",\"filterBy\":\"$selection_MWyU3SZrHM2xCgEojgqCPf\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"YArNhvdnfqepuEQgfoYKPc\",\"filterBy\":\"$selection_YArNhvdnfqepuEQgfoYKPc\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"cZncsiMZMxCfPKXrup7Wnn\",\"filterBy\":\"$selection_cZncsiMZMxCfPKXrup7Wnn\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"KE6vxAa7dHUHF55tt3Vpxs\",\"filterBy\":\"$selection_KE6vxAa7dHUHF55tt3Vpxs\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8}],\"width\":400,\"height\":400,\"margin\":60,\"xAxis\":false,\"yAxis\":false,\"name\":\"plot_UHCokuW7UNzyxeYEvdDxQt\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_ELqjJAw8ZV7jnYatkFvKAv\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_UHCokuW7UNzyxeYEvdDxQt\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_ENhG96ZsGqAhvfTyd9zpsD\":{\"select\":\"intersect\"},\"selection_ELqjJAw8ZV7jnYatkFvKAv\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_T69WgWfT3bAHqDv8CH85gW\":{\"select\":\"intersect\"},\"selection_UjDVZ9ZBrfQWip3UmkqHqn\":{\"select\":\"intersect\"},\"selection_cqfB6dvE5QmeEgNGRG62Dm\":{\"select\":\"intersect\"},\"selection_kPkrqfTkLzkrETWpZYJqma\":{\"select\":\"intersect\"},\"selection_JendiYC4nt7QgucUiaXpbZ\":{\"select\":\"intersect\"},\"selection_cDbvhWJVgqUkqnoBiHEBF5\":{\"select\":\"intersect\"},\"selection_jJfaahARRLnX9yAYWRVT3F\":{\"select\":\"single\",\"cross\":false,\"empty\":true,\"include\":\"$selection_ELqjJAw8ZV7jnYatkFvKAv\"},\"selection_dxbc7XSSTFcPYiNSzG8jKH\":{\"select\":\"intersect\"},\"selection_MWyU3SZrHM2xCgEojgqCPf\":{\"select\":\"intersect\"},\"selection_YArNhvdnfqepuEQgfoYKPc\":{\"select\":\"intersect\"},\"selection_cZncsiMZMxCfPKXrup7Wnn\":{\"select\":\"intersect\"},\"selection_KE6vxAa7dHUHF55tt3Vpxs\":{\"select\":\"intersect\"}}}","tables":{"ENhG96ZsGqAhvfTyd9zpsD":"site_data/immutable/83be53ac9d5cd17f.arrow","T69WgWfT3bAHqDv8CH85gW":"site_data/immutable/b45b7d378c846e40.arrow","UjDVZ9ZBrfQWip3UmkqHqn":"site_data/immutable/6c737ccfd7acfff4.arrow","cqfB6dvE5QmeEgNGRG62Dm":"site_data/immutable/332f585a70728a08.arrow","kPkrqfTkLzkrETWpZYJqma":"site_data/immutable/fcb165c5fba5dedd.arrow","JendiYC4nt7QgucUiaXpbZ":"site_data/immutable/ac393b8310b0cd39.arrow","cDbvhWJVgqUkqnoBiHEBF5":"site_data/immutable/f4f07de1520541a6.arrow","dxbc7XSSTFcPYiNSzG8jKH":"site_data/immutable/3e2d7bbe9527b9ea.arrow","MWyU3SZrHM2xCgEojgqCPf":"site_data/immutable/37178b45a107ac9e.arrow","YArNhvdnfqepuEQgfoYKPc":"site_data/immutable/22fc090c7b4da77a.arrow","cZncsiMZMxCfPKXrup7Wnn":"site_data/immutable/620a326eeff89d9b.arrow","KE6vxAa7dHUHF55tt3Vpxs":"site_data/immutable/875ca2aa53697dcd.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"SCBH9waRB2QncCMTcovNpW\",\"filterBy\":\"$selection_SCBH9waRB2QncCMTcovNpW\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"R2U7yjCBaxPamjge9vWeeR\",\"filterBy\":\"$selection_R2U7yjCBaxPamjge9vWeeR\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"LYSD2RBY4dvWjMRFCaGg2k\",\"filterBy\":\"$selection_LYSD2RBY4dvWjMRFCaGg2k\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"mBsQVWijuZEM3wamJXz7c6\",\"filterBy\":\"$selection_mBsQVWijuZEM3wamJXz7c6\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"cQ8z3nEj4J8wNhKGrud5yx\",\"filterBy\":\"$selection_cQ8z3nEj4J8wNhKGrud5yx\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#999\"},{\"mark\":\"line\",\"data\":{\"from\":\"aqQryVEpup3ArWo4rkxDo8\",\"filterBy\":\"$selection_aqQryVEpup3ArWo4rkxDo8\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#ddd\"},{\"mark\":\"line\",\"data\":{\"from\":\"FYwRi7W38X4DcuaJmcsfmn\",\"filterBy\":\"$selection_njcMyAHJDh2EbgDKQnG655\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"curve\":\"linear-closed\",\"fill\":\"model_display_name\",\"fillOpacity\":0.1},{\"mark\":\"line\",\"data\":{\"from\":\"FYwRi7W38X4DcuaJmcsfmn\",\"filterBy\":\"$selection_Bn8xbrS6hsjcp2ar5xMv4G\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Model\":\"model_display_name\",\"Score\":\"value\",\"Scaled Score\":\"value_scaled\",\"Metric\":\"metric\",\"Scorer\":\"scorer\",\"Task\":\"task_display_name\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Score\\\": \\\"value\\\", \\\"Scaled Score\\\": \\\"value_scaled\\\", \\\"Metric\\\": \\\"metric\\\", \\\"Scorer\\\": \\\"scorer\\\", \\\"Task\\\": \\\"task_display_name\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"line\",\"data\":{\"from\":\"FYwRi7W38X4DcuaJmcsfmn\",\"filterBy\":\"$selection_FYwRi7W38X4DcuaJmcsfmn\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"strokeOpacity\":0.4,\"tip\":false},{\"mark\":\"circle\",\"data\":{\"from\":\"FYwRi7W38X4DcuaJmcsfmn\",\"filterBy\":\"$selection_Bn8xbrS6hsjcp2ar5xMv4G\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"r\":4,\"tip\":false,\"fill\":\"model_display_name\",\"stroke\":\"white\"},{\"mark\":\"text\",\"data\":{\"from\":\"6gdq38H372hxS4jQFCLc3W\",\"filterBy\":\"$selection_6gdq38H372hxS4jQFCLc3W\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"k7y3PrhDtoVxCcs6bcuHAq\",\"filterBy\":\"$selection_k7y3PrhDtoVxCcs6bcuHAq\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"aZvHS6AevgotPHLHy8rTwp\",\"filterBy\":\"$selection_aZvHS6AevgotPHLHy8rTwp\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"7rEKpc9u9jepqdECMNvoqc\",\"filterBy\":\"$selection_7rEKpc9u9jepqdECMNvoqc\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"5kJXuGrReSnRMsziMdp8XU\",\"filterBy\":\"$selection_5kJXuGrReSnRMsziMdp8XU\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8}],\"width\":400,\"height\":400,\"margin\":60,\"xAxis\":false,\"yAxis\":false,\"name\":\"plot_Y3ZNgQ8XewePfv4ERkCE95\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_Bn8xbrS6hsjcp2ar5xMv4G\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_Y3ZNgQ8XewePfv4ERkCE95\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_FYwRi7W38X4DcuaJmcsfmn\":{\"select\":\"intersect\"},\"selection_Bn8xbrS6hsjcp2ar5xMv4G\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_SCBH9waRB2QncCMTcovNpW\":{\"select\":\"intersect\"},\"selection_R2U7yjCBaxPamjge9vWeeR\":{\"select\":\"intersect\"},\"selection_LYSD2RBY4dvWjMRFCaGg2k\":{\"select\":\"intersect\"},\"selection_mBsQVWijuZEM3wamJXz7c6\":{\"select\":\"intersect\"},\"selection_cQ8z3nEj4J8wNhKGrud5yx\":{\"select\":\"intersect\"},\"selection_aqQryVEpup3ArWo4rkxDo8\":{\"select\":\"intersect\"},\"selection_njcMyAHJDh2EbgDKQnG655\":{\"select\":\"single\",\"cross\":false,\"empty\":true,\"include\":\"$selection_Bn8xbrS6hsjcp2ar5xMv4G\"},\"selection_6gdq38H372hxS4jQFCLc3W\":{\"select\":\"intersect\"},\"selection_k7y3PrhDtoVxCcs6bcuHAq\":{\"select\":\"intersect\"},\"selection_aZvHS6AevgotPHLHy8rTwp\":{\"select\":\"intersect\"},\"selection_7rEKpc9u9jepqdECMNvoqc\":{\"select\":\"intersect\"},\"selection_5kJXuGrReSnRMsziMdp8XU\":{\"select\":\"intersect\"}}}","tables":{"FYwRi7W38X4DcuaJmcsfmn":"site_data/immutable/83be53ac9d5cd17f.arrow","SCBH9waRB2QncCMTcovNpW":"site_data/immutable/b45b7d378c846e40.arrow","R2U7yjCBaxPamjge9vWeeR":"site_data/immutable/6c737ccfd7acfff4.arrow","LYSD2RBY4dvWjMRFCaGg2k":"site_data/immutable/332f585a70728a08.arrow","mBsQVWijuZEM3wamJXz7c6":"site_data/immutable/fcb165c5fba5dedd.arrow","cQ8z3nEj4J8wNhKGrud5yx":"site_data/immutable/ac393b8310b0cd39.arrow","aqQryVEpup3ArWo4rkxDo8":"site_data/immutable/f4f07de1520541a6.arrow","6gdq38H372hxS4jQFCLc3W":"site_data/immutable/3e2d7bbe9527b9ea.arrow","k7y3PrhDtoVxCcs6bcuHAq":"site_data/immutable/37178b45a107ac9e.arrow","aZvHS6AevgotPHLHy8rTwp":"site_data/immutable/22fc090c7b4da77a.arrow","7rEKpc9u9jepqdECMNvoqc":"site_data/immutable/620a326eeff89d9b.arrow","5kJXuGrReSnRMsziMdp8XU":"site_data/immutable/875ca2aa53697dcd.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -4976,7 +5023,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b71f2a035d364427");
+  const el = document.getElementById("iv-7e6fe7012f0a9842");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -4989,21 +5036,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
@@ -5098,7 +5162,7 @@ export {
 <h3 data-reference="scores_radar_by_task" class="anchored" data-anchor-id="scores_radar_by_task">scores_radar_by_task</h3>
 <p>Creates a radar chart showing scores for multiple models across multiple tasks.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L277">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L277">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_radar_by_task(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    data: Data,</span>
@@ -6318,7 +6382,7 @@ export {
 <p>Creates a dataframe for a radar chart showing headline metrics across multiple models and tasks.</p>
 <p>This is useful for comparing the headline metrics of multiple models across multiple tasks.</p>
 <div class="source-link">
-<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/ed1e7276aa39950499a3a4914a9d41476ca808c5/src/inspect_viz/view/_scores_radar.py#L33">Source</a>
+<a href="https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L33">Source</a>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python doc-declaration code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scores_radar_by_task_df(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data: pd.DataFrame,</span>

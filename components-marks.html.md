@@ -27,6 +27,8 @@ plot(
 )
 ```
 
+![](components-marks_files/placeholder/c86e1ceb604e0c54.png)
+
 Variants such as [bar_x()](./reference/inspect_viz.mark.html.md#bar_x) and [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) indicate spatial orientation and data type assumptions. [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) indicates vertical bars—continuous `y` over an ordinal `x` domain—whereas [rect_y()](./reference/inspect_viz.mark.html.md#rect_y) indicates a continuous `x` domain.
 
 [Data](./reference/inspect_viz.html.md#data) is backed by a DuckDB SQL database running in the web browser. Basic marks follow a straightforward query construction process:

@@ -554,7 +554,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This example illustrates the code behind the <a href="../../../view-scores-radar-by-task.html"><code>scores_radar_by_task()</code></a> pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.</p>
 <p><code>scores_radar_by_task()</code> is useful to compare headline metrics from different tasks across multiple models. The data preparation function scales values for visualization purposes by normalizing them using percentile ranks, the raw values are displayed in the tooltips.</p>
-<div id="af21cbbd" class="cell" data-execution_count="1">
+<div id="c2177d83" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -732,6 +732,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     margin-bottom: 0.5rem;
 }
 
+/* Bootstrap (Quarto's compiled theme) sets `svg { vertical-align: middle }`
+   which leaves SVGs as `display: inline` and gives them line-box metrics —
+   that produces a few pixels of extra vertical whitespace above each plot
+   SVG in the live page. Our PNG captures already use `display: block`, so
+   the captured PNG sits flush at the top while the live SVG sits ~30 px
+   lower; overriding here brings both render paths back in sync. */
+.mosaic-widget svg {
+    display: block;
+}
+
 .mosaic-widget label {
     display: inline-flex;
     align-items: center;
@@ -823,6 +833,43 @@ label>input[type="range"] {
 
 @media (prefers-reduced-motion: reduce) {
     .iv-loading { animation: none; }
+}
+
+/* PNG-overlay mode: a static PNG is rendered inside the placeholder as the
+   visible fallback; the interactive widget is mounted into a transparent
+   `iv-widget-mount` positioned over it. The mount only fades in once Mosaic
+   has produced an svg (signalled by adding `iv-ready`) — if any step of the
+   JS pipeline fails, the mount stays transparent and the PNG remains the
+   user-visible output. */
+.iv-widget-mount {
+    position: absolute;
+    inset: 0;
+    /* Mosaic's `render()` does `el.classList.add('mosaic-widget')` on
+       whatever element we pass it. We pass the mount, so it inherits
+       `.mosaic-widget`'s margin-top: 10px / margin-bottom: 0.5rem.
+       For absolutely-positioned elements, margin shifts the element
+       relative to its containing block — that 10 px shifts the SVG down
+       relative to the `<img>` fallback above it. Zeroing margin here
+       wins over `.mosaic-widget` (same specificity, declared later). */
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.iv-widget-mount.iv-ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* PNG fallback gets hard-hidden once the live widget signals ready. We
+   don't crossfade because the layers are pixel-perfect at steady state —
+   a transition would cause a visible mid-fade lightness pulse in solid
+   regions (both layers at 50 % opacity composite to 0.75 × colour + 0.25 ×
+   background, lighter than either endpoint). Keep `display:block` so the
+   parent's intrinsic size is preserved (the absolute-positioned mount
+   has no intrinsic size on its own). */
+.iv-png-fallback.iv-hidden {
+    opacity: 0;
 }
 
 
@@ -5106,9 +5153,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-7c56dae0d3a9b596" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;align-items:flex-start;max-width:510px;position:relative"><div style="flex:1 1 0;min-width:0;aspect-ratio:400 / 400"></div><div style="flex:0 0 110px"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-03902589ff1c23f4" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:640px"><img class="iv-png-fallback" src="index_files/placeholder/47c02208cc7ac4a9.png" width="640" height="400" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"ispFCXLdH7vUL4CphbZrEH\",\"filterBy\":\"$selection_ispFCXLdH7vUL4CphbZrEH\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"LKdcyYS7XArMqLZyZ7Xxwt\",\"filterBy\":\"$selection_LKdcyYS7XArMqLZyZ7Xxwt\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"4uqru5QYnshDPiuLYdRSs7\",\"filterBy\":\"$selection_4uqru5QYnshDPiuLYdRSs7\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"Cr49qKJPfZ8rBMfwd6KLSP\",\"filterBy\":\"$selection_Cr49qKJPfZ8rBMfwd6KLSP\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"DZ2LznjHrtUTmQcH7ufLzD\",\"filterBy\":\"$selection_DZ2LznjHrtUTmQcH7ufLzD\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"WTSaFa8jyyNbhsTH3gk6xq\",\"filterBy\":\"$selection_WTSaFa8jyyNbhsTH3gk6xq\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#ddd\"},{\"mark\":\"line\",\"data\":{\"from\":\"U8trbVKcQQkx9qyBLKcS6M\",\"filterBy\":\"$selection_MaxActQemeEcFzisjQmi8U\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Model\":\"model_display_name\",\"Metric\":\"metric\",\"Score\":\"value\",\"Log viewer\":\"log_viewer\",\"Task\":\"task_display_name\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Metric\\\": \\\"metric\\\", \\\"Score\\\": \\\"value\\\", \\\"Log viewer\\\": \\\"log_viewer\\\", \\\"Task\\\": \\\"task_display_name\\\"}\"]}},{\"mark\":\"line\",\"data\":{\"from\":\"U8trbVKcQQkx9qyBLKcS6M\",\"filterBy\":\"$selection_U8trbVKcQQkx9qyBLKcS6M\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"strokeOpacity\":0.4,\"tip\":false},{\"mark\":\"circle\",\"data\":{\"from\":\"U8trbVKcQQkx9qyBLKcS6M\",\"filterBy\":\"$selection_MaxActQemeEcFzisjQmi8U\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"r\":4,\"tip\":false,\"fill\":\"model_display_name\",\"stroke\":\"white\"},{\"mark\":\"text\",\"data\":{\"from\":\"dDzkvLrA2wz4v5fpp5PubF\",\"filterBy\":\"$selection_dDzkvLrA2wz4v5fpp5PubF\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"ZrdTAGR7MXGiQT4GpxbHne\",\"filterBy\":\"$selection_ZrdTAGR7MXGiQT4GpxbHne\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"aXThbnZ4bpWLam5z5aNMYV\",\"filterBy\":\"$selection_aXThbnZ4bpWLam5z5aNMYV\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"eFmR6ux3Xyqctqnjp4WVz2\",\"filterBy\":\"$selection_eFmR6ux3Xyqctqnjp4WVz2\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"BoYcGiDbyTVa7YDBp7g8sm\",\"filterBy\":\"$selection_BoYcGiDbyTVa7YDBp7g8sm\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8}],\"width\":400,\"height\":400,\"margin\":60,\"xAxis\":false,\"yAxis\":false,\"name\":\"plot_Tm5igUhSy4ycNd3JMVY9U5\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_MaxActQemeEcFzisjQmi8U\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_Tm5igUhSy4ycNd3JMVY9U5\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_U8trbVKcQQkx9qyBLKcS6M\":{\"select\":\"intersect\"},\"selection_MaxActQemeEcFzisjQmi8U\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_ispFCXLdH7vUL4CphbZrEH\":{\"select\":\"intersect\"},\"selection_LKdcyYS7XArMqLZyZ7Xxwt\":{\"select\":\"intersect\"},\"selection_4uqru5QYnshDPiuLYdRSs7\":{\"select\":\"intersect\"},\"selection_Cr49qKJPfZ8rBMfwd6KLSP\":{\"select\":\"intersect\"},\"selection_DZ2LznjHrtUTmQcH7ufLzD\":{\"select\":\"intersect\"},\"selection_WTSaFa8jyyNbhsTH3gk6xq\":{\"select\":\"intersect\"},\"selection_dDzkvLrA2wz4v5fpp5PubF\":{\"select\":\"intersect\"},\"selection_ZrdTAGR7MXGiQT4GpxbHne\":{\"select\":\"intersect\"},\"selection_aXThbnZ4bpWLam5z5aNMYV\":{\"select\":\"intersect\"},\"selection_eFmR6ux3Xyqctqnjp4WVz2\":{\"select\":\"intersect\"},\"selection_BoYcGiDbyTVa7YDBp7g8sm\":{\"select\":\"intersect\"}}}","tables":{"U8trbVKcQQkx9qyBLKcS6M":"../../../site_data/immutable/83be53ac9d5cd17f.arrow","ispFCXLdH7vUL4CphbZrEH":"../../../site_data/immutable/b45b7d378c846e40.arrow","LKdcyYS7XArMqLZyZ7Xxwt":"../../../site_data/immutable/6c737ccfd7acfff4.arrow","4uqru5QYnshDPiuLYdRSs7":"../../../site_data/immutable/332f585a70728a08.arrow","Cr49qKJPfZ8rBMfwd6KLSP":"../../../site_data/immutable/fcb165c5fba5dedd.arrow","DZ2LznjHrtUTmQcH7ufLzD":"../../../site_data/immutable/ac393b8310b0cd39.arrow","WTSaFa8jyyNbhsTH3gk6xq":"../../../site_data/immutable/f4f07de1520541a6.arrow","dDzkvLrA2wz4v5fpp5PubF":"../../../site_data/immutable/5378602298aa9909.arrow","ZrdTAGR7MXGiQT4GpxbHne":"../../../site_data/immutable/fc72df8536074fa1.arrow","aXThbnZ4bpWLam5z5aNMYV":"../../../site_data/immutable/8780a5dcbafea5e2.arrow","eFmR6ux3Xyqctqnjp4WVz2":"../../../site_data/immutable/63f9a025c6ce163a.arrow","BoYcGiDbyTVa7YDBp7g8sm":"../../../site_data/immutable/22892bd23d98837a.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"fPVuw6962ATGmpHLoCXXzg\",\"filterBy\":\"$selection_fPVuw6962ATGmpHLoCXXzg\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"A8Nv8iyCrYM7APyuYD3LUr\",\"filterBy\":\"$selection_A8Nv8iyCrYM7APyuYD3LUr\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"TFqGxvKHYqV4MEMMM5nsKj\",\"filterBy\":\"$selection_TFqGxvKHYqV4MEMMM5nsKj\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"ZTf2ttHkvt8Y94ARguj8sK\",\"filterBy\":\"$selection_ZTf2ttHkvt8Y94ARguj8sK\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"6oHH9JYeRAwMFwRpXiC28H\",\"filterBy\":\"$selection_6oHH9JYeRAwMFwRpXiC28H\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#e0e0e0\"},{\"mark\":\"line\",\"data\":{\"from\":\"Z284fht7vgp3K5LsDLMe3X\",\"filterBy\":\"$selection_Z284fht7vgp3K5LsDLMe3X\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"#ddd\"},{\"mark\":\"line\",\"data\":{\"from\":\"ZVuZnbswLL7T5qk8wpEcD7\",\"filterBy\":\"$selection_E7TofQoDcYCC5vBvj8PYsE\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Model\":\"model_display_name\",\"Metric\":\"metric\",\"Score\":\"value\",\"Log viewer\":\"log_viewer\",\"Task\":\"task_display_name\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Metric\\\": \\\"metric\\\", \\\"Score\\\": \\\"value\\\", \\\"Log viewer\\\": \\\"log_viewer\\\", \\\"Task\\\": \\\"task_display_name\\\"}\"]}},{\"mark\":\"line\",\"data\":{\"from\":\"ZVuZnbswLL7T5qk8wpEcD7\",\"filterBy\":\"$selection_ZVuZnbswLL7T5qk8wpEcD7\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"stroke\":\"model_display_name\",\"strokeOpacity\":0.4,\"tip\":false},{\"mark\":\"circle\",\"data\":{\"from\":\"ZVuZnbswLL7T5qk8wpEcD7\",\"filterBy\":\"$selection_E7TofQoDcYCC5vBvj8PYsE\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"r\":4,\"tip\":false,\"fill\":\"model_display_name\",\"stroke\":\"white\"},{\"mark\":\"text\",\"data\":{\"from\":\"DbJEDDhd5Zayxk7g3KTErY\",\"filterBy\":\"$selection_DbJEDDhd5Zayxk7g3KTErY\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"9orvdN2f85zyoXvfeEV4eL\",\"filterBy\":\"$selection_9orvdN2f85zyoXvfeEV4eL\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"H959sNYSr2KZMAhbhMZtdw\",\"filterBy\":\"$selection_H959sNYSr2KZMAhbhMZtdw\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"gok8RyavxeMVv6oz88UgvS\",\"filterBy\":\"$selection_gok8RyavxeMVv6oz88UgvS\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"right\",\"lineWidth\":8},{\"mark\":\"text\",\"data\":{\"from\":\"JLgGynLSjXrFKVECRxDu33\",\"filterBy\":\"$selection_JLgGynLSjXrFKVECRxDu33\"},\"x\":{\"column\":\"x\"},\"y\":{\"column\":\"y\"},\"text\":{\"column\":\"text\"},\"frameAnchor\":\"left\",\"lineWidth\":8}],\"width\":400,\"height\":400,\"margin\":60,\"xAxis\":false,\"yAxis\":false,\"name\":\"plot_UnAyeZBSuVSK88KmyxjgDZ\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_E7TofQoDcYCC5vBvj8PYsE\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_UnAyeZBSuVSK88KmyxjgDZ\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_ZVuZnbswLL7T5qk8wpEcD7\":{\"select\":\"intersect\"},\"selection_E7TofQoDcYCC5vBvj8PYsE\":{\"select\":\"single\",\"cross\":false,\"empty\":false},\"selection_fPVuw6962ATGmpHLoCXXzg\":{\"select\":\"intersect\"},\"selection_A8Nv8iyCrYM7APyuYD3LUr\":{\"select\":\"intersect\"},\"selection_TFqGxvKHYqV4MEMMM5nsKj\":{\"select\":\"intersect\"},\"selection_ZTf2ttHkvt8Y94ARguj8sK\":{\"select\":\"intersect\"},\"selection_6oHH9JYeRAwMFwRpXiC28H\":{\"select\":\"intersect\"},\"selection_Z284fht7vgp3K5LsDLMe3X\":{\"select\":\"intersect\"},\"selection_DbJEDDhd5Zayxk7g3KTErY\":{\"select\":\"intersect\"},\"selection_9orvdN2f85zyoXvfeEV4eL\":{\"select\":\"intersect\"},\"selection_H959sNYSr2KZMAhbhMZtdw\":{\"select\":\"intersect\"},\"selection_gok8RyavxeMVv6oz88UgvS\":{\"select\":\"intersect\"},\"selection_JLgGynLSjXrFKVECRxDu33\":{\"select\":\"intersect\"}}}","tables":{"ZVuZnbswLL7T5qk8wpEcD7":"../../../site_data/immutable/83be53ac9d5cd17f.arrow","fPVuw6962ATGmpHLoCXXzg":"../../../site_data/immutable/b45b7d378c846e40.arrow","A8Nv8iyCrYM7APyuYD3LUr":"../../../site_data/immutable/6c737ccfd7acfff4.arrow","TFqGxvKHYqV4MEMMM5nsKj":"../../../site_data/immutable/332f585a70728a08.arrow","ZTf2ttHkvt8Y94ARguj8sK":"../../../site_data/immutable/fcb165c5fba5dedd.arrow","6oHH9JYeRAwMFwRpXiC28H":"../../../site_data/immutable/ac393b8310b0cd39.arrow","Z284fht7vgp3K5LsDLMe3X":"../../../site_data/immutable/f4f07de1520541a6.arrow","DbJEDDhd5Zayxk7g3KTErY":"../../../site_data/immutable/5378602298aa9909.arrow","9orvdN2f85zyoXvfeEV4eL":"../../../site_data/immutable/fc72df8536074fa1.arrow","H959sNYSr2KZMAhbhMZtdw":"../../../site_data/immutable/8780a5dcbafea5e2.arrow","gok8RyavxeMVv6oz88UgvS":"../../../site_data/immutable/63f9a025c6ce163a.arrow","JLgGynLSjXrFKVECRxDu33":"../../../site_data/immutable/22892bd23d98837a.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5118,7 +5165,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-7c56dae0d3a9b596");
+  const el = document.getElementById("iv-03902589ff1c23f4");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5131,21 +5178,38 @@ export {
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   })();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {
+    const observer = new MutationObserver(() => {
+      if (mount.querySelector('svg')) {
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }
+    });
+    observer.observe(mount, { childList: true, subtree: true });
+  } else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }
   window.__inspectVizHost
-    .then(w => w.render({model, el}))
+    .then(w => w.render({model, el: renderTarget}))
     .catch(e => console.error('inspect-viz render failed', e));
 })();
 </script>
