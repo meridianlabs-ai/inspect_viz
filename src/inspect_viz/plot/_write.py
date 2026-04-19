@@ -6,16 +6,34 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, AsyncIterator
 
-from PIL import Image, ImageChops, ImageOps
+from PIL import Image, ImageOps
 from typing_extensions import overload
 
 from inspect_viz._core.data import Data
 from inspect_viz._util._async import current_async_backend, run_coroutine
+from inspect_viz._util.platform import quarto_theme_font_css
 
 from .. import Component
 
+# Font fallback used when no Quarto theme font CSS is available — keeps
+# Playwright captures from rendering plot text in headless Chromium's bundled
+# serif default. We override only `font-family`; injecting an explicit
+# `font-size` makes Plot's `<text>` elements inherit a larger size than the
+# live widget would and the rendered plot grows on both axes.
+_DEFAULT_FONT_CSS = (
+    "html, body { "
+    'font-family: system-ui, -apple-system, "Segoe UI", Roboto, '
+    '"Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif; '
+    "}"
+)
 
-def to_html(component: Component, dependencies: bool = True) -> str:
+
+def to_html(
+    component: Component,
+    dependencies: bool = True,
+    *,
+    extra_head: str = "",
+) -> str:
     """Generate a self-contained HTML snippet for a plot or other component.
 
     The returned snippet embeds the inspect-viz widget ESM plus a small
@@ -28,6 +46,9 @@ def to_html(component: Component, dependencies: bool = True) -> str:
        dependencies: Accepted for backward compatibility; the returned
           snippet is always self-contained, so this parameter has no
           effect.
+       extra_head: Optional HTML to inject inside the document `<head>`
+          (e.g. a `<style>` block setting the page font so the rendered
+          plot inherits it).
     """
     del dependencies  # snippet is always self-contained
 
@@ -45,6 +66,7 @@ def to_html(component: Component, dependencies: bool = True) -> str:
     return (
         "<!doctype html><html><head>"
         '<meta charset="utf-8">'
+        f"{extra_head}"
         f"</head><body>{snippet}</body></html>"
     )
 
@@ -123,9 +145,52 @@ async def write_png_async(
     Returns:
        Tuple with (width, height) of image or (bytes,width,height) of image if no `file` was passed. Returns `None` if no image was saved.
     """
+    # Pick up the Quarto site's theme fonts when available so the captured
+    # PNG matches what the live widget renders; fall back to a system-ui
+    # stack so headless Chromium doesn't fall through to its serif default.
+    theme_font_css = quarto_theme_font_css() or _DEFAULT_FONT_CSS
+    # Force the widget element to size to its content rather than fill the
+    # viewport, so a locator screenshot of `.mosaic-widget` captures exactly
+    # the widget's natural bounds — matching what the live widget will
+    # occupy on a Quarto page.
+    # - `vertical-align: top` removes the inline-block baseline descender
+    #   space (otherwise the captured frame includes a few px of whitespace
+    #   above content, which shifts everything down/right when overlaid).
+    # - `margin: 0` on `.mosaic-widget` neutralises the 10 px top / 0.5 rem
+    #   bottom margins that the class normally applies — the locator capture
+    #   uses border-box bounds, but the SVG inside has internal alignment
+    #   that can be affected by surrounding flow whitespace.
+    # - Resetting `html, body` margin removes any default body padding
+    #   contribution to the rendered widget's positioning.
+    sizing_css = (
+        "html, body { margin: 0; padding: 0; }\n"
+        ".mosaic-widget {"
+        " display: inline-block; width: auto;"
+        " vertical-align: top;"
+        " margin: 0;"
+        " }"
+    )
+    # Match the typical Bootswatch theme font smoothing (Cosmo, Flatly,
+    # Litera, etc. all apply `-webkit-font-smoothing: antialiased`).
+    # Without this, capture text renders with macOS's default subpixel AA
+    # (darker) while the live page uses grayscale AA (lighter) — producing
+    # a visible lightness shift at the PNG → SVG crossfade. The property
+    # is inherited, so it propagates to SVG `<text>` for free. On
+    # Linux/Windows these rules are silently ignored.
+    font_smoothing_css = (
+        "html, body {"
+        " -webkit-font-smoothing: antialiased;"
+        " -moz-osx-font-smoothing: grayscale;"
+        " }"
+    )
+    extra_head = (
+        f"<style>{theme_font_css}\n{font_smoothing_css}\n{sizing_css}</style>"
+    )
+
     with tempfile.NamedTemporaryFile("w", suffix=".html") as temp_file:
         # write the component as HTML
-        write_html(temp_file.name, component=component)
+        temp_file.write(to_html(component, extra_head=extra_head))
+        temp_file.flush()
 
         # launch the browser
         async with _with_browser() as b:
@@ -144,19 +209,28 @@ async def write_png_async(
                 '() => !!window.document.querySelector("svg") || !!window.document.querySelector(".inspect-viz-table")',
                 polling=100,
             )
+            # Wait for any web fonts referenced in `extra_head` (e.g. a
+            # Google Font from a Bootswatch theme) to finish loading so the
+            # screenshot doesn't capture a fallback-font frame.
+            await page.evaluate("() => document.fonts.ready")
+            # Give Mosaic's throttled post-render hooks (legend handler,
+            # text-collision adjuster, etc., all on a 25 ms throttle) time
+            # to finish settling the layout before we capture. Without this
+            # the captured PNG can be vertically offset relative to what
+            # the live widget eventually renders.
+            await page.wait_for_timeout(300)
 
-            # eliminate scrolling
-            w = await page.evaluate("document.documentElement.scrollWidth")
-            h = await page.evaluate("document.documentElement.scrollHeight")
-            await page.set_viewport_size({"width": w, "height": h})
-
-            # take screenshot and crop image
+            # Capture the widget element directly. This gives the exact
+            # CSS-box dimensions the live widget will occupy (no overflow
+            # text included via cropping; no full-viewport white margins).
             background_color = "white"
-            image_bytes = await page.screenshot(
-                scale="device",
+            locator = page.locator(".mosaic-widget").first
+            image_bytes = await locator.screenshot(
                 style="body { background-color: " + background_color + "; }",
             )
-            img = _crop_image(image_bytes, padding, scale, background_color)
+            img = Image.open(BytesIO(image_bytes))
+            if padding > 0:
+                img = ImageOps.expand(img, border=padding * scale, fill=background_color)
             size = img.size
             if file:
                 img.save(file, dpi=(scale * 96, scale * 96))
@@ -182,22 +256,33 @@ async def _with_browser() -> AsyncIterator[Any | None]:
 
     # try to launch the browser
     async with async_playwright() as p:
+        # Prefer the user's installed Chrome over the bundled headless
+        # Chromium — Chromium ships with a different font stack and
+        # different anti-aliasing defaults, so PNGs captured under it can
+        # render text noticeably heavier/lighter than what users see in
+        # their actual Chrome browser. Falls through to bundled Chromium
+        # if Chrome isn't installed.
+        browser = None
         try:
-            browser = await p.chromium.launch(headless=True)
+            browser = await p.chromium.launch(headless=True, channel="chrome")
+        except Error:
             try:
-                yield browser
-            finally:
-                await browser.close()
-        except Error as e:
-            if "Executable doesn't exist" in str(e) and sys.stdin.isatty():
-                if _confirm_install():
-                    _install()
-                    print(
-                        "Playwright installed. Please try the write_png() function again."
-                    )
-                yield None
-            else:
-                raise e
+                browser = await p.chromium.launch(headless=True)
+            except Error as e:
+                if "Executable doesn't exist" in str(e) and sys.stdin.isatty():
+                    if _confirm_install():
+                        _install()
+                        print(
+                            "Playwright installed. Please try the write_png() function again."
+                        )
+                    yield None
+                    return
+                else:
+                    raise e
+        try:
+            yield browser
+        finally:
+            await browser.close()
 
 
 def _confirm_install() -> bool:
@@ -214,41 +299,3 @@ def _install() -> None:
     subprocess.run(["playwright", "install", "chromium"], check=True)
 
 
-def _crop_image(
-    image_bytes: bytes, pad: int, scale: int, background_color: str
-) -> Image.Image:
-    # open image
-    img: Image.Image = Image.open(BytesIO(image_bytes))
-
-    # build an image filled with the background colour of the top-left pixel
-    bg = Image.new(img.mode, img.size, background_color)
-
-    # compute difference and locate the bounding box of non-bg pixels
-    diff = ImageChops.difference(img, bg)
-    bbox = diff.getbbox()  # returns (left, upper, right, lower) or None
-
-    if bbox:
-        img_cropped = img.crop(bbox)
-        img_fill = img.getpixel((0, 0))
-
-        if img_fill is not None:
-            # we read the pixel, resolve the fill_value
-            if isinstance(img_fill, float):
-                # Convert float (grayscale) to int for compatibility
-                img_cropped = ImageOps.expand(
-                    img_cropped, border=pad * scale, fill=int(img_fill)
-                )
-            else:
-                img_cropped = ImageOps.expand(
-                    img_cropped, border=pad * scale, fill=img_fill
-                )
-        else:
-            # no value for the top left pixel, use background color
-            img_cropped = ImageOps.expand(
-                img_cropped, border=pad * scale, fill=background_color
-            )
-        img.close()
-        img = img_cropped
-
-    # return image
-    return img

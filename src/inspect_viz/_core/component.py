@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import json
 import secrets
 from datetime import datetime
@@ -14,6 +15,7 @@ from .._util.constants import WIDGETS_DIR
 from .._util.marshall import dict_remove_none
 from .._util.platform import (
     quarto_execute_info,
+    quarto_placeholder_target,
     quarto_png,
     running_in_colab,
     running_in_quarto,
@@ -137,13 +139,77 @@ class Component(AnyWidget):
         # Quarto HTML render: emit pure text/html so Quarto does not detect a
         # Jupyter widget MIME and auto-inject the ~3.5 MB embed-amd.js bundle.
         if running_in_quarto():
+            # Set tables/spec first so `_write_placeholder_png` can inspect
+            # the spec (skipping widgets with inputs) and so the underlying
+            # `write_png` call doesn't redundantly recompute them.
             self.tables = all_tables(collect=True)
             if not self.spec:
                 self.spec = self._create_spec()
-            return {"text/html": self._quarto_html()}, {}
+
+            # "js+png" mode: generate a per-doc placeholder PNG so the page
+            # degrades gracefully if the JS pipeline fails (CDN blocked,
+            # DuckDB-WASM unavailable, etc.). The widget is overlaid on top
+            # of the PNG and only revealed when rendering succeeds. Returns
+            # None for widgets containing inputs (tables, selects, etc.) —
+            # see `_write_placeholder_png` for the rationale.
+            png_info: tuple[str, int, int] | None = None
+            if options.output_format == "js+png":
+                png_info = self._write_placeholder_png()
+
+            return {"text/html": self._quarto_html(png_info=png_info)}, {}
 
         # Notebook / Colab / live-kernel: standard anywidget output.
         return self._mimebundle(collect=False, **kwargs)
+
+    def _write_placeholder_png(self) -> tuple[str, int, int] | None:
+        """Render this component to a PNG asset under `<stem>_files/placeholder/`.
+
+        Returns `(url, css_width, css_height)` where `url` is relative to the
+        rendered HTML and the dimensions are the PNG's *CSS* size (the
+        device-pixel size returned by `write_png` divided by the scale factor),
+        suitable for setting `<img width="…" height="…">` attributes so the
+        image renders at native resolution on retina displays.
+
+        Returns None if the Quarto target can't be resolved or the render
+        fails (e.g. Playwright isn't installed). The PNG filename is
+        content-hashed so repeated renders reuse the existing file.
+        """
+        # Skip any widget that contains an input anywhere in its spec
+        # (tables, selects, checkbox groups, sliders, etc.). A static PNG
+        # of an interactive control is misleading — if JS fails the user
+        # sees a picture of a select/checkbox they can't interact with.
+        # vconcat layouts that include inputs also accumulate small
+        # per-row layout deltas in capture vs live, so excluding them
+        # keeps the PNG-overlay alignment story tight.
+        try:
+            spec = json.loads(self.spec) if isinstance(self.spec, str) else None
+        except json.JSONDecodeError:
+            spec = None
+        if isinstance(spec, dict) and _spec_contains_input(spec):
+            return None
+
+        target = quarto_placeholder_target()
+        if target is None:
+            return None
+        absolute_dir, url_prefix = target
+
+        from inspect_viz.plot._write import write_png
+
+        scale = 2
+        result = write_png(None, self, scale=scale, padding=0)
+        if result is None:
+            return None
+        image_bytes, dev_width, dev_height = result
+        css_width = dev_width // scale
+        css_height = dev_height // scale
+
+        digest = hashlib.sha256(image_bytes).hexdigest()[:16]
+        filename = f"{digest}.png"
+        file_path = absolute_dir / filename
+        if not file_path.exists():
+            absolute_dir.mkdir(parents=True, exist_ok=True)
+            file_path.write_bytes(image_bytes)
+        return f"{url_prefix}{filename}", css_width, css_height
 
     def _mimebundle(
         self, *, collect: bool, **kwargs: Any
@@ -235,7 +301,11 @@ class Component(AnyWidget):
         except (TypeError, ValueError):
             return None
 
-    def _quarto_html(self, tables_override: dict[str, bytes] | None = None) -> str:
+    def _quarto_html(
+        self,
+        tables_override: dict[str, bytes] | None = None,
+        png_info: tuple[str, int, int] | None = None,
+    ) -> str:
         """Self-contained HTML output for a single widget.
 
         Used for two paths:
@@ -248,6 +318,16 @@ class Component(AnyWidget):
         `mosaic.js` bundle) and merged CSS inside `<script id="iv-esm">`
         and `<style id="iv-css">` blocks. Subsequent widgets reference them
         by id so the ESM text appears once per page.
+
+        When `png_info=(url, css_w, css_h)` is set, the widget is emitted in
+        overlay mode: the PNG is rendered inline at native CSS dimensions as
+        the visible fallback, the placeholder wrapper caps at the same
+        max-width so the layout matches the live SVG (which scales itself
+        via `width="…"` + `max-width: 100%`), and an `iv-widget-mount`
+        sub-div is positioned over it. The bootstrap renders the interactive
+        widget into the mount and only fades it in when an `<svg>` has
+        actually been produced. If any step of the JS pipeline fails, the
+        mount stays transparent and the PNG is the user-visible output.
         """
         widget_id = f"iv-{secrets.token_hex(8)}"
 
@@ -298,15 +378,38 @@ class Component(AnyWidget):
             assets = "".join(assets_parts)
 
         # Reserve placeholder space so the plot doesn't "snap in" when it
-        # finishes loading. The placeholder DOM mirrors the plot's eventual
-        # layout (flex row/column with plot + optional legend sibling) so the
-        # browser computes a height that matches the rendered SVG's height at
-        # the current column width. The bootstrap then pins that height as
-        # `min-height` on the widget div so Mosaic's `innerHTML = ''` inside
-        # `render()` doesn't collapse the widget while the SVG is being built.
-        # A MutationObserver clears the pin on SVG insertion.
-        placeholder_info = self._placeholder_info()
-        placeholder_inner = _placeholder_inner_html(placeholder_info)
+        # finishes loading. In the default (shimmer) path, the placeholder DOM
+        # mirrors the plot's eventual layout so the browser computes a height
+        # that matches the rendered SVG at the current column width; the
+        # bootstrap pins that as `min-height`. In the PNG-overlay path
+        # (`png_url` set), the rendered PNG itself provides the size and the
+        # widget is rendered into a transparent mount that fades in only when
+        # a real `<svg>` is produced — if the JS pipeline fails at any step,
+        # the mount stays hidden and the PNG is the final visible output.
+        if png_info is not None:
+            png_url, png_css_w, png_css_h = png_info
+            # Cap the wrapper at the PNG's native CSS width so on a column
+            # wider than the widget's natural size, both the PNG and the
+            # mounted SVG (Plot output uses `max-width: 100%` against its
+            # `width="…"` attribute) cap at the same width. Without this
+            # cap the `<img>`'s `width: 100%` would stretch the PNG to the
+            # full column while the SVG stays at its native width — the
+            # PNG ends up visibly larger than the live widget would render.
+            # `width`/`height` attributes set the img's intrinsic CSS size
+            # (independent of the file's device-pixel size), giving us 2x
+            # crisp display on retina without over-scaling on wide columns.
+            placeholder_inner = (
+                f'<div data-iv-placeholder="1" '
+                f'style="position:relative;max-width:{png_css_w}px">'
+                f'<img class="iv-png-fallback" src="{png_url}" '
+                f'width="{png_css_w}" height="{png_css_h}" '
+                'style="display:block;max-width:100%;height:auto" alt="">'
+                '<div class="iv-widget-mount"></div>'
+                "</div>"
+            )
+        else:
+            placeholder_info = self._placeholder_info()
+            placeholder_inner = _placeholder_inner_html(placeholder_info)
 
         bootstrap = f"""<script type="module">
 (() => {{
@@ -333,21 +436,38 @@ class Component(AnyWidget):
     URL.revokeObjectURL(url);
     return typeof mod.default === 'function' ? await mod.default() : mod.default;
   }})();
-  if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {{
-    // Pin the browser-computed placeholder height so Mosaic's innerHTML=''
-    // can't collapse the widget during the async render window. The pin is
-    // a floor (min-height), not a cap: if the final rendered content is
-    // taller, the widget grows naturally; if shorter, the pin holds at the
-    // reserved height so content below stays put. The widget div already
-    // carries `.mosaic-widget` from the initial HTML so its 10 px margin-top
-    // / 0.5 rem margin-bottom are baked into the document flow before the
-    // pin is measured — Mosaic's own `classList.add('mosaic-widget')` later
-    // becomes a no-op and no layout shift occurs when it runs.
+  // Overlay mode: if there is an iv-widget-mount, render into it and fade
+  // it in only when Mosaic has produced an svg. If the render promise
+  // rejects or no svg ever appears, the mount stays transparent and the
+  // PNG underneath remains the visible output.
+  const mount = el.querySelector('.iv-widget-mount');
+  const renderTarget = mount || el;
+  if (mount) {{
+    const observer = new MutationObserver(() => {{
+      if (mount.querySelector('svg')) {{
+        mount.classList.add('iv-ready');
+        // Hide the PNG fallback now that the live widget is up — without
+        // this the transparent svg lets PNG content bleed through.
+        const img = el.querySelector('.iv-png-fallback');
+        if (img) img.classList.add('iv-hidden');
+        observer.disconnect();
+      }}
+    }});
+    observer.observe(mount, {{ childList: true, subtree: true }});
+  }} else if (el.firstElementChild && el.firstElementChild.dataset.ivPlaceholder) {{
+    // Shimmer mode: pin the browser-computed placeholder height so Mosaic's
+    // innerHTML='' can't collapse the widget during the async render window.
+    // The pin is a floor (min-height), not a cap: if the final rendered
+    // content is taller, the widget grows naturally; if shorter, the pin
+    // holds at the reserved height so content below stays put. The widget
+    // div already carries `.mosaic-widget` from the initial HTML so its
+    // 10 px margin-top / 0.5 rem margin-bottom are baked into the document
+    // flow before the pin is measured.
     const pinH = el.clientHeight;
     if (pinH > 0) el.style.minHeight = pinH + 'px';
   }}
   window.__inspectVizHost
-    .then(w => w.render({{model, el}}))
+    .then(w => w.render({{model, el: renderTarget}}))
     .catch(e => console.error('inspect-viz render failed', e));
 }})();
 </script>"""
@@ -412,6 +532,24 @@ _INPUT_ROW_PX = 48
 # Default vspace height if a `vspace()` entry's `vspace` value can't be
 # parsed as an integer (matches the helper's own default).
 _VSPACE_DEFAULT_PX = 10
+
+
+def _spec_contains_input(node: Any) -> bool:
+    """Recursively check whether a Mosaic spec node contains any `input` key.
+
+    Used to opt out of `js+png` PNG capture for any widget that includes a
+    table, select, checkbox group, slider, etc. — a static picture of an
+    interactive control isn't a useful fallback if the JS pipeline fails,
+    and inputs in vconcat layouts can produce per-row alignment drift in
+    the captured PNG vs the live render.
+    """
+    if isinstance(node, dict):
+        if "input" in node:
+            return True
+        return any(_spec_contains_input(v) for v in node.values())
+    if isinstance(node, list):
+        return any(_spec_contains_input(item) for item in node)
+    return False
 
 
 def _find_plot_node(
