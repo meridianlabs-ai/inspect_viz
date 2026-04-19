@@ -89,7 +89,7 @@ Creates a radar chart showing scores for multiple models across multiple metrics
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L259)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/view/_scores_radar.py#L259)
 
 ``` python
 def scores_radar_by_metric(
@@ -114,7 +114,7 @@ Creates a dataframe for a radar chart showing multiple models across multiple me
 
 This is useful for tasks with multiple metrics, where each metric is a separate axis on the radar chart.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_radar.py#L160)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/view/_scores_radar.py#L160)
 
 ``` python
 def scores_radar_by_metric_df(

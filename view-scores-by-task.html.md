@@ -43,7 +43,7 @@ Bar plot for comparing eval scores.
 
 Summarize eval scores using a bar plot. By default, scores (`y`) are plotted by “task_display_name” (`fx`) and “model_display_name” (`x`). By default, confidence intervals are also plotted (disable this with `y_ci=False`).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_by_task.py#L20)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/view/_scores_by_task.py#L20)
 
 ``` python
 def scores_by_task(

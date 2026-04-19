@@ -1,6 +1,6 @@
 # changelog – Inspect Viz
 
-## Unreleased
+## 0.4.0 (April 19, 2026)
 
 - Quarto: Write plot data to content-addressed `site_data/immutable/*.arrow` assets and fetch via the browser Cache API.
 - Quarto: Bypass the ~3.5 MB ipywidgets loader in favor of a small inline bootstrap.

@@ -560,7 +560,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="select" class="level2">
 <h2 class="anchored" data-anchor-id="select">Select</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> input is used to select one more more values from a list. The list can be sourced from a data column (via the <code>column</code> parameter) or be static (via the <code>options</code> parameter). Here is a select input bound to a column (this input targets the default <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#selection">Selection</a></span> associated with the passed <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#data">Data</a></span>):</p>
-<div id="66d1354c" class="cell" data-execution_count="1">
+<div id="8de60cb9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> select</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5020,9 +5020,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-2c4037c0ccb8d45c" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+</script><div id="iv-d3304afd8384fdbd" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Species\",\"from\":\"SacGwD5UEhAB2iCEMkfHiT\",\"as\":\"$selection_SacGwD5UEhAB2iCEMkfHiT\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Species\",\"from\":\"HbdfW8C4prZxvz67MP7cdT\",\"as\":\"$selection_HbdfW8C4prZxvz67MP7cdT\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5032,7 +5032,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-2c4037c0ccb8d45c");
+  const el = document.getElementById("iv-d3304afd8384fdbd");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5083,12 +5083,12 @@ export {
 </div>
 </div>
 <p>Note that by default the select has no value so does not filtering (represented by the default “All” selection). If you want a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> to have an initial value then specify it using the <code>value</code> parameter (or pass ‘auto’ to select the first value):</p>
-<div id="985803e8" class="cell" data-execution_count="2">
+<div id="d62bb709" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>select(penguins, label<span class="op">=</span><span class="st">"Species"</span>, column<span class="op">=</span><span class="st">"species"</span>, value<span class="op">=</span><span class="st">"auto"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div id="iv-b684f42569d3f258" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-229061fc3aa34ea8" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"auto\",\"label\":\"Species\",\"from\":\"SacGwD5UEhAB2iCEMkfHiT\",\"as\":\"$selection_SacGwD5UEhAB2iCEMkfHiT\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":""}};
+  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"auto\",\"label\":\"Species\",\"from\":\"HbdfW8C4prZxvz67MP7cdT\",\"as\":\"$selection_HbdfW8C4prZxvz67MP7cdT\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5098,7 +5098,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b684f42569d3f258");
+  const el = document.getElementById("iv-229061fc3aa34ea8");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5149,16 +5149,16 @@ export {
 </div>
 </div>
 <p>Here is a select input with explicit options (this input targets a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span>):</p>
-<div id="2cb5384c" class="cell" data-execution_count="3">
+<div id="c797f0c7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Param</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fruit <span class="op">=</span> Param(<span class="st">"Apple"</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>select(label<span class="op">=</span><span class="st">"Fruit"</span>, options<span class="op">=</span>[<span class="st">"Apple"</span>, <span class="st">"Orange"</span>, <span class="st">"Banana"</span>], target<span class="op">=</span>fruit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div id="iv-6d36d8d5dbc30543" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-0fb5bf37555b1cc8" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_jjGs6ELJGuVprVZfFjk8fg\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":""}};
+  const state = {"spec":"{\"input\":\"select\",\"multiple\":false,\"value\":\"all\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_HqaJftphEDifyAvTghmkd6\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5168,7 +5168,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-6d36d8d5dbc30543");
+  const el = document.getElementById("iv-0fb5bf37555b1cc8");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5219,14 +5219,14 @@ export {
 </div>
 </div>
 <p>Pass <code>multiple=True</code> to enable multiple inputs. In this case values are specified via typing/autocomplete rather than a drop down menu.</p>
-<div id="f63418cc" class="cell" data-execution_count="4">
+<div id="81c78141" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>athletes <span class="op">=</span> Data.from_file(<span class="st">"athletes.parquet"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>select(athletes, label<span class="op">=</span><span class="st">"Sports"</span>, column<span class="op">=</span><span class="st">"sport"</span>, multiple<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div id="iv-d5c4df72f398bba8" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-83a6e02d622642c9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"select\",\"multiple\":true,\"value\":\"all\",\"label\":\"Sports\",\"from\":\"XUfrqWdYVp8CBMmTtUETPL\",\"as\":\"$selection_XUfrqWdYVp8CBMmTtUETPL\",\"column\":\"sport\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"site_data/immutable/39b7ce22ee3296b8.arrow"}};
+  const state = {"spec":"{\"input\":\"select\",\"multiple\":true,\"value\":\"all\",\"label\":\"Sports\",\"from\":\"X4WUpuvfQFuzef5MGYtyWa\",\"as\":\"$selection_X4WUpuvfQFuzef5MGYtyWa\",\"column\":\"sport\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"site_data/immutable/39b7ce22ee3296b8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5236,7 +5236,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-d5c4df72f398bba8");
+  const el = document.getElementById("iv-83a6e02d622642c9");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5290,14 +5290,14 @@ export {
 <section id="slider" class="level2">
 <h2 class="anchored" data-anchor-id="slider">Slider</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#slider">slider()</a></span> input enables specificiation of either a single numeric value or a range of values. Here we enable the selection of a maximum body mass for a column:</p>
-<div id="a0f76909" class="cell" data-execution_count="5">
+<div id="98b460c2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> slider</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>slider(penguins, label<span class="op">=</span><span class="st">"Max Body Mass"</span>, column<span class="op">=</span><span class="st">"body_mass"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<div id="iv-c2a73f0974080446" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-d49b0e7761d83ee9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"slider\",\"select\":\"point\",\"width\":150,\"label\":\"Max Body Mass\",\"from\":\"SacGwD5UEhAB2iCEMkfHiT\",\"as\":\"$selection_SacGwD5UEhAB2iCEMkfHiT\",\"column\":\"body_mass\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":""}};
+  const state = {"spec":"{\"input\":\"slider\",\"select\":\"point\",\"width\":150,\"label\":\"Max Body Mass\",\"from\":\"HbdfW8C4prZxvz67MP7cdT\",\"as\":\"$selection_HbdfW8C4prZxvz67MP7cdT\",\"column\":\"body_mass\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5307,7 +5307,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-c2a73f0974080446");
+  const el = document.getElementById("iv-d49b0e7761d83ee9");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5358,12 +5358,12 @@ export {
 </div>
 </div>
 <p>Pass <code>select="interval"</code> to specify an interval rather than single value:</p>
-<div id="77882dd5" class="cell" data-execution_count="6">
+<div id="de813319" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>slider(penguins, label<span class="op">=</span><span class="st">"Body Mass Range"</span>, column<span class="op">=</span><span class="st">"body_mass"</span>, select<span class="op">=</span><span class="st">"interval"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<div id="iv-95b9a8c8e6d0eefc" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-1724f068cec62909" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"slider\",\"select\":\"interval\",\"width\":150,\"label\":\"Body Mass Range\",\"from\":\"SacGwD5UEhAB2iCEMkfHiT\",\"as\":\"$selection_SacGwD5UEhAB2iCEMkfHiT\",\"column\":\"body_mass\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":""}};
+  const state = {"spec":"{\"input\":\"slider\",\"select\":\"interval\",\"width\":150,\"label\":\"Body Mass Range\",\"from\":\"HbdfW8C4prZxvz67MP7cdT\",\"as\":\"$selection_HbdfW8C4prZxvz67MP7cdT\",\"column\":\"body_mass\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5373,7 +5373,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-95b9a8c8e6d0eefc");
+  const el = document.getElementById("iv-1724f068cec62909");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5424,14 +5424,14 @@ export {
 </div>
 </div>
 <p>Sliders can also target a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span> and have explicit <code>min</code>, <code>max</code>, and <code>step</code> values:</p>
-<div id="48589aad" class="cell" data-execution_count="7">
+<div id="80d73dea" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>bias <span class="op">=</span> Param(<span class="fl">0.5</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>slider(label<span class="op">=</span><span class="st">"Bias"</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">1.0</span>, step<span class="op">=</span><span class="fl">0.1</span>, target<span class="op">=</span>bias)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div id="iv-7b113c04a2b12d02" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-6b4e46506a10e3cf" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"slider\",\"select\":\"point\",\"min\":0,\"max\":1.0,\"step\":0.1,\"width\":150,\"label\":\"Bias\",\"as\":\"$param_U8upxuXrzwasBvC3fXHgnE\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":""}};
+  const state = {"spec":"{\"input\":\"slider\",\"select\":\"point\",\"min\":0,\"max\":1.0,\"step\":0.1,\"width\":150,\"label\":\"Bias\",\"as\":\"$param_2X9Xdbks4WbkuSVrYii93e\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5441,7 +5441,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-7b113c04a2b12d02");
+  const el = document.getElementById("iv-6b4e46506a10e3cf");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5495,16 +5495,16 @@ export {
 <section id="search" class="level2">
 <h2 class="anchored" data-anchor-id="search">Search</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#search">search()</a></span> input enables filtering a dataset based on text matching. For example, this input filters by WNBA player name</p>
-<div id="51d23a86" class="cell" data-execution_count="8">
+<div id="898887f7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> search</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>players <span class="op">=</span> Data.from_file(<span class="st">"wnba-shots-2023.parquet"</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>search(players, label<span class="op">=</span><span class="st">"Athlete"</span>, column<span class="op">=</span><span class="st">"athlete_name"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<div id="iv-f1b2882162fefbb1" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-3774d1a98633e2d9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"search\",\"label\":\"Athlete\",\"from\":\"Ru77nba2eVGkmey68qfFXS\",\"as\":\"$selection_Ru77nba2eVGkmey68qfFXS\",\"column\":\"athlete_name\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":"site_data/immutable/4425bd3adebe0c4d.arrow"}};
+  const state = {"spec":"{\"input\":\"search\",\"label\":\"Athlete\",\"from\":\"jqZ3ovbKjmsCcnfLmVcjKr\",\"as\":\"$selection_jqZ3ovbKjmsCcnfLmVcjKr\",\"column\":\"athlete_name\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":"site_data/immutable/4425bd3adebe0c4d.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5514,7 +5514,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-f1b2882162fefbb1");
+  const el = document.getElementById("iv-3774d1a98633e2d9");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5568,16 +5568,16 @@ export {
 <section id="checkbox" class="level2">
 <h2 class="anchored" data-anchor-id="checkbox">Checkbox</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#checkbox">checkbox()</a></span> input enables toggling a binary value. You can either target boolean <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span> values or provide custom values mapped to checked and unchecked.</p>
-<div id="7fc32ab1" class="cell" data-execution_count="9">
+<div id="1786c883" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> checkbox</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>enabled <span class="op">=</span> Param(<span class="va">True</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>checkbox(label<span class="op">=</span><span class="st">"Enabled"</span>, target<span class="op">=</span>enabled)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<div id="iv-495eb3ddccdac19a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-7779f23a1c0605e1" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"checkbox\",\"checked\":false,\"values\":[true,false],\"label\":\"Enabled\",\"as\":\"$param_mrMPDq8TLNwj8UFZVGXnai\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":""}};
+  const state = {"spec":"{\"input\":\"checkbox\",\"checked\":false,\"values\":[true,false],\"label\":\"Enabled\",\"as\":\"$param_PLDaqtMgJqZm4LSYAyggFD\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5587,7 +5587,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-495eb3ddccdac19a");
+  const el = document.getElementById("iv-7779f23a1c0605e1");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5638,14 +5638,14 @@ export {
 </div>
 </div>
 <p>Here we provide custom values that map to checked and unchecked states:</p>
-<div id="c6aebc02" class="cell" data-execution_count="10">
+<div id="cb497dd7" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>bias <span class="op">=</span> Param(<span class="fl">0.1</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>checkbox(label<span class="op">=</span><span class="st">"Use Bias"</span>, values<span class="op">=</span>[<span class="fl">0.0</span>, <span class="fl">0.1</span>], target<span class="op">=</span>bias)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<div id="iv-857ec40b6f40489c" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-c4799dd04d2f5e5f" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"checkbox\",\"checked\":false,\"values\":[0.0,0.1],\"label\":\"Use Bias\",\"as\":\"$param_oV3XVDNrwX7vSNNjqMKVPA\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"param_oV3XVDNrwX7vSNNjqMKVPA\":{\"select\":\"value\",\"value\":0.1},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":""}};
+  const state = {"spec":"{\"input\":\"checkbox\",\"checked\":false,\"values\":[0.0,0.1],\"label\":\"Use Bias\",\"as\":\"$param_M73FeG3CVTtSygHgbG8CQp\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"param_M73FeG3CVTtSygHgbG8CQp\":{\"select\":\"value\",\"value\":0.1},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5655,7 +5655,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-857ec40b6f40489c");
+  const el = document.getElementById("iv-c4799dd04d2f5e5f");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5709,16 +5709,16 @@ export {
 <section id="radio-group" class="level2">
 <h2 class="anchored" data-anchor-id="radio-group">Radio Group</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#radio_group">radio_group()</a></span> is an alternative to <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#select">select()</a></span> which displays all of the available options rather than collapsing them into a menu:</p>
-<div id="b7ce9773" class="cell" data-execution_count="11">
+<div id="3fa3c3bd" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> radio_group</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> Data.from_file(<span class="st">"penguins.parquet"</span>)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>radio_group(penguins, label<span class="op">=</span><span class="st">"Species"</span>, column<span class="op">=</span><span class="st">"species"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-<div id="iv-64161ea9c94b10b3" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-10cc27265e3ddb32" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"radio_group\",\"label\":\"Species\",\"from\":\"Rq2hbJh3smf4HCKvkuoTJR\",\"as\":\"$selection_Rq2hbJh3smf4HCKvkuoTJR\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"param_oV3XVDNrwX7vSNNjqMKVPA\":{\"select\":\"value\",\"value\":0.1},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"},\"selection_Rq2hbJh3smf4HCKvkuoTJR\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":"","Rq2hbJh3smf4HCKvkuoTJR":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"radio_group\",\"label\":\"Species\",\"from\":\"BSs6dva5HNESymMQgVvsL4\",\"as\":\"$selection_BSs6dva5HNESymMQgVvsL4\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"param_M73FeG3CVTtSygHgbG8CQp\":{\"select\":\"value\",\"value\":0.1},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"},\"selection_BSs6dva5HNESymMQgVvsL4\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":"","BSs6dva5HNESymMQgVvsL4":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5728,7 +5728,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-64161ea9c94b10b3");
+  const el = document.getElementById("iv-10cc27265e3ddb32");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5779,14 +5779,14 @@ export {
 </div>
 </div>
 <p>Or targeting a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span>:</p>
-<div id="4257ca1a" class="cell" data-execution_count="12">
+<div id="e1c52c6e" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fruit <span class="op">=</span> Param(<span class="st">"Apple"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>radio_group(label<span class="op">=</span><span class="st">"Fruit"</span>, options<span class="op">=</span>[<span class="st">"Apple"</span>, <span class="st">"Orange"</span>, <span class="st">"Banana"</span>], target<span class="op">=</span>fruit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<div id="iv-bbb2c4bfaab6ec52" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-c4584e51d2043044" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"radio_group\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_aKBtdiq6tkznU7HABeUDzu\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"param_oV3XVDNrwX7vSNNjqMKVPA\":{\"select\":\"value\",\"value\":0.1},\"param_aKBtdiq6tkznU7HABeUDzu\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"},\"selection_Rq2hbJh3smf4HCKvkuoTJR\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":"","Rq2hbJh3smf4HCKvkuoTJR":""}};
+  const state = {"spec":"{\"input\":\"radio_group\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_VBYWdwdDGBWpg35v5q8gjg\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"param_M73FeG3CVTtSygHgbG8CQp\":{\"select\":\"value\",\"value\":0.1},\"param_VBYWdwdDGBWpg35v5q8gjg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"},\"selection_BSs6dva5HNESymMQgVvsL4\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":"","BSs6dva5HNESymMQgVvsL4":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5796,7 +5796,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-bbb2c4bfaab6ec52");
+  const el = document.getElementById("iv-c4584e51d2043044");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5850,16 +5850,16 @@ export {
 <section id="checkbox-group" class="level2">
 <h2 class="anchored" data-anchor-id="checkbox-group">Checkbox Group</h2>
 <p>The <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#checkbox_group">checkbox_group()</a></span> provides an interface to select multiple values (similar to <code>select(..., multiple=True)</code>):</p>
-<div id="a8f91b69" class="cell" data-execution_count="13">
+<div id="f8c2a876" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.<span class="bu">input</span> <span class="im">import</span> checkbox_group</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> Data.from_file(<span class="st">"penguins.parquet"</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>checkbox_group(penguins, label<span class="op">=</span><span class="st">"Species"</span>, column<span class="op">=</span><span class="st">"species"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
-<div id="iv-b082071a00d87b2d" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-80933c41d860c904" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"checkbox_group\",\"label\":\"Species\",\"from\":\"Wc8TRhnaiB6ucUjYcFXpKm\",\"as\":\"$selection_Wc8TRhnaiB6ucUjYcFXpKm\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"param_oV3XVDNrwX7vSNNjqMKVPA\":{\"select\":\"value\",\"value\":0.1},\"param_aKBtdiq6tkznU7HABeUDzu\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"},\"selection_Rq2hbJh3smf4HCKvkuoTJR\":{\"select\":\"intersect\"},\"selection_Wc8TRhnaiB6ucUjYcFXpKm\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":"","Rq2hbJh3smf4HCKvkuoTJR":"","Wc8TRhnaiB6ucUjYcFXpKm":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"checkbox_group\",\"label\":\"Species\",\"from\":\"fAebkGtsbxiwMyiDFVFN3B\",\"as\":\"$selection_fAebkGtsbxiwMyiDFVFN3B\",\"column\":\"species\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"param_M73FeG3CVTtSygHgbG8CQp\":{\"select\":\"value\",\"value\":0.1},\"param_VBYWdwdDGBWpg35v5q8gjg\":{\"select\":\"value\",\"value\":\"Apple\"},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"},\"selection_BSs6dva5HNESymMQgVvsL4\":{\"select\":\"intersect\"},\"selection_fAebkGtsbxiwMyiDFVFN3B\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":"","BSs6dva5HNESymMQgVvsL4":"","fAebkGtsbxiwMyiDFVFN3B":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5869,7 +5869,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b082071a00d87b2d");
+  const el = document.getElementById("iv-80933c41d860c904");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5920,14 +5920,14 @@ export {
 </div>
 </div>
 <p>You can also use <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.input.html#checkbox_group">checkbox_group()</a></span> with a <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#param">Param</a></span>:</p>
-<div id="43c67531" class="cell" data-execution_count="14">
+<div id="dea329a7" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fruit <span class="op">=</span> Param([<span class="st">"Apple"</span>, <span class="st">"Orange"</span>])</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>checkbox_group(label<span class="op">=</span><span class="st">"Fruit"</span>, options<span class="op">=</span>[<span class="st">"Apple"</span>, <span class="st">"Orange"</span>, <span class="st">"Banana"</span>], target<span class="op">=</span>fruit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-<div id="iv-a1436ed10073cad1" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-c79904cace454691" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"checkbox_group\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_e2TobKqXEoHrRYXPUqqEaU\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_jjGs6ELJGuVprVZfFjk8fg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_U8upxuXrzwasBvC3fXHgnE\":{\"select\":\"value\",\"value\":0.5},\"param_mrMPDq8TLNwj8UFZVGXnai\":{\"select\":\"value\",\"value\":true},\"param_oV3XVDNrwX7vSNNjqMKVPA\":{\"select\":\"value\",\"value\":0.1},\"param_aKBtdiq6tkznU7HABeUDzu\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_e2TobKqXEoHrRYXPUqqEaU\":{\"select\":\"value\",\"value\":[\"Apple\",\"Orange\"]},\"selection_SacGwD5UEhAB2iCEMkfHiT\":{\"select\":\"intersect\"},\"selection_XUfrqWdYVp8CBMmTtUETPL\":{\"select\":\"intersect\"},\"selection_Ru77nba2eVGkmey68qfFXS\":{\"select\":\"intersect\"},\"selection_Rq2hbJh3smf4HCKvkuoTJR\":{\"select\":\"intersect\"},\"selection_Wc8TRhnaiB6ucUjYcFXpKm\":{\"select\":\"intersect\"}}}","tables":{"SacGwD5UEhAB2iCEMkfHiT":"","XUfrqWdYVp8CBMmTtUETPL":"","Ru77nba2eVGkmey68qfFXS":"","Rq2hbJh3smf4HCKvkuoTJR":"","Wc8TRhnaiB6ucUjYcFXpKm":""}};
+  const state = {"spec":"{\"input\":\"checkbox_group\",\"label\":\"Fruit\",\"options\":[\"Apple\",\"Orange\",\"Banana\"],\"as\":\"$param_6LmjCAWNPvMXdErKYmGesM\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_HqaJftphEDifyAvTghmkd6\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_2X9Xdbks4WbkuSVrYii93e\":{\"select\":\"value\",\"value\":0.5},\"param_PLDaqtMgJqZm4LSYAyggFD\":{\"select\":\"value\",\"value\":true},\"param_M73FeG3CVTtSygHgbG8CQp\":{\"select\":\"value\",\"value\":0.1},\"param_VBYWdwdDGBWpg35v5q8gjg\":{\"select\":\"value\",\"value\":\"Apple\"},\"param_6LmjCAWNPvMXdErKYmGesM\":{\"select\":\"value\",\"value\":[\"Apple\",\"Orange\"]},\"selection_HbdfW8C4prZxvz67MP7cdT\":{\"select\":\"intersect\"},\"selection_X4WUpuvfQFuzef5MGYtyWa\":{\"select\":\"intersect\"},\"selection_jqZ3ovbKjmsCcnfLmVcjKr\":{\"select\":\"intersect\"},\"selection_BSs6dva5HNESymMQgVvsL4\":{\"select\":\"intersect\"},\"selection_fAebkGtsbxiwMyiDFVFN3B\":{\"select\":\"intersect\"}}}","tables":{"HbdfW8C4prZxvz67MP7cdT":"","X4WUpuvfQFuzef5MGYtyWa":"","jqZ3ovbKjmsCcnfLmVcjKr":"","BSs6dva5HNESymMQgVvsL4":"","fAebkGtsbxiwMyiDFVFN3B":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5937,7 +5937,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-a1436ed10073cad1");
+  const el = document.getElementById("iv-c79904cace454691");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,

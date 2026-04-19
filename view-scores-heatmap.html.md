@@ -41,7 +41,7 @@ Note that both the log viewer links and model names are optional (the plot will 
 
 Creates a heatmap plot of success rate of eval data.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/da0a73dfe16a54cafe18cb65dc40676bab93e9cc/src/inspect_viz/view/_scores_heatmap.py#L16)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/view/_scores_heatmap.py#L16)
 
 ``` python
 def scores_heatmap(

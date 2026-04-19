@@ -547,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This example illustrates the code behind the <a href="../../../view-scores-by-task.html"><span class="element-type-name ref-interlink"><span>scores_by_task()</span></span></a> pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.</p>
-<div id="53816552" class="cell" data-execution_count="1">
+<div id="1f53c2e1" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5049,9 +5049,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-adf1f14c95ee0ee6" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:672px"><img class="iv-png-fallback" src="index_files/placeholder/ddb3f8ac4f5f2fdb.png" width="672" height="419" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
+</script><div id="iv-c69df200fa0e0119" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:672px"><img class="iv-png-fallback" src="index_files/placeholder/ddb3f8ac4f5f2fdb.png" width="672" height="419" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"text\",\"text\":[\"Plot Title\"],\"dy\":-40,\"frameAnchor\":\"top\",\"fontSize\":16,\"facet\":\"super\"},{\"mark\":\"barY\",\"data\":{\"from\":\"YQ2VhTHKJrKkzhmwEKAjfi\",\"filterBy\":\"$selection_YQ2VhTHKJrKkzhmwEKAjfi\"},\"y\":{\"column\":\"score_headline_value\"},\"x\":{\"column\":\"model\"},\"fx\":\"task_name\",\"channels\":{\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]},\"fill\":\"model\",\"tip\":{\"lineWidth\":1000000000}}],\"xLabel\":null,\"yLabel\":\"score\",\"fxLabel\":null,\"width\":672,\"height\":384,\"xTicks\":[],\"yDomain\":[0,1.0],\"colorLabel\":\"Model\",\"marginTop\":40,\"name\":\"plot_24m5GwtdayV6kgwXnitcXy\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_24m5GwtdayV6kgwXnitcXy\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_YQ2VhTHKJrKkzhmwEKAjfi\":{\"select\":\"intersect\"}}}","tables":{"YQ2VhTHKJrKkzhmwEKAjfi":"../../../site_data/immutable/86f9b89da240f054.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"text\",\"text\":[\"Plot Title\"],\"dy\":-40,\"frameAnchor\":\"top\",\"fontSize\":16,\"facet\":\"super\"},{\"mark\":\"barY\",\"data\":{\"from\":\"kZAkSnU88SYboudZBQMLoS\",\"filterBy\":\"$selection_kZAkSnU88SYboudZBQMLoS\"},\"y\":{\"column\":\"score_headline_value\"},\"x\":{\"column\":\"model\"},\"fx\":\"task_name\",\"channels\":{\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]},\"fill\":\"model\",\"tip\":{\"lineWidth\":1000000000}}],\"xLabel\":null,\"yLabel\":\"score\",\"fxLabel\":null,\"width\":672,\"height\":384,\"xTicks\":[],\"yDomain\":[0,1.0],\"colorLabel\":\"Model\",\"marginTop\":40,\"name\":\"plot_nZC9RCARFTRyjmvuPbBg3Z\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_nZC9RCARFTRyjmvuPbBg3Z\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_kZAkSnU88SYboudZBQMLoS\":{\"select\":\"intersect\"}}}","tables":{"kZAkSnU88SYboudZBQMLoS":"../../../site_data/immutable/86f9b89da240f054.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5061,7 +5061,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-adf1f14c95ee0ee6");
+  const el = document.getElementById("iv-c69df200fa0e0119");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5114,7 +5114,7 @@ export {
 <section id="confidence-interval" class="level4">
 <h4 class="anchored" data-anchor-id="confidence-interval">Confidence Interval</h4>
 <p>Here we add a confidence interval for each reported score by adding a <span class="element-type-name ref-interlink"><a href="../../../reference/inspect_viz.mark.html#rule_x">rule_x()</a></span> mark. Note that we derive the confidence interval transforms using the <span class="element-type-name ref-interlink"><a href="../../../reference/inspect_viz.transform.html#ci_bounds">ci_bounds()</a></span> function.</p>
-<div id="b4339012" class="cell" data-execution_count="2">
+<div id="d367b113" class="cell" data-execution_count="2">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5165,9 +5165,9 @@ export {
 </dl>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div id="iv-5a0f644cd86f4640" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:672px"><img class="iv-png-fallback" src="index_files/placeholder/e6fcd17dcb0ff9b1.png" width="672" height="419" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
+<div id="iv-39cc98afdb8cba65" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:672px"><img class="iv-png-fallback" src="index_files/placeholder/e6fcd17dcb0ff9b1.png" width="672" height="419" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"barY\",\"data\":{\"from\":\"YQ2VhTHKJrKkzhmwEKAjfi\",\"filterBy\":\"$selection_YQ2VhTHKJrKkzhmwEKAjfi\"},\"y\":{\"column\":\"score_headline_value\"},\"x\":{\"column\":\"model\"},\"fx\":\"task_name\",\"channels\":{\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]},\"fill\":\"model\",\"tip\":{\"lineWidth\":1000000000}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"YQ2VhTHKJrKkzhmwEKAjfi\",\"filterBy\":\"$selection_YQ2VhTHKJrKkzhmwEKAjfi\"},\"x\":{\"column\":\"model\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"fx\":\"task_name\",\"stroke\":\"black\"}],\"xLabel\":null,\"yLabel\":\"score\",\"fxLabel\":null,\"width\":672,\"height\":384,\"xTicks\":[],\"yDomain\":[0,1.0],\"colorLabel\":\"Model\",\"name\":\"plot_6fko9jFu5TGhcCvSSBetoh\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_6fko9jFu5TGhcCvSSBetoh\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_YQ2VhTHKJrKkzhmwEKAjfi\":{\"select\":\"intersect\"}}}","tables":{"YQ2VhTHKJrKkzhmwEKAjfi":"../../../site_data/immutable/86f9b89da240f054.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"barY\",\"data\":{\"from\":\"kZAkSnU88SYboudZBQMLoS\",\"filterBy\":\"$selection_kZAkSnU88SYboudZBQMLoS\"},\"y\":{\"column\":\"score_headline_value\"},\"x\":{\"column\":\"model\"},\"fx\":\"task_name\",\"channels\":{\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]},\"fill\":\"model\",\"tip\":{\"lineWidth\":1000000000}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"kZAkSnU88SYboudZBQMLoS\",\"filterBy\":\"$selection_kZAkSnU88SYboudZBQMLoS\"},\"x\":{\"column\":\"model\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"fx\":\"task_name\",\"stroke\":\"black\"}],\"xLabel\":null,\"yLabel\":\"score\",\"fxLabel\":null,\"width\":672,\"height\":384,\"xTicks\":[],\"yDomain\":[0,1.0],\"colorLabel\":\"Model\",\"name\":\"plot_W2tMZhrkd55fD8baRgkz99\"},{\"legend\":\"color\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"bottom\",\"for\":\"plot_W2tMZhrkd55fD8baRgkz99\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_kZAkSnU88SYboudZBQMLoS\":{\"select\":\"intersect\"}}}","tables":{"kZAkSnU88SYboudZBQMLoS":"../../../site_data/immutable/86f9b89da240f054.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5177,7 +5177,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-5a0f644cd86f4640");
+  const el = document.getElementById("iv-39cc98afdb8cba65");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
