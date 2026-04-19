@@ -183,9 +183,7 @@ async def write_png_async(
         " -moz-osx-font-smoothing: grayscale;"
         " }"
     )
-    extra_head = (
-        f"<style>{theme_font_css}\n{font_smoothing_css}\n{sizing_css}</style>"
-    )
+    extra_head = f"<style>{theme_font_css}\n{font_smoothing_css}\n{sizing_css}</style>"
 
     with tempfile.NamedTemporaryFile("w", suffix=".html") as temp_file:
         # write the component as HTML
@@ -230,7 +228,9 @@ async def write_png_async(
             )
             img = Image.open(BytesIO(image_bytes))
             if padding > 0:
-                img = ImageOps.expand(img, border=padding * scale, fill=background_color)
+                img = ImageOps.expand(
+                    img, border=padding * scale, fill=background_color
+                )
             size = img.size
             if file:
                 img.save(file, dpi=(scale * 96, scale * 96))
@@ -297,5 +297,3 @@ def _confirm_install() -> bool:
 def _install() -> None:
     """Run the idempotent CLI installer (cheap when up-to-date)."""
     subprocess.run(["playwright", "install", "chromium"], check=True)
-
-
