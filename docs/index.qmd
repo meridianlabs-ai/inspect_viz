@@ -22,31 +22,28 @@ plot_defaults(
 )
 ```
 
+::: {layout-ncol=3}
+![](images/scores_by_task.png){group="hero-plots"}
+
+![](images/scores_by_model.png){group="hero-plots"}
+
+![](images/scores_timeline_gpqa.png){group="hero-plots"}
+:::
+
+
+```{=html}
+<style type="text/css">
+#title-block-header {
+    margin-bottom: 0;
+}
+</style>
+```
+
 ## Welcome
 
 Welcome to Inspect Viz, a data visualisation library for [Inspect AI](https://inspect.aisi.org.uk/). Inspect Viz provides flexible tools for creating high quality interactive visualisations from Inspect evaluations.
 
-Here's an Inspect Viz plot created with the [`scores_timeline()`](view-scores-timeline.qmd) function that compares benchmarks scores over time[^1]:
-
-[^1]: This plot was inspired by and includes data from the [Epoch AI](https://epoch.ai/data/ai-benchmarking-dashboard) Benchmarking Hub
-
-```{python}
-#| echo: false
-#| 
-from inspect_viz import Data
-from inspect_viz.view import scores_timeline
-from inspect_viz.plot import legend
-
-evals = Data.from_file("benchmarks.parquet")
-scores_timeline(
-    evals, 
-    legend=legend("color", frame_anchor="top-left", inset=20), 
-)
-```
-
-Use the filters to switch benchmarks and restrict to models from various organization(s). Hover over the points to get additional details on them or view the underlying Inspect log for the evals.
-
-## Installation
+### Installation
 
 First, install the `inspect_viz` package as follows:
 
@@ -64,7 +61,28 @@ Inspect Viz plots are interactive Jupyter Widgets and can be authored in variety
 
 See the article on [LLM Assistance](llm-assistance.qmd) for best practices on using language models to help with creating plots. See the articles on [Publishing](publishing.qmd) for details on including plots in documents as static images or within websites and dashboards as interactive widgets.
 
-## Views
+
+## Interactive Plots
+
+Interactivity is built in. The [`scores_timeline()`](view-scores-timeline.qmd) view, for example, lets visitors filter by benchmark and organization and hover for tooltips that link to the underlying Inspect logs[^1]:
+
+[^1]: This plot was inspired by and includes data from the [Epoch AI](https://epoch.ai/data/ai-benchmarking-dashboard) Benchmarking Hub.
+
+```{python}
+#| echo: false
+from inspect_viz import Data
+from inspect_viz.view import scores_timeline
+from inspect_viz.plot import legend
+
+benchmarks = Data.from_file("benchmarks.parquet")
+scores_timeline(
+    benchmarks,
+    legend=legend("color", frame_anchor="top-left", inset=20),
+)
+```
+
+
+## Standard Views
 
 Inspect Viz [Views](views.qmd) are pre-built plots that work with data created by the Inspect log [data frame](https://inspect.aisi.org.uk/dataframe.html) reading functions. For example, the [`scores_by_factor()`](view-scores-by-factor.qmd) view enables you to compare scores across models and a boolean factor:
 
@@ -82,6 +100,15 @@ scores_by_factor(
 )
 ```
 
+The [`scores_by_task()`](view-scores-by-task.qmd) view enables you to compare scores across models on each evaluation task:
+
+```{python}
+from inspect_viz.view import scores_by_task
+
+evals = Data.from_file("evals.parquet")
+scores_by_task(evals)
+```
+
 The [`sample_tool_calls()`](view-sample-tool-calls.qmd) view enables you to visualize tool calls by sample:
 
 ```{python}
@@ -95,7 +122,8 @@ Available views include:
 
 {{< include _views.md >}}
 
-## Plots
+
+## Custom Plots
 
 While pre-built views are useful, you also may want to create your own custom plots. Plots in `inspect_viz` are composed of one or more [marks](reference/inspect_viz.mark.qmd), which can do either higher level plotting (e.g. `dot()`, `bar_x()`, `bar_y()`, `area()`, `heatmap()`, etc.) or lower level drawing on tπhe plot canvas (e.g. `text()`, `image()`, `arrow()`, etc.)
 
@@ -172,7 +200,7 @@ plot(
 2. Y-axis is labeled with model names so remove default label and ensure it has enough margin.
 
 
-## Links
+## Log File Links
 
 Inspect Viz supports creating direct links from visualizations to published Inspect log transcripts. Links can be made at the eval level, or to individual samples, messages, or events. For example, this plot produced with `scores_by_model()` includes a link to the underlying logs in its tooltips:
 
@@ -184,7 +212,46 @@ scores_by_model(evals) # baseline=0.91
 
 The pre-built [Views](views.qmd) all support linking when a `log_viewer` column is available in the dataset. To learn more about ammending datasets with viewer URLs as well as adding linking support to your own plots see the article on [Links](components-links.qmd).
 
-## Filters
+## Combining Marks
+
+So far the plots we've created include only a single [mark](reference/inspect_viz.mark.qmd), however many of the more interesting plots you'll create will include multiple marks.
+
+For example, here we create a heatmap of evaluation scores by model. There is a `cell()` mark which provides the heatmap background color and a `text()` mark which displays the value.
+
+```{python}
+from inspect_viz.mark import cell, text
+
+scores = Data.from_file("scores.parquet")
+
+plot(
+    cell(
+        scores,                                                     
+        x="task_name",
+        y="model",
+        fill="score_headline_value",
+    ),
+    text(
+        scores,
+        x="task_name",
+        y="model",
+        text="score_headline_value",
+        fill="white",
+    ),
+    padding=0,
+    color_scheme="viridis",
+    height=250,
+    margin_left=150,
+    x_label=None,
+    y_label=None
+)
+```
+
+Marks can be used to draw dots, lines, bars, cells, arrows, text, and images on a plot.
+
+{{< include _data.md >}}
+
+
+## Data Filtering
 
 Use [inputs](reference/inspect_viz.input.qmd) to enable filtering datasets and dynamically updating plots. For example, if we had multiple benchmarks available for a scores timeline, we could add a `select()` input for choosing between them:
 
@@ -227,46 +294,8 @@ We've introduced a few new things here:
 
 3.  The `color_domain="fixed"` argument to `plot()` indicates that we want to preserve model organization colors even when the plot is filtered.
 
-## Marks
 
-So far the plots we've created include only a single [mark](reference/inspect_viz.mark.qmd), however many of the more interesting plots you'll create will include multiple marks.
-
-For example, here we create a heatmap of evaluation scores by model. There is a `cell()` mark which provides the heatmap background color and a `text()` mark which displays the value.
-
-```{python}
-from inspect_viz.mark import cell, text
-
-scores = Data.from_file("scores.parquet")
-
-plot(
-    cell(
-        scores,                                                     
-        x="task_name",
-        y="model",
-        fill="score_headline_value",
-    ),
-    text(
-        scores,
-        x="task_name",
-        y="model",
-        text="score_headline_value",
-        fill="white",
-    ),
-    padding=0,
-    color_scheme="viridis",
-    height=250,
-    margin_left=150,
-    x_label=None,
-    y_label=None
-)
-```
-
-Marks can be used to draw dots, lines, bars, cells, arrows, text, and images on a plot.
-
-{{< include _data.md >}}
-
-
-## Tables
+## Data Tables
 
 You can also display data in a tabular layout using the `table()` function:
 

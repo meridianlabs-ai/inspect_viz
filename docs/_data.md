@@ -1,4 +1,4 @@
-## Data
+## Data Sources
 
 In the examples above we made `Data` available by reading from a parquet file. We can also read data from any Python Data Frame (e.g. Pandas, Polars, PyArrow, etc.). For example:
 
