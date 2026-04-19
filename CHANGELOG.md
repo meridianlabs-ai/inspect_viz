@@ -3,6 +3,7 @@
 - Quarto: Write plot data to content-addressed `site_data/immutable/*.arrow` assets and fetch via the browser Cache API.
 - Quarto: Bypass the ~3.5 MB ipywidgets loader in favor of a small inline bootstrap.
 - Quarto: Placeholder loading shimmer so that plots occupy their full size even before loading.
+- Quarto: Optional `js+png` output mode (set via `INSPECT_VIZ_OUTPUT_FORMAT=js+png` or `options.output_format = "js+png"`) embeds a static PNG fallback behind each plot so pages remain readable even if the JavaScript pipeline fails (e.g. CDN blocked, restrictive network).
 
 ## 0.3.5 (December 5, 2025)
 

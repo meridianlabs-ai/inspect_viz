@@ -55,6 +55,25 @@ with options_context(output_format="png"):
 
 Note that when rendering a PDF document with Quarto, the output format is automatically set to "png" (as PDFs can't ever include interactive JavaScript content).
 
+## PNG Fallback
+
+Inspect Viz plots can also be rendered in a hybrid mode where a static PNG is embedded as a fallback and the interactive widget is overlaid on top once the JavaScript pipeline loads. If anything in the pipeline fails — for example, the user is on a restrictive network that blocks the jsDelivr CDN, or DuckDB-WASM can't initialize — the PNG remains visible and the page stays readable.
+
+This is especially valuable for sites that need to degrade gracefully in corporate networks, archival contexts, or offline viewing.
+
+### Enabling Fallback
+
+The hybrid mode is opt-in. The simplest way to enable it for a production render is via the `INSPECT_VIZ_OUTPUT_FORMAT` environment variable, so you can keep dev iteration fast (no Playwright cost per plot) and only pay the cost when actually building the site you'll ship:
+
+```bash
+INSPECT_VIZ_OUTPUT_FORMAT=js+png quarto render
+```
+
+You can also set it programmatically in a notebook or document with `options.output_format = "js+png"` or `options_context(output_format="js+png")`.
+
+Widgets that contain inputs (tables, selects, checkbox groups, etc.) are skipped — a static picture of an interactive control isn't a useful fallback — and those widgets render with the standard loading shimmer.
+
+
 
 
 

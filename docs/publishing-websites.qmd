@@ -67,9 +67,13 @@ Here is what the page looks like when rendered on the website (it's a screenshot
 When using Inspect Viz with Quarto Websites you should always add the following configuration to your `_quarto.yml` to specify that notebooks should be fully executed when rendered:
 
 ```{.yaml filename="_quarto.yml"}
-execute: 
+execute:
   enabled: true
 ```
+
+### PNG Fallback
+
+For sites that need to remain readable when the JavaScript pipeline fails (e.g. restrictive corporate networks that block the jsDelivr CDN), Inspect Viz can embed a static PNG behind each interactive plot as a fallback. Enable it by setting `INSPECT_VIZ_OUTPUT_FORMAT=js+png` for your production render. See [PNG Output → PNG Fallback](publishing-png-output.qmd#png-fallback) for details.
 
 ### Learning More
 
