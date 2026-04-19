@@ -63,13 +63,33 @@ This is especially valuable for sites that need to degrade gracefully in corpora
 
 ### Enabling Fallback
 
-The hybrid mode is opt-in. The simplest way to enable it for a production render is via the `INSPECT_VIZ_OUTPUT_FORMAT` environment variable, so you can keep dev iteration fast (no Playwright cost per plot) and only pay the cost when actually building the site you'll ship:
+The hybrid mode is opt-in. The cleanest way to enable it for production renders — without affecting `quarto preview` / dev iteration — is via a [Quarto profile](https://quarto.org/docs/projects/profiles.html) that sets the `INSPECT_VIZ_OUTPUT_FORMAT` environment variable.
+
+Add an `_environment-publish` file at the root of your Quarto project:
+
+```bash {filename="_environment-publish"}
+INSPECT_VIZ_OUTPUT_FORMAT=js+png
+```
+
+Then activate the `publish` profile when you're ready to ship. The `--profile` flag works for both `quarto render` (build locally) and `quarto publish` (build + deploy):
+
+```bash
+# build the site locally
+quarto render --profile publish
+
+# build and deploy in one step (Quarto Pub, GitHub Pages, Netlify, etc.)
+quarto publish --profile publish
+```
+
+During `quarto preview` (or a plain `quarto render` / `quarto publish` with no profile) the env var isn't applied, so no PNG fallbacks are generated and dev iteration stays fast. Only your published build pays the per-plot Playwright cost.
+
+You can also enable it ad-hoc with the env var directly:
 
 ```bash
 INSPECT_VIZ_OUTPUT_FORMAT=js+png quarto render
 ```
 
-You can also set it programmatically in a notebook or document with `options.output_format = "js+png"` or `options_context(output_format="js+png")`.
+Or programmatically in a notebook / document with `options.output_format = "js+png"` or `options_context(output_format="js+png")`.
 
 Widgets that contain inputs (tables, selects, checkbox groups, etc.) are skipped — a static picture of an interactive control isn't a useful fallback — and those widgets render with the standard loading shimmer.
 

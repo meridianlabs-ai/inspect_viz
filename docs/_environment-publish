@@ -1,0 +1,8 @@
+# Environment variables applied when rendering with `--profile publish`
+# (or `QUARTO_PROFILE=publish`). See https://quarto.org/docs/projects/profiles.html
+
+# Generate static PNG fallbacks behind every plot so the published site
+# remains readable when the JavaScript pipeline can't load (e.g. CDN blocked,
+# restrictive corporate network). Adds Playwright cost per plot at render
+# time; not enabled during `quarto preview` / dev iteration.
+INSPECT_VIZ_OUTPUT_FORMAT=js+png
