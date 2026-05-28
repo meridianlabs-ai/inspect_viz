@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-60b6846f58d02926bc6ca5ecd6f15c48.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="alternate" type="text/markdown" title="LLM-readable docs index" href="../../../llms.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (full)" href="../../../llms-full.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (user guide)" href="../../../llms-guide.txt">
 <style type="text/css">
 .cell {
   display: flex;
@@ -547,7 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Use the slider to create bias offsets for the y-axis.</p>
-<div id="7ffdcc18" class="cell" data-execution_count="1">
+<div id="3c4272ec" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5020,9 +5023,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-b0b0b4fa4aa3b223" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:672px;position:relative"><div style="flex:0 0 48px"></div><div style="aspect-ratio:672 / 384"></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-3b5d0ba973dc7c05" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:672px;position:relative"><div style="flex:0 0 48px"></div><div style="aspect-ratio:672 / 384"></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"input\":\"slider\",\"select\":\"point\",\"min\":0,\"max\":1000,\"step\":1,\"width\":150,\"label\":\"Bias\",\"as\":\"$param_RVJmXYFsEszXMDVfxEq5TA\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"areaY\",\"data\":{\"from\":\"F8KAURSHW9R6yJppFbfnYa\",\"filterBy\":\"$selection_F8KAURSHW9R6yJppFbfnYa\"},\"y\":{\"sql\":\"v + $param_RVJmXYFsEszXMDVfxEq5TA\"},\"x\":{\"column\":\"t\"},\"fill\":\"steelblue\"}],\"width\":672,\"height\":384}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_RVJmXYFsEszXMDVfxEq5TA\":{\"select\":\"value\",\"value\":100},\"selection_F8KAURSHW9R6yJppFbfnYa\":{\"select\":\"intersect\"}}}","tables":{"F8KAURSHW9R6yJppFbfnYa":"../../../site_data/immutable/0ebbe2098c3d5bc8.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"input\":\"slider\",\"select\":\"point\",\"min\":0,\"max\":1000,\"step\":1,\"width\":150,\"label\":\"Bias\",\"as\":\"$param_JFLQ3PKynKDV4p8fsZMLcn\"},{\"hconcat\":[{\"plot\":[{\"mark\":\"areaY\",\"data\":{\"from\":\"Bpd3YjNzegH7UA34y5rVeP\",\"filterBy\":\"$selection_Bpd3YjNzegH7UA34y5rVeP\"},\"y\":{\"sql\":\"v + $param_JFLQ3PKynKDV4p8fsZMLcn\"},\"x\":{\"column\":\"t\"},\"fill\":\"steelblue\"}],\"width\":672,\"height\":384}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"param_JFLQ3PKynKDV4p8fsZMLcn\":{\"select\":\"value\",\"value\":100},\"selection_Bpd3YjNzegH7UA34y5rVeP\":{\"select\":\"intersect\"}}}","tables":{"Bpd3YjNzegH7UA34y5rVeP":"../../../site_data/immutable/0ebbe2098c3d5bc8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5032,7 +5035,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b0b0b4fa4aa3b223");
+  const el = document.getElementById("iv-3b5d0ba973dc7c05");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5105,7 +5108,10 @@ export {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var path = window.location.pathname;
+  var mdUrl = path.endsWith("/")
+    ? path + "index.html.md"
+    : path.replace(/\.html$/, ".html.md");
   var btn = document.getElementById("copy-page-btn");
   var cachedMarkdown = null;
 

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-60b6846f58d02926bc6ca5ecd6f15c48.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="alternate" type="text/markdown" title="LLM-readable docs index" href="../../../llms.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (full)" href="../../../llms-full.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (user guide)" href="../../../llms-guide.txt">
 <style type="text/css">
 .cell {
   display: flex;
@@ -548,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This example illustrates the code behind the <a href="../../../view-scores-by-model.html"><span class="element-type-name ref-interlink"><span>scores_by_model()</span></span></a> pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.</p>
 <p>The plot summarizes the scores of a single evaluation task, showing performance for 13 different models. Models are ordered based upon their headline score (defaulting to descending).</p>
-<div id="62a508f8" class="cell" data-execution_count="1">
+<div id="ebc9215e" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5075,9 +5078,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-ceabb0ee4c124855" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:672px"><img class="iv-png-fallback" src="index_files/placeholder/733afa29806bdae1.png" width="672" height="384" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
+</script><div id="iv-485563aa6d58ad71" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="aspect-ratio:672 / 384;max-width:672px;position:relative"><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"ruleY\",\"data\":{\"from\":\"Bs2uffMZJJsK7x5ZJEYeGC\",\"filterBy\":\"$selection_Bs2uffMZJJsK7x5ZJEYeGC\"},\"y\":{\"column\":\"model\"},\"x\":{\"column\":\"score_headline_value\"},\"markerEnd\":\"circle\",\"sort\":{\"y\":\"x\",\"reverse\":true},\"strokeWidth\":4,\"strokeLinecap\":\"round\",\"tip\":{\"lineWidth\":1000000000},\"stroke\":\"#416AD0\"},{\"mark\":\"ruleY\",\"data\":{\"from\":\"Bs2uffMZJJsK7x5ZJEYeGC\",\"filterBy\":\"$selection_Bs2uffMZJJsK7x5ZJEYeGC\"},\"y\":{\"column\":\"model\"},\"x1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"x2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"sort\":{\"y\":\"x\",\"reverse\":true},\"stroke\":\"#416AD020\",\"strokeWidth\":15},{\"mark\":\"ruleX\",\"x\":0.78,\"stroke\":\"#000000\",\"strokeDasharray\":\"2,4\",\"strokeWidth\":1,\"filter\":null},{\"mark\":\"text\",\"data\":{\"from\":\"2EQbp6Psvdcs9tNRWiJfyV\",\"filterBy\":\"$selection_2EQbp6Psvdcs9tNRWiJfyV\"},\"x\":0.78,\"text\":{\"column\":\"text\"},\"frameAnchor\":\"bottom\",\"lineAnchor\":\"bottom\",\"rotate\":90,\"dy\":-30,\"dx\":3,\"fill\":\"#000000\",\"filter\":null}],\"xLabel\":\"Score\",\"yLabel\":null,\"width\":672,\"height\":384,\"marginLeft\":225,\"xDomain\":[0,1.0]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_Bs2uffMZJJsK7x5ZJEYeGC\":{\"select\":\"intersect\"},\"selection_2EQbp6Psvdcs9tNRWiJfyV\":{\"select\":\"intersect\"}}}","tables":{"Bs2uffMZJJsK7x5ZJEYeGC":"../../../site_data/immutable/e9aaa98af8b04ba5.arrow","2EQbp6Psvdcs9tNRWiJfyV":"../../../site_data/immutable/63220aaf2de18b65.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"ruleY\",\"data\":{\"from\":\"RhekBNczQ9GAdoSVhZqHuX\",\"filterBy\":\"$selection_RhekBNczQ9GAdoSVhZqHuX\"},\"y\":{\"column\":\"model\"},\"x\":{\"column\":\"score_headline_value\"},\"markerEnd\":\"circle\",\"sort\":{\"y\":\"x\",\"reverse\":true},\"strokeWidth\":4,\"strokeLinecap\":\"round\",\"tip\":{\"lineWidth\":1000000000},\"stroke\":\"#416AD0\"},{\"mark\":\"ruleY\",\"data\":{\"from\":\"RhekBNczQ9GAdoSVhZqHuX\",\"filterBy\":\"$selection_RhekBNczQ9GAdoSVhZqHuX\"},\"y\":{\"column\":\"model\"},\"x1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"x2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"sort\":{\"y\":\"x\",\"reverse\":true},\"stroke\":\"#416AD020\",\"strokeWidth\":15},{\"mark\":\"ruleX\",\"x\":0.78,\"stroke\":\"#000000\",\"strokeDasharray\":\"2,4\",\"strokeWidth\":1,\"filter\":null},{\"mark\":\"text\",\"data\":{\"from\":\"kMLzrfSPx3ZRq9ApsiFAq5\",\"filterBy\":\"$selection_kMLzrfSPx3ZRq9ApsiFAq5\"},\"x\":0.78,\"text\":{\"column\":\"text\"},\"frameAnchor\":\"bottom\",\"lineAnchor\":\"bottom\",\"rotate\":90,\"dy\":-30,\"dx\":3,\"fill\":\"#000000\",\"filter\":null}],\"xLabel\":\"Score\",\"yLabel\":null,\"width\":672,\"height\":384,\"marginLeft\":225,\"xDomain\":[0,1.0]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_RhekBNczQ9GAdoSVhZqHuX\":{\"select\":\"intersect\"},\"selection_kMLzrfSPx3ZRq9ApsiFAq5\":{\"select\":\"intersect\"}}}","tables":{"RhekBNczQ9GAdoSVhZqHuX":"../../../site_data/immutable/e9aaa98af8b04ba5.arrow","kMLzrfSPx3ZRq9ApsiFAq5":"../../../site_data/immutable/63220aaf2de18b65.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5087,7 +5090,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-ceabb0ee4c124855");
+  const el = document.getElementById("iv-485563aa6d58ad71");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5160,7 +5163,10 @@ export {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var path = window.location.pathname;
+  var mdUrl = path.endsWith("/")
+    ? path + "index.html.md"
+    : path.replace(/\.html$/, ".html.md");
   var btn = document.getElementById("copy-page-btn");
   var cachedMarkdown = null;
 

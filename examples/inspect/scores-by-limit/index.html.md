@@ -107,8 +107,6 @@ plot(
 11  
 **Size**: default width is 700px; height defaults to the golden ratio (`width / 1.618`).
 
-![](index_files/placeholder/bb6ad4768e70f657.png)
-
 ## Data Preparation
 
 The data dataset for this example was created using the [scores_by_limit_df()](../../../reference/inspect_viz.view.html.md#scores_by_limit_df) function, which reads per-sample metadata, computes token usage, and aggregates a success rate as a function of a limit threshhold.

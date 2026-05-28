@@ -87,6 +87,4 @@ evals = Data.from_file("agi-lsat-ar.parquet")
 scores_by_model(evals)
 ```
 
-![](components-links_files/placeholder/9d7c0d52e5e189b8.png)
-
 If you mouse over the bars you will see a log viewer link which you can click to navigate to the log.

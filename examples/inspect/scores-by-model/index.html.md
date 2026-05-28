@@ -66,5 +66,3 @@ Ensure there is room for model names in the left margin.
 
 6  
 Ensure that the x axis always goes to 1.0 (even if scores are below that).
-
-![](index_files/placeholder/733afa29806bdae1.png)

@@ -70,5 +70,3 @@ Sorts the y-axis by the total score for each model, with the highest score at th
 
 6  
 Sorts the x-axis by the total score for each question, witht he highest score at the right.
-
-![](index_files/placeholder/d344fad4988e3741.png)

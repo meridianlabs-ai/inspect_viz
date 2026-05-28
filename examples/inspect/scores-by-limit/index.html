@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-60b6846f58d02926bc6ca5ecd6f15c48.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="alternate" type="text/markdown" title="LLM-readable docs index" href="../../../llms.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (full)" href="../../../llms-full.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (user guide)" href="../../../llms-guide.txt">
 <style type="text/css">
 .cell {
   display: flex;
@@ -554,7 +557,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This example illustrates the code behind the <a href="../../../view-scores-by-limit.html"><span class="element-type-name ref-interlink"><span>scores_by_limit()</span></span></a> pre‑built view function. If you want to include this plot in your notebooks or sites, start with that function rather than the lower‑level code below.</p>
 <p>The plot shows how model <strong>success rate</strong> changes as the <strong>compute budget</strong> increases (e.g., token limit, messages, cost, or time). It helps answer “<em>Will performance keep improving if I spend more?</em>”. The shaded band displays the confidence interval derived from the standard error.</p>
-<div id="d8e4a4b1" class="cell" data-execution_count="1">
+<div id="2f7e13f6" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5126,9 +5129,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-03e5084501743705" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="position:relative;max-width:700px"><img class="iv-png-fallback" src="index_files/placeholder/bb6ad4768e70f657.png" width="700" height="384" style="display:block;max-width:100%;height:auto" alt=""><div class="iv-widget-mount"></div></div></div><script type="module">
+</script><div id="iv-7b9964cec2d40d63" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="aspect-ratio:700 / 384;max-width:700px;position:relative"><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"R38AntvBbPsCJPU9qdaxUz\",\"filterBy\":\"$selection_R38AntvBbPsCJPU9qdaxUz\"},\"x\":{\"column\":\"total_tokens\"},\"y\":{\"column\":\"success_rate\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Token Limit\":\"total_tokens\",\"Success Rate\":\"success_rate\",\"Model\":\"model_display_name\",\"Log\":\"log_viewer\",\"_user_channels\":[\"{\\\"Token Limit\\\": \\\"total_tokens\\\", \\\"Success Rate\\\": \\\"success_rate\\\", \\\"Model\\\": \\\"model_display_name\\\", \\\"Log\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"areaY\",\"data\":{\"from\":\"R38AntvBbPsCJPU9qdaxUz\",\"filterBy\":\"$selection_R38AntvBbPsCJPU9qdaxUz\"},\"y\":{\"column\":\"success_rate\"},\"y1\":{\"sql\":\"success_rate -(1.9599639845400534 * standard_error)\"},\"y2\":{\"sql\":\"success_rate +(1.9599639845400534 * standard_error)\"},\"x\":{\"column\":\"total_tokens\"},\"color\":\"model_display_name\",\"fill\":\"model_display_name\",\"fillOpacity\":0.3,\"tip\":false},{\"select\":\"nearestX\",\"as\":\"$selection_irfPqMSp3TYgfTUK8J8Kki\",\"channels\":[\"color\"]},{\"select\":\"highlight\",\"by\":\"$selection_irfPqMSp3TYgfTUK8J8Kki\",\"opacity\":0.2,\"fillOpacity\":0.1}],\"xLabel\":\"total_tokens\",\"yLabel\":\"Success rate\",\"width\":700,\"height\":384,\"xScale\":\"log\",\"yInsetTop\":10,\"marginBottom\":30,\"name\":\"plot_b2PHeyeeUXadung5UC2pRL\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":20,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"top-left\",\"for\":\"plot_b2PHeyeeUXadung5UC2pRL\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_R38AntvBbPsCJPU9qdaxUz\":{\"select\":\"intersect\"},\"selection_irfPqMSp3TYgfTUK8J8Kki\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"R38AntvBbPsCJPU9qdaxUz":"../../../site_data/immutable/b492f36b39c8a43c.arrow"}};
+  const state = {"spec":"{\"hconcat\":[{\"plot\":[{\"mark\":\"line\",\"data\":{\"from\":\"37tUHGZGWcfKYuFtrSCkBr\",\"filterBy\":\"$selection_37tUHGZGWcfKYuFtrSCkBr\"},\"x\":{\"column\":\"total_tokens\"},\"y\":{\"column\":\"success_rate\"},\"stroke\":\"model_display_name\",\"tip\":{\"lineWidth\":1000000000},\"channels\":{\"Token Limit\":\"total_tokens\",\"Success Rate\":\"success_rate\",\"Model\":\"model_display_name\",\"Log\":\"log_viewer\",\"_user_channels\":[\"{\\\"Token Limit\\\": \\\"total_tokens\\\", \\\"Success Rate\\\": \\\"success_rate\\\", \\\"Model\\\": \\\"model_display_name\\\", \\\"Log\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"areaY\",\"data\":{\"from\":\"37tUHGZGWcfKYuFtrSCkBr\",\"filterBy\":\"$selection_37tUHGZGWcfKYuFtrSCkBr\"},\"y\":{\"column\":\"success_rate\"},\"y1\":{\"sql\":\"success_rate -(1.9599639845400534 * standard_error)\"},\"y2\":{\"sql\":\"success_rate +(1.9599639845400534 * standard_error)\"},\"x\":{\"column\":\"total_tokens\"},\"color\":\"model_display_name\",\"fill\":\"model_display_name\",\"fillOpacity\":0.3,\"tip\":false},{\"select\":\"nearestX\",\"as\":\"$selection_7rcPsXLMk2TVPQsBWy47u3\",\"channels\":[\"color\"]},{\"select\":\"highlight\",\"by\":\"$selection_7rcPsXLMk2TVPQsBWy47u3\",\"opacity\":0.2,\"fillOpacity\":0.1}],\"xLabel\":\"total_tokens\",\"yLabel\":\"Success rate\",\"width\":700,\"height\":384,\"xScale\":\"log\",\"yInsetTop\":10,\"marginBottom\":30,\"name\":\"plot_XDQ3AigbqMz9mT3GmmzWfJ\"},{\"legend\":\"color\",\"columns\":1,\"_inset\":20,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"top-left\",\"for\":\"plot_XDQ3AigbqMz9mT3GmmzWfJ\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_37tUHGZGWcfKYuFtrSCkBr\":{\"select\":\"intersect\"},\"selection_7rcPsXLMk2TVPQsBWy47u3\":{\"select\":\"single\",\"cross\":false,\"empty\":false}}}","tables":{"37tUHGZGWcfKYuFtrSCkBr":"../../../site_data/immutable/b492f36b39c8a43c.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5138,7 +5141,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-03e5084501743705");
+  const el = document.getElementById("iv-7b9964cec2d40d63");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5263,7 +5266,10 @@ export {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var path = window.location.pathname;
+  var mdUrl = path.endsWith("/")
+    ? path + "index.html.md"
+    : path.replace(/\.html$/, ".html.md");
   var btn = document.getElementById("copy-page-btn");
   var cachedMarkdown = null;
 

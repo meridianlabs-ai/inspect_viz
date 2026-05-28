@@ -34,8 +34,6 @@ Legend in the default location, keyed by `symbol`.
 3  
 Additional attributes that affect plot size and appearance.
 
-![](components-plots_files/placeholder/a4429dc68cbcb5d5.png)
-
 ## Facets
 
 Plots support faceting of the `x` and `y` dimensions, producing associated `fx` and `fy` scales. For example, here we compare model performance on several tasks. The `task_name` is the `fx` scale, resulting in a separate grouping of bars for each task:
@@ -78,8 +76,6 @@ Remove default x labeling as it is handled by the legend.
 4  
 Tweak y-axis with shorter label and ensure that it goes all the way up to 1.0.
 
-![](components-plots_files/placeholder/7c6410107bb1ad2b.png)
-
 ## Marks
 
 The plots above use only a single mark ([dot()](./reference/inspect_viz.mark.html.md#dot) and [bar_y()](./reference/inspect_viz.mark.html.md#bar_y) respectively). More sophisticated plots are often constructed with multiple marks. For example, here is a plot that adds a regression line mark do a standard dot plot:
@@ -111,8 +107,6 @@ Use `fill` to distinguish male and female athletes; use `opacity` to deal with a
 
 2  
 Use `stroke` to ensure that male and female athletes each get their own regression line.
-
-![](components-plots_files/placeholder/f3bea12fbd71828b.png)
 
 ## Tooltips
 
@@ -185,8 +179,6 @@ plot(
     legend="color"
 )
 ```
-
-![](components-plots_files/placeholder/52e428efddb50050.png)
 
 If you have facet labels on the top of the x-axis, you may need to provide some additional `top_margin` for the `title` so that it is placed above the facet labels. Use the [title()](./reference/inspect_viz.mark.html.md#title) function to customize this:
 
@@ -400,8 +392,6 @@ plot(
 )
 ```
 
-![](components-plots_files/placeholder/f652656b3112b901.png)
-
 If you have a simple static baseline, you may simply provide the value, along with other options to customize the label, position, and other attributes of the baseline. You can also use a tranformation function like [median()](./reference/inspect_viz.transform.html.md#median) to define baselines:
 
 ``` python
@@ -452,8 +442,6 @@ plot(
     color_scheme="tableau10"
 )
 ```
-
-![](components-plots_files/placeholder/97caa3e217e913fa.png)
 
 ## Data Sources
 

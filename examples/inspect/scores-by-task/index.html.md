@@ -42,8 +42,6 @@ We don’t need an explicit “model” or “task_name” label as they are obv
 4  
 Ensure that y-axis shows the full range of scores (by default it caps at the maximum).
 
-![](index_files/placeholder/ddb3f8ac4f5f2fdb.png)
-
 #### Confidence Interval
 
 Here we add a confidence interval for each reported score by adding a [rule_x()](../../../reference/inspect_viz.mark.html.md#rule_x) mark. Note that we derive the confidence interval transforms using the [ci_bounds()](../../../reference/inspect_viz.transform.html.md#ci_bounds) function.
@@ -90,5 +88,3 @@ Use the [ci_bounds()](../../../reference/inspect_viz.transform.html.md#ci_bounds
 
 2  
 Draw the confidence interval using a [rule_x()](../../../reference/inspect_viz.mark.html.md#rule_x) mark.
-
-![](index_files/placeholder/e6fcd17dcb0ff9b1.png)

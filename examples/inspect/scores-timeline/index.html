@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-60b6846f58d02926bc6ca5ecd6f15c48.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="alternate" type="text/markdown" title="LLM-readable docs index" href="../../../llms.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (full)" href="../../../llms-full.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (user guide)" href="../../../llms-guide.txt">
 <style type="text/css">
 .cell {
   display: flex;
@@ -548,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This example illustrates the code behind the <a href="../../../view-scores-timeline.html"><span class="element-type-name ref-interlink"><span>scores_timeline()</span></span></a> pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.</p>
 <p>The example also relies on some <a href="../../../view-scores-timeline.html#data-preparation">data preparation</a> steps to annotate the raw evals data with shorter model names and a “frontier” column which drives the inclusion of text labels for scores that set a new high water mark.</p>
-<div id="1dec8a34" class="cell" data-execution_count="1">
+<div id="569e3197" class="cell" data-execution_count="1">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Code</strong></pre>
@@ -5136,9 +5139,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-a52957d91e68bd90" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:782px;position:relative"><div style="flex:0 0 111px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:672 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
+</script><div id="iv-4bafa68d6af96155" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"><div data-iv-placeholder="1" style="display:flex;flex-direction:column;max-width:782px;position:relative"><div style="flex:0 0 111px"></div><div style="display:flex;align-items:flex-start"><div style="flex:1 1 0;min-width:0;aspect-ratio:672 / 384"></div><div style="flex:0 0 110px"></div></div><div class="iv-loading"></div></div></div><script type="module">
 (() => {
-  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"GPQA Diamond\",\"width\":425,\"label\":\"Eval: \",\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"as\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\",\"column\":\"task_name\"},{\"input\":\"checkbox_group\",\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"as\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\",\"column\":\"model_organization_name\"},{\"vspace\":15},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"filterBy\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"r\":3,\"tip\":{\"lineWidth\":1000000000},\"fill\":\"model_organization_name\",\"channels\":{\"Model\":\"model_display_name\",\"Scorer\":\"score_headline_name\",\"Stderr\":\"score_headline_stderr\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Scorer\\\": \\\"score_headline_name\\\", \\\"Stderr\\\": \\\"score_headline_stderr\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"filterBy\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"stroke\":\"model_organization_name\",\"strokeOpacity\":0.4},{\"mark\":\"regressionY\",\"data\":{\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"filterBy\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"stroke\":\"#AAAAAA\"},{\"mark\":\"text\",\"data\":{\"from\":\"VsTtstc7qw39Xc4PFXtxRe\",\"filterBy\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"text\":{\"column\":\"model_display_name\"},\"frameAnchor\":\"right\",\"lineAnchor\":\"middle\",\"filter\":\"frontier\",\"dx\":-4,\"fill\":\"model_organization_name\"}],\"xLabel\":\"Release Date\",\"yLabel\":\"Score\",\"width\":672,\"height\":384,\"xDomain\":\"Fixed\",\"yDomain\":[0,1.0],\"colorLabel\":\"Organization\",\"colorDomain\":\"Fixed\",\"xTickFormat\":\"%b. %Y\",\"grid\":true,\"name\":\"plot_467mgH2ikBLkvtKR9C7UER\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_VsTtstc7qw39Xc4PFXtxRe\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_467mgH2ikBLkvtKR9C7UER\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_VsTtstc7qw39Xc4PFXtxRe\":{\"select\":\"intersect\"}}}","tables":{"VsTtstc7qw39Xc4PFXtxRe":"../../../site_data/immutable/f7efa16e90a255dc.arrow"}};
+  const state = {"spec":"{\"vconcat\":[{\"input\":\"select\",\"multiple\":false,\"value\":\"GPQA Diamond\",\"width\":425,\"label\":\"Eval: \",\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"as\":\"$selection_3doQveprXJ2SYvn7hbw97A\",\"column\":\"task_name\"},{\"input\":\"checkbox_group\",\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"as\":\"$selection_3doQveprXJ2SYvn7hbw97A\",\"column\":\"model_organization_name\"},{\"vspace\":15},{\"hconcat\":[{\"plot\":[{\"mark\":\"dot\",\"data\":{\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"filterBy\":\"$selection_3doQveprXJ2SYvn7hbw97A\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"r\":3,\"tip\":{\"lineWidth\":1000000000},\"fill\":\"model_organization_name\",\"channels\":{\"Model\":\"model_display_name\",\"Scorer\":\"score_headline_name\",\"Stderr\":\"score_headline_stderr\",\"Log Viewer\":\"log_viewer\",\"_user_channels\":[\"{\\\"Model\\\": \\\"model_display_name\\\", \\\"Scorer\\\": \\\"score_headline_name\\\", \\\"Stderr\\\": \\\"score_headline_stderr\\\", \\\"Log Viewer\\\": \\\"log_viewer\\\"}\"]}},{\"mark\":\"ruleX\",\"data\":{\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"filterBy\":\"$selection_3doQveprXJ2SYvn7hbw97A\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"y1\":{\"sql\":\"score_headline_value -(1.9599639845400534 * score_headline_stderr)\"},\"y2\":{\"sql\":\"score_headline_value +(1.9599639845400534 * score_headline_stderr)\"},\"marker\":\"tick-x\",\"stroke\":\"model_organization_name\",\"strokeOpacity\":0.4},{\"mark\":\"regressionY\",\"data\":{\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"filterBy\":\"$selection_3doQveprXJ2SYvn7hbw97A\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"stroke\":\"#AAAAAA\"},{\"mark\":\"text\",\"data\":{\"from\":\"3doQveprXJ2SYvn7hbw97A\",\"filterBy\":\"$selection_3doQveprXJ2SYvn7hbw97A\"},\"x\":{\"sql\":\"epoch_ms(model_release_date)\"},\"y\":{\"column\":\"score_headline_value\"},\"text\":{\"column\":\"model_display_name\"},\"frameAnchor\":\"right\",\"lineAnchor\":\"middle\",\"filter\":\"frontier\",\"dx\":-4,\"fill\":\"model_organization_name\"}],\"xLabel\":\"Release Date\",\"yLabel\":\"Score\",\"width\":672,\"height\":384,\"xDomain\":\"Fixed\",\"yDomain\":[0,1.0],\"colorLabel\":\"Organization\",\"colorDomain\":\"Fixed\",\"xTickFormat\":\"%b. %Y\",\"grid\":true,\"name\":\"plot_Ms34XxnAUBU8bmtUZNKBNH\"},{\"legend\":\"color\",\"columns\":1,\"as\":\"$selection_3doQveprXJ2SYvn7hbw97A\",\"_inset\":null,\"_inset_x\":null,\"_inset_y\":null,\"_border\":true,\"_background\":true,\"_frame_anchor\":\"right\",\"for\":\"plot_Ms34XxnAUBU8bmtUZNKBNH\"}]}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3doQveprXJ2SYvn7hbw97A\":{\"select\":\"intersect\"}}}","tables":{"3doQveprXJ2SYvn7hbw97A":"../../../site_data/immutable/f7efa16e90a255dc.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5148,7 +5151,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-a52957d91e68bd90");
+  const el = document.getElementById("iv-4bafa68d6af96155");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5222,7 +5225,10 @@ export {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var path = window.location.pathname;
+  var mdUrl = path.endsWith("/")
+    ? path + "index.html.md"
+    : path.replace(/\.html$/, ".html.md");
   var btn = document.getElementById("copy-page-btn");
   var cachedMarkdown = null;
 

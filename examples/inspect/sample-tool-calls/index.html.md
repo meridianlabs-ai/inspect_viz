@@ -67,5 +67,3 @@ Set some custom labels and ensure that tools follow our designed order.
 
 7  
 Specify which tools we should show and in what order.
-
-![](index_files/placeholder/860035736da6bfa0.png)

@@ -6,7 +6,7 @@
 
 SQL transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_sql.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_sql.py#L6)
 
 ``` python
 def sql(sql: str, label: str | None = None) -> Transform
@@ -22,7 +22,7 @@ A label for this expression, for example to label a plot axis.
 
 Aggregation transform for a column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_agg.py#L6)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_agg.py#L6)
 
 ``` python
 def agg(agg: str, label: str | None = None) -> Transform
@@ -40,7 +40,7 @@ A label for this expression, for example to label a plot axis.
 
 Intpret a string or param-value as a column reference.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L75)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L75)
 
 ``` python
 def column(column: str | Param) -> Transform
@@ -53,7 +53,7 @@ Column name or paramameter.
 
 Bin a continuous variable into discrete intervals.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L12)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L12)
 
 ``` python
 def bin(
@@ -105,7 +105,7 @@ Transform a Date value to a day of the month for cyclic comparison.
 
 Year and month values are collapsed to enable comparison over days only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L97)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L97)
 
 ``` python
 def date_day(expr: str | Param) -> Transform
@@ -120,7 +120,7 @@ Transform a Date value to a month boundary for cyclic comparison.
 
 Year values are collapsed to enable comparison over months only.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L109)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L109)
 
 ``` python
 def date_month(expr: str | Param) -> Transform
@@ -135,7 +135,7 @@ Map date/times to a month and day value, all within the same year for comparison
 
 The resulting value is still date-typed.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L85)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L85)
 
 ``` python
 def date_month_day(expr: str | Param) -> Transform
@@ -148,7 +148,7 @@ Expression or parameter.
 
 Transform a Date value to epoch milliseconds.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_column.py#L121)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_column.py#L121)
 
 ``` python
 def epoch_ms(expr: str | Param) -> Transform
@@ -163,17 +163,13 @@ Expression or parameter.
 
 Compute the average (mean) value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L47)
 
 ``` python
 def avg(
-    col: TransformArg | None = ...,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    col: TransformArg | None = None,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -183,33 +179,20 @@ Column to compute the mean for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### count
 
 A count aggregate transform.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L63)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L63)
 
 ``` python
 def count(
-    col: TransformArg | None = ...,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    col: TransformArg | None = None,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -219,33 +202,20 @@ Compute the count of records in an aggregation group. If specified, only non-nul
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### sum
 
 Compute the sum of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L207)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L207)
 
 ``` python
 def sum(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -255,33 +225,20 @@ Column to compute the sum for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### min
 
 Compute the minimum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L127)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L127)
 
 ``` python
 def min(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -291,33 +248,20 @@ Column to compute the minimum for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### max
 
 Compute the maximum value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L111)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L111)
 
 ``` python
 def max(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -327,33 +271,20 @@ Column to compute the maximum for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### median
 
 Compute the median value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L143)
 
 ``` python
 def median(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -363,33 +294,20 @@ Column to compute the median for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### mode
 
 Compute the mode value of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L159)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L159)
 
 ``` python
 def mode(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -399,33 +317,20 @@ Column to compute the mode for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### first
 
 Return the first column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L79)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L79)
 
 ``` python
 def first(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -435,33 +340,20 @@ Column to get the first value from.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### last
 
 Return the last column value found in an aggregation group.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L95)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L95)
 
 ``` python
 def last(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -471,33 +363,20 @@ Column to get the last value from.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### product
 
 Compute the product of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L175)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L175)
 
 ``` python
 def product(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -507,34 +386,21 @@ Column to compute the product for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### quantile
 
 Compute the quantile value of the given column at the provided probability threshold.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L271)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L271)
 
 ``` python
 def quantile(
     col: TransformArg,
     threshold: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -547,33 +413,20 @@ Probability threshold (e.g., 0.5 for median).
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### stddev
 
 Compute the standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L191)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L191)
 
 ``` python
 def stddev(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -583,33 +436,20 @@ Column to compute the standard deviation for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### stddev_pop
 
 Compute the population standard deviation of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L239)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L239)
 
 ``` python
 def stddev_pop(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -619,33 +459,20 @@ Column to compute the population standard deviation for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### variance
 
 Compute the sample variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L223)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L223)
 
 ``` python
 def variance(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -655,33 +482,20 @@ Column to compute the variance for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### var_pop
 
 Compute the population variance of the given column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L255)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L255)
 
 ``` python
 def var_pop(
     col: TransformArg,
-    distinct: bool | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    distinct: bool | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -691,34 +505,21 @@ Column to compute the population variance for.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### argmin
 
 Find a value of the first column that minimizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L29)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L29)
 
 ``` python
 def argmin(
     col1: TransformArg,
     col2: TransformArg,
     distinct: bool | None,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -731,34 +532,21 @@ Column to check for minimum corresponding value of `col1`.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### argmax
 
 Find a value of the first column that maximizes the second column.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_aggregate.py#L11)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_aggregate.py#L11)
 
 ``` python
 def argmax(
     col1: TransformArg,
     col2: TransformArg,
     distinct: bool | None,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -771,17 +559,8 @@ Column to check for maximum corresponding value of `col1`.
 `distinct` bool \| None  
 Aggregate distinct.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### ci_bounds
 
@@ -794,7 +573,7 @@ Specify the confidence interval either as:
 1.  A `level` and `stderr` column (where a z-score for level will be offset from the `stderr`); or
 2.  Explicit `lower` and `upper` columns which should already be on the desired scale (e.g., z\*stderr, bootstrap deltas, HDIs from bayesian posterior distributions, etc.).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_ci.py#L8)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_ci.py#L8)
 
 ``` python
 def ci_bounds(
@@ -828,29 +607,14 @@ Column name for upper bound.
 
 Compute the 1-based row number over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L25)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L25)
 
 ``` python
-def row_number(
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def row_number(**options: Unpack[WindowOptions]) -> Transform
 ```
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### rank
 
@@ -858,29 +622,14 @@ Compute the row rank over an ordered window partition.
 
 Sorting ties result in gaps in the rank numbers (\[1, 1, 3, …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L35)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L35)
 
 ``` python
-def rank(
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def rank(**options: Unpack[WindowOptions]) -> Transform
 ```
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### dense_rank
 
@@ -888,57 +637,27 @@ Compute the dense row rank (no gaps) over an ordered window partition.
 
 Sorting ties do not result in gaps in the rank numbers ( \[1, 1, 2, …\]).
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L47)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L47)
 
 ``` python
-def dense_rank(
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def dense_rank(**options: Unpack[WindowOptions]) -> Transform
 ```
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### percent_rank
 
 Compute the percetange rank over an ordered window partition.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L59)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L59)
 
 ``` python
-def percent_rank(
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def percent_rank(**options: Unpack[WindowOptions]) -> Transform
 ```
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### cume_dist
 
@@ -946,61 +665,30 @@ Compute the cumulative distribution value over an ordered window partition.
 
 Equals the number of partition rows preceding or peer with the current row, divided by the total number of partition rows.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L69)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L69)
 
 ``` python
-def cume_dist(
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def cume_dist(**options: Unpack[WindowOptions]) -> Transform
 ```
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### n_tile
 
 Compute an n-tile integer ranging from 1 to `num_buckets` dividing the partition as equally as possible.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L81)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L81)
 
 ``` python
-def n_tile(
-    num_buckets: int,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def n_tile(num_buckets: int, **options: Unpack[WindowOptions]) -> Transform
 ```
 
 `num_buckets` int  
 Number of buckets.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### lag
 
@@ -1008,18 +696,14 @@ Compute lagging values in a column.
 
 Returns the value at the row that is at `offset` rows (default `1`) before the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L92)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L92)
 
 ``` python
 def lag(
     col: TransformArg,
-    offset: int = ...,
-    default: TransformArg | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    offset: int = 1,
+    default: TransformArg | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -1032,17 +716,8 @@ Rows to offset.
 `default` TransformArg \| None  
 Default value if thre is no such row.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### lead
 
@@ -1050,18 +725,14 @@ Compute leading values in a column.
 
 Returns the value at the row that is at `offset` rows (default `1`) after the current row within the window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L112)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L112)
 
 ``` python
 def lead(
     col: TransformArg,
-    offset: int = ...,
-    default: TransformArg | None = ...,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    offset: int = 1,
+    default: TransformArg | None = None,
+    **options: Unpack[WindowOptions],
 ) -> Transform
 ```
 
@@ -1074,97 +745,50 @@ Rows to offset.
 `default` TransformArg \| None  
 Default value if thre is no such row.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### first_value
 
 Get the first value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L132)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L132)
 
 ``` python
-def first_value(
-    col: TransformArg,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def first_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
 ```
 
 `col` TransformArg  
 Aggregate column to take first value from.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### last_value
 
 Get the last value of the given column in the current window frame.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L143)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L143)
 
 ``` python
-def last_value(
-    col: TransformArg,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
-) -> Transform
+def last_value(col: TransformArg, **options: Unpack[WindowOptions]) -> Transform
 ```
 
 `col` TransformArg  
 Aggregate column to take last value from.
 
-`orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to sort a windowed version of this aggregate function.
-
-`partitionby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
-One or more expressions by which to partition a windowed version of this aggregate function.
-
-`rows` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-window rows frame specification as an array or array-valued expression.
-
-`range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
-Window range frame specification as an array or array-valued expression.
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
 
 ### nth_value
 
 Get the nth value of the given column in the current window frame, counting from one.
 
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L154)
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L154)
 
 ``` python
 def nth_value(
-    col: TransformArg,
-    offset: int,
-    *,
-    orderby: str | Param | Sequence[str | Param] = ...,
-    partitionby: str | Param | Sequence[str | Param] = ...,
-    rows: Sequence[float | None] | Param = ...,
-    range: Sequence[float | None] | Param = ...,
+    col: TransformArg, offset: int, **options: Unpack[WindowOptions]
 ) -> Transform
 ```
 
@@ -1174,6 +798,33 @@ Aggregate column to take nth value from.
 `offset` int  
 Offset for the nth row.
 
+`**options` Unpack\[[WindowOptions](../reference/inspect_viz.transform.html.md#windowoptions)\]  
+Window transform options.
+
+## Types
+
+### Transform
+
+Column transformation operation.
+
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_transform.py#L7)
+
+``` python
+Transform: TypeAlias = dict[str, JsonValue]
+```
+
+### WindowOptions
+
+Window transform options.
+
+[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/f2f2eff657128a6418485a6eabd9462f979cb727/src/inspect_viz/transform/_window.py#L9)
+
+``` python
+class WindowOptions(TypedDict, total=False)
+```
+
+#### Attributes
+
 `orderby` str \| [Param](../reference/inspect_viz.html.md#param) \| Sequence\[str \| [Param](../reference/inspect_viz.html.md#param)\]  
 One or more expressions by which to sort a windowed version of this aggregate function.
 
@@ -1185,25 +836,3 @@ window rows frame specification as an array or array-valued expression.
 
 `range` Sequence\[float \| None\] \| [Param](../reference/inspect_viz.html.md#param)  
 Window range frame specification as an array or array-valued expression.
-
-## Types
-
-### Transform
-
-Column transformation operation.
-
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_transform.py#L7)
-
-``` python
-Transform: TypeAlias = dict[str, JsonValue]
-```
-
-### WindowOptions
-
-Window transform options.
-
-[Source](https://github.com/meridianlabs-ai/inspect_viz/blob/35eb8b9c8a42829dae8c1961de42998c0aa31bc6/src/inspect_viz/transform/_window.py#L9)
-
-``` python
-class WindowOptions(TypedDict, total=False)
-```

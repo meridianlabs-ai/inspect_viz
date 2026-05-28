@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-00bb9cb7cda113ac4013fc9b55ca6f24.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-60b6846f58d02926bc6ca5ecd6f15c48.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="alternate" type="text/markdown" title="LLM-readable docs index" href="./llms.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (full)" href="./llms-full.txt">
+<link rel="alternate" type="text/markdown" title="LLM-readable docs (user guide)" href="./llms-guide.txt">
 
 
 <meta property="og:title" content="Inspect Viz">
@@ -581,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> Data.from_file(<span class="st">"penguins.parquet"</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>table(penguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>results in a table displaying all the columns and rows in the penguins dataset:</p>
-<div id="e88e9747" class="cell" data-execution_count="1">
+<div id="9a3fd5a1" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <style id="iv-css">
 
@@ -5035,9 +5038,9 @@ var mosaic_default = { render };
 export {
   mosaic_default as default
 };
-</script><div id="iv-5bdf8712f298deeb" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+</script><div id="iv-e851eed6e3253799" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"a7yH9mQkH235ueTeZhh8D5\",\"filter_by\":\"$selection_a7yH9mQkH235ueTeZhh8D5\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"3DZ554o93tBYTMBVNUdPnG\",\"filter_by\":\"$selection_3DZ554o93tBYTMBVNUdPnG\",\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5047,7 +5050,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-5bdf8712f298deeb");
+  const el = document.getElementById("iv-e851eed6e3253799");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5098,7 +5101,7 @@ export {
 </div>
 </div>
 <p>In addition to providing the base <span class="element-type-name ref-interlink"><a href="./reference/inspect_viz.html#data">Data</a></span> for the table, you may also select which columns are displayed:</p>
-<div id="8c18346c" class="cell" data-execution_count="2">
+<div id="80a90232" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> table</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5109,9 +5112,9 @@ export {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>, </span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"body_mass"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div id="iv-179fb5525fbe2477" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-889b809feb351d4a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"QKwennbychqkTQy4JMpmNX\",\"filter_by\":\"$selection_QKwennbychqkTQy4JMpmNX\",\"columns\":[\"species\",\"island\",\"sex\",\"body_mass\"],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"baPQd575kYf6o88WLsYB87\",\"filter_by\":\"$selection_baPQd575kYf6o88WLsYB87\",\"columns\":[\"species\",\"island\",\"sex\",\"body_mass\"],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5121,7 +5124,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-179fb5525fbe2477");
+  const el = document.getElementById("iv-889b809feb351d4a");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5172,7 +5175,7 @@ export {
 </div>
 </div>
 <p>Tables have a number of global options for configuring the behavior, but also have many options specific to one or more columns. To specify column level options, using the <code>column</code> function in the list of columns rather than simply passing the column name:</p>
-<div id="a1b26c1c" class="cell" data-execution_count="3">
+<div id="b046ce78" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5183,9 +5186,9 @@ export {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>, </span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"body_mass"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<div id="iv-911d46e9a89b404c" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-85ed0c6371779664" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"M8TrSkFKDZi8FCQ2wuLYw4\",\"filter_by\":\"$selection_M8TrSkFKDZi8FCQ2wuLYw4\",\"columns\":[{\"column\":\"species\",\"align\":\"center\"},\"island\",\"sex\",\"body_mass\"],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"knZXqcQSDjsXYZAKKpW3CB\",\"filter_by\":\"$selection_knZXqcQSDjsXYZAKKpW3CB\",\"columns\":[{\"column\":\"species\",\"align\":\"center\"},\"island\",\"sex\",\"body_mass\"],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5195,7 +5198,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-911d46e9a89b404c");
+  const el = document.getElementById("iv-85ed0c6371779664");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5248,16 +5251,16 @@ export {
 <section id="size" class="level3">
 <h3 class="anchored" data-anchor-id="size">Size</h3>
 <p>By default, tables will have a height which matches the size of their content and a width which files their container (with a default maximum size of 500px). You can explicitly provide a height and width value in pixels for the table if you’d like the table to be a specific size:</p>
-<div id="d519a49c" class="cell" data-execution_count="4">
+<div id="61fbea0b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> table</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> Data.from_file(<span class="st">"penguins.parquet"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>table(penguins, height<span class="op">=</span><span class="dv">200</span>, width<span class="op">=</span><span class="dv">550</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<div id="iv-c3822db9e54b3771" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-479d28626e98c7a0" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"fT4XZv8HHS8zcgmJvvMaYa\",\"filter_by\":\"$selection_fT4XZv8HHS8zcgmJvvMaYa\",\"width\":550,\"height\":200,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"MHLpJzuCn9xuDELQp3MEYv\",\"filter_by\":\"$selection_MHLpJzuCn9xuDELQp3MEYv\",\"width\":550,\"height\":200,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5267,7 +5270,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-c3822db9e54b3771");
+  const el = document.getElementById("iv-479d28626e98c7a0");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5323,7 +5326,7 @@ export {
 <section id="columns" class="level2">
 <h2 class="anchored" data-anchor-id="columns">Columns</h2>
 <p>When providing column data for a table, you can provide a list of columns names from your Data to be displayed. You can also use the <code>column</code> function to provide additional options for each column. For example, to customize the string that is displayed in the header for the column, using the <code>label</code> option like:</p>
-<div id="a2955850" class="cell" data-execution_count="5">
+<div id="51937a37" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5334,9 +5337,9 @@ export {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>, </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"body_mass"</span>, label<span class="op">=</span><span class="st">"mass"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<div id="iv-a50a91a8e1fc3268" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-6cfcfc50b932d7f1" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"mnn9Zr7PvCUXuCaS3qY2Ts\",\"filter_by\":\"$selection_mnn9Zr7PvCUXuCaS3qY2Ts\",\"columns\":[\"species\",\"island\",\"sex\",{\"column\":\"body_mass\",\"label\":\"mass\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"WwZ3TzR24NN2TyUA6KayUu\",\"filter_by\":\"$selection_WwZ3TzR24NN2TyUA6KayUu\",\"columns\":[\"species\",\"island\",\"sex\",{\"column\":\"body_mass\",\"label\":\"mass\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5346,7 +5349,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-a50a91a8e1fc3268");
+  const el = document.getElementById("iv-6cfcfc50b932d7f1");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5399,7 +5402,7 @@ export {
 <section id="width" class="level3">
 <h3 class="anchored" data-anchor-id="width">Width</h3>
 <p>If no explicit column size is provided, the width of each column is an equal share of the available space. You can specify the width of columns either using an explicit pixel size:</p>
-<div id="d2fd11ab" class="cell" data-execution_count="6">
+<div id="5709117b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5410,9 +5413,9 @@ export {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"sex"</span>, width<span class="op">=</span><span class="dv">70</span>), </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"body_mass"</span>, width<span class="op">=</span><span class="dv">100</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<div id="iv-61acba154aae3503" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-1cd5327866d10caa" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"Ge8DbHc34JhcczEQ6m9vyq\",\"filter_by\":\"$selection_Ge8DbHc34JhcczEQ6m9vyq\",\"columns\":[{\"column\":\"species\",\"width\":80.0},{\"column\":\"island\",\"width\":100.0},{\"column\":\"sex\",\"width\":70.0},{\"column\":\"body_mass\",\"width\":100.0}],\"width\":370,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"Cyrxu2PMXsvBFhEGaVXzoE\",\"filter_by\":\"$selection_Cyrxu2PMXsvBFhEGaVXzoE\",\"columns\":[{\"column\":\"species\",\"width\":80.0},{\"column\":\"island\",\"width\":100.0},{\"column\":\"sex\",\"width\":70.0},{\"column\":\"body_mass\",\"width\":100.0}],\"width\":370,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5422,7 +5425,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-61acba154aae3503");
+  const el = document.getElementById("iv-1cd5327866d10caa");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5473,7 +5476,7 @@ export {
 </div>
 </div>
 <p>or using <code>flex</code> for some or all of the columns. Flex sizing works by dividing the remaining space in the grid among all flex columns in proportion to their flex value.</p>
-<div id="276f3ef0" class="cell" data-execution_count="7">
+<div id="22aacc9b" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5484,9 +5487,9 @@ export {
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"sex"</span>, width<span class="op">=</span><span class="dv">70</span>), </span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"body_mass"</span>, flex<span class="op">=</span><span class="dv">1</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<div id="iv-3d47386e799b3226" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-297642773fbea11a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"2ZSFSFNTDPz7WdHWxgveYu\",\"filter_by\":\"$selection_2ZSFSFNTDPz7WdHWxgveYu\",\"columns\":[{\"column\":\"species\",\"flex\":1.0},{\"column\":\"island\",\"flex\":1.2},{\"column\":\"sex\",\"width\":70.0},{\"column\":\"body_mass\",\"flex\":1.0}],\"width\":550,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"gAspCFK5vkYGhsv4chTJtu\",\"filter_by\":\"$selection_gAspCFK5vkYGhsv4chTJtu\",\"columns\":[{\"column\":\"species\",\"flex\":1.0},{\"column\":\"island\",\"flex\":1.2},{\"column\":\"sex\",\"width\":70.0},{\"column\":\"body_mass\",\"flex\":1.0}],\"width\":550,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5496,7 +5499,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-3d47386e799b3226");
+  const el = document.getElementById("iv-297642773fbea11a");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5551,7 +5554,7 @@ export {
 <section id="alignment" class="level3">
 <h3 class="anchored" data-anchor-id="alignment">Alignment</h3>
 <p>You can control the alignment of the values within each columns header and body using the <code>align</code> and <code>header_align</code> options. For example:</p>
-<div id="08389bb9" class="cell" data-execution_count="8">
+<div id="372a5647" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -5562,9 +5565,9 @@ export {
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"sex"</span>), </span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    column(<span class="st">"body_mass"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<div id="iv-2cf15d351b53cf07" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-e6d47b4d7242f26a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"2DfbE3ZD6W6ZXUKxSe5uAq\",\"filter_by\":\"$selection_2DfbE3ZD6W6ZXUKxSe5uAq\",\"columns\":[{\"column\":\"species\",\"align\":\"center\",\"header_align\":\"center\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"fwVtBRUgdnCUHmQExnUPwi\",\"filter_by\":\"$selection_fwVtBRUgdnCUHmQExnUPwi\",\"columns\":[{\"column\":\"species\",\"align\":\"center\",\"header_align\":\"center\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5574,7 +5577,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-2cf15d351b53cf07");
+  const el = document.getElementById("iv-e6d47b4d7242f26a");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5686,16 +5689,16 @@ export {
 <section id="height" class="level3">
 <h3 class="anchored" data-anchor-id="height">Height</h3>
 <p>By default, each row of the the table, including the header row, is 29px tall. You can set an explicit row size for the body of the table using the <code>row_height</code> argument. Set the header’s row height using the <code>header_height</code> argument:</p>
-<div id="f176c90f" class="cell" data-execution_count="9">
+<div id="5613576c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz <span class="im">import</span> Data</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> table</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> Data.from_file(<span class="st">"penguins.parquet"</span>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>table(penguins, header_height<span class="op">=</span><span class="dv">60</span>, row_height<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<div id="iv-4b9393f4427d376a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-716bf93ed7a59ee5" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"header_height\":60,\"row_height\":50,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":"site_data/immutable/8ea74d883f698cd8.arrow"}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"header_height\":60,\"row_height\":50,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":"site_data/immutable/8ea74d883f698cd8.arrow"}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5705,7 +5708,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-4b9393f4427d376a");
+  const el = document.getElementById("iv-716bf93ed7a59ee5");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5809,7 +5812,7 @@ export {
 <section id="pagination" class="level2">
 <h2 class="anchored" data-anchor-id="pagination">Pagination</h2>
 <p>When configured, tables can display pages of items with pagination controls at the bottom of the table rather than display all the items in a scrollable body. To enable pagination, simply provide the pagination argument to the <code>table</code>:</p>
-<div id="b15045c7" class="cell" data-execution_count="10">
+<div id="d862d01b" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>table(penguins, </span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>      columns<span class="op">=</span>[</span>
@@ -5819,9 +5822,9 @@ export {
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        column(<span class="st">"body_mass"</span>)],</span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      pagination<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<div id="iv-658c54a67692c280" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-7e18956b1bc924f9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"pagination\":{},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":""}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"pagination\":{},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5831,7 +5834,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-658c54a67692c280");
+  const el = document.getElementById("iv-7e18956b1bc924f9");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5882,7 +5885,7 @@ export {
 </div>
 </div>
 <p>By default, the table will automatically set the page size to use the available space in the table without scrolling. You can also explicitly choose page size and page size options:</p>
-<div id="09108585" class="cell" data-execution_count="11">
+<div id="30284723" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table, Pagination</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>table(penguins, </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>      columns<span class="op">=</span>[</span>
@@ -5892,9 +5895,9 @@ export {
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        column(<span class="st">"body_mass"</span>)],</span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>      pagination<span class="op">=</span>Pagination(page_size<span class="op">=</span><span class="dv">20</span>, page_size_selector<span class="op">=</span>[<span class="dv">20</span>,<span class="dv">40</span>,<span class="dv">60</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-<div id="iv-1d80febed60f47a9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-26b0a6eee00327b6" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"pagination\":{\"page_size\":20,\"page_size_selector\":[20,40,60]},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":""}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"pagination\":{\"page_size\":20,\"page_size_selector\":[20,40,60]},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5904,7 +5907,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-1d80febed60f47a9");
+  const el = document.getElementById("iv-26b0a6eee00327b6");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -5958,7 +5961,7 @@ export {
 <section id="grouping" class="level2">
 <h2 class="anchored" data-anchor-id="grouping">Grouping</h2>
 <p>When displaying tabular data, it can be useful to group the data by specific fields. For example, to display a table with the average attributes of male and female penguins based upon their species, you can using grouping function for some columns:</p>
-<div id="5c58b9d3" class="cell" data-execution_count="12">
+<div id="19973b07" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.transform <span class="im">import</span> avg, count</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>table(penguins, </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>      height<span class="op">=</span><span class="dv">120</span>,</span>
@@ -5967,9 +5970,9 @@ export {
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        column(avg(<span class="st">"body_mass"</span>)),</span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        column(avg(<span class="st">"flipper_length"</span>))])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<div id="iv-4d4654c843b86ab9" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-d771ee5103fe0055" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"columns\":[{\"column\":\"species\"},{\"column\":{\"avg\":\"body_mass\"}},{\"column\":{\"avg\":\"flipper_length\"}}],\"height\":120,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":""}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"columns\":[{\"column\":\"species\"},{\"column\":{\"avg\":\"body_mass\"}},{\"column\":{\"avg\":\"flipper_length\"}}],\"height\":120,\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -5979,7 +5982,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-4d4654c843b86ab9");
+  const el = document.getElementById("iv-d771ee5103fe0055");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -6034,7 +6037,7 @@ export {
 <section id="literal-data" class="level2">
 <h2 class="anchored" data-anchor-id="literal-data">Literal Data</h2>
 <p>You can also pass literal values (an <code>int | float | bool</code>) as a column by passing one or more values as the <code>column</code> itself. For example:</p>
-<div id="3c1325f6" class="cell" data-execution_count="13">
+<div id="bbb97538" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>table(penguins, </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>      columns<span class="op">=</span>[</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        column([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>], label<span class="op">=</span><span class="st">"sample_bucket"</span>),</span>
@@ -6042,9 +6045,9 @@ export {
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        column(<span class="st">"body_mass"</span>),</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        column(<span class="st">"flipper_length"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
-<div id="iv-b515249199b2314e" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-1518f743fa854b4a" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"columns\":[{\"column\":[1,2,3,4,5,6,7,8,9],\"label\":\"sample_bucket\"},{\"column\":\"species\"},{\"column\":\"body_mass\"},{\"column\":\"flipper_length\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":""}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"columns\":[{\"column\":[1,2,3,4,5,6,7,8,9],\"label\":\"sample_bucket\"},{\"column\":\"species\"},{\"column\":\"body_mass\"},{\"column\":\"flipper_length\"}],\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -6054,7 +6057,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-b515249199b2314e");
+  const el = document.getElementById("iv-1518f743fa854b4a");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -6156,7 +6159,7 @@ export {
 <h2 class="anchored" data-anchor-id="appearance">Appearance</h2>
 <p>Tables have a minimal default appearance using the <a href="https://www.ag-grid.com/javascript-data-grid/themes/">AG Grid</a> <code>Balham</code> theme. If the table is being displayed in a <a href="https://www.quarto.org">Quarto</a> page or dashboard, it will automatically inherit the theme of the page on which it is hosted.</p>
 <p>You can customize most aspects of the table appearance using the <code>style</code> argument like:</p>
-<div id="a2eb81bf" class="cell" data-execution_count="14">
+<div id="e3c1322a" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_viz.table <span class="im">import</span> column, table, Pagination, TableStyle</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>table(penguins, </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>      columns<span class="op">=</span>[</span>
@@ -6169,9 +6172,9 @@ export {
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        foreground_color<span class="op">=</span><span class="st">"purple"</span>, </span>
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>        accent_color<span class="op">=</span><span class="st">"#E8FFB3"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-<div id="iv-abccff5b78286c72" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
+<div id="iv-393d77b36cc8b4d6" class="lm-Widget jupyter-widgets-disconnected mosaic-widget"></div><script type="module">
 (() => {
-  const state = {"spec":"{\"input\":\"table\",\"from\":\"8r9KtLvtiJLEGimrqJffKH\",\"filter_by\":\"$selection_8r9KtLvtiJLEGimrqJffKH\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"style\":{\"background_color\":\"#FCFAFF\",\"foreground_color\":\"purple\",\"accent_color\":\"#E8FFB3\"},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_a7yH9mQkH235ueTeZhh8D5\":{\"select\":\"intersect\"},\"selection_QKwennbychqkTQy4JMpmNX\":{\"select\":\"intersect\"},\"selection_M8TrSkFKDZi8FCQ2wuLYw4\":{\"select\":\"intersect\"},\"selection_fT4XZv8HHS8zcgmJvvMaYa\":{\"select\":\"intersect\"},\"selection_mnn9Zr7PvCUXuCaS3qY2Ts\":{\"select\":\"intersect\"},\"selection_Ge8DbHc34JhcczEQ6m9vyq\":{\"select\":\"intersect\"},\"selection_2ZSFSFNTDPz7WdHWxgveYu\":{\"select\":\"intersect\"},\"selection_2DfbE3ZD6W6ZXUKxSe5uAq\":{\"select\":\"intersect\"},\"selection_8r9KtLvtiJLEGimrqJffKH\":{\"select\":\"intersect\"}}}","tables":{"a7yH9mQkH235ueTeZhh8D5":"","QKwennbychqkTQy4JMpmNX":"","M8TrSkFKDZi8FCQ2wuLYw4":"","fT4XZv8HHS8zcgmJvvMaYa":"","mnn9Zr7PvCUXuCaS3qY2Ts":"","Ge8DbHc34JhcczEQ6m9vyq":"","2ZSFSFNTDPz7WdHWxgveYu":"","2DfbE3ZD6W6ZXUKxSe5uAq":"","8r9KtLvtiJLEGimrqJffKH":""}};
+  const state = {"spec":"{\"input\":\"table\",\"from\":\"YZFRkuA4CxmpFaHphHLwYG\",\"filter_by\":\"$selection_YZFRkuA4CxmpFaHphHLwYG\",\"columns\":[{\"column\":\"species\"},{\"column\":\"island\"},{\"column\":\"sex\"},{\"column\":\"body_mass\"}],\"style\":{\"background_color\":\"#FCFAFF\",\"foreground_color\":\"purple\",\"accent_color\":\"#E8FFB3\"},\"plotDefaults\":{\"width\":700,\"height\":450},\"params\":{\"selection_3DZ554o93tBYTMBVNUdPnG\":{\"select\":\"intersect\"},\"selection_baPQd575kYf6o88WLsYB87\":{\"select\":\"intersect\"},\"selection_knZXqcQSDjsXYZAKKpW3CB\":{\"select\":\"intersect\"},\"selection_MHLpJzuCn9xuDELQp3MEYv\":{\"select\":\"intersect\"},\"selection_WwZ3TzR24NN2TyUA6KayUu\":{\"select\":\"intersect\"},\"selection_Cyrxu2PMXsvBFhEGaVXzoE\":{\"select\":\"intersect\"},\"selection_gAspCFK5vkYGhsv4chTJtu\":{\"select\":\"intersect\"},\"selection_fwVtBRUgdnCUHmQExnUPwi\":{\"select\":\"intersect\"},\"selection_YZFRkuA4CxmpFaHphHLwYG\":{\"select\":\"intersect\"}}}","tables":{"3DZ554o93tBYTMBVNUdPnG":"","baPQd575kYf6o88WLsYB87":"","knZXqcQSDjsXYZAKKpW3CB":"","MHLpJzuCn9xuDELQp3MEYv":"","WwZ3TzR24NN2TyUA6KayUu":"","Cyrxu2PMXsvBFhEGaVXzoE":"","gAspCFK5vkYGhsv4chTJtu":"","fwVtBRUgdnCUHmQExnUPwi":"","YZFRkuA4CxmpFaHphHLwYG":""}};
   for (const k in state.tables) {
     const v = state.tables[k];
     if (v && typeof v === 'object' && v.__iv_bytes__) {
@@ -6181,7 +6184,7 @@ export {
       state.tables[k] = new DataView(bytes.buffer);
     }
   }
-  const el = document.getElementById("iv-abccff5b78286c72");
+  const el = document.getElementById("iv-393d77b36cc8b4d6");
   const model = {
     get: k => state[k], set: () => {}, on: () => {}, off: () => {},
     save_changes: () => {}, send: () => {}, widget_manager: null,
@@ -6384,7 +6387,10 @@ export {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  var mdUrl = window.location.pathname.replace(/\.html$/, ".html.md");
+  var path = window.location.pathname;
+  var mdUrl = path.endsWith("/")
+    ? path + "index.html.md"
+    : path.replace(/\.html$/, ".html.md");
   var btn = document.getElementById("copy-page-btn");
   var cachedMarkdown = null;
 

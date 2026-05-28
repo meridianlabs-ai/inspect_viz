@@ -50,8 +50,6 @@ scores_by_factor(
 )
 ```
 
-![](index_files/placeholder/036f1fe383c72b8a.png)
-
 The [scores_by_task()](./view-scores-by-task.html.md) view enables you to compare scores across models on each evaluation task:
 
 ``` python
@@ -61,8 +59,6 @@ evals = Data.from_file("evals.parquet")
 scores_by_task(evals)
 ```
 
-![](index_files/placeholder/7194617527e820cb.png)
-
 The [sample_tool_calls()](./view-sample-tool-calls.html.md) view enables you to visualize tool calls by sample:
 
 ``` python
@@ -71,8 +67,6 @@ from inspect_viz.view import sample_tool_calls
 tools = Data.from_file("cybench_tools.parquet")
 sample_tool_calls(tools, legend=legend("color", frame_anchor="bottom", border=False))
 ```
-
-![](index_files/placeholder/10ca97b0d604fd5f.png)
 
 \` Available views include:
 
@@ -143,8 +137,6 @@ Add a `legend` to the plot as a key to our color mappings.
 6  
 Ensure that the y-axis goes from 0 to 1.
 
-![](index_files/placeholder/f8426b5c1a460496.png)
-
 ### Bar Plot
 
 Here is a simple horizontal bar plot that counts the number of each species:
@@ -175,8 +167,6 @@ Sort the bars by score (descending).
 2  
 Y-axis is labeled with model names so remove default label and ensure it has enough margin.
 
-![](index_files/placeholder/64535b6ae3d05554.png)
-
 ## Log File Links
 
 Inspect Viz supports creating direct links from visualizations to published Inspect log transcripts. Links can be made at the eval level, or to individual samples, messages, or events. For example, this plot produced with [scores_by_model()](./reference/inspect_viz.view.html.md#scores_by_model) includes a link to the underlying logs in its tooltips:
@@ -185,8 +175,6 @@ Inspect Viz supports creating direct links from visualizations to published Insp
 from inspect_viz.view import scores_by_model
 scores_by_model(evals) # baseline=0.91
 ```
-
-![](index_files/placeholder/9d7c0d52e5e189b8.png)
 
 The pre-built [Views](./views.html.md) all support linking when a `log_viewer` column is available in the dataset. To learn more about ammending datasets with viewer URLs as well as adding linking support to your own plots see the article on [Links](./components-links.html.md).
 
@@ -223,8 +211,6 @@ plot(
     y_label=None
 )
 ```
-
-![](index_files/placeholder/910de665db59fe12.png)
 
 Marks can be used to draw dots, lines, bars, cells, arrows, text, and images on a plot.
 
