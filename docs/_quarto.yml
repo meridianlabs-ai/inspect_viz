@@ -9,6 +9,7 @@ inspect-docs:
   module: inspect_viz
   repo: meridianlabs-ai/inspect_viz
   org: Meridian Labs
+  expand-kwargs: false
   navigation:
     - text: Getting Started
       href: index.qmd

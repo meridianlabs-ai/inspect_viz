@@ -4,3 +4,4 @@
 /reference/refs*.json
 **/*.quarto_ipynb*
 **/*.excalidraw.svg
+**/*.quarto_ipynb
