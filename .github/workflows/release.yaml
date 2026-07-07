@@ -1,0 +1,56 @@
+name: Release
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    release-please:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        outputs:
+            release_created: ${{ steps.release.outputs.release_created }}
+            tag_name: ${{ steps.release.outputs.tag_name }}
+        steps:
+            - uses: googleapis/release-please-action@v4
+              id: release
+              with:
+                  token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+                  release-type: python
+                  config-file: .release-please-config.json
+                  manifest-file: .release-please-manifest.json
+
+    publish:
+        needs: release-please
+        if: ${{ needs.release-please.outputs.release_created }}
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write # Required for OIDC/trusted publishing
+        environment:
+            name: pypi
+            url: https://pypi.org/p/inspect_viz
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # Get all tags for version detection
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.x"
+
+            - name: Show current version
+              run: |
+                  echo "Version: $(git describe --tags --always)"
+
+            - name: Build
+              run: |
+                  pip install --upgrade pip build
+                  python -m build
+                  ls -la dist/
+
+            - name: Publish to PyPI
+              uses: pypa/gh-action-pypi-publish@release/v1
