@@ -5,6 +5,14 @@
 - Quarto: Placeholder loading shimmer so that plots occupy their full size even before loading.
 - Quarto: Optional `js+png` output mode embeds static PNG fallback for each plot so plots are visible immediately.
 
+## [0.4.1](https://github.com/meridianlabs-ai/inspect_viz/compare/v0.4.0...v0.4.1) (2026-07-09)
+
+
+### Documentation
+
+* fix typo in model_info ([11e2618](https://github.com/meridianlabs-ai/inspect_viz/commit/11e26183075e182fa6052d79552f2b86a5435713))
+* fix typo in model_info & args for prepare ([4495df5](https://github.com/meridianlabs-ai/inspect_viz/commit/4495df5527c853dc365ebca8021847d06ddea6be))
+
 ## 0.3.5 (December 5, 2025)
 
 - Views: Take view functions out of beta.
