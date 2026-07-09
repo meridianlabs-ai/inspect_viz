@@ -8,5 +8,5 @@
 # Files not listed here have no code owner and follow the repo's general
 # branch-protection rules as usual.
 
-/CHANGELOG.md                    @dragonstyle @jjallaire @alexandraabbas
-/.release-please-manifest.json   @dragonstyle @jjallaire @alexandraabbas
+/CHANGELOG.md                    @dragonstyle @jjallaire @epatey
+/.release-please-manifest.json   @dragonstyle @jjallaire @epatey
