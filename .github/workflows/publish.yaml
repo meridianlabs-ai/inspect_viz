@@ -1,6 +1,12 @@
 name: Publish Package
 
 on:
+    # Auto-publish when Release Please cuts a GitHub Release (the App token it
+    # uses is allowed to trigger this). Runs in-repo, so the existing PyPI
+    # trusted-publisher config (workflow: publish.yaml) is unchanged.
+    release:
+        types: [published]
+    # Manual break-glass path.
     workflow_dispatch:
         inputs:
             confirm:
@@ -38,5 +44,5 @@ jobs:
                   ls -la dist/
 
             - name: Publish to PyPI
-              if: inputs.confirm == 'yes'
+              if: ${{ github.event_name == 'release' || inputs.confirm == 'yes' }}
               uses: pypa/gh-action-pypi-publish@release/v1

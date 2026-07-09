@@ -1,0 +1,13 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release-please:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: meridianlabs-ai/actions/.github/workflows/release-please-python.yml@v1
+    secrets: inherit
