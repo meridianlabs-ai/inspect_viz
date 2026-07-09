@@ -1,66 +1,13 @@
 name: Release
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    release-please:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            pull-requests: write
-        outputs:
-            release_created: ${{ steps.release.outputs.release_created }}
-            tag_name: ${{ steps.release.outputs.tag_name }}
-        steps:
-            # Mint a short-lived token from the Meridian release GitHub App so
-            # release PRs/tags are attributed to the app (not a personal PAT)
-            # and CI runs on the release PR. App id + private key are org-level
-            # secrets, so every repo inherits them with no per-repo setup.
-            - uses: actions/create-github-app-token@v2
-              id: app-token
-              with:
-                  app-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
-                  private-key: ${{ secrets.RELEASE_PLEASE_APP_PRIVATE_KEY }}
-
-            - uses: googleapis/release-please-action@v4
-              id: release
-              with:
-                  token: ${{ steps.app-token.outputs.token }}
-                  release-type: python
-                  config-file: .release-please-config.json
-                  manifest-file: .release-please-manifest.json
-
-    publish:
-        needs: release-please
-        if: ${{ needs.release-please.outputs.release_created }}
-        runs-on: ubuntu-latest
-        permissions:
-            id-token: write # Required for OIDC/trusted publishing
-        environment:
-            name: pypi
-            url: https://pypi.org/p/inspect_viz
-
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0 # Get all tags for version detection
-
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.x"
-
-            - name: Show current version
-              run: |
-                  echo "Version: $(git describe --tags --always)"
-
-            - name: Build
-              run: |
-                  pip install --upgrade pip build
-                  python -m build
-                  ls -la dist/
-
-            - name: Publish to PyPI
-              uses: pypa/gh-action-pypi-publish@release/v1
+  release-please:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: meridianlabs-ai/actions/.github/workflows/release-please-python.yml@v1
+    secrets: inherit
