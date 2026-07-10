@@ -15,6 +15,19 @@ on:
                 type: string
 
 jobs:
+    # Post the "awaiting approval" Slack ping. Runs un-gated in this same run,
+    # so it deep-links to the run whose publish job is paused on the pypi env.
+    notify-approval:
+        if: ${{ github.event_name == 'release' }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: meridianlabs-ai/actions/slack-approval-ping@v1
+              with:
+                  webhook: ${{ secrets.SLACK_APPROVALS_WEBHOOK_URL }}
+                  approvers: "dragonstyle jjallaire epatey"
+                  message: ":rocket: *${{ github.repository }}* ${{ github.event.release.tag_name }} — PyPI publish is *awaiting approval*."
+                  run-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
     publish:
         runs-on: ubuntu-latest
         permissions:
