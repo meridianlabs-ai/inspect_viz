@@ -11,5 +11,8 @@ jobs:
       pull-requests: write
     uses: meridianlabs-ai/actions/.github/workflows/release-please-python.yml@v1
     with:
-      approvers: "dragonstyle jjallaire epatey"
+      # Publishing (and the approval gate) is in publish.yaml, a separate
+      # `on: release` run — so the approval ping is posted from there (where it
+      # can deep-link to the paused run), not from this workflow.
+      approval-ping: false
     secrets: inherit
