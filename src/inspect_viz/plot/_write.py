@@ -34,6 +34,7 @@ def to_html(
     dependencies: bool = True,
     *,
     extra_head: str = "",
+    shared_context: bool = False,
 ) -> str:
     """Generate a self-contained HTML snippet for a plot or other component.
 
@@ -50,6 +51,15 @@ def to_html(
        extra_head: Optional HTML to inject inside the document `<head>`
           (e.g. a `<style>` block setting the page font so the rendered
           plot inherits it).
+       shared_context: Share one DuckDB database with the topmost same-origin
+          window, so that same-origin iframes of one page share a database
+          instead of each starting their own (no effect on a top-level
+          document; a sandboxed iframe needs `allow-same-origin`, otherwise
+          it keeps its own). Each document
+          keeps its own coordinator, params, selections and inputs. The
+          first document to start the database owns its worker: removing
+          that iframe leaves documents already rendered without a database,
+          and documents rendered afterwards start a new one.
     """
     del dependencies  # snippet is always self-contained
 
@@ -65,8 +75,9 @@ def to_html(
         if data._data
     }
     snippet = component._quarto_html(tables_override=tables_bytes)
+    html_attrs = " data-iv-shared-context" if shared_context else ""
     return (
-        "<!doctype html><html><head>"
+        f"<!doctype html><html{html_attrs}><head>"
         '<meta charset="utf-8">'
         f"{extra_head}"
         f"</head><body>{snippet}</body></html>"

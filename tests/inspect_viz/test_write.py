@@ -58,3 +58,12 @@ def test_to_html_embeds_a_table_named_in_a_sql_expression() -> None:
     )
 
     assert embedded_tables(to_html(component)) == {plotted.table, queried.table}
+
+
+def test_to_html_marks_shared_context_documents() -> None:
+    component = plot(
+        dot(Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]})), x="x", y="y")
+    )
+
+    assert "<html data-iv-shared-context>" in to_html(component, shared_context=True)
+    assert to_html(component).startswith("<!doctype html><html><head>")

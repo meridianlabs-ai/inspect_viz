@@ -5,7 +5,7 @@ import {
 import { throttle as throttle3 } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 
 // js/context/index.ts
-import { wasmConnector } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
+import { decodeIPC } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-core@0.16.2/+esm";
 import { InstantiateContext } from "https://cdn.jsdelivr.net/npm/@uwdata/mosaic-spec@0.16.2/+esm";
 
 // js/inputs/choice.ts
@@ -1566,13 +1566,19 @@ function initializeErrorHandling(ctx, worker) {
     if (event.reason == null) return;
     ctx.recordUnhandledError(errorInfo(event.reason));
   });
-  worker.addEventListener("error", (event) => {
+  const onError = (event) => {
     const details = event.error ?? event.message;
     if (details == null) return;
     ctx.recordUnhandledError(errorInfo(details));
-  });
-  worker.addEventListener("messageerror", () => {
+  };
+  const onMessageError = () => {
     ctx.recordUnhandledError(errorInfo("worker message deserialization error"));
+  };
+  worker.addEventListener("error", onError);
+  worker.addEventListener("messageerror", onMessageError);
+  window.addEventListener("pagehide", () => {
+    worker.removeEventListener("error", onError);
+    worker.removeEventListener("messageerror", onMessageError);
   });
 }
 function errorInfo(error) {
@@ -1731,32 +1737,45 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 function isError(value) {
-  return value instanceof Error;
+  return value instanceof Error || typeof value === "object" && value !== null && typeof value.name === "string" && typeof value.message === "string";
 }
 
 // js/context/index.ts
 var VizContext = class extends InstantiateContext {
-  constructor(conn_, plotDefaults) {
+  constructor(runtime_, plotDefaults) {
     super({ plotDefaults });
-    this.conn_ = conn_;
+    this.runtime_ = runtime_;
     this.api = { ...this.api, ...INPUTS };
-    this.coordinator.databaseConnector(wasmConnector({ connection: this.conn_ }));
-  }
-  tables_ = /* @__PURE__ */ new Set();
-  unhandledErrors_ = [];
-  async insertTable(table, data) {
-    if (this.tables_.has(table)) {
-      await this.waitForTable(table);
-      return;
-    }
-    this.tables_.add(table);
-    await this.conn_?.insertArrowFromIPCStream(data, {
-      name: table,
-      create: true
+    this.coordinator.databaseConnector({
+      query: (query) => this.query(query)
     });
   }
+  unhandledErrors_ = [];
+  // mosaic-core's wasmConnector, except that the result bytes are viewed
+  // through this window's Uint8Array: the decoder's instanceof check fails
+  // on bytes created in the window that owns the database
+  async query(query) {
+    const bytes = await this.runtime_.runQuery(query.sql);
+    const local = new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    return query.type === "exec" ? void 0 : query.type === "arrow" ? decodeIPC(local) : decodeIPC(local).toArray();
+  }
+  async insertTable(table, data) {
+    const pending = this.runtime_.tables.get(table);
+    if (pending) {
+      await pending;
+      return;
+    }
+    const insert = this.runtime_.insert(table, data);
+    this.runtime_.tables.set(table, insert);
+    try {
+      await insert;
+    } catch (error) {
+      this.runtime_.tables.delete(table);
+      throw error;
+    }
+  }
   async waitForTable(table) {
-    await waitForTable(this.conn_, table);
+    await waitForTable(this.runtime_.conn, table);
   }
   recordUnhandledError(error) {
     this.unhandledErrors_.push(error);
@@ -1796,14 +1815,56 @@ var VizContext = class extends InstantiateContext {
   }
 };
 var VIZ_CONTEXT_KEY = Symbol.for("@@inspect-viz-context");
+var RUNTIME_KEY = Symbol.for("@@inspect-viz-runtime");
+var SHARED_CONTEXT_ATTR = "data-iv-shared-context";
+function runtimeScope() {
+  if (typeof window === "undefined") {
+    return globalThis;
+  }
+  if (!document.documentElement.hasAttribute(SHARED_CONTEXT_ATTR)) {
+    return window;
+  }
+  let scope = window;
+  try {
+    while (scope.parent !== scope && scope.parent.document) {
+      scope = scope.parent;
+    }
+  } catch {
+  }
+  return scope;
+}
+async function initRuntime() {
+  const { db, worker } = await initDuckdb();
+  const conn = await db.connect();
+  const insert = async (table, data) => {
+    await conn.insertArrowFromIPCStream(data, { name: table, create: true });
+  };
+  const runQuery = (sql2) => conn.useUnsafe((bindings, handle) => bindings.runQuery(handle, sql2));
+  return { conn, worker, tables: /* @__PURE__ */ new Map(), insert, runQuery };
+}
 async function vizContext(plotDefaults) {
   const globalScope = typeof window !== "undefined" ? window : globalThis;
   if (!globalScope[VIZ_CONTEXT_KEY]) {
+    const scope = runtimeScope();
+    if (!scope[RUNTIME_KEY]) {
+      const runtime = initRuntime();
+      scope[RUNTIME_KEY] = runtime;
+      const forget = () => {
+        if (scope[RUNTIME_KEY] === runtime) {
+          delete scope[RUNTIME_KEY];
+        }
+      };
+      runtime.catch(forget);
+      globalScope.addEventListener?.("pagehide", (event) => {
+        if (!event.persisted) {
+          forget();
+        }
+      });
+    }
     globalScope[VIZ_CONTEXT_KEY] = (async () => {
-      const { db, worker } = await initDuckdb();
-      const conn = await db.connect();
-      const ctx = new VizContext(conn, plotDefaults);
-      initializeErrorHandling(ctx, worker);
+      const runtime = await scope[RUNTIME_KEY];
+      const ctx = new VizContext(runtime, plotDefaults);
+      initializeErrorHandling(ctx, runtime.worker);
       return ctx;
     })();
   }
@@ -2888,11 +2949,7 @@ async function syncTables(ctx, tables) {
         const bytes = await fetchCachedBytes(val);
         await ctx.insertTable(tableName, bytes);
       } else if (val && val.byteLength > 0) {
-        const bytes = new Uint8Array(
-          val.buffer,
-          val.byteOffset,
-          val.byteLength
-        );
+        const bytes = new Uint8Array(val.buffer, val.byteOffset, val.byteLength);
         await ctx.insertTable(tableName, bytes);
       } else {
         await ctx.waitForTable(tableName);
@@ -2975,9 +3032,7 @@ async function displayUnhandledErrors(ctx, widgetEl) {
   const emptyPlotDivs = widgetEl.querySelectorAll("div.plot:empty");
   await Promise.all(
     Array.from(emptyPlotDivs).map(async (emptyDiv) => {
-      const error = await ctx.collectUnhandledErrorUntil(
-        () => emptyDiv.children.length > 0
-      );
+      const error = await ctx.collectUnhandledErrorUntil(() => emptyDiv.children.length > 0);
       if (error) {
         displayRenderError(error, emptyDiv);
       }
