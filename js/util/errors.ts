@@ -20,13 +20,20 @@ export function initializeErrorHandling(ctx: VizContext, worker: Worker): void {
     // worker-level uncaught errors (NOT per-request RPC error responses,
     // which are already consumed by the duckdb-wasm client to reject the
     // corresponding query promise).
-    worker.addEventListener('error', event => {
+    const onError = (event: ErrorEvent) => {
         const details = event.error ?? event.message;
         if (details == null) return;
         ctx.recordUnhandledError(errorInfo(details));
-    });
-    worker.addEventListener('messageerror', () => {
+    };
+    const onMessageError = () => {
         ctx.recordUnhandledError(errorInfo('worker message deserialization error'));
+    };
+    worker.addEventListener('error', onError);
+    worker.addEventListener('messageerror', onMessageError);
+    // the worker may belong to another document and outlive this one
+    window.addEventListener('pagehide', () => {
+        worker.removeEventListener('error', onError);
+        worker.removeEventListener('messageerror', onMessageError);
     });
 }
 
@@ -220,5 +227,12 @@ function escapeHtml(text: string): string {
 }
 
 function isError(value: unknown): value is Error {
-    return value instanceof Error;
+    // an error raised in another window (a shared database) fails instanceof
+    return (
+        value instanceof Error ||
+        (typeof value === 'object' &&
+            value !== null &&
+            typeof (value as any).name === 'string' &&
+            typeof (value as any).message === 'string')
+    );
 }
