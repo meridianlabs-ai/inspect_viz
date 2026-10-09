@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import tempfile
@@ -10,6 +11,7 @@ from PIL import Image, ImageOps
 from typing_extensions import overload
 
 from inspect_viz._core.data import Data
+from inspect_viz._core.selection import Selection
 from inspect_viz._util._async import current_async_backend, run_coroutine
 from inspect_viz._util.platform import quarto_theme_font_css
 
@@ -52,15 +54,16 @@ def to_html(
     """
     del dependencies  # snippet is always self-contained
 
-    # Populate widget state (tables + spec).
-    component._mimebundle(collect=False)
+    if not component.spec:
+        component.spec = component._create_spec()
 
-    # Under Quarto render, `_mimebundle` set tables to URL strings pointing
-    # at `site_data/immutable/*.arrow` — unreachable from a Playwright
-    # file:// temp page. Force inline-bytes for every tracked Data so the
-    # snippet renders in isolation.
+    # Inline the bytes of the tables this component reads: the registry
+    # also holds tables of other components and earlier exports, and under
+    # Quarto `_get_data()` is a site URL a file:// page cannot fetch.
     tables_bytes: dict[str, bytes] = {
-        data.table: data._data for data in Data._get_all() if data._data
+        data.table: data._data
+        for data in _referenced_data(component.spec)
+        if data._data
     }
     snippet = component._quarto_html(tables_override=tables_bytes)
     return (
@@ -297,3 +300,20 @@ def _confirm_install() -> bool:
 def _install() -> None:
     """Run the idempotent CLI installer (cheap when up-to-date)."""
     subprocess.run(["playwright", "install", "chromium"], check=True)
+
+
+def _referenced_data(spec: str) -> list[Data]:
+    """The tracked `Data` whose table the spec names.
+
+    Selection ids are skipped (the spec's `params` entry lists every
+    selection in the process, and a `Data`'s selection id contains its
+    table's name), and names match case-insensitively as DuckDB resolves
+    identifiers.
+    """
+    body = json.loads(spec)
+    body.pop("params", None)
+    text = json.dumps(body)
+    for selection in Selection._get_all():
+        text = text.replace(selection.id, "")
+    text = text.lower()
+    return [data for data in Data._get_all() if data.table.lower() in text]
