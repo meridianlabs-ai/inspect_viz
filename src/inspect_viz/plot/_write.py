@@ -11,6 +11,7 @@ from PIL import Image, ImageOps
 from typing_extensions import overload
 
 from inspect_viz._core.data import Data
+from inspect_viz._core.selection import Selection
 from inspect_viz._util._async import current_async_backend, run_coroutine
 from inspect_viz._util.platform import quarto_theme_font_css
 
@@ -304,10 +305,15 @@ def _install() -> None:
 def _referenced_data(spec: str) -> list[Data]:
     """The tracked `Data` whose table the spec names.
 
-    The spec's `params` entry is skipped: it lists every selection in the
-    process, and a selection id contains its table's name.
+    Selection ids are skipped (the spec's `params` entry lists every
+    selection in the process, and a `Data`'s selection id contains its
+    table's name), and names match case-insensitively as DuckDB resolves
+    identifiers.
     """
     body = json.loads(spec)
     body.pop("params", None)
     text = json.dumps(body)
-    return [data for data in Data._get_all() if data.table in text]
+    for selection in Selection._get_all():
+        text = text.replace(selection.id, "")
+    text = text.lower()
+    return [data for data in Data._get_all() if data.table.lower() in text]

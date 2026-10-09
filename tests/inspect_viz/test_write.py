@@ -58,3 +58,21 @@ def test_to_html_embeds_a_table_named_in_a_sql_expression() -> None:
     )
 
     assert embedded_tables(to_html(component)) == {plotted.table, queried.table}
+
+
+def test_to_html_embeds_a_table_named_in_a_different_case() -> None:
+    plotted = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    queried = Data.from_dataframe(pd.DataFrame({"x": [3]}))
+    component = plot(
+        dot(plotted, x=sql(f"(SELECT max(x) FROM {queried.table.lower()})"), y="y")
+    )
+
+    assert embedded_tables(to_html(component)) == {plotted.table, queried.table}
+
+
+def test_to_html_skips_a_table_whose_selection_filters_the_component() -> None:
+    plotted = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    other = Data.from_dataframe(pd.DataFrame({"x": [3], "y": [4]}))
+    component = plot(dot(plotted, x="x", y="y", filter_by=other.selection))
+
+    assert embedded_tables(to_html(component)) == {plotted.table}
