@@ -20,7 +20,7 @@ def generate_mosaic_models() -> None:
             "--output-model-type",
             "pydantic_v2.BaseModel",
             "--target-python-version",
-            "3.10",
+            "3.11",
             "--use-standard-collections",
             "--enum-field-as-literal=all",
             "--use-one-literal-as-default",
