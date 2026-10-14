@@ -27,6 +27,9 @@ jobs:
 
     py-mypy:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
                 python-version: ['3.11', '3.14']
@@ -92,6 +95,9 @@ jobs:
 
     py-test:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
                 python-version: ['3.11', '3.14']
@@ -117,6 +123,9 @@ jobs:
 
     py-build:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
                 python-version: ['3.11', '3.14']
