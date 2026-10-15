@@ -125,4 +125,4 @@ bill_html = page.fragment(plot(dot(penguins, x="bill_length", y="bill_depth")))
 # ...include head_html in <head> and the fragments in <body>
 ```
 
-Every fragment you create must appear in the page: a fragment that reads a table an earlier fragment embeds waits for that fragment to load it.
+Use one `HtmlPage` per document, and include every fragment you create in that document. A fragment that reads a table an earlier fragment embeds waits for that fragment to load it, so if a fragment is left out (or goes into a different document), the plots waiting on it stay in their loading state and no error is shown. Fragments can appear in any order.

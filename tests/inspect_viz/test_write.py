@@ -23,7 +23,13 @@ def widget_tables(html: str) -> list[dict[str, Any]]:
 
 
 def embedded_tables(html: str) -> set[str]:
+    """The tables a single-widget html carries the bytes of.
+
+    A standalone document has no other fragment to wait for, so every table
+    it names must carry bytes.
+    """
     (tables,) = widget_tables(html)
+    assert EMPTY_TABLE not in tables.values(), "standalone html awaits a table"
     return set(tables)
 
 
@@ -105,6 +111,14 @@ def test_to_html_skips_a_table_named_by_an_unreferenced_param() -> None:
     assert embedded_tables(to_html(plot(dot(plotted, x="x", y="y")))) == {plotted.table}
 
 
+def test_to_html_embeds_a_table_in_each_document() -> None:
+    data = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    component = plot(dot(data, x="x", y="y"))
+
+    assert embedded_tables(to_html(component)) == {data.table}
+    assert embedded_tables(to_html(component)) == {data.table}
+
+
 def test_to_html_carries_the_bundle_once_in_the_head() -> None:
     data = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
 
@@ -127,6 +141,50 @@ def test_page_embeds_a_table_once_and_later_fragments_wait_for_it() -> None:
     first, second = widget_tables(html)
     assert set(first) == {shared.table} and first[shared.table] != EMPTY_TABLE
     assert second[shared.table] == EMPTY_TABLE and second[own.table] != EMPTY_TABLE
+
+
+def test_page_embeds_a_table_first_read_by_a_middle_fragment() -> None:
+    first_data = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    later = Data.from_dataframe(pd.DataFrame({"x": [3], "y": [4]}))
+    page = HtmlPage()
+
+    html = "".join(
+        page.fragment(plot(dot(data, x="x", y="y")))
+        for data in (first_data, later, later)
+    )
+
+    first, middle, last = widget_tables(html)
+    assert set(first) == {first_data.table}
+    assert middle[later.table] != EMPTY_TABLE and last[later.table] == EMPTY_TABLE
+
+
+def test_page_embeds_a_component_rendered_twice_once() -> None:
+    data = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    component = plot(dot(data, x="x", y="y"))
+    page = HtmlPage()
+
+    first, second = widget_tables(page.fragment(component) + page.fragment(component))
+
+    assert first[data.table] != EMPTY_TABLE and second == {data.table: EMPTY_TABLE}
+
+
+def test_page_fragment_without_data_carries_no_tables() -> None:
+    Data.from_dataframe(pd.DataFrame({"x": [1]}))
+
+    (tables,) = widget_tables(HtmlPage().fragment(plot(rule_x(None, x=[1, 2]))))
+
+    assert tables == {}
+
+
+def test_page_skips_a_table_without_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
+    plotted = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    empty = Data.from_dataframe(pd.DataFrame({"x": [3]}))
+    monkeypatch.setattr(empty, "_data", b"")
+    component = plot(dot(plotted, x=sql(f"(SELECT max(x) FROM {empty.table})"), y="y"))
+
+    (tables,) = widget_tables(HtmlPage().fragment(component))
+
+    assert set(tables) == {plotted.table}
 
 
 def test_page_head_carries_the_bundle_and_fragments_do_not() -> None:

@@ -39,17 +39,27 @@ class HtmlPage:
     for it, and params and selections with the same id are shared, so an
     input in one fragment can filter a plot in another.
 
-    Every fragment the page produces must appear in the page, since a
-    fragment waits without a timeout for a table an earlier fragment embeds.
-    The page's plot defaults are those of the first fragment to run in the
-    document.
+    Use one `HtmlPage` per document, and put every fragment it produces in
+    that document: a fragment that reads a table an earlier fragment embeds
+    waits for it without a timeout, so a fragment that is left out (or that
+    went into a different document) leaves the others loading forever, with
+    no error. Fragments may appear in any order. The page's plot defaults are
+    those of the first fragment on the page to render.
     """
 
     def __init__(self) -> None:
         self._tables: set[str] = set()
 
     def head(self) -> str:
-        """The widget bundle and stylesheet, as `<script>` and `<style>` tags."""
+        """The widget bundle and stylesheet, as `<script>` and `<style>` tags.
+
+        Include it once per document. It belongs in `<head>`, but it works
+        anywhere in the document, since fragments render after the document
+        is parsed.
+
+        Returns:
+           HTML for the widget bundle and stylesheet.
+        """
         return Component._assets_html()
 
     def fragment(self, component: Component) -> str:
@@ -57,6 +67,9 @@ class HtmlPage:
 
         Args:
            component: Component to render.
+
+        Returns:
+           HTML for the component and the tables it is first on the page to read.
         """
         if not component.spec:
             component.spec = component._create_spec()
@@ -64,9 +77,12 @@ class HtmlPage:
         # Inline the bytes of the tables this component reads: the registry
         # also holds tables of other components, and under Quarto
         # `_get_data()` is a site URL a file:// page cannot fetch. Empty
-        # bytes tell the widget an earlier fragment inserts the table.
+        # bytes tell the widget an earlier fragment inserts the table, so a
+        # table with no bytes of its own is skipped rather than awaited.
         tables: dict[str, bytes] = {}
         for data in _referenced_data(component.spec):
+            if not data._data:
+                continue
             tables[data.table] = b"" if data.table in self._tables else data._data
             self._tables.add(data.table)
         return component._quarto_html(tables_override=tables)
