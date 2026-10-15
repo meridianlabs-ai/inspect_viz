@@ -28,10 +28,9 @@ def _instances() -> dict[InstanceType, list[object]]:
 # clear instances when %reset is called (this enables things to work
 # correctly when quarto re-executes a notebook in preview mode)
 def _install_reset_hook() -> None:
-    import IPython
+    from IPython import get_ipython  # type: ignore[attr-defined, unused-ignore]
 
-    # IPython is typed in some releases and not others; Any suits both
-    shell = cast(Any, IPython).get_ipython()
+    shell = get_ipython()  # type: ignore[no-untyped-call, unused-ignore]
     if shell is None:
         return  # not running inside IPython
     if getattr(shell, "_inspect_viz_reset_hooked", False):

@@ -3,7 +3,7 @@ import os
 import re
 import shutil
 from pathlib import Path
-from typing import Any, cast
+from typing import cast
 
 from typing_extensions import TypedDict
 
@@ -360,10 +360,9 @@ def running_in_colab() -> bool:
 
 def running_in_notebook() -> bool:
     try:
-        import IPython
+        from IPython import get_ipython  # type: ignore[attr-defined, unused-ignore]
 
-        # IPython is typed in some releases and not others; Any suits both
-        if "IPKernelApp" not in cast(Any, IPython).get_ipython().config:
+        if "IPKernelApp" not in get_ipython().config:  # type: ignore[no-untyped-call, unused-ignore]
             return False
     except ImportError:
         return False
