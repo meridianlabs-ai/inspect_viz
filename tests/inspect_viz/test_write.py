@@ -4,7 +4,7 @@ from typing import Callable
 
 import pandas as pd
 import pytest
-from inspect_viz import Component, Data
+from inspect_viz import Component, Data, Param
 from inspect_viz.input import select
 from inspect_viz.layout import vconcat
 from inspect_viz.mark import dot, rule_x
@@ -76,3 +76,22 @@ def test_to_html_skips_a_table_whose_selection_filters_the_component() -> None:
     component = plot(dot(plotted, x="x", y="y", filter_by=other.selection))
 
     assert embedded_tables(to_html(component)) == {plotted.table}
+
+
+def test_to_html_embeds_a_table_named_by_a_referenced_param() -> None:
+    plotted = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    queried = Data.from_dataframe(pd.DataFrame({"x": [3]}))
+    name = Param(queried.table)
+    component = plot(
+        dot(plotted, x=sql(f"(SELECT max(x) FROM query_table({name}))"), y="y")
+    )
+
+    assert embedded_tables(to_html(component)) == {plotted.table, queried.table}
+
+
+def test_to_html_skips_a_table_named_by_an_unreferenced_param() -> None:
+    plotted = Data.from_dataframe(pd.DataFrame({"x": [1], "y": [2]}))
+    other = Data.from_dataframe(pd.DataFrame({"x": [3]}))
+    Param(other.table)  # not read by the component
+
+    assert embedded_tables(to_html(plot(dot(plotted, x="x", y="y")))) == {plotted.table}

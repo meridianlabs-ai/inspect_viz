@@ -305,14 +305,19 @@ def _install() -> None:
 def _referenced_data(spec: str) -> list[Data]:
     """The tracked `Data` whose table the spec names.
 
-    Selection ids are skipped (the spec's `params` entry lists every
-    selection in the process, and a `Data`'s selection id contains its
-    table's name), and names match case-insensitively as DuckDB resolves
-    identifiers.
+    The spec's `params` entry lists every param and selection in the
+    process, so only the values of params the rest of the spec references
+    are searched (a param can carry a table name, as in
+    `query_table($param)`). Selection ids are skipped (a `Data`'s selection
+    id contains its table's name), and names match case-insensitively as
+    DuckDB resolves identifiers.
     """
     body = json.loads(spec)
-    body.pop("params", None)
+    params: dict[str, Any] = body.pop("params", {})
     text = json.dumps(body)
+    text += "".join(
+        json.dumps(value) for id, value in params.items() if f"${id}" in text
+    )
     for selection in Selection._get_all():
         text = text.replace(selection.id, "")
     text = text.lower()
