@@ -146,8 +146,12 @@ def scores_radar_by_task_df(
         for key in model_row.keys():
             model_row[key] = append_first_value_to_list(model_row[key])
 
-        model_row["x"] = np.array(model_row["value_scaled"]) * np.cos(angles_closed)
-        model_row["y"] = np.array(model_row["value_scaled"]) * np.sin(angles_closed)
+        model_row["x"] = (
+            np.array(model_row["value_scaled"]) * np.cos(angles_closed)
+        ).tolist()
+        model_row["y"] = (
+            np.array(model_row["value_scaled"]) * np.sin(angles_closed)
+        ).tolist()
 
         all_rows.append(pd.DataFrame(model_row))
 
@@ -245,8 +249,12 @@ def scores_radar_by_metric_df(
         model_row["scorer"] = [scorer] * (num_axes + 1)
         model_row["value"] = append_first_value_to_list(values_raw)
         model_row["value_scaled"] = append_first_value_to_list(values_scaled)
-        model_row["x"] = np.array(model_row["value_scaled"]) * np.cos(angles_closed)
-        model_row["y"] = np.array(model_row["value_scaled"]) * np.sin(angles_closed)
+        model_row["x"] = (
+            np.array(model_row["value_scaled"]) * np.cos(angles_closed)
+        ).tolist()
+        model_row["y"] = (
+            np.array(model_row["value_scaled"]) * np.sin(angles_closed)
+        ).tolist()
 
         all_rows.append(pd.DataFrame(model_row))
 

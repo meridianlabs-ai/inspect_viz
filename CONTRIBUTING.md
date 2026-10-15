@@ -4,7 +4,7 @@ Thanks for your interest in contributing to Inspect Viz, a data visualization li
 
 ## Development setup
 
-Inspect Viz targets Python 3.10+. Clone the repository and install it in editable mode with the `dev` optional dependencies:
+Inspect Viz targets Python 3.11+. Clone the repository and install it in editable mode with the `dev` optional dependencies:
 
 ```bash
 git clone https://github.com/meridianlabs-ai/inspect_viz
