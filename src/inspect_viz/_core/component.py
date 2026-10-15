@@ -75,20 +75,7 @@ class Component(AnyWidget):
     ) -> None:
         # one time config of default css
         if not Component._css_initialized:
-            Component._css_initialized = True
-            css_paths = [self._css_base, self._css_nouislider]
-            if running_in_quarto():
-                css_paths.append(self._css_quarto)
-                css_paths.append(self._css_tomselect_bs5)
-            else:
-                css_paths.append(self._css_tomselect)
-            css_paths.append(self._css_tomselect_viz)
-            css_paths.append(self._css_aggrid)
-            css_paths.append(self._css_tooltips)
-            css_paths.append(self._css_legend)
-            for css in css_paths:
-                with open(css, "r") as f:
-                    Component._css = f"{self._css}\n\n{f.read()}"
+            Component._load_css()
 
         # only send css once for quarto
         elif running_in_quarto():
@@ -113,6 +100,43 @@ class Component(AnyWidget):
     @property
     def config(self) -> dict[str, JsonValue]:
         return self._config
+
+    @classmethod
+    def _load_css(cls) -> None:
+        """Read the merged widget CSS; the Quarto variant depends on the environment."""
+        css_paths = [cls._css_base, cls._css_nouislider]
+        if running_in_quarto():
+            css_paths.append(cls._css_quarto)
+            css_paths.append(cls._css_tomselect_bs5)
+        else:
+            css_paths.append(cls._css_tomselect)
+        css_paths.append(cls._css_tomselect_viz)
+        css_paths.append(cls._css_aggrid)
+        css_paths.append(cls._css_tooltips)
+        css_paths.append(cls._css_legend)
+        css = ""
+        for path in css_paths:
+            with open(path, "r") as f:
+                css = f"{css}\n\n{f.read()}"
+        cls._css = css
+        cls._css_initialized = True
+
+    @classmethod
+    def _assets_html(cls) -> str:
+        """The widget ESM and merged CSS, as the blocks a page carries once.
+
+        The bootstrap in each widget's HTML imports the ESM from the
+        `iv-esm` element, so a document needs exactly one copy.
+        """
+        if not cls._css_initialized:
+            cls._load_css()
+        esm_text = _escape_script_content((WIDGETS_DIR / "mosaic.js").read_text())
+        css_text = _escape_script_content(cls._css)
+        assets = ""
+        if css_text.strip():
+            assets += f'<style id="iv-css">{css_text}</style>'
+        assets += f'<script id="iv-esm" type="text/plain">{esm_text}</script>'
+        return assets
 
     def _repr_mimebundle_(
         self, **kwargs: Any
@@ -306,18 +330,19 @@ class Component(AnyWidget):
         tables_override: dict[str, bytes] | None = None,
         png_info: tuple[str, int, int] | None = None,
     ) -> str:
-        """Self-contained HTML output for a single widget.
+        """HTML output for a single widget.
 
         Used for two paths:
         - Quarto HTML render (`tables_override=None`): `self.tables` carries
           URL strings pointing to `site_data/immutable/<hash>.arrow` assets.
-        - PNG / `to_html` (`tables_override={name: bytes}`): bytes get
-          base64-inlined so Playwright can render in a file:// context.
-
-        The first widget on each document inlines the widget ESM (our
-        `mosaic.js` bundle) and merged CSS inside `<script id="iv-esm">`
-        and `<style id="iv-css">` blocks. Subsequent widgets reference them
-        by id so the ESM text appears once per page.
+          The first widget on each document inlines the widget ESM (our
+          `mosaic.js` bundle) and merged CSS inside `<script id="iv-esm">`
+          and `<style id="iv-css">` blocks. Subsequent widgets reference them
+          by id so the ESM text appears once per page.
+        - `HtmlPage.fragment` (`tables_override={name: bytes}`): bytes get
+          base64-inlined so the page works in a file:// context, and empty
+          bytes mark a table an earlier fragment embeds. The page carries
+          the ESM and CSS, so this output never does.
 
         When `png_info=(url, css_w, css_h)` is set, the widget is emitted in
         overlay mode: the PNG is rendered inline at native CSS dimensions as
@@ -331,10 +356,8 @@ class Component(AnyWidget):
         """
         widget_id = f"iv-{secrets.token_hex(8)}"
 
-        # PNG / to_html paths bypass the per-doc dedup — each invocation
-        # is a fresh, self-contained snippet and needs its own assets block.
         if tables_override is not None:
-            include_assets = True
+            include_assets = False
         else:
             info = quarto_execute_info()
             doc_path = info["document-path"] if info else ""
@@ -364,18 +387,7 @@ class Component(AnyWidget):
             separators=(",", ":"),
         ).replace("</", "<\\/")
 
-        assets = ""
-        if include_assets:
-            esm_text = _escape_script_content((WIDGETS_DIR / "mosaic.js").read_text())
-            css_text = _escape_script_content(Component._css or "")
-
-            assets_parts = []
-            if css_text.strip():
-                assets_parts.append(f'<style id="iv-css">{css_text}</style>')
-            assets_parts.append(
-                f'<script id="iv-esm" type="text/plain">{esm_text}</script>'
-            )
-            assets = "".join(assets_parts)
+        assets = Component._assets_html() if include_assets else ""
 
         # Reserve placeholder space so the plot doesn't "snap in" when it
         # finishes loading. In the default (shimmer) path, the placeholder DOM

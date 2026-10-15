@@ -15,6 +15,7 @@ description: Plot and legend creation.
 
 ## Export
 
+### HtmlPage
 ### to_html
 ### write_html
 ### write_png
