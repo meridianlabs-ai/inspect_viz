@@ -15,7 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: ['3.10', '3.11']
+                python-version: ['3.11', '3.14']
         steps:
             - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
             - name: Lint with Ruff
@@ -27,9 +27,12 @@ jobs:
 
     py-mypy:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
-                python-version: ['3.10', '3.11']
+                python-version: ['3.11', '3.14']
         steps:
             - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
             - name: Set up Python ${{ matrix.python-version }}
@@ -92,9 +95,12 @@ jobs:
 
     py-test:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
-                python-version: ['3.10', '3.11']
+                python-version: ['3.11', '3.14']
         steps:
             - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
             - name: Set up Python ${{ matrix.python-version }}
@@ -117,9 +123,12 @@ jobs:
 
     py-build:
         runs-on: ubuntu-latest
+        env:
+            # Dependencies must install from wheels; only inspect_viz is built.
+            PIP_ONLY_BINARY: ':all:'
         strategy:
             matrix:
-                python-version: ['3.10', '3.11']
+                python-version: ['3.11', '3.14']
         steps:
             - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
             - name: Set up Python ${{ matrix.python-version }}
