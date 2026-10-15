@@ -47,4 +47,4 @@ def _install_reset_hook() -> None:
         return out
 
     shell.reset = reset_with_cleanup
-    shell._mypkg_hooked = True
+    shell._inspect_viz_reset_hooked = True
