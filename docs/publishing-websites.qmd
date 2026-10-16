@@ -9,7 +9,7 @@ If you want to publish one or more plots as part of a website there are a couple
 
 1. Use a Jupyter-based website publishing system that supports interactive Jupyter Widgets (e.g. [Quarto](https://quarto.org)).
 
-2. Use the `to_html()` function to create embeddable HTML fragments for your plots and embed them in any website.
+2. Use the `write_html()` function or the `HtmlPage` class to create HTML for your plots and embed it in any website.
 
 We'll cover both of these approaches below.
 
@@ -90,7 +90,7 @@ If you are working with an existing website or with another website publishing s
 
 ### Single Plot
 
-To create a standalone snippet which you can include in any website, use the `write_html()` function:
+To create a standalone page which you can include in any website (for example in an iframe), use the `write_html()` function:
 
 ```python
 from inspect_viz import Data
@@ -111,28 +111,18 @@ write_html("penguins.html", pl)
 
 ### Multiple Plots
 
-If you want to include multiple plots on a page, you might find it more convenient to call the `to_html()` function as part of your website generation process. The returned HTML includes the Jupyter Widget runtime dependencies, so if you have multiple plots you'll instead want to include these dependencies once in the `<head>` of your document and the create HTML snippets without the dependencies.
-
-Here is the dependencies code that you should place in the `<head>` tag:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js" crossorigin="anonymous"></script>
-```
-
-Then, specify `dependencies=False` when you call `to_html()` to get only the plot and not the dependencies scripts which are already in your `<head>` tag:
+If you want to include multiple plots on a page, use `HtmlPage` as part of your website generation process. Include `head()` once in the `<head>` of your document (it carries the widget runtime and styles) and `fragment()` once per plot where the plot should appear. Plots on a page share one DuckDB database, so a table read by several plots is embedded only once, and an input in one fragment can filter a plot in another.
 
 ```python
-from inspect_viz.plot import to_html
+from inspect_viz.plot import HtmlPage
 
-pl = plot(
-    dot(penguins, x="body_mass", y="flipper_length",  
-        stroke="species", symbol="species"),
-    legend="symbol",
-    grid=True
-)
+page = HtmlPage()
 
-pl_html = to_html(pl, dependencies=False)
+head_html = page.head()
+mass_html = page.fragment(plot(dot(penguins, x="body_mass", y="flipper_length")))
+bill_html = page.fragment(plot(dot(penguins, x="bill_length", y="bill_depth")))
 
-# ...include pl_html in your website
+# ...include head_html in <head> and the fragments in <body>
 ```
+
+Use one `HtmlPage` per document, and include every fragment you create in that document. A fragment that reads a table an earlier fragment embeds waits for that fragment to load it, so if a fragment is left out (or goes into a different document), the plots waiting on it stay in their loading state and no error is shown. Fragments can appear in any order.

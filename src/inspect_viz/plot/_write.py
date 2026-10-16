@@ -30,47 +30,95 @@ _DEFAULT_FONT_CSS = (
 )
 
 
+class HtmlPage:
+    """Builds an HTML page that renders several components with one shared runtime.
+
+    Include `head()` once in the document's `<head>` and `fragment()` once per
+    component. Fragments on a page share one DuckDB database: a table's bytes
+    are embedded by the first fragment that reads it and later fragments wait
+    for it, and params and selections with the same id are shared, so an
+    input in one fragment can filter a plot in another.
+
+    Use one `HtmlPage` per document, and put every fragment it produces in
+    that document: a fragment that reads a table an earlier fragment embeds
+    waits for it without a timeout, so a fragment that is left out (or that
+    went into a different document) leaves the others loading forever, with
+    no error. Fragments may appear in any order. The page's plot defaults are
+    those of the first fragment on the page to render.
+    """
+
+    def __init__(self) -> None:
+        self._tables: set[str] = set()
+
+    def head(self) -> str:
+        """The widget bundle and stylesheet, as `<script>` and `<style>` tags.
+
+        Include it once per document. It belongs in `<head>`, but it works
+        anywhere in the document, since fragments render after the document
+        is parsed.
+
+        Returns:
+           HTML for the widget bundle and stylesheet.
+        """
+        return Component._assets_html()
+
+    def fragment(self, component: Component) -> str:
+        """HTML that renders `component` once the page loads.
+
+        Args:
+           component: Component to render.
+
+        Returns:
+           HTML for the component and the tables it is first on the page to read.
+        """
+        if not component.spec:
+            component.spec = component._create_spec()
+
+        # Inline the bytes of the tables this component reads: the registry
+        # also holds tables of other components, and under Quarto
+        # `_get_data()` is a site URL a file:// page cannot fetch. Empty
+        # bytes tell the widget an earlier fragment inserts the table, so a
+        # table with no bytes of its own is skipped rather than awaited.
+        tables: dict[str, bytes] = {}
+        for data in _referenced_data(component.spec):
+            if not data._data:
+                continue
+            tables[data.table] = b"" if data.table in self._tables else data._data
+            self._tables.add(data.table)
+        return component._quarto_html(tables_override=tables)
+
+
 def to_html(
     component: Component,
     dependencies: bool = True,
     *,
     extra_head: str = "",
 ) -> str:
-    """Generate a self-contained HTML snippet for a plot or other component.
+    """Generate a self-contained HTML document for a plot or other component.
 
-    The returned snippet embeds the inspect-viz widget ESM plus a small
-    bootstrap inline — no external Jupyter-widget (`embed-amd.js`,
-    `requirejs`, `jquery`) dependencies. Suitable for Playwright headless
-    rendering (`write_png`) and general embedding.
+    The document embeds the inspect-viz widget ESM plus a small bootstrap
+    inline — no external Jupyter-widget (`embed-amd.js`, `requirejs`,
+    `jquery`) dependencies. Suitable for Playwright headless rendering
+    (`write_png`) and for embedding in an iframe. To put several components
+    on one page, use `HtmlPage`.
 
     Args:
        component: Component to export.
        dependencies: Accepted for backward compatibility; the returned
-          snippet is always self-contained, so this parameter has no
+          document is always self-contained, so this parameter has no
           effect.
        extra_head: Optional HTML to inject inside the document `<head>`
           (e.g. a `<style>` block setting the page font so the rendered
           plot inherits it).
     """
-    del dependencies  # snippet is always self-contained
+    del dependencies  # document is always self-contained
 
-    if not component.spec:
-        component.spec = component._create_spec()
-
-    # Inline the bytes of the tables this component reads: the registry
-    # also holds tables of other components and earlier exports, and under
-    # Quarto `_get_data()` is a site URL a file:// page cannot fetch.
-    tables_bytes: dict[str, bytes] = {
-        data.table: data._data
-        for data in _referenced_data(component.spec)
-        if data._data
-    }
-    snippet = component._quarto_html(tables_override=tables_bytes)
+    page = HtmlPage()
     return (
         "<!doctype html><html><head>"
         '<meta charset="utf-8">'
-        f"{extra_head}"
-        f"</head><body>{snippet}</body></html>"
+        f"{extra_head}{page.head()}"
+        f"</head><body>{page.fragment(component)}</body></html>"
     )
 
 
@@ -81,10 +129,10 @@ def write_html(
 
     Args:
        file: Target filename.
-       component: Compontent to export.
-       dependencies: Include JavaScript dependencies required for Jupyter widget rendering.
-          Dependencies should only be included once per web-page, so if you already have
-          them on a page you might want to disable including them when generating HTML.
+       component: Component to export.
+       dependencies: Accepted for backward compatibility; the written
+          document is always self-contained, so this parameter has no
+          effect.
     """
     with open(file, "w") as f:
         f.write(to_html(component, dependencies))
