@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.2](https://github.com/meridianlabs-ai/inspect_viz/compare/v0.4.1...0.4.2) (2026-10-16)
+
+
+### Features
+
+* HtmlPage renders several components on one page with one runtime ([#46](https://github.com/meridianlabs-ai/inspect_viz/issues/46)) ([5186103](https://github.com/meridianlabs-ai/inspect_viz/commit/5186103200dc2681e513efdcda77f5c1d330a974))
+* require Python 3.11 and test on Python 3.14 ([#45](https://github.com/meridianlabs-ai/inspect_viz/issues/45)) ([f209305](https://github.com/meridianlabs-ai/inspect_viz/commit/f20930578b681d231a2b175fa4c96a44ba434de2))
+
+
+### Bug Fixes
+
+* to_html embeds only the tables the component reads ([#40](https://github.com/meridianlabs-ai/inspect_viz/issues/40)) ([8e7a215](https://github.com/meridianlabs-ai/inspect_viz/commit/8e7a215d4c670419163e595cf8257a6bd1f73339))
+
 ## [0.4.1](https://github.com/meridianlabs-ai/inspect_viz/compare/v0.4.0...v0.4.1) (2026-07-09)
 
 
