@@ -49,6 +49,11 @@ function initializeTooltip(specEl: HTMLElement) {
             trigger: 'manual',
             theme: 'inspect',
             interactive: true,
+            // One instance serves every widget on the page, so mount it on
+            // the body: inside specEl (the default for interactive tooltips)
+            // it would inherit that widget's transforms, clipping and
+            // visibility.
+            appendTo: () => document.body,
         });
 
         // Note which specEl we're tracking
