@@ -1,7 +1,7 @@
 ---
 title: Sample Heatmap
 llms-description: Heat map visualising sample scores.
-subtitle: "Dataset: [writing.parquet](writing.parquet)"
+subtitle: "Dataset: [writing_bench_samples.parquet](writing_bench_samples.parquet)"
 ---
 
 This example illustrates the code behind the [`sample_heatmap()`](../../../view-sample-heatmap.qmd) pre-built view function. If you want to include this plot in your notebooks or websites you should start with that function rather than the lower-level code below.
