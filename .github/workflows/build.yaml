@@ -163,5 +163,6 @@ jobs:
                   also-install-without-deps: ${{ steps.build.outputs.wheel }}
                   actions-cache: none
             - name: Verify package
-              # -I so the import resolves to the installed wheel, not the checkout's src/.
+              # -I keeps the working directory and PYTHON* variables off sys.path,
+              # so the import can only find the installed wheel.
               run: .venv/bin/python -I -c "import inspect_viz; print('Package imported successfully')"
