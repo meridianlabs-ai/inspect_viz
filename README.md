@@ -18,13 +18,15 @@ pip install git+https://github.com/meridianlabs-ai/inspect_viz
 
 ## Development
 
-To work on development of Inspect Viz, clone the repository and install with the `-e` flag and `[dev]` optional dependencies:
+To work on development of Inspect Viz, clone the repository and install it with [uv](https://docs.astral.sh/uv/) (0.13.4 or later) and the `[dev]` optional dependencies:
 
 ```bash
 git clone https://github.com/meridianlabs-ai/inspect_viz
 cd inspect_viz
-pip install -e ".[dev]"
+uv sync --extra dev
 ```
+
+Run the Python commands below from the `.venv` that `uv sync` creates: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`.
 
 Run linting, formatting, and tests via
 
@@ -49,7 +51,7 @@ yarn dev-sourcemap
 To build the docs locally and view them in your browser, install the optional doc dependencies and run `quarto preview`.
 
 ```sh
-pip install -e ".[doc]"
+uv sync --extra dev --extra doc
 quarto preview inspect_viz/docs/index.qmd
 ```
 
