@@ -1890,7 +1890,12 @@ function initializeTooltip(specEl) {
     tooltipInstance = tippy(specEl, {
       trigger: "manual",
       theme: "inspect",
-      interactive: true
+      interactive: true,
+      // One instance serves every widget on the page, so mount it on
+      // the body: in specEl's parent (the default for interactive
+      // tooltips) it would inherit that widget's transforms, clipping
+      // and visibility.
+      appendTo: () => document.body
     });
     tooltipSpecEl = specEl;
   }
@@ -2888,11 +2893,7 @@ async function syncTables(ctx, tables) {
         const bytes = await fetchCachedBytes(val);
         await ctx.insertTable(tableName, bytes);
       } else if (val && val.byteLength > 0) {
-        const bytes = new Uint8Array(
-          val.buffer,
-          val.byteOffset,
-          val.byteLength
-        );
+        const bytes = new Uint8Array(val.buffer, val.byteOffset, val.byteLength);
         await ctx.insertTable(tableName, bytes);
       } else {
         await ctx.waitForTable(tableName);
@@ -2975,9 +2976,7 @@ async function displayUnhandledErrors(ctx, widgetEl) {
   const emptyPlotDivs = widgetEl.querySelectorAll("div.plot:empty");
   await Promise.all(
     Array.from(emptyPlotDivs).map(async (emptyDiv) => {
-      const error = await ctx.collectUnhandledErrorUntil(
-        () => emptyDiv.children.length > 0
-      );
+      const error = await ctx.collectUnhandledErrorUntil(() => emptyDiv.children.length > 0);
       if (error) {
         displayRenderError(error, emptyDiv);
       }

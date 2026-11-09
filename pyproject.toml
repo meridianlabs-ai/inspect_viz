@@ -42,7 +42,9 @@ dev = [
     "playwright",
     "pyarrow-stubs",
     "pytest",
+    "pyyaml",
     "types-pillow",
+    "types-PyYAML",
 ]
 doc = [
     "quarto-cli>=1.9.36",
@@ -53,6 +55,16 @@ doc = [
     "pyyaml",
     "types-PyYAML"
 ]
+
+[tool.uv]
+# 0.11.8 is the first uv that keeps uv.lock stable with a relative exclude-newer,
+# and 0.13.4 the first that no longer trusts the compromised emSign root
+# (GHSA-hq85-5cpj-mr62).
+required-version = ">=0.13.4"
+# Only resolve releases at least 7 days old (see CONTRIBUTING.md). No direct
+# dependency is a model provider SDK or an Inspect package, so no package has
+# a "6 hours" entry in [tool.uv.exclude-newer-package].
+exclude-newer = "7 days"
 
 [tool.hatch.build]
 only-packages = true

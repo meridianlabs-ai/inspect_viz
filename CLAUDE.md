@@ -3,6 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build/Lint/Test Commands
+- Install dev environment: `uv sync --extra dev` (uv 0.13.4 or later). Run the commands below with `uv run`, from `.venv/bin/`, or in the activated `.venv`
 - Run all tests: `pytest`
 - Run a single test: `pytest tests/path/to/test_file.py::test_function_name -v`
 - Format code: `ruff format`
@@ -19,6 +20,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Testing**: Write tests with pytest; maintain high coverage
 
 Respect existing code patterns when modifying files. Run linting before committing changes.
+
+## Dependencies
+
+- `uv.lock` pins every dependency except the build toolchain (pinned with hashes in `scripts/build-dist/requirements.txt`), and uv only resolves releases at least 7 days old. Read "Dependencies and the cooldown" in [CONTRIBUTING.md](CONTRIBUTING.md) before you change dependencies, `[tool.uv]` or `.github/dependabot.yml`.
 
 ## Pull Requests
 
