@@ -9,10 +9,10 @@ Inspect Viz targets Python 3.11+ and needs [uv](https://docs.astral.sh/uv/) 0.13
 ```bash
 git clone https://github.com/meridianlabs-ai/inspect_viz
 cd inspect_viz
-uv sync --extra dev
+uv sync --locked --extra dev
 ```
 
-`uv sync` creates `.venv` with the exact versions in `uv.lock`, the `dev` extra included, and installs Inspect Viz editable. Run Python commands from it: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`. `uv sync` without `--extra dev` removes the dev tools again. To also install the `doc` extra, run `uv sync --extra dev --extra doc`.
+`uv sync --locked` creates `.venv` with the exact versions in `uv.lock`, the `dev` extra included, and installs Inspect Viz editable. It fails if `uv.lock` is out of date with `pyproject.toml`. Run Python commands from the environment: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`. `uv sync --locked` without `--extra dev` removes the dev tools again. To also install the `doc` extra, run `uv sync --locked --extra dev --extra doc`.
 
 The front-end widgets are built with TypeScript. To work on them, install the JS dependencies with yarn:
 
@@ -27,21 +27,15 @@ yarn dev          # or
 yarn dev-sourcemap
 ```
 
-### Dependencies and the cooldown
+### Dependencies
 
-`uv.lock` pins every Python dependency except the build toolchain. CI's lint, type-check, test and build jobs install their dependencies from it, and fail when `uv.lock` is out of date with `pyproject.toml`. CI's build job and the release build use the build toolchain (build, hatchling, hatch-vcs) pinned with hashes in `scripts/build-dist/requirements.txt`. Dependabot updates that file weekly, and `.github/workflows/publish.yaml` gives the command to update it by hand. For the editable install in the other jobs and on your machine, uv gets hatchling and hatch-vcs from PyPI, with the seven-day cooldown below. When you change dependencies in `pyproject.toml`, run `uv lock` and commit both files. When you change the `hatchling` requirement in `[build-system]`, make the same change in `scripts/build-dist/requirements.in` and compile `requirements.txt` again.
+[DEPENDENCIES.md](https://github.com/meridianlabs-ai/actions/blob/main/DEPENDENCIES.md) in meridianlabs-ai/actions tells how the Inspect repositories install and change dependencies. It covers the lock file, the cooldown, Dependabot, the canaries, the release build tools, and the procedures to add or update a dependency. Follow it. It is the same for every Inspect repository, so this file does not repeat it.
 
-`pyproject.toml` sets `exclude-newer = "7 days"` under `[tool.uv]`, so `uv lock`, `uv sync` and `uv pip` only pick releases that have been on PyPI for at least seven days. A compromised release is usually found and removed within that time, before it reaches `uv.lock`, CI or your machine. A direct dependency (a package in `dependencies` or the `dev` extra in `pyproject.toml`) that is a model provider SDK or an Inspect package can wait 6 hours instead, with a `"6 hours"` entry in `[tool.uv.exclude-newer-package]`. No current dependency is one of these, so every package keeps the seven-day cooldown. Dependabot's `uv` entry for `uv.lock` (directory `/`) in `.github/dependabot.yml` repeats the cooldown. When you add a `"6 hours"` entry, also add the package to `cooldown.exclude` there and to a `six-hour-cooldown` group listed before `python-packages`. `tests/test_dependency_cooldown.py` checks that each entry is a direct dependency, that dated entries (below) are less than seven days old, and that the two files match. Whether a package is a provider SDK or an Inspect package is up to review.
+For this repository:
 
-Dependabot proposes `uv.lock` updates daily, once a release has cleared its cooldown. To adopt a release sooner, run `uv lock --upgrade-package <package>` and commit `uv.lock`. A release still inside its cooldown can't be locked; wait for it rather than overriding `exclude-newer`, unless it's an emergency (below).
-
-In an emergency, for example a security fix, you can adopt a release that is less than seven days old with a one-time dated entry:
-
-1. Under `[tool.uv.exclude-newer-package]` in `pyproject.toml` (add the table if it is not there), add `<package> = "<timestamp>"`. The package must be a direct dependency. Use an RFC 3339 timestamp just after the upload time of the fixed release. Don't add a dated entry to `.github/dependabot.yml`.
-2. Run `uv lock --upgrade-package <package>` and commit both files.
-3. Within seven days, once the normal cooldown includes the release, delete the entry, run `uv lock --upgrade-package <package>`, and commit both files. A plain `uv lock` doesn't reliably remove the entry from `uv.lock`, and CI then fails. A test fails when a dated entry is seven days old or older.
-
-Testing against the newest releases of the runtime and `dev` dependencies happens in the nightly canary in [meridianlabs-ai/canaries](https://github.com/meridianlabs-ai/canaries), so Inspect Viz's own CI doesn't need to.
+- inspect_viz does not depend on inspect-ai.
+- No package has the 6-hour cooldown, so `pyproject.toml` has no `[tool.uv.exclude-newer-package]` table. For the first 6-hour or emergency entry, add the table. For the first 6-hour entry, also add a `six-hour-cooldown` group to the `uv` entry for `uv.lock` (directory `/`) in `.github/dependabot.yml`, listed before `python-packages`.
+- When you change the `hatchling` requirement in `[build-system]`, make the same change in `scripts/build-dist/requirements.in` and compile `requirements.txt` again. A test checks that the two agree.
 
 ## Checks and tests
 
