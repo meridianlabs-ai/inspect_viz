@@ -34,7 +34,7 @@ yarn dev-sourcemap
 For this repository:
 
 - inspect_viz does not depend on inspect-ai.
-- No package has the 6-hour cooldown, so `pyproject.toml` has no `[tool.uv.exclude-newer-package]` table. For the first 6-hour or emergency entry, add the table. For the first 6-hour entry, also add a `six-hour-cooldown` group to the `uv` entry for `uv.lock` (directory `/`) in `.github/dependabot.yml`, listed before `python-packages`.
+- No package has the 6-hour cooldown, so `pyproject.toml` has no `[tool.uv.exclude-newer-package]` table. If you add the first 6-hour entry, put the `six-hour-cooldown` group before `python-packages` in `.github/dependabot.yml`.
 - When you change the `hatchling` requirement in `[build-system]`, make the same change in `scripts/build-dist/requirements.in` and compile `requirements.txt` again. A test checks that the two agree.
 
 ## Checks and tests
