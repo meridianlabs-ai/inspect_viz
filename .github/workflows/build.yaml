@@ -98,7 +98,7 @@ jobs:
                   node-version: '22.x'
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
-            - name: Check format
+            - name: Build widgets
               run: pnpm build
 
     py-test:

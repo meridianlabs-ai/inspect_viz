@@ -14,7 +14,7 @@ uv sync --locked --extra dev
 
 `uv sync --locked` creates `.venv` with the exact versions in `uv.lock`, the `dev` extra included, and installs Inspect Viz editable. It fails if `uv.lock` is out of date with `pyproject.toml`. Run Python commands from the environment: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`. `uv sync --locked` without `--extra dev` removes the dev tools again. To also install the `doc` extra, run `uv sync --locked --extra dev --extra doc`.
 
-The front-end widgets are built with TypeScript. To work on them, install the JS dependencies with [pnpm](https://pnpm.io/installation) 11.22.0, the version in `package.json`'s `packageManager` field:
+The front-end widgets are built with TypeScript. To work on them, install the JS dependencies with [pnpm](https://pnpm.io/installation) 11.22.0, the version in `package.json`'s `packageManager` field. It needs Node.js 22.13 or later.
 
 ```bash
 pnpm install --frozen-lockfile

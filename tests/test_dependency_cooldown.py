@@ -284,8 +284,8 @@ def frozen(args: list[str]) -> bool:
 
 
 def test_pnpm_installs_use_the_lockfile() -> None:
-    # Without --frozen-lockfile, pnpm resolves new versions when
-    # pnpm-lock.yaml and package.json disagree, and the job still passes.
+    # pnpm turns on --frozen-lockfile when it detects CI. Passing the flag
+    # keeps that from depending on the detection.
     installs = [
         (where, line, args)
         for where, line in run_lines()
@@ -294,6 +294,16 @@ def test_pnpm_installs_use_the_lockfile() -> None:
     assert installs, "no workflow installs the JS dependencies"
     unlocked = [(where, line) for where, line, args in installs if not frozen(args)]
     assert unlocked == [], f"use pnpm install --frozen-lockfile in {unlocked}"
+
+
+# npm and yarn ignore pnpm-lock.yaml and minimumReleaseAge.
+def test_no_workflow_runs_npm_or_yarn() -> None:
+    other = [
+        (where, line)
+        for where, line in run_lines()
+        if re.search(r"\b(yarn|npx|npm\s+(install|i|ci|add|update))\b", line)
+    ]
+    assert other == [], "install the JS dependencies with pnpm"
 
 
 @pytest.mark.parametrize(
@@ -320,6 +330,7 @@ def test_pnpm_install_detection(line: str, locked: list[bool]) -> None:
 def test_pnpm_minimum_release_age() -> None:
     workspace = yaml.safe_load((REPO / "pnpm-workspace.yaml").read_text())
     assert workspace["minimumReleaseAge"] == 7 * 24 * 60
+    assert "minimumReleaseAgeExclude" not in workspace
 
 
 def test_dependabot_npm_cooldown() -> None:
