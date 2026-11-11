@@ -37,7 +37,7 @@ For this repository:
 
 - inspect_viz does not depend on inspect-ai.
 - No package has the 6-hour cooldown, so `pyproject.toml` has no `[tool.uv.exclude-newer-package]` table. If you add the first 6-hour entry, put the `six-hour-cooldown` group before `python-packages` in `.github/dependabot.yml`.
-- Dependabot also bumps `yarn.lock`, weekly, with the same 7-day cooldown.
+- Dependabot also bumps `yarn.lock` weekly, with a 7-day cooldown on the packages it bumps. Dependencies that those packages pull in get no cooldown.
 - When you change the `hatchling` requirement in `[build-system]`, make the same change in `scripts/build-dist/requirements.in` and compile `requirements.txt` again. A test checks that the two agree.
 
 ## Checks and tests
