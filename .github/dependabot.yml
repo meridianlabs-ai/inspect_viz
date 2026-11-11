@@ -55,3 +55,19 @@ updates:
           - "*"
     commit-message:
       prefix: "ci"
+  # Bumps yarn.lock for the widget build. The widgets in
+  # src/inspect_viz/_widgets are committed, so a bump changes what ships only
+  # once they are rebuilt.
+  - package-ecosystem: "npm"
+    versioning-strategy: "lockfile-only"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      js-packages:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "build"
