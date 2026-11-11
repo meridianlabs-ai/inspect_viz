@@ -5,8 +5,10 @@ SDK or Inspect package that is a direct dependency can get six hours instead;
 no package has that entry now. Dependabot applies the seven days to its
 uv.lock bumps and leaves the six-hour list to uv. CI installs from uv.lock,
 and the build toolchain from scripts/build-dist/requirements.txt, pinned with
-hashes. Testing against the newest releases happens in meridianlabs-ai/canaries,
-outside this repository.
+hashes. The JS jobs install yarn.lock. Dependabot bumps it with a seven-day
+cooldown on the packages it bumps, but not on the dependencies they pull in.
+Testing against the newest releases happens in
+meridianlabs-ai/canaries, outside this repository.
 """
 
 import pathlib
@@ -262,6 +264,68 @@ def test_no_workflow_runs_pip_install() -> None:
         if re.search(r"\bpip3? install\b", line)
     ]
     assert pip == [], "pip installs skip uv.lock; use the shared action"
+
+
+def yarn_installs(line: str) -> list[list[str]]:
+    """The yarn install commands in a run line, each as the words after yarn."""
+    line = re.sub(r"(^|\s)#.*", "", line)
+    installs = []
+    for command in re.split(r"&&|\|\||;|\|", line):
+        words = command.split()
+        if "yarn" in words:
+            args = words[words.index("yarn") + 1 :]
+            if "install" in args or all(word.startswith("-") for word in args):
+                installs.append(args)
+    return installs
+
+
+def frozen(args: list[str]) -> bool:
+    return "--frozen-lockfile" in args
+
+
+def test_yarn_installs_use_the_lockfile() -> None:
+    # Without --frozen-lockfile, yarn resolves new versions when yarn.lock and
+    # package.json disagree, and the job still passes.
+    installs = [
+        (where, line, args)
+        for where, line in run_lines()
+        for args in yarn_installs(line)
+    ]
+    assert installs, "no workflow installs the JS dependencies"
+    unlocked = [(where, line) for where, line, args in installs if not frozen(args)]
+    assert unlocked == [], f"use yarn install --frozen-lockfile in {unlocked}"
+    assert (REPO / "yarn.lock").is_file(), (
+        "--frozen-lockfile passes when yarn.lock is missing"
+    )
+
+
+@pytest.mark.parametrize(
+    "line,locked",
+    [
+        ("yarn install", [False]),
+        ("yarn", [False]),
+        ("yarn install --frozen-lockfile", [True]),
+        ("yarn --frozen-lockfile install", [True]),
+        ("yarn install --frozen-lockfile=false", [False]),
+        ("yarn install --network-timeout 100000", [False]),
+        ("yarn install # deps", [False]),
+        ("yarn install --frozen-lockfile && yarn build", [True]),
+        ("yarn install && yarn build", [False]),
+        ("cd js && yarn --cwd js install", [False]),
+        ("yarn build", []),
+        ("yarn typecheck", []),
+    ],
+)
+def test_yarn_install_detection(line: str, locked: list[bool]) -> None:
+    assert [frozen(args) for args in yarn_installs(line)] == locked
+
+
+def test_dependabot_npm_cooldown() -> None:
+    updates = yaml.safe_load((GITHUB / "dependabot.yml").read_text())["updates"]
+    [npm] = [u for u in updates if u["package-ecosystem"] == "npm"]
+    assert npm["directory"] == "/"
+    assert npm["versioning-strategy"] == "lockfile-only"
+    assert npm["cooldown"]["default-days"] == 7
 
 
 def test_no_workflow_opts_out_of_the_cooldown() -> None:

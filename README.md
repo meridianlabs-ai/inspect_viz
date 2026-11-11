@@ -38,7 +38,7 @@ make test
 For JS / front-end development:
 
 ```sh
-yarn install
+yarn install --frozen-lockfile
 ```
 
 While developing front end components, you can run the following in a separate terminal to automatically rebuild JavaScript as you make changes:
