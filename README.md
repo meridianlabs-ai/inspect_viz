@@ -38,14 +38,14 @@ make test
 For JS / front-end development:
 
 ```sh
-yarn install --frozen-lockfile
+pnpm install --frozen-lockfile
 ```
 
 While developing front end components, you can run the following in a separate terminal to automatically rebuild JavaScript as you make changes:
 
 ```sh
-yarn dev # or
-yarn dev-sourcemap
+pnpm dev # or
+pnpm dev-sourcemap
 ```
 
 To build the docs locally and view them in your browser, install the optional doc dependencies and run `quarto preview`.

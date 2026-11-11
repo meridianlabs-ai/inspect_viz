@@ -1,7 +1,8 @@
 {
+	"packageManager": "pnpm@11.22.0",
 	"scripts": {
-		"dev": "npm run build -- --watch",
-		"dev-sourcemap": "npm run dev -- --sourcemap=inline",
+		"dev": "pnpm run build --watch",
+		"dev-sourcemap": "pnpm run dev --sourcemap=inline",
 		"build": "esbuild js/widgets/*.ts --format=esm --bundle --outdir=src/inspect_viz/_widgets",
 		"typecheck": "tsc --noEmit",
 		"format": "prettier --write \"js/**/*.{ts,tsx}\"",
