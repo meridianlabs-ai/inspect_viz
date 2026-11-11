@@ -23,7 +23,7 @@ To work on development of Inspect Viz, clone the repository and install it with 
 ```bash
 git clone https://github.com/meridianlabs-ai/inspect_viz
 cd inspect_viz
-uv sync --extra dev
+uv sync --locked --extra dev
 ```
 
 Run the Python commands below from the `.venv` that `uv sync` creates: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`.
@@ -51,7 +51,7 @@ yarn dev-sourcemap
 To build the docs locally and view them in your browser, install the optional doc dependencies and run `quarto preview`.
 
 ```sh
-uv sync --extra dev --extra doc
+uv sync --locked --extra dev --extra doc
 quarto preview inspect_viz/docs/index.qmd
 ```
 
