@@ -1,0 +1,9 @@
+# Resolve only releases at least 7 days old (in minutes), the same cooldown as
+# pyproject.toml and ts-mono. Unlike Dependabot's cooldown, it also covers the
+# dependencies a package pulls in.
+minimumReleaseAge: 10080
+
+# esbuild's platform binary arrives through optionalDependencies, so its
+# postinstall, a download fallback and a startup speed-up, isn't needed.
+allowBuilds:
+  esbuild: false

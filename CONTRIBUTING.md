@@ -14,19 +14,19 @@ uv sync --locked --extra dev
 
 `uv sync --locked` creates `.venv` with the exact versions in `uv.lock`, the `dev` extra included, and installs Inspect Viz editable. It fails if `uv.lock` is out of date with `pyproject.toml`. Run Python commands from the environment: `uv run <command>`, `.venv/bin/<command>`, or `source .venv/bin/activate`. `uv sync --locked` without `--extra dev` removes the dev tools again. To also install the `doc` extra, run `uv sync --locked --extra dev --extra doc`.
 
-The front-end widgets are built with TypeScript. To work on them, install the JS dependencies with yarn 1:
+The front-end widgets are built with TypeScript. To work on them, install the JS dependencies with [pnpm](https://pnpm.io/installation) 11.22.0, the version in `package.json`'s `packageManager` field. It needs Node.js 22.13 or later.
 
 ```bash
-yarn install --frozen-lockfile
+pnpm install --frozen-lockfile
 ```
 
-`--frozen-lockfile` installs the exact versions in `yarn.lock` and fails if `package.json` asks for a version that `yarn.lock` doesn't have. After you change `package.json`, run `yarn install` and commit `yarn.lock`. yarn 1 has no cooldown setting, so `yarn install` and `yarn add` take the newest matching releases.
+`--frozen-lockfile` installs the exact versions in `pnpm-lock.yaml` and fails if the lock doesn't match `package.json`. After you change `package.json`, run `pnpm install` and commit `pnpm-lock.yaml`. `minimumReleaseAge` in `pnpm-workspace.yaml` makes `pnpm install` and `pnpm add` resolve only releases at least 7 days old, dependencies of dependencies included.
 
 While developing front-end components, run the following in a separate terminal to automatically rebuild the JavaScript as you make changes:
 
 ```bash
-yarn dev          # or
-yarn dev-sourcemap
+pnpm dev          # or
+pnpm dev-sourcemap
 ```
 
 ### Dependencies
@@ -37,7 +37,7 @@ For this repository:
 
 - inspect_viz does not depend on inspect-ai.
 - No package has the 6-hour cooldown, so `pyproject.toml` has no `[tool.uv.exclude-newer-package]` table. If you add the first 6-hour entry, put the `six-hour-cooldown` group before `python-packages` in `.github/dependabot.yml`.
-- Dependabot also bumps `yarn.lock` weekly, with a 7-day cooldown on the packages it bumps. Dependencies that those packages pull in get no cooldown.
+- Dependabot also bumps `pnpm-lock.yaml` weekly, with the same 7-day cooldown.
 - When you change the `hatchling` requirement in `[build-system]`, make the same change in `scripts/build-dist/requirements.in` and compile `requirements.txt` again. A test checks that the two agree.
 
 ## Checks and tests
@@ -57,8 +57,8 @@ make test
 For the TypeScript front end, check types and formatting with:
 
 ```bash
-yarn typecheck
-yarn format:check   # or `yarn format` to apply formatting
+pnpm typecheck
+pnpm format:check   # or `pnpm format` to apply formatting
 ```
 
 ## Commit messages and releases

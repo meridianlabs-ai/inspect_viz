@@ -5,8 +5,8 @@ SDK or Inspect package that is a direct dependency can get six hours instead;
 no package has that entry now. Dependabot applies the seven days to its
 uv.lock bumps and leaves the six-hour list to uv. CI installs from uv.lock,
 and the build toolchain from scripts/build-dist/requirements.txt, pinned with
-hashes. The JS jobs install yarn.lock. Dependabot bumps it with a seven-day
-cooldown on the packages it bumps, but not on the dependencies they pull in.
+hashes. The JS jobs install pnpm-lock.yaml. pnpm resolves only releases at
+least seven days old, and Dependabot bumps the lock with the same cooldown.
 Testing against the newest releases happens in
 meridianlabs-ai/canaries, outside this repository.
 """
@@ -266,15 +266,15 @@ def test_no_workflow_runs_pip_install() -> None:
     assert pip == [], "pip installs skip uv.lock; use the shared action"
 
 
-def yarn_installs(line: str) -> list[list[str]]:
-    """The yarn install commands in a run line, each as the words after yarn."""
+def pnpm_installs(line: str) -> list[list[str]]:
+    """The pnpm install commands in a run line, each as the words after pnpm."""
     line = re.sub(r"(^|\s)#.*", "", line)
     installs = []
     for command in re.split(r"&&|\|\||;|\|", line):
         words = command.split()
-        if "yarn" in words:
-            args = words[words.index("yarn") + 1 :]
-            if "install" in args or all(word.startswith("-") for word in args):
+        if "pnpm" in words:
+            args = words[words.index("pnpm") + 1 :]
+            if {"install", "i"} & set(args):
                 installs.append(args)
     return installs
 
@@ -283,41 +283,54 @@ def frozen(args: list[str]) -> bool:
     return "--frozen-lockfile" in args
 
 
-def test_yarn_installs_use_the_lockfile() -> None:
-    # Without --frozen-lockfile, yarn resolves new versions when yarn.lock and
-    # package.json disagree, and the job still passes.
+def test_pnpm_installs_use_the_lockfile() -> None:
+    # pnpm turns on --frozen-lockfile when it detects CI. Passing the flag
+    # keeps that from depending on the detection.
     installs = [
         (where, line, args)
         for where, line in run_lines()
-        for args in yarn_installs(line)
+        for args in pnpm_installs(line)
     ]
     assert installs, "no workflow installs the JS dependencies"
     unlocked = [(where, line) for where, line, args in installs if not frozen(args)]
-    assert unlocked == [], f"use yarn install --frozen-lockfile in {unlocked}"
-    assert (REPO / "yarn.lock").is_file(), (
-        "--frozen-lockfile passes when yarn.lock is missing"
-    )
+    assert unlocked == [], f"use pnpm install --frozen-lockfile in {unlocked}"
+
+
+# npm and yarn ignore pnpm-lock.yaml and minimumReleaseAge.
+def test_no_workflow_runs_npm_or_yarn() -> None:
+    other = [
+        (where, line)
+        for where, line in run_lines()
+        if re.search(r"\b(yarn|npx|npm\s+(install|i|ci|add|update))\b", line)
+    ]
+    assert other == [], "install the JS dependencies with pnpm"
 
 
 @pytest.mark.parametrize(
     "line,locked",
     [
-        ("yarn install", [False]),
-        ("yarn", [False]),
-        ("yarn install --frozen-lockfile", [True]),
-        ("yarn --frozen-lockfile install", [True]),
-        ("yarn install --frozen-lockfile=false", [False]),
-        ("yarn install --network-timeout 100000", [False]),
-        ("yarn install # deps", [False]),
-        ("yarn install --frozen-lockfile && yarn build", [True]),
-        ("yarn install && yarn build", [False]),
-        ("cd js && yarn --cwd js install", [False]),
-        ("yarn build", []),
-        ("yarn typecheck", []),
+        ("pnpm install", [False]),
+        ("pnpm i", [False]),
+        ("pnpm install --frozen-lockfile", [True]),
+        ("pnpm --frozen-lockfile install", [True]),
+        ("pnpm install --frozen-lockfile=false", [False]),
+        ("pnpm install --prefer-offline", [False]),
+        ("pnpm install # deps", [False]),
+        ("pnpm install --frozen-lockfile && pnpm build", [True]),
+        ("pnpm install && pnpm build", [False]),
+        ("cd js && pnpm --dir js install", [False]),
+        ("pnpm build", []),
+        ("pnpm typecheck", []),
     ],
 )
-def test_yarn_install_detection(line: str, locked: list[bool]) -> None:
-    assert [frozen(args) for args in yarn_installs(line)] == locked
+def test_pnpm_install_detection(line: str, locked: list[bool]) -> None:
+    assert [frozen(args) for args in pnpm_installs(line)] == locked
+
+
+def test_pnpm_minimum_release_age() -> None:
+    workspace = yaml.safe_load((REPO / "pnpm-workspace.yaml").read_text())
+    assert workspace["minimumReleaseAge"] == 7 * 24 * 60
+    assert "minimumReleaseAgeExclude" not in workspace
 
 
 def test_dependabot_npm_cooldown() -> None:
