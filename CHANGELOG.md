@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/meridianlabs-ai/inspect_viz/compare/0.4.2...0.4.3) (2026-11-12)
+
+
+### Bug Fixes
+
+* mount plot tooltips on document.body so one widget can't hide or distort them ([#50](https://github.com/meridianlabs-ai/inspect_viz/issues/50)) ([85003af](https://github.com/meridianlabs-ai/inspect_viz/commit/85003afdcfb49ffad3d21a20cf06ccd6a4f9740e))
+
 ## [0.4.2](https://github.com/meridianlabs-ai/inspect_viz/compare/v0.4.1...0.4.2) (2026-10-16)
 
 
