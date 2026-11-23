@@ -52,7 +52,9 @@ doc = [
     "panflute",
     "markdown",
     "griffe",
+    "playwright",
     "pyyaml",
+    "rich",
     "types-PyYAML"
 ]
 
