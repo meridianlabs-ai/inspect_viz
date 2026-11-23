@@ -12,9 +12,6 @@ from inspect_viz import Data
 from inspect_viz.plot import plot, legend
 from inspect_viz.mark import cell, text
 from inspect_viz.transform import avg
-from inspect_ai.analysis import samples_df,SampleSummary, EvalModel
-from inspect_ai.analysis import prepare, model_info, log_viewer
-
 
 samples_data = Data.from_file("writing_bench_samples.parquet") # <1>
 
